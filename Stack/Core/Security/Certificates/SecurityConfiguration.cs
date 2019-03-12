@@ -23,61 +23,58 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     #region SecurityConfiguration Class
+
     /// <summary>
     /// The security configuration for the application.
     /// </summary>
-    public partial class SecurityConfiguration
-    {
+    public partial class SecurityConfiguration {
         #region Public Methods
+
         /// <summary>
         /// Adds a certificate as a trusted peer.
         /// </summary>
-        public void AddTrustedPeer(byte[] certificate)
-        {
+        public void AddTrustedPeer(byte[] certificate) {
             this.TrustedPeerCertificates.TrustedCertificates.Add(new CertificateIdentifier(certificate));
         }
 
         /// <summary>
         /// Validates the security configuration.
         /// </summary>
-        public void Validate()
-        {
-            if (m_applicationCertificate == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "ApplicationCertificate must be specified.");
+        public void Validate() {
+            if (m_applicationCertificate == null) {
+                throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                    "ApplicationCertificate must be specified.");
             }
 
             TrustedIssuerCertificates = CreateDefaultTrustList(TrustedIssuerCertificates);
             TrustedPeerCertificates = CreateDefaultTrustList(TrustedPeerCertificates);
 
             //set a default rejected certificate store.
-            if (RejectedCertificateStore == null)
-            {
+            if (RejectedCertificateStore == null) {
                 RejectedCertificateStore = new CertificateStoreIdentifier();
                 RejectedCertificateStore.StoreType = CertificateStoreType.Directory;
-                RejectedCertificateStore.StorePath = "%CommonApplicationData%\\OPC Foundation\\CertificateStores\\RejectedCertificates";
-            }             
+                RejectedCertificateStore.StorePath =
+                    "%CommonApplicationData%\\OPC Foundation\\CertificateStores\\RejectedCertificates";
+            }
         }
 
         /// <summary>
         /// Ensure valid trust lists.
         /// </summary>
-        private CertificateTrustList CreateDefaultTrustList(CertificateTrustList trustList)
-        {
-            if (trustList != null)
-            {
-                if (trustList.StorePath != null)
-                {
+        private CertificateTrustList CreateDefaultTrustList(CertificateTrustList trustList) {
+            if (trustList != null) {
+                if (trustList.StorePath != null) {
                     return trustList;
                 }
             }
 
             return new CertificateTrustList();
         }
+
         #endregion
     }
+
     #endregion
 }

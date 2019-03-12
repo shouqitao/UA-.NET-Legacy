@@ -1,13 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <s0:InstalledApplication
   xmlns:s0="http://opcfoundation.org/UA/SDK/Installation.xsd"
   xmlns:s1="http://opcfoundation.org/UA/SDK/Configuration.xsd"
   xmlns="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
   xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd">
-  
+
   <ApplicationName>UA Sample Server</ApplicationName>
   <ApplicationUri></ApplicationUri>
-  <ApplicationType>Server_0</ApplicationType>  
+  <ApplicationType>Server_0</ApplicationType>
   <ConfigurationFile>Opc.Ua.SampleServer.Config.xml</ConfigurationFile>
 
   <s0:DeleteCertificatesOnUninstall>true</s0:DeleteCertificatesOnUninstall>
@@ -34,5 +35,5 @@
     <!-- Show Only Security, ServiceResultExceptions, Errors and Trace -->
     <!-- <s1:TraceMasks>519</s1:TraceMasks> -->
   </s0:TraceConfiguration>
-  
+
 </s0:InstalledApplication>

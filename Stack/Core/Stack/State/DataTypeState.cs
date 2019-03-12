@@ -17,30 +17,27 @@
 using System;
 using System.Collections.Generic;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary> 
     /// The base class for all reference type nodes.
     /// </summary>
-    public class DataTypeState : BaseTypeState
-    {
+    public class DataTypeState : BaseTypeState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public DataTypeState() : base(NodeClass.DataType)
-        {
-        }
+        public DataTypeState() : base(NodeClass.DataType) { }
 
         /// <summary>
         /// Constructs an instance of a node.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns>The new node.</returns>
-        public static NodeState Construct(NodeState parent)
-        {
+        public static NodeState Construct(NodeState parent) {
             return new DataTypeState();
         }
+
         #endregion
 
         /// <summary>
@@ -52,8 +49,7 @@ namespace Opc.Ua
     /// <summary>
     /// Defines an abstract description of a type.
     /// </summary>
-    public class DataTypeDefinition
-    {
+    public class DataTypeDefinition {
         /// <summary>
         /// The name of the type.
         /// </summary>
@@ -83,8 +79,7 @@ namespace Opc.Ua
     /// <summary>
     /// Defines a field within an abstract definition of a data type.
     /// </summary>
-    public class DataTypeDefinitionField
-    {
+    public class DataTypeDefinitionField {
         /// <summary>
         /// The name of the field.
         /// </summary>

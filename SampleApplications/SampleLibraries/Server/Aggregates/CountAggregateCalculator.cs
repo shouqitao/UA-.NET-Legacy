@@ -31,14 +31,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Calculates the value of an aggregate. 
     /// </summary>
-    public class CountAggregateCalculator : AggregateCalculator
-    {
+    public class CountAggregateCalculator : AggregateCalculator {
         #region Constructors
+
         /// <summary>
         /// Initializes the aggregate calculator.
         /// </summary>
@@ -55,47 +54,40 @@ namespace Opc.Ua.Server
             double processingInterval,
             bool stepped,
             AggregateConfiguration configuration)
-        : 
-            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration)
-        {
+            :
+            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration) {
             SetPartialBit = true;
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Computes the value for the timeslice.
         /// </summary>
-        protected override DataValue ComputeValue(TimeSlice slice)
-        {
+        protected override DataValue ComputeValue(TimeSlice slice) {
             uint? id = AggregateId.Identifier as uint?;
 
-            if (id != null)
-            {
-                switch (id.Value)
-                {
-                    case Objects.AggregateFunction_Count:
-                    {
+            if (id != null) {
+                switch (id.Value) {
+                    case Objects.AggregateFunction_Count: {
                         return ComputeCount(slice);
                     }
 
-                    case Objects.AggregateFunction_AnnotationCount:
-                    {
+                    case Objects.AggregateFunction_AnnotationCount: {
                         return ComputeAnnotationCount(slice);
                     }
 
-                    case Objects.AggregateFunction_DurationInStateZero:
-                    {
+                    case Objects.AggregateFunction_DurationInStateZero: {
                         return ComputeDurationInState(slice, false);
                     }
 
-                    case Objects.AggregateFunction_DurationInStateNonZero:
-                    {
+                    case Objects.AggregateFunction_DurationInStateNonZero: {
                         return ComputeDurationInState(slice, true);
                     }
 
-                    case Objects.AggregateFunction_NumberOfTransitions:
-                    {
+                    case Objects.AggregateFunction_NumberOfTransitions: {
                         return ComputeNumberOfTransitions(slice);
                     }
                 }
@@ -103,30 +95,28 @@ namespace Opc.Ua.Server
 
             return base.ComputeValue(slice);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Calculates the Count aggregate for the timeslice.
         /// </summary>
-        protected DataValue ComputeCount(TimeSlice slice)
-        {
+        protected DataValue ComputeCount(TimeSlice slice) {
             // get the values in the slice.
             List<DataValue> values = GetValues(slice);
 
             // check for empty slice.
-            if (values == null)
-            {
+            if (values == null) {
                 return GetNoDataValue(slice);
             }
 
             // count the values.
             int count = 0;
 
-            for (int ii = 0; ii < values.Count; ii++)
-            {
-                if (StatusCode.IsGood(values[ii].StatusCode))
-                {
+            for (int ii = 0; ii < values.Count; ii++) {
+                if (StatusCode.IsGood(values[ii].StatusCode)) {
                     count++;
                 }
             }
@@ -135,7 +125,7 @@ namespace Opc.Ua.Server
             DataValue value = new DataValue();
             value.WrappedValue = new Variant(count, TypeInfo.Scalars.Int32);
             value.SourceTimestamp = GetTimestamp(slice);
-            value.ServerTimestamp = GetTimestamp(slice);           
+            value.ServerTimestamp = GetTimestamp(slice);
             value.StatusCode = value.StatusCode.SetAggregateBits(AggregateBits.Calculated);
             value.StatusCode = GetValueBasedStatusCode(slice, values, value.StatusCode);
 
@@ -146,22 +136,19 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the AnnotationCount aggregate for the timeslice.
         /// </summary>
-        protected DataValue ComputeAnnotationCount(TimeSlice slice)
-        {
+        protected DataValue ComputeAnnotationCount(TimeSlice slice) {
             // get the values in the slice.
             List<DataValue> values = GetValues(slice);
 
             // check for empty slice.
-            if (values == null)
-            {
+            if (values == null) {
                 return GetNoDataValue(slice);
             }
 
             // count the values.
             int count = 0;
 
-            for (int ii = 0; ii < values.Count; ii++)
-            {
+            for (int ii = 0; ii < values.Count; ii++) {
                 count++;
             }
 
@@ -179,14 +166,12 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the DurationInStateZero and DurationInStateNonZero aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeDurationInState(TimeSlice slice, bool isNonZero)
-        {
+        protected DataValue ComputeDurationInState(TimeSlice slice, bool isNonZero) {
             // get the values in the slice.
             List<DataValue> values = GetValuesWithSimpleBounds(slice);
 
             // check for empty slice.
-            if (values == null)
-            {
+            if (values == null) {
                 return GetNoDataValue(slice);
             }
 
@@ -195,24 +180,17 @@ namespace Opc.Ua.Server
 
             double duration = 0;
 
-            for (int ii = 0; ii < regions.Count; ii++)
-            {
-                if (StatusCode.IsNotGood(regions[ii].StatusCode))
-                {
+            for (int ii = 0; ii < regions.Count; ii++) {
+                if (StatusCode.IsNotGood(regions[ii].StatusCode)) {
                     continue;
                 }
 
-                if (isNonZero)
-                {
-                    if (regions[ii].StartValue != 0)
-                    {
+                if (isNonZero) {
+                    if (regions[ii].StartValue != 0) {
                         duration += regions[ii].Duration;
                     }
-                }
-                else
-                {
-                    if (regions[ii].StartValue == 0)
-                    {
+                } else {
+                    if (regions[ii].StartValue == 0) {
                         duration += regions[ii].Duration;
                     }
                 }
@@ -233,30 +211,23 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the Count aggregate for the timeslice.
         /// </summary>
-        protected DataValue ComputeNumberOfTransitions(TimeSlice slice)
-        {
+        protected DataValue ComputeNumberOfTransitions(TimeSlice slice) {
             // get the values in the slice.
             List<DataValue> values = GetValues(slice);
 
             // check for empty slice.
-            if (values == null)
-            {
+            if (values == null) {
                 return GetNoDataValue(slice);
             }
 
             // determine whether a transition occurs at the StartTime
             double lastValue = Double.NaN;
 
-            if (slice.EarlyBound != null)
-            {
-                if (StatusCode.IsGood(slice.EarlyBound.Value.StatusCode))
-                {
-                    try
-                    {
+            if (slice.EarlyBound != null) {
+                if (StatusCode.IsGood(slice.EarlyBound.Value.StatusCode)) {
+                    try {
                         lastValue = CastToDouble(slice.EarlyBound.Value);
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         lastValue = Double.NaN;
                     }
                 }
@@ -265,28 +236,21 @@ namespace Opc.Ua.Server
             // count the transitions.
             int count = 0;
 
-            for (int ii = 0; ii < values.Count; ii++)
-            {
-                if (!IsGood(values[ii]))
-                {
+            for (int ii = 0; ii < values.Count; ii++) {
+                if (!IsGood(values[ii])) {
                     continue;
                 }
 
                 double nextValue = 0;
 
-                try
-                {
+                try {
                     nextValue = CastToDouble(values[ii]);
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     continue;
                 }
 
-                if (!Double.IsNaN(lastValue))
-                {
-                    if (lastValue != nextValue)
-                    {
+                if (!Double.IsNaN(lastValue)) {
+                    if (lastValue != nextValue) {
                         count++;
                     }
                 }
@@ -305,6 +269,7 @@ namespace Opc.Ua.Server
             // return result.
             return value;
         }
+
         #endregion
     }
 }

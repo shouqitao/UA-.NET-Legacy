@@ -17,13 +17,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// An interface to an object that describes a node local to the server.
     /// </summary>
-    public interface IOperationContext
-    {
+    public interface IOperationContext {
         /// <summary>
         /// The identifier for the session (null if multiple sessions are associated with the operation).
         /// </summary>

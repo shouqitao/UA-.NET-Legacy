@@ -20,19 +20,17 @@ using System.Text;
 using System.IdentityModel.Selectors;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Stores the configuration settings for a channel.
     /// </summary>
-    public class TransportListenerSettings
-    {
+    public class TransportListenerSettings {
         #region Public Properties
+
         /// <summary>
         /// Gets or sets the descriptions for the endpoints supported by the listener.
         /// </summary>
-        public EndpointDescriptionCollection Descriptions
-        {
+        public EndpointDescriptionCollection Descriptions {
             get { return m_descriptions; }
             set { m_descriptions = value; }
         }
@@ -40,8 +38,7 @@ namespace Opc.Ua
         /// <summary>
         /// Gets or sets the configuration for the endpoints.
         /// </summary>
-        public EndpointConfiguration Configuration
-        {
+        public EndpointConfiguration Configuration {
             get { return m_configuration; }
             set { m_configuration = value; }
         }
@@ -49,8 +46,7 @@ namespace Opc.Ua
         /// <summary>
         /// Gets or sets the server certificate.
         /// </summary>
-        public X509Certificate2 ServerCertificate
-        {
+        public X509Certificate2 ServerCertificate {
             get { return m_serverCertificate; }
             set { m_serverCertificate = value; }
         }
@@ -61,8 +57,7 @@ namespace Opc.Ua
         /// <value>
         /// The server certificate chain.
         /// </value>
-        public X509Certificate2Collection ServerCertificateChain
-        {
+        public X509Certificate2Collection ServerCertificateChain {
             get { return m_serverCertificateChain; }
             set { m_serverCertificateChain = value; }
         }
@@ -74,8 +69,7 @@ namespace Opc.Ua
         /// This is the object used by the channel to validate received certificates.
         /// Validatation errors are reported to the application via this object.
         /// </remarks>
-        public X509CertificateValidator CertificateValidator
-        {
+        public X509CertificateValidator CertificateValidator {
             get { return m_certificateValidator; }
             set { m_certificateValidator = value; }
         }
@@ -91,8 +85,7 @@ namespace Opc.Ua
         /// associated with the DataTypeEncodingId then.
         /// </remarks>
         /// <seealso cref="Factory" />
-        public NamespaceTable NamespaceUris
-        {
+        public NamespaceTable NamespaceUris {
             get { return m_namespaceUris; }
             set { m_namespaceUris = value; }
         }
@@ -111,14 +104,15 @@ namespace Opc.Ua
         /// in the encoded message.
         /// </remarks>
         /// <seealso cref="NamespaceUris" />
-        public EncodeableFactory Factory
-        {
+        public EncodeableFactory Factory {
             get { return m_channelFactory; }
             set { m_channelFactory = value; }
         }
+
         #endregion
 
         #region Private Fields
+
         private EndpointDescriptionCollection m_descriptions;
         private EndpointConfiguration m_configuration;
         private X509Certificate2 m_serverCertificate;
@@ -126,6 +120,7 @@ namespace Opc.Ua
         private X509CertificateValidator m_certificateValidator;
         private NamespaceTable m_namespaceUris;
         private EncodeableFactory m_channelFactory;
+
         #endregion
     }
 }

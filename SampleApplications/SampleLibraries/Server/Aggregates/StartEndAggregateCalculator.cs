@@ -31,14 +31,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Calculates the value of an aggregate. 
     /// </summary>
-    public class StartEndAggregateCalculator : AggregateCalculator
-    {
+    public class StartEndAggregateCalculator : AggregateCalculator {
         #region Constructors
+
         /// <summary>
         /// Initializes the aggregate calculator.
         /// </summary>
@@ -55,52 +54,44 @@ namespace Opc.Ua.Server
             double processingInterval,
             bool stepped,
             AggregateConfiguration configuration)
-        : 
-            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration)
-        {
+            :
+            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration) {
             SetPartialBit = true;
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Computes the value for the timeslice.
         /// </summary>
-        protected override DataValue ComputeValue(TimeSlice slice)
-        {
+        protected override DataValue ComputeValue(TimeSlice slice) {
             uint? id = AggregateId.Identifier as uint?;
 
-            if (id != null)
-            {
-                switch (id.Value)
-                {
-                    case Objects.AggregateFunction_Start:
-                    {
+            if (id != null) {
+                switch (id.Value) {
+                    case Objects.AggregateFunction_Start: {
                         return ComputeStartEnd(slice, false);
                     }
 
-                    case Objects.AggregateFunction_End:
-                    {
+                    case Objects.AggregateFunction_End: {
                         return ComputeStartEnd(slice, true);
                     }
 
-                    case Objects.AggregateFunction_Delta:
-                    {
+                    case Objects.AggregateFunction_Delta: {
                         return ComputeDelta(slice);
                     }
 
-                    case Objects.AggregateFunction_StartBound:
-                    {
+                    case Objects.AggregateFunction_StartBound: {
                         return ComputeStartEnd2(slice, false);
                     }
 
-                    case Objects.AggregateFunction_EndBound:
-                    {
+                    case Objects.AggregateFunction_EndBound: {
                         return ComputeStartEnd2(slice, true);
                     }
 
-                    case Objects.AggregateFunction_DeltaBounds:
-                    {
+                    case Objects.AggregateFunction_DeltaBounds: {
                         return ComputeDelta2(slice);
                     }
                 }
@@ -108,32 +99,30 @@ namespace Opc.Ua.Server
 
             return base.ComputeValue(slice);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Calculate the Start and End aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeStartEnd(TimeSlice slice, bool returnEnd)
-        {
+        protected DataValue ComputeStartEnd(TimeSlice slice, bool returnEnd) {
             // get the values in the slice.
             List<DataValue> values = GetValues(slice);
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
             // return start value.
-            if (!returnEnd)
-            {
+            if (!returnEnd) {
                 return values[0];
             }
 
             // return end value.
-            else
-            {
+            else {
                 return values[values.Count - 1];
             }
         }
@@ -141,14 +130,12 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the Delta aggregate for the timeslice.
         /// </summary>
-        protected DataValue ComputeDelta(TimeSlice slice)
-        {
+        protected DataValue ComputeDelta(TimeSlice slice) {
             // get the values in the slice.
             List<DataValue> values = GetValues(slice);
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -158,20 +145,15 @@ namespace Opc.Ua.Server
             TypeInfo originalType = null;
             bool badDataSkipped = false;
 
-            for (int ii = 0; ii < values.Count; ii++)
-            {
+            for (int ii = 0; ii < values.Count; ii++) {
                 start = values[ii];
 
-                if (StatusCode.IsGood(start.StatusCode))
-                {
-                    try
-                    {
+                if (StatusCode.IsGood(start.StatusCode)) {
+                    try {
                         startValue = CastToDouble(start);
                         originalType = start.WrappedValue.TypeInfo;
                         break;
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         startValue = Double.NaN;
                     }
                 }
@@ -184,19 +166,14 @@ namespace Opc.Ua.Server
             DataValue end = null;
             double endValue = 0;
 
-            for (int ii = values.Count - 1; ii >= 0; ii--)
-            {
+            for (int ii = values.Count - 1; ii >= 0; ii--) {
                 end = values[ii];
 
-                if (StatusCode.IsGood(end.StatusCode))
-                {
-                    try
-                    {
+                if (StatusCode.IsGood(end.StatusCode)) {
+                    try {
                         endValue = CastToDouble(end);
                         break;
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         endValue = Double.NaN;
                     }
 
@@ -208,33 +185,28 @@ namespace Opc.Ua.Server
             }
 
             // check if no good data.
-            if (Double.IsNaN(startValue) || Double.IsNaN(endValue))
-            {
+            if (Double.IsNaN(startValue) || Double.IsNaN(endValue)) {
                 return GetNoDataValue(slice);
             }
-            
+
             DataValue value = new DataValue();
             value.SourceTimestamp = GetTimestamp(slice);
             value.ServerTimestamp = GetTimestamp(slice);
 
             // set status code.
-            if (badDataSkipped)
-            {
+            if (badDataSkipped) {
                 value.StatusCode = StatusCodes.UncertainDataSubNormal;
             }
-            
+
             value.StatusCode = value.StatusCode.SetAggregateBits(AggregateBits.Calculated);
-            
+
             // calculate delta.
             double delta = endValue - startValue;
 
-            if (originalType != null && originalType.BuiltInType != BuiltInType.Double)
-            {
+            if (originalType != null && originalType.BuiltInType != BuiltInType.Double) {
                 object delta2 = TypeInfo.Cast(delta, TypeInfo.Scalars.Double, originalType.BuiltInType);
                 value.WrappedValue = new Variant(delta2, originalType);
-            }
-            else
-            {
+            } else {
                 value.WrappedValue = new Variant(delta, TypeInfo.Scalars.Double);
             }
 
@@ -245,38 +217,32 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculate the Start2 and End2 aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeStartEnd2(TimeSlice slice, bool returnEnd)
-        {
+        protected DataValue ComputeStartEnd2(TimeSlice slice, bool returnEnd) {
             // get the values in the slice.
             List<DataValue> values = GetValuesWithSimpleBounds(slice);
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
             DataValue value = null;
 
             // return start bound.
-            if ((!returnEnd && !TimeFlowsBackward) || (returnEnd && TimeFlowsBackward))
-            {
+            if ((!returnEnd && !TimeFlowsBackward) || (returnEnd && TimeFlowsBackward)) {
                 value = values[0];
             }
 
             // return end bound.
-            else
-            {
+            else {
                 value = values[values.Count - 1];
             }
 
-            if (returnEnd)
-            {
+            if (returnEnd) {
                 value.SourceTimestamp = GetTimestamp(slice);
                 value.ServerTimestamp = GetTimestamp(slice);
 
-                if (StatusCode.IsNotBad(value.StatusCode))
-                {
+                if (StatusCode.IsNotBad(value.StatusCode)) {
                     value.StatusCode = value.StatusCode.SetAggregateBits(AggregateBits.Calculated);
                 }
             }
@@ -287,23 +253,20 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the Delta2 aggregate for the timeslice.
         /// </summary>
-        protected DataValue ComputeDelta2(TimeSlice slice)
-        {
+        protected DataValue ComputeDelta2(TimeSlice slice) {
             // get the values in the slice.
             List<DataValue> values = GetValuesWithSimpleBounds(slice);
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
             DataValue start = values[0];
-            DataValue end = values[values.Count-1];
+            DataValue end = values[values.Count - 1];
 
             // check for bad bounds.
-            if (StatusCode.IsBad(start.StatusCode) || StatusCode.IsBad(end.StatusCode))
-            {
+            if (StatusCode.IsBad(start.StatusCode) || StatusCode.IsBad(end.StatusCode)) {
                 return GetNoDataValue(slice);
             }
 
@@ -311,30 +274,23 @@ namespace Opc.Ua.Server
             double startValue = 0;
             TypeInfo originalType = null;
 
-            try
-            {
+            try {
                 startValue = CastToDouble(start);
                 originalType = start.WrappedValue.TypeInfo;
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 startValue = Double.NaN;
             }
 
             double endValue = 0;
 
-            try
-            {
+            try {
                 endValue = CastToDouble(end);
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 endValue = Double.NaN;
             }
 
             // check for bad bounds.
-            if (Double.IsNaN(startValue) || Double.IsNaN(endValue))
-            {
+            if (Double.IsNaN(startValue) || Double.IsNaN(endValue)) {
                 return GetNoDataValue(slice);
             }
 
@@ -342,8 +298,7 @@ namespace Opc.Ua.Server
             value.SourceTimestamp = GetTimestamp(slice);
             value.ServerTimestamp = GetTimestamp(slice);
 
-            if (StatusCode.IsNotGood(start.StatusCode) || StatusCode.IsNotGood(end.StatusCode))
-            {
+            if (StatusCode.IsNotGood(start.StatusCode) || StatusCode.IsNotGood(end.StatusCode)) {
                 value.StatusCode = StatusCodes.UncertainDataSubNormal;
             }
 
@@ -352,19 +307,17 @@ namespace Opc.Ua.Server
             // calculate delta.
             double delta = endValue - startValue;
 
-            if (originalType != null && originalType.BuiltInType != BuiltInType.Double)
-            {
+            if (originalType != null && originalType.BuiltInType != BuiltInType.Double) {
                 object delta2 = TypeInfo.Cast(delta, TypeInfo.Scalars.Double, originalType.BuiltInType);
                 value.WrappedValue = new Variant(delta2, originalType);
-            }
-            else
-            {
+            } else {
                 value.WrappedValue = new Variant(delta, TypeInfo.Scalars.Double);
             }
 
             // return result.
             return value;
         }
+
         #endregion
     }
 }

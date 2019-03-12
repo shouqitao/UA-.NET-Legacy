@@ -3,8 +3,7 @@
   xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
   xmlns:tns="http://test.org/UA/Data/"
   targetNamespace="http://test.org/UA/Data/"
-  elementFormDefault="qualified"
->
+  elementFormDefault="qualified">
   <xs:import namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
 
   <xs:complexType name="ScalarValueDataType">

@@ -28,14 +28,13 @@ using System.IdentityModel.Tokens;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Defines constants for key security policies.
     /// </summary>
-    public static class SecurityPolicies
-    {
+    public static class SecurityPolicies {
         #region Public Constants
+
         /// <summary>
         /// The base URI for all policy URIs.
         /// </summary>
@@ -44,12 +43,12 @@ namespace Opc.Ua
         /// <summary>
         /// The URI for a policy that uses no security.
         /// </summary>
-        public const string None = BaseUri + "None";   
+        public const string None = BaseUri + "None";
 
         /// <summary>
         /// The URI for the Basic128Rsa15 security policy.
         /// </summary>
-        public const string Basic128Rsa15 = BaseUri + "Basic128Rsa15";         
+        public const string Basic128Rsa15 = BaseUri + "Basic128Rsa15";
 
         /// <summary>
         /// The URI for the Basic256 security policy.
@@ -65,332 +64,293 @@ namespace Opc.Ua
         /// The URI for the Basic256Sha256 security policy.
         /// </summary>
         public const string Basic256Sha256 = BaseUri + "Basic256Sha256";
-        #endregion        
-        
+
+        #endregion
+
         #region Static Methods
-		/// <summary>
-		/// Returns the uri associated with the display name.
-		/// </summary>
-        public static string GetUri(string displayName)
-		{
-			FieldInfo[] fields = typeof(SecurityPolicies).GetFields(BindingFlags.Public | BindingFlags.Static);
 
-			foreach (FieldInfo field in fields)
-			{
-				if (field.Name == displayName)
-				{
-                    return (string)field.GetValue(typeof(SecurityPolicies));
-				}
-			}
+        /// <summary>
+        /// Returns the uri associated with the display name.
+        /// </summary>
+        public static string GetUri(string displayName) {
+            FieldInfo[] fields = typeof(SecurityPolicies).GetFields(BindingFlags.Public | BindingFlags.Static);
 
-			return null;
+            foreach (FieldInfo field in fields) {
+                if (field.Name == displayName) {
+                    return (string) field.GetValue(typeof(SecurityPolicies));
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
         /// Returns a display name for a security policy uri.
         /// </summary>
-        public static string GetDisplayName(string policyUri)
-        {
-			FieldInfo[] fields = typeof(SecurityPolicies).GetFields(BindingFlags.Public | BindingFlags.Static);
+        public static string GetDisplayName(string policyUri) {
+            FieldInfo[] fields = typeof(SecurityPolicies).GetFields(BindingFlags.Public | BindingFlags.Static);
 
-			foreach (FieldInfo field in fields)
-			{
-				if (policyUri == (string)field.GetValue(typeof(SecurityPolicies)))
-				{
+            foreach (FieldInfo field in fields) {
+                if (policyUri == (string) field.GetValue(typeof(SecurityPolicies))) {
                     return field.Name;
-				}
-			}
+                }
+            }
 
-			return null;
+            return null;
         }
 
-		/// <summary>
-		/// Returns the display names for all security policy uris.
-		/// </summary>
-		public static string[] GetDisplayNames()
-		{
-			FieldInfo[] fields = typeof(SecurityPolicies).GetFields(BindingFlags.Public | BindingFlags.Static);
-            
+        /// <summary>
+        /// Returns the display names for all security policy uris.
+        /// </summary>
+        public static string[] GetDisplayNames() {
+            FieldInfo[] fields = typeof(SecurityPolicies).GetFields(BindingFlags.Public | BindingFlags.Static);
+
             int ii = 0;
 
             string[] names = new string[fields.Length];
-            
-			foreach (FieldInfo field in fields)
-			{
-				names[ii++] = field.Name;
-			}
 
-			return names;
-		}
-        
-        #if !SILVERLIGHT
+            foreach (FieldInfo field in fields) {
+                names[ii++] = field.Name;
+            }
+
+            return names;
+        }
+
+#if !SILVERLIGHT
         /// <summary>
         /// Returns a WCF SecurityAlgorithmSuite for a UA Security Policy
         /// </summary>
-        public static SecurityAlgorithmSuite ToSecurityAlgorithmSuite(string policyUri)
-        {
-            switch (policyUri)
-            {
-                case None:
-                {
+        public static SecurityAlgorithmSuite ToSecurityAlgorithmSuite(string policyUri) {
+            switch (policyUri) {
+                case None: {
                     return SecurityAlgorithmSuite.Default;
                 }
 
-                case Basic128Rsa15:
-                {
+                case Basic128Rsa15: {
                     return SecurityAlgorithmSuite.Basic128Rsa15;
                 }
 
-                case Basic256:
-                {
+                case Basic256: {
                     return SecurityAlgorithmSuite.Basic256;
                 }
 
-                case Basic256Sha256:
-                {
+                case Basic256Sha256: {
                     return SecurityAlgorithmSuite.Basic256Sha256;
                 }
 
-                default:
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "{0} is not a valid UA security policy URI.", policyUri);
+                default: {
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                        "{0} is not a valid UA security policy URI.", policyUri);
                 }
             }
         }
-        
+
         /// <summary>
         /// Encrypts the text using the SecurityPolicyUri and returns the result.
         /// </summary>
-        public static EncryptedData Encrypt(X509Certificate2 certificate, string securityPolicyUri, byte[] plainText)
-        {
+        public static EncryptedData Encrypt(X509Certificate2 certificate, string securityPolicyUri, byte[] plainText) {
             EncryptedData encryptedData = new EncryptedData();
-        
+
             encryptedData.Algorithm = null;
             encryptedData.Data = plainText;
 
             // check if nothing to do.
-            if (plainText == null)
-            {
+            if (plainText == null) {
                 return encryptedData;
             }
 
             // nothing more to do if no encryption.
-            if (String.IsNullOrEmpty(securityPolicyUri))
-            {
+            if (String.IsNullOrEmpty(securityPolicyUri)) {
                 return encryptedData;
             }
 
             // encrypt data.
-            switch (securityPolicyUri)
-            {
+            switch (securityPolicyUri) {
                 case SecurityPolicies.Basic256:
-                case SecurityPolicies.Basic256Sha256:
-                {
+                case SecurityPolicies.Basic256Sha256: {
                     encryptedData.Algorithm = SecurityAlgorithms.RsaOaep;
                     encryptedData.Data = RsaUtils.Encrypt(plainText, certificate, true);
                     break;
                 }
-                    
-                case SecurityPolicies.Basic128Rsa15:
-                {
+
+                case SecurityPolicies.Basic128Rsa15: {
                     encryptedData.Algorithm = SecurityAlgorithms.Rsa15;
                     encryptedData.Data = RsaUtils.Encrypt(plainText, certificate, false);
                     break;
                 }
 
-                case SecurityPolicies.None:
-                {
+                case SecurityPolicies.None: {
                     break;
                 }
 
-                default:
-                {
+                default: {
                     throw ServiceResultException.Create(
-                        StatusCodes.BadSecurityPolicyRejected, 
-                        "Unsupported security policy: {0}", 
+                        StatusCodes.BadSecurityPolicyRejected,
+                        "Unsupported security policy: {0}",
                         securityPolicyUri);
                 }
             }
-                   
+
             return encryptedData;
         }
-                
+
         /// <summary>
         /// Decrypts the CipherText using the SecurityPolicyUri and returns the PlainTetx.
         /// </summary>
-        public static byte[] Decrypt(X509Certificate2 certificate, string securityPolicyUri, EncryptedData dataToDecrypt)
-        {
+        public static byte[] Decrypt(X509Certificate2 certificate, string securityPolicyUri,
+            EncryptedData dataToDecrypt) {
             // check if nothing to do.
-            if (dataToDecrypt == null)
-            {
+            if (dataToDecrypt == null) {
                 return null;
             }
 
             // nothing more to do if no encryption.
-            if (String.IsNullOrEmpty(securityPolicyUri))
-            {
+            if (String.IsNullOrEmpty(securityPolicyUri)) {
                 return dataToDecrypt.Data;
             }
 
             // decrypt data.
-            switch (securityPolicyUri)
-            {
+            switch (securityPolicyUri) {
                 case SecurityPolicies.Basic256:
-                case SecurityPolicies.Basic256Sha256:
-                {
-                    if (dataToDecrypt.Algorithm == SecurityAlgorithms.RsaOaep)
-                    {
+                case SecurityPolicies.Basic256Sha256: {
+                    if (dataToDecrypt.Algorithm == SecurityAlgorithms.RsaOaep) {
                         return RsaUtils.Decrypt(new ArraySegment<byte>(dataToDecrypt.Data), certificate, true);
                     }
-                        
+
                     break;
                 }
 
-                case SecurityPolicies.Basic128Rsa15:
-                {
-                    if (dataToDecrypt.Algorithm == SecurityAlgorithms.Rsa15)
-                    {
+                case SecurityPolicies.Basic128Rsa15: {
+                    if (dataToDecrypt.Algorithm == SecurityAlgorithms.Rsa15) {
                         return RsaUtils.Decrypt(new ArraySegment<byte>(dataToDecrypt.Data), certificate, false);
                     }
-                    
+
                     break;
                 }
 
-                case SecurityPolicies.None:
-                {
-                    if (String.IsNullOrEmpty(dataToDecrypt.Algorithm))
-                    {
+                case SecurityPolicies.None: {
+                    if (String.IsNullOrEmpty(dataToDecrypt.Algorithm)) {
                         return dataToDecrypt.Data;
                     }
 
                     break;
                 }
 
-                default:
-                {
+                default: {
                     throw ServiceResultException.Create(
-                        StatusCodes.BadSecurityPolicyRejected, 
-                        "Unsupported security policy: {0}", 
+                        StatusCodes.BadSecurityPolicyRejected,
+                        "Unsupported security policy: {0}",
                         securityPolicyUri);
                 }
             }
 
             throw ServiceResultException.Create(
-                StatusCodes.BadIdentityTokenInvalid, 
+                StatusCodes.BadIdentityTokenInvalid,
                 "Unexpected encryption algorithm : {0}",
                 dataToDecrypt.Algorithm);
         }
-                
+
         /// <summary>
         /// Signs the data using the SecurityPolicyUri and returns the signature.
         /// </summary>
-        public static SignatureData Sign(X509Certificate2 certificate, string securityPolicyUri, byte[] dataToSign)
-        {
+        public static SignatureData Sign(X509Certificate2 certificate, string securityPolicyUri, byte[] dataToSign) {
             SignatureData signatureData = new SignatureData();
 
             // check if nothing to do.
-            if (dataToSign == null)
-            {
+            if (dataToSign == null) {
                 return signatureData;
             }
 
             // nothing more to do if no encryption.
-            if (String.IsNullOrEmpty(securityPolicyUri))
-            {
+            if (String.IsNullOrEmpty(securityPolicyUri)) {
                 return signatureData;
             }
 
             // sign data.
-            switch (securityPolicyUri)
-            {
+            switch (securityPolicyUri) {
                 case SecurityPolicies.Basic256:
-                case SecurityPolicies.Basic128Rsa15:
-                {
+                case SecurityPolicies.Basic128Rsa15: {
                     signatureData.Algorithm = SecurityAlgorithms.RsaSha1;
-                    signatureData.Signature = RsaUtils.RsaPkcs15Sha1_Sign(new ArraySegment<byte>(dataToSign), certificate);
+                    signatureData.Signature =
+                        RsaUtils.RsaPkcs15Sha1_Sign(new ArraySegment<byte>(dataToSign), certificate);
                     break;
                 }
-                case SecurityPolicies.Basic256Sha256:
-                {
+                case SecurityPolicies.Basic256Sha256: {
                     signatureData.Algorithm = SecurityAlgorithms.RsaSha256;
-                    signatureData.Signature = RsaUtils.RsaPkcs15Sha256_Sign(new ArraySegment<byte>(dataToSign), certificate);
+                    signatureData.Signature =
+                        RsaUtils.RsaPkcs15Sha256_Sign(new ArraySegment<byte>(dataToSign), certificate);
                     break;
                 }
 
-                case SecurityPolicies.None:
-                {
+                case SecurityPolicies.None: {
                     signatureData.Algorithm = null;
                     signatureData.Signature = null;
                     break;
                 }
 
-                default:
-                {
+                default: {
                     throw ServiceResultException.Create(
-                        StatusCodes.BadSecurityPolicyRejected, 
-                        "Unsupported security policy: {0}", 
+                        StatusCodes.BadSecurityPolicyRejected,
+                        "Unsupported security policy: {0}",
                         securityPolicyUri);
                 }
             }
 
             return signatureData;
         }
-                
+
         /// <summary>
         /// Verifies the signature using the SecurityPolicyUri and return true if valid.
         /// </summary>
-        public static bool Verify(X509Certificate2 certificate, string securityPolicyUri, byte[] dataToVerify, SignatureData signature)
-        {
+        public static bool Verify(X509Certificate2 certificate, string securityPolicyUri, byte[] dataToVerify,
+            SignatureData signature) {
             // check if nothing to do.
-            if (signature == null)
-            {
+            if (signature == null) {
                 return true;
             }
 
             // nothing more to do if no encryption.
-            if (String.IsNullOrEmpty(securityPolicyUri))
-            {
+            if (String.IsNullOrEmpty(securityPolicyUri)) {
                 return true;
             }
 
             // decrypt data.
-            switch (securityPolicyUri)
-            {
+            switch (securityPolicyUri) {
                 case SecurityPolicies.Basic256:
                 case SecurityPolicies.Basic128Rsa15:
-                case SecurityPolicies.Basic256Sha256:
-                {
-                    switch (signature.Algorithm)
-                    {
+                case SecurityPolicies.Basic256Sha256: {
+                    switch (signature.Algorithm) {
                         case SecurityAlgorithms.RsaSha1:
-                            return RsaUtils.RsaPkcs15Sha1_Verify(new ArraySegment<byte>(dataToVerify), signature.Signature, certificate);
+                            return RsaUtils.RsaPkcs15Sha1_Verify(new ArraySegment<byte>(dataToVerify),
+                                signature.Signature, certificate);
                         case SecurityAlgorithms.RsaSha256:
-                            return RsaUtils.RsaPkcs15Sha256_Verify(new ArraySegment<byte>(dataToVerify), signature.Signature, certificate);
+                            return RsaUtils.RsaPkcs15Sha256_Verify(new ArraySegment<byte>(dataToVerify),
+                                signature.Signature, certificate);
                         default:
                             break;
                     }
+
                     break;
                 }
                 // always accept signatures if security is not used.
-                case SecurityPolicies.None:
-                {
+                case SecurityPolicies.None: {
                     return true;
                 }
-                default:
-                {
+                default: {
                     throw ServiceResultException.Create(
-                        StatusCodes.BadSecurityPolicyRejected, 
-                        "Unsupported security policy: {0}", 
+                        StatusCodes.BadSecurityPolicyRejected,
+                        "Unsupported security policy: {0}",
                         securityPolicyUri);
                 }
             }
 
             throw ServiceResultException.Create(
-                StatusCodes.BadSecurityChecksFailed, 
-                "Unexpected signature algorithm : {0}", 
+                StatusCodes.BadSecurityChecksFailed,
+                "Unexpected signature algorithm : {0}",
                 signature.Algorithm);
         }
-        #endif
+#endif
+
         #endregion
     }
 }

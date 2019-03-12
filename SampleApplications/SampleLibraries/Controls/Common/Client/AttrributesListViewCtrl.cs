@@ -37,29 +37,31 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control which displays browse tree.
     /// </summary>
-    public partial class AttributesListViewCtrl : UserControl
-    {
+    public partial class AttributesListViewCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Creates a new instance of the control.
         /// </summary>
-        public AttributesListViewCtrl()
-        {
+        public AttributesListViewCtrl() {
             InitializeComponent();
             AttributesLV.SmallImageList = new ClientUtils().ImageList;
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// The view to use.
         /// </summary>
@@ -69,16 +71,14 @@ namespace Opc.Ua.Client.Controls
         /// Changes the session used by the control.
         /// </summary>
         /// <param name="session">The session.</param>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             m_session = session;
         }
 
         /// <summary>
         /// Gets or sets the context menu for the attributes list.
         /// </summary>
-        public ContextMenuStrip AttributesMenuStrip
-        {
+        public ContextMenuStrip AttributesMenuStrip {
             get { return AttributesLV.ContextMenuStrip; }
             set { AttributesLV.ContextMenuStrip = value; }
         }
@@ -86,14 +86,11 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the attribute at the specified index.
         /// </summary>
-        public ReadValueId GetSelectedAttribute(int index)
-        {
-            if (index >=0 && index < AttributesLV.SelectedItems.Count)
-            {
+        public ReadValueId GetSelectedAttribute(int index) {
+            if (index >= 0 && index < AttributesLV.SelectedItems.Count) {
                 AttributeInfo info = AttributesLV.SelectedItems[index].Tag as AttributeInfo;
 
-                if (info != null)
-                {
+                if (info != null) {
                     return info.NodeToRead;
                 }
             }
@@ -104,20 +101,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Reads the attributes for the node.
         /// </summary>
-        public void ReadAttributes(NodeId nodeId, bool showProperties)
-        {
+        public void ReadAttributes(NodeId nodeId, bool showProperties) {
             AttributesLV.Items.Clear();
 
-            if (NodeId.IsNull(nodeId))
-            {
+            if (NodeId.IsNull(nodeId)) {
                 return;
             }
 
             // build list of attributes to read.
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            foreach (uint attributeId in Attributes.GetIdentifiers())
-            {
+            foreach (uint attributeId in Attributes.GetIdentifiers()) {
                 ReadValueId nodeToRead = new ReadValueId();
                 nodeToRead.NodeId = nodeId;
                 nodeToRead.AttributeId = attributeId;
@@ -140,13 +134,10 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
             // add the results to the display.
-            for (int ii = 0; ii < results.Count; ii++)
-            {
+            for (int ii = 0; ii < results.Count; ii++) {
                 // check for error.
-                if (StatusCode.IsBad(results[ii].StatusCode))
-                {
-                    if (results[ii].StatusCode == StatusCodes.BadAttributeIdInvalid)
-                    {
+                if (StatusCode.IsBad(results[ii].StatusCode)) {
+                    if (results[ii].StatusCode == StatusCodes.BadAttributeIdInvalid) {
                         continue;
                     }
                 }
@@ -156,58 +147,58 @@ namespace Opc.Ua.Client.Controls
                 ListViewItem item = new ListViewItem(Attributes.GetBrowseName(attributeId));
                 item.SubItems.Add(Attributes.GetBuiltInType(attributeId).ToString());
 
-                if (Attributes.GetValueRank(attributeId) >= 0)
-                {
+                if (Attributes.GetValueRank(attributeId) >= 0) {
                     item.SubItems[0].Text += "[]";
                 }
 
                 // add the value.
-                if (StatusCode.IsBad(results[ii].StatusCode))
-                {
+                if (StatusCode.IsBad(results[ii].StatusCode)) {
                     item.SubItems.Add(results[ii].StatusCode.ToString());
-                }
-                else
-                {
-                    item.SubItems.Add(ClientUtils.GetAttributeDisplayText(m_session, attributeId, results[ii].WrappedValue));
+                } else {
+                    item.SubItems.Add(
+                        ClientUtils.GetAttributeDisplayText(m_session, attributeId, results[ii].WrappedValue));
                 }
 
-                item.Tag = new AttributeInfo() { NodeToRead = nodesToRead[ii], Value = results[ii] };
+                item.Tag = new AttributeInfo() {
+                    NodeToRead = nodesToRead[ii],
+                    Value = results[ii]
+                };
                 item.ImageIndex = ClientUtils.GetImageIndex(nodesToRead[ii].AttributeId, results[ii].Value);
 
                 // display in list.
                 AttributesLV.Items.Add(item);
             }
 
-            if (showProperties)
-            {
+            if (showProperties) {
                 ReadProperties(nodeId);
             }
 
             // set the column widths.
-            for (int ii = 0; ii < AttributesLV.Columns.Count; ii++)
-            {
+            for (int ii = 0; ii < AttributesLV.Columns.Count; ii++) {
                 AttributesLV.Columns[ii].Width = -2;
             }
         }
+
         #endregion
 
         #region AttributeInfo Class
+
         /// <summary>
         /// The saved information for an attribute/property displayed in the control. 
         /// </summary>
-        private class AttributeInfo
-        {
+        private class AttributeInfo {
             public ReadValueId NodeToRead;
             public DataValue Value;
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Reads the properties for the node.
         /// </summary>
-        private void ReadProperties(NodeId nodeId)
-        {
+        private void ReadProperties(NodeId nodeId) {
             // build list of references to browse.
             BrowseDescriptionCollection nodesToBrowse = new BrowseDescriptionCollection();
 
@@ -217,8 +208,8 @@ namespace Opc.Ua.Client.Controls
             nodeToBrowse.BrowseDirection = BrowseDirection.Forward;
             nodeToBrowse.ReferenceTypeId = Opc.Ua.ReferenceTypeIds.HasProperty;
             nodeToBrowse.IncludeSubtypes = true;
-            nodeToBrowse.NodeClassMask = (uint)NodeClass.Variable;
-            nodeToBrowse.ResultMask = (uint)BrowseResultMask.All;
+            nodeToBrowse.NodeClassMask = (uint) NodeClass.Variable;
+            nodeToBrowse.ResultMask = (uint) BrowseResultMask.All;
 
             nodesToBrowse.Add(nodeToBrowse);
 
@@ -228,25 +219,22 @@ namespace Opc.Ua.Client.Controls
             // build list of properties to read.
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            for (int ii = 0; references != null && ii < references.Count; ii++)
-            {
+            for (int ii = 0; references != null && ii < references.Count; ii++) {
                 ReferenceDescription reference = references[ii];
 
                 // ignore out of server references.
-                if (reference.NodeId.IsAbsolute)
-                {
+                if (reference.NodeId.IsAbsolute) {
                     continue;
                 }
 
                 ReadValueId nodeToRead = new ReadValueId();
-                nodeToRead.NodeId = (NodeId)reference.NodeId;
+                nodeToRead.NodeId = (NodeId) reference.NodeId;
                 nodeToRead.AttributeId = Attributes.Value;
                 nodeToRead.Handle = reference;
                 nodesToRead.Add(nodeToRead);
             }
 
-            if (nodesToRead.Count == 0)
-            {
+            if (nodesToRead.Count == 0) {
                 return;
             }
 
@@ -266,9 +254,8 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
             // add the results to the display.
-            for (int ii = 0; ii < results.Count; ii++)
-            {
-                ReferenceDescription reference = (ReferenceDescription)nodesToRead[ii].Handle;
+            for (int ii = 0; ii < results.Count; ii++) {
+                ReferenceDescription reference = (ReferenceDescription) nodesToRead[ii].Handle;
 
                 TypeInfo typeInfo = TypeInfo.Construct(results[ii].Value);
 
@@ -276,44 +263,42 @@ namespace Opc.Ua.Client.Controls
                 ListViewItem item = new ListViewItem(reference.ToString());
                 item.SubItems.Add(typeInfo.BuiltInType.ToString());
 
-                if (typeInfo.ValueRank >= 0)
-                {
+                if (typeInfo.ValueRank >= 0) {
                     item.SubItems[1].Text += "[]";
                 }
 
                 // add the value.
-                if (StatusCode.IsBad(results[ii].StatusCode))
-                {
+                if (StatusCode.IsBad(results[ii].StatusCode)) {
                     item.SubItems.Add(results[ii].StatusCode.ToString());
-                }
-                else
-                {
+                } else {
                     item.SubItems.Add(results[ii].WrappedValue.ToString());
                 }
 
-                item.Tag = new AttributeInfo() { NodeToRead = nodesToRead[ii], Value = results[ii] };
-                item.ImageIndex = ClientUtils.GetImageIndex(m_session, NodeClass.Variable, Opc.Ua.VariableTypeIds.PropertyType, false);
+                item.Tag = new AttributeInfo() {
+                    NodeToRead = nodesToRead[ii],
+                    Value = results[ii]
+                };
+                item.ImageIndex = ClientUtils.GetImageIndex(m_session, NodeClass.Variable,
+                    Opc.Ua.VariableTypeIds.PropertyType, false);
 
                 // display in list.
                 AttributesLV.Items.Add(item);
             }
         }
+
         #endregion
 
         #region Event Handlers
-        private void AttributesLV_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (AttributesLV.SelectedItems.Count == 0)
-                {
+
+        private void AttributesLV_DoubleClick(object sender, EventArgs e) {
+            try {
+                if (AttributesLV.SelectedItems.Count == 0) {
                     return;
                 }
 
                 AttributeInfo info = AttributesLV.SelectedItems[0].Tag as AttributeInfo;
 
-                if (info == null || info.Value == null)
-                {
+                if (info == null || info.Value == null) {
                     return;
                 }
 
@@ -321,16 +306,15 @@ namespace Opc.Ua.Client.Controls
                     m_session,
                     info.NodeToRead.NodeId,
                     info.NodeToRead.AttributeId,
-                    null, 
+                    null,
                     info.Value.Value,
                     true,
                     "View Attribute Value");
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

@@ -34,18 +34,16 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace TestData
-{
-    public partial class AnalogScalarValueObjectState
-    {
+namespace TestData {
+    public partial class AnalogScalarValueObjectState {
         #region Initialization
+
         /// <summary>
         /// Initializes the object as a collection of counters which change value on read.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
-            
+
             InitializeVariable(context, SByteValue, TestData.Variables.AnalogScalarValueObjectType_SByteValue);
             InitializeVariable(context, ByteValue, TestData.Variables.AnalogScalarValueObjectType_ByteValue);
             InitializeVariable(context, Int16Value, TestData.Variables.AnalogScalarValueObjectType_Int16Value);
@@ -60,9 +58,11 @@ namespace TestData
             InitializeVariable(context, IntegerValue, TestData.Variables.AnalogScalarValueObjectType_IntegerValue);
             InitializeVariable(context, UIntegerValue, TestData.Variables.AnalogScalarValueObjectType_UIntegerValue);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Handles the generate values method.
         /// </summary>
@@ -70,12 +70,10 @@ namespace TestData
             ISystemContext context,
             MethodState method,
             NodeId objectId,
-            uint count)
-        {
+            uint count) {
             TestDataSystem system = context.SystemHandle as TestDataSystem;
 
-            if (system == null)
-            {
+            if (system == null) {
                 return StatusCodes.BadOutOfService;
             }
 
@@ -95,7 +93,8 @@ namespace TestData
             GenerateValue(system, UIntegerValue);
 
             return base.OnGenerateValues(context, method, objectId, count);
-        }  
+        }
+
         #endregion
     }
 }

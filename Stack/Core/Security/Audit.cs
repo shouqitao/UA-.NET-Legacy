@@ -20,13 +20,11 @@ using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using System.Globalization;
 
-namespace Opc.Ua.Security
-{
+namespace Opc.Ua.Security {
     /// <summary>
     /// A class which is used to report events which have security implications.
     /// </summary>
-    public static class Audit
-    {
+    public static class Audit {
         /// <summary>
         /// Called when a secure channel is created by the client.
         /// </summary>
@@ -44,11 +42,9 @@ namespace Opc.Ua.Security
             EndpointDescription endpoint,
             X509Certificate2 clientCertificate,
             X509Certificate2 serverCertificate,
-            BinaryEncodingSupport encodingSupport)        
-        {
+            BinaryEncodingSupport encodingSupport) {
             // do nothing if security turned off.
-            if ((Utils.TraceMask & Utils.TraceMasks.Security) == 0)
-            {
+            if ((Utils.TraceMask & Utils.TraceMasks.Security) == 0) {
                 return;
             }
 
@@ -64,33 +60,25 @@ namespace Opc.Ua.Security
             buffer.Append(" Connected To: ");
             buffer.Append(endpointUrl);
 
-            if (endpoint != null)
-            {
+            if (endpoint != null) {
                 buffer.Append(" [");
                 buffer.AppendFormat(CultureInfo.InvariantCulture, "{0}", endpoint.SecurityMode);
                 buffer.Append("/");
                 buffer.Append(SecurityPolicies.GetDisplayName(endpoint.SecurityPolicyUri));
                 buffer.Append("/");
 
-                if (encodingSupport == BinaryEncodingSupport.Required)
-                {
+                if (encodingSupport == BinaryEncodingSupport.Required) {
                     buffer.Append("Binary");
-                }
-                else if (encodingSupport == BinaryEncodingSupport.None)
-                {
+                } else if (encodingSupport == BinaryEncodingSupport.None) {
                     buffer.Append("Xml");
-                }
-                else
-                {
+                } else {
                     buffer.Append("BinaryOrXml");
                 }
 
                 buffer.Append("]");
 
-                if (endpoint.SecurityMode != MessageSecurityMode.None)
-                {
-                    if (clientCertificate != null)
-                    {
+                if (endpoint.SecurityMode != MessageSecurityMode.None) {
+                    if (clientCertificate != null) {
                         buffer.Append(" Client Certificate: [");
                         buffer.Append(clientCertificate.Subject);
                         buffer.Append("] [");
@@ -98,8 +86,7 @@ namespace Opc.Ua.Security
                         buffer.Append("]");
                     }
 
-                    if (serverCertificate != null)
-                    {
+                    if (serverCertificate != null) {
                         buffer.Append(" Server Certificate: [");
                         buffer.Append(serverCertificate.Subject);
                         buffer.Append("] [");
@@ -112,7 +99,7 @@ namespace Opc.Ua.Security
             Utils.Trace(Utils.TraceMasks.Security, buffer.ToString());
         }
 
-        
+
         /// <summary>
         /// Called when a secure channel is renewed by the client.
         /// </summary>
@@ -120,11 +107,9 @@ namespace Opc.Ua.Security
         /// <param name="secureChannelId">The identifier assigned to the secure channel.</param>
         public static void SecureChannelRenewed(
             string implementationInfo,
-            string secureChannelId)
-        {
+            string secureChannelId) {
             // do nothing if security turned off.
-            if ((Utils.TraceMask & Utils.TraceMasks.Security) == 0)
-            {
+            if ((Utils.TraceMask & Utils.TraceMasks.Security) == 0) {
                 return;
             }
 

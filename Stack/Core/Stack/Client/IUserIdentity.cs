@@ -17,13 +17,11 @@
 using System.IdentityModel.Tokens;
 using System.Xml;
 
-namespace Opc.Ua
-{    
+namespace Opc.Ua {
     /// <summary>
     /// An interface to an object with stores the identity of a user.
     /// </summary>
-    public interface IUserIdentity
-    {
+    public interface IUserIdentity {
         /// <summary>
         /// A display name that identifies the user.
         /// </summary>
@@ -41,7 +39,7 @@ namespace Opc.Ua
         /// </summary>
         /// <value>The type of the issued token.</value>
         XmlQualifiedName IssuedTokenType { get; }
-        
+
         /// <summary>
         /// Whether the object can create signatures to prove possession of the user's credentials.
         /// </summary>

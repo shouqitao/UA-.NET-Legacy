@@ -17,23 +17,20 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Opc.Ua.Schema.Binary
-{
+namespace Opc.Ua.Schema.Binary {
     /// <summary>
     /// A description of type,
     /// </summary>
-    public partial class TypeDescription
-    {
+    public partial class TypeDescription {
         /// <summary>
         /// The qualifed name for the type.
         /// </summary>
         [XmlIgnore()]
-        public XmlQualifiedName QName
-        {
-            get { return m_qname;  }
+        public XmlQualifiedName QName {
+            get { return m_qname; }
             set { m_qname = value; }
         }
 
-        private XmlQualifiedName m_qname;       
+        private XmlQualifiedName m_qname;
     }
 }

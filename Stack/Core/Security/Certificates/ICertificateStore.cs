@@ -18,13 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
-	/// <summary>
+namespace Opc.Ua {
+    /// <summary>
     /// An abstract interface to certficate stores.
     /// </summary>
-	public interface ICertificateStore : IDisposable
-    {
+    public interface ICertificateStore : IDisposable {
         /// <summary>
         /// Opens the store at the specified location.
         /// </summary>
@@ -32,16 +30,16 @@ namespace Opc.Ua
         /// <remarks>
         /// The syntax depends on the store implementation.
         /// </remarks>
-		void Open(string location);
+        void Open(string location);
 
         /// <summary>
         /// Closes the store.
         /// </summary>
-		void Close();
+        void Close();
 
-		/// <summary>
-		/// Enumerates the certificates in the store.
-		/// </summary>
+        /// <summary>
+        /// Enumerates the certificates in the store.
+        /// </summary>
         X509Certificate2Collection Enumerate();
 
         /// <summary>
@@ -63,35 +61,35 @@ namespace Opc.Ua
         /// <param name="thumbprint">The thumbprint.</param>
         /// <returns>The matching certificate</returns>
         X509Certificate2 FindByThumbprint(string thumbprint);
-        
-        #if !SILVERLIGHT
-		/// <summary>
-		/// Whether the store supports access control.
-		/// </summary>
-		bool SupportsAccessControl { get; }
+
+#if !SILVERLIGHT
+        /// <summary>
+        /// Whether the store supports access control.
+        /// </summary>
+        bool SupportsAccessControl { get; }
 
         /// <summary>
         /// Returns the access rules that are currently applied to the store.
         /// </summary>
         /// <returns>The list of access rules.</returns>
-		IList<ApplicationAccessRule> GetAccessRules();
+        IList<ApplicationAccessRule> GetAccessRules();
 
         /// <summary>
         /// Sets the access rules that are currently applied to the store.
         /// </summary>
         /// <param name="rules">The rules.</param>
         /// <param name="replaceExisting">if set to <c>true</c> the existing access rules are replaced.</param>
-        void SetAccessRules(IList<ApplicationAccessRule> rules, bool replaceExisting);   
-        
-		/// <summary>
-		/// Whether the store supports access control on certificates.
-		/// </summary>
-		bool SupportsCertificateAccessControl { get; }  
-        #endif
+        void SetAccessRules(IList<ApplicationAccessRule> rules, bool replaceExisting);
 
-		/// <summary>
-		/// Whether the store supports private keys.
-		/// </summary>
+        /// <summary>
+        /// Whether the store supports access control on certificates.
+        /// </summary>
+        bool SupportsCertificateAccessControl { get; }
+#endif
+
+        /// <summary>
+        /// Whether the store supports private keys.
+        /// </summary>
         bool SupportsPrivateKeys { get; }
 
         /// <summary>
@@ -100,8 +98,8 @@ namespace Opc.Ua
         /// <param name="thumbprint">The thumbprint.</param>
         /// <returns>The full file path. Null if the certificate does not exist or the private key does not exist.</returns>
         string GetPrivateKeyFilePath(string thumbprint);
-        
-        #if !SILVERLIGHT
+
+#if !SILVERLIGHT
         /// <summary>
         /// Returns the access rules that are currently applied to the certficate's private key.
         /// </summary>
@@ -126,7 +124,7 @@ namespace Opc.Ua
         /// Checks if issuer has revoked the certificate.
         /// </summary>
         StatusCode IsRevoked(X509Certificate2 issuer, X509Certificate2 certificate);
-        
+
         /// <summary>
         /// Returns the CRLs in the store.
         /// </summary>
@@ -146,6 +144,6 @@ namespace Opc.Ua
         /// Removes a CRL from the store.
         /// </summary>
         bool DeleteCRL(X509CRL crl);
-        #endif
+#endif
     };
 }

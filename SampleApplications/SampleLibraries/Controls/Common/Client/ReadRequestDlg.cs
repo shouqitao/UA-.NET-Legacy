@@ -36,93 +36,81 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Allows the user to edit and issue read requests.
     /// </summary>
-    public partial class ReadRequestDlg : Form, ISessionForm
-    {
+    public partial class ReadRequestDlg : Form, ISessionForm {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public ReadRequestDlg()
-        {
+        public ReadRequestDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Changes the session used for the read request.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             ReadRequestCTRL.ChangeSession(session);
         }
 
         /// <summary>
         /// Adds the nodes to the read request.
         /// </summary>
-        public void AddNodes(params ReadValueId[] nodesToRead)
-        {
+        public void AddNodes(params ReadValueId[] nodesToRead) {
             ReadRequestCTRL.AddNodes(nodesToRead);
         }
+
         #endregion
 
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
-        private void ReadBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void ReadBTN_Click(object sender, EventArgs e) {
+            try {
                 ReadRequestCTRL.Read();
                 BackBTN.Visible = true;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void BackBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BackBTN_Click(object sender, EventArgs e) {
+            try {
                 ReadRequestCTRL.Back();
                 BackBTN.Visible = false;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void CloseBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.Modal)
-                {
+        private void CloseBTN_Click(object sender, EventArgs e) {
+            try {
+                if (this.Modal) {
                     DialogResult = DialogResult.Cancel;
-                }
-                else
-                {
+                } else {
                     this.Close();
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

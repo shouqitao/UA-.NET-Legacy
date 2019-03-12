@@ -19,13 +19,11 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// An interface to a certificate used by a UA application.
     /// </summary>
-    public interface ICertificate
-    {
+    public interface ICertificate {
         /// <summary>
         /// The subject name for the certificate.
         /// </summary>
@@ -50,17 +48,17 @@ namespace Opc.Ua
         /// Returns the size of a block of unencrypted data.
         /// </summary>
         int GetPlainTextBlockSize(string algorithmUri);
-        
+
         /// <summary>
         /// Returns the size of a block of encrypted data.
         /// </summary>
         int GetCipherTextBlockSize(string algorithmUri);
-        
+
         /// <summary>
         /// Returns the length of the signature.
         /// </summary>
         int GetSignatureLength(string algorithmUri);
-        
+
         /// <summary>
         /// Encrypts the data using the specified algorithm.
         /// </summary>
@@ -68,9 +66,9 @@ namespace Opc.Ua
         /// The input must be a multiple of the plaintext block size.
         /// </remarks>
         ArraySegment<byte> Encrypt(
-            string             algorithmUri,
+            string algorithmUri,
             ArraySegment<byte> dataToEncrypt);
-        
+
         /// <summary>
         /// Encrypts the data using the specified algorithm.
         /// </summary>
@@ -78,21 +76,21 @@ namespace Opc.Ua
         /// The input must be a multiple of the cipher text block size.
         /// </remarks>
         ArraySegment<byte> Decrypt(
-            string             algorithmUri,
+            string algorithmUri,
             ArraySegment<byte> dataToDecrypt);
-        
+
         /// <summary>
         /// Signs the data and returns the signature.
         /// </summary>
         byte[] Sign(
-            string             algorithmUri,
+            string algorithmUri,
             ArraySegment<byte> dataToSign);
-        
+
         /// <summary>
         /// Verifies the signature for the data.
         /// </summary>
         bool Verify(
-            string             algorithmUri,
+            string algorithmUri,
             ArraySegment<byte> dataToVerify,
             ArraySegment<byte> signature);
 

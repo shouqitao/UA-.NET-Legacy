@@ -34,16 +34,14 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace TestData
-{
-    public partial class ArrayValueObjectState
-    {
+namespace TestData {
+    public partial class ArrayValueObjectState {
         #region Initialization
+
         /// <summary>
         /// Initializes the object as a collection of counters which change value on read.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
 
             InitializeVariable(context, BooleanValue, TestData.Variables.ArrayValueObjectType_BooleanValue);
@@ -63,7 +61,8 @@ namespace TestData
             InitializeVariable(context, ByteStringValue, TestData.Variables.ArrayValueObjectType_ByteStringValue);
             InitializeVariable(context, XmlElementValue, TestData.Variables.ArrayValueObjectType_XmlElementValue);
             InitializeVariable(context, NodeIdValue, TestData.Variables.ArrayValueObjectType_NodeIdValue);
-            InitializeVariable(context, ExpandedNodeIdValue, TestData.Variables.ArrayValueObjectType_ExpandedNodeIdValue);
+            InitializeVariable(context, ExpandedNodeIdValue,
+                TestData.Variables.ArrayValueObjectType_ExpandedNodeIdValue);
             InitializeVariable(context, QualifiedNameValue, TestData.Variables.ArrayValueObjectType_QualifiedNameValue);
             InitializeVariable(context, LocalizedTextValue, TestData.Variables.ArrayValueObjectType_LocalizedTextValue);
             InitializeVariable(context, StatusCodeValue, TestData.Variables.ArrayValueObjectType_StatusCodeValue);
@@ -74,9 +73,11 @@ namespace TestData
             InitializeVariable(context, IntegerValue, TestData.Variables.ArrayValueObjectType_IntegerValue);
             InitializeVariable(context, UIntegerValue, TestData.Variables.ArrayValueObjectType_UIntegerValue);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Handles the generate values method.
         /// </summary>
@@ -84,12 +85,10 @@ namespace TestData
             ISystemContext context,
             MethodState method,
             NodeId objectId,
-            uint count)
-        {
+            uint count) {
             TestDataSystem system = context.SystemHandle as TestDataSystem;
 
-            if (system == null)
-            {
+            if (system == null) {
                 return StatusCodes.BadOutOfService;
             }
 
@@ -123,7 +122,8 @@ namespace TestData
             GenerateValue(system, UIntegerValue);
 
             return base.OnGenerateValues(context, method, objectId, count);
-        }    
+        }
+
         #endregion
     }
 }

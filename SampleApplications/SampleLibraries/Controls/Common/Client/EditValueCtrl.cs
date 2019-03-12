@@ -37,50 +37,46 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control with button that displays edit array dialog.
     /// </summary>
-    public partial class EditValue2Ctrl : UserControl
-    {
+    public partial class EditValue2Ctrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Creates a new instance of the control.
         /// </summary>
-        public EditValue2Ctrl()
-        {
+        public EditValue2Ctrl() {
             InitializeComponent();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private event EventHandler m_ValueChanged;
         private Variant m_value;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// The value in the control.
         /// </summary>
-        public Variant Value 
-        {
-            get 
-            {
-                return m_value; 
-            }
+        public Variant Value {
+            get { return m_value; }
 
-            set
-            {
-                if (CurrentValueControl != null)
-                {
+            set {
+                if (CurrentValueControl != null) {
                     CurrentValueControl.Text = value.ToString();
                 }
 
                 m_value = value;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the control that shows the current value.
         /// </summary>
@@ -89,18 +85,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Raised when the value is changed.
         /// </summary>
-        public event EventHandler ValueChanged
-        {
+        public event EventHandler ValueChanged {
             add { m_ValueChanged += value; }
             remove { m_ValueChanged -= value; }
         }
+
         #endregion
 
         #region Event Handlers
-        private void BrowseBTN_Click(object sender, EventArgs e)
-        {
-            if (CurrentValueControl == null)
-            {
+
+        private void BrowseBTN_Click(object sender, EventArgs e) {
+            if (CurrentValueControl == null) {
                 return;
             }
 
@@ -109,19 +104,18 @@ namespace Opc.Ua.Client.Controls
                 null,
                 m_value.Value,
                 "Edit Value");
-            
-            if (value == null)
-            {
+
+            if (value == null) {
                 return;
             }
 
             Value = new Variant(value);
 
-            if (m_ValueChanged != null)
-            {
+            if (m_ValueChanged != null) {
                 m_ValueChanged(this, e);
             }
         }
+
         #endregion
     }
 }

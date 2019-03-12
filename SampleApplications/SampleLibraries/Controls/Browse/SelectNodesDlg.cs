@@ -36,79 +36,67 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A dialog used to selected one or more nodes.
     /// </summary>
-    public partial class SelectNodesDlg : Form
-    {
+    public partial class SelectNodesDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectNodesDlg"/> class.
         /// </summary>
-        public SelectNodesDlg()
-        {
+        public SelectNodesDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public IList<ILocalNode> ShowDialog(Session session, NodeId rootId, IList<NodeId> nodeIds)
-        {
+        public IList<ILocalNode> ShowDialog(Session session, NodeId rootId, IList<NodeId> nodeIds) {
             BrowseCTRL.Initialize(session, rootId, null, null, BrowseDirection.Forward);
             ReferencesCTRL.Initialize(session, rootId);
             AttributesCTRL.Initialize(session, rootId);
             NodesCTRL.Initialize(session, nodeIds);
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return NodesCTRL.GetNodeList();
         }
+
         #endregion
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void BrowseCTRL_NodesSelected(object sender, BrowseTreeCtrl.NodesSelectedEventArgs e)
-        {
-            try
-            {
-                foreach (ReferenceDescription reference in e.Nodes)
-                {
-                    if (!reference.NodeId.IsAbsolute)
-                    {
-                        NodesCTRL.Add((NodeId)reference.NodeId);
+        private void BrowseCTRL_NodesSelected(object sender, BrowseTreeCtrl.NodesSelectedEventArgs e) {
+            try {
+                foreach (ReferenceDescription reference in e.Nodes) {
+                    if (!reference.NodeId.IsAbsolute) {
+                        NodesCTRL.Add((NodeId) reference.NodeId);
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
-
         }
     }
 }

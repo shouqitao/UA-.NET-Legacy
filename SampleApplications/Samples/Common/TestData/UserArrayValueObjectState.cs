@@ -34,16 +34,14 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace TestData
-{
-    public partial class UserArrayValueObjectState
-    {
+namespace TestData {
+    public partial class UserArrayValueObjectState {
         #region Initialization
+
         /// <summary>
         /// Initializes the object as a collection of counters which change value on read.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
 
             InitializeVariable(context, BooleanValue, TestData.Variables.UserArrayValueObjectType_BooleanValue);
@@ -63,15 +61,20 @@ namespace TestData
             InitializeVariable(context, ByteStringValue, TestData.Variables.UserArrayValueObjectType_ByteStringValue);
             InitializeVariable(context, XmlElementValue, TestData.Variables.UserArrayValueObjectType_XmlElementValue);
             InitializeVariable(context, NodeIdValue, TestData.Variables.UserArrayValueObjectType_NodeIdValue);
-            InitializeVariable(context, ExpandedNodeIdValue, TestData.Variables.UserArrayValueObjectType_ExpandedNodeIdValue);
-            InitializeVariable(context, QualifiedNameValue, TestData.Variables.UserArrayValueObjectType_QualifiedNameValue);
-            InitializeVariable(context, LocalizedTextValue, TestData.Variables.UserArrayValueObjectType_LocalizedTextValue);
+            InitializeVariable(context, ExpandedNodeIdValue,
+                TestData.Variables.UserArrayValueObjectType_ExpandedNodeIdValue);
+            InitializeVariable(context, QualifiedNameValue,
+                TestData.Variables.UserArrayValueObjectType_QualifiedNameValue);
+            InitializeVariable(context, LocalizedTextValue,
+                TestData.Variables.UserArrayValueObjectType_LocalizedTextValue);
             InitializeVariable(context, StatusCodeValue, TestData.Variables.UserArrayValueObjectType_StatusCodeValue);
             InitializeVariable(context, VariantValue, TestData.Variables.UserArrayValueObjectType_VariantValue);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Handles the generate values method.
         /// </summary>
@@ -79,12 +82,10 @@ namespace TestData
             ISystemContext context,
             MethodState method,
             NodeId objectId,
-            uint count)
-        {
+            uint count) {
             TestDataSystem system = context.SystemHandle as TestDataSystem;
 
-            if (system == null)
-            {
+            if (system == null) {
                 return StatusCodes.BadOutOfService;
             }
 
@@ -113,7 +114,8 @@ namespace TestData
             GenerateValue(system, VariantValue);
 
             return base.OnGenerateValues(context, method, objectId, count);
-        }    
+        }
+
         #endregion
     }
 }

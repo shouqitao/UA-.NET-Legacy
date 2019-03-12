@@ -25,73 +25,69 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Opc.Ua.Bindings
-{
+namespace Opc.Ua.Bindings {
     /// <summary>
     /// Wraps the HttpsTransportChannel and provides an ITransportChannel implementation.
     /// </summary>
-    public class HttpsTransportChannel : ITransportChannel
-    {
+    public class HttpsTransportChannel : ITransportChannel {
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
                 // nothing to do.
             }
         }
+
         #endregion
 
         #region ITransportChannel Members
+
         /// <summary>
         /// A masking indicating which features are implemented.
         /// </summary>
-        public TransportChannelFeatures SupportedFeatures
-        {
-            get { return TransportChannelFeatures.Open | TransportChannelFeatures.BeginOpen | TransportChannelFeatures.Reconnect | TransportChannelFeatures.BeginSendRequest; }
+        public TransportChannelFeatures SupportedFeatures {
+            get {
+                return TransportChannelFeatures.Open | TransportChannelFeatures.BeginOpen |
+                       TransportChannelFeatures.Reconnect | TransportChannelFeatures.BeginSendRequest;
+            }
         }
 
         /// <summary>
         /// Gets the description for the endpoint used by the channel.
         /// </summary>
-        public EndpointDescription EndpointDescription
-        {
+        public EndpointDescription EndpointDescription {
             get { return m_settings.Description; }
         }
 
         /// <summary>
         /// Gets the configuration for the channel.
         /// </summary>
-        public EndpointConfiguration EndpointConfiguration
-        {
+        public EndpointConfiguration EndpointConfiguration {
             get { return m_settings.Configuration; }
         }
 
         /// <summary>
         /// Gets the context used when serializing messages exchanged via the channel.
         /// </summary>
-        public ServiceMessageContext MessageContext
-        {
+        public ServiceMessageContext MessageContext {
             get { return m_quotas.MessageContext; }
         }
 
         /// <summary>
         /// Gets or sets the default timeout for requests send via the channel.
         /// </summary>
-        public int OperationTimeout
-        {
-            get { return m_operationTimeout;  }
+        public int OperationTimeout {
+            get { return m_operationTimeout; }
             set { m_operationTimeout = value; }
         }
 
@@ -103,8 +99,7 @@ namespace Opc.Ua.Bindings
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         public void Initialize(
             Uri url,
-            TransportChannelSettings settings)
-        {
+            TransportChannelSettings settings) {
             SaveSettings(url, settings);
         }
 
@@ -112,8 +107,7 @@ namespace Opc.Ua.Bindings
         /// Opens a secure channel with the endpoint identified by the URL.
         /// </summary>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Open()
-        {
+        public void Open() {
             // opens when the first request is called to preserve previous behavoir.
         }
 
@@ -127,8 +121,7 @@ namespace Opc.Ua.Bindings
         /// </returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Open"/>
-        public IAsyncResult BeginOpen(AsyncCallback callback, object callbackData)
-        {
+        public IAsyncResult BeginOpen(AsyncCallback callback, object callbackData) {
             return new AsyncResultBase(callback, callbackData, m_operationTimeout);
         }
 
@@ -138,9 +131,7 @@ namespace Opc.Ua.Bindings
         /// <param name="result">The result returned from the BeginOpen call.</param>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Open"/>
-        public void EndOpen(IAsyncResult result)
-        {
-        }
+        public void EndOpen(IAsyncResult result) { }
 
         /// <summary>
         /// Closes any existing secure channel and opens a new one.
@@ -149,8 +140,7 @@ namespace Opc.Ua.Bindings
         /// <remarks>
         /// Calling this method will cause outstanding requests over the current secure channel to fail.
         /// </remarks>
-        public void Reconnect()
-        {
+        public void Reconnect() {
             Utils.Trace("HttpsTransportChannel RECONNECT: Reconnecting to {0}.", m_url);
         }
 
@@ -164,8 +154,7 @@ namespace Opc.Ua.Bindings
         /// </returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Reconnect"/>
-        public IAsyncResult BeginReconnect(AsyncCallback callback, object callbackData)
-        {
+        public IAsyncResult BeginReconnect(AsyncCallback callback, object callbackData) {
             throw new NotImplementedException();
         }
 
@@ -175,8 +164,7 @@ namespace Opc.Ua.Bindings
         /// <param name="result">The result returned from the BeginReconnect call.</param>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Reconnect"/>
-        public void EndReconnect(IAsyncResult result)
-        {
+        public void EndReconnect(IAsyncResult result) {
             throw new NotImplementedException();
         }
 
@@ -184,9 +172,7 @@ namespace Opc.Ua.Bindings
         /// Closes the secure channel.
         /// </summary>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Close()
-        {
-        }
+        public void Close() { }
 
         /// <summary>
         /// Begins an asynchronous operation to close the secure channel.
@@ -198,8 +184,7 @@ namespace Opc.Ua.Bindings
         /// </returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Close"/>
-        public IAsyncResult BeginClose(AsyncCallback callback, object callbackData)
-        {
+        public IAsyncResult BeginClose(AsyncCallback callback, object callbackData) {
             throw new NotImplementedException();
         }
 
@@ -209,8 +194,7 @@ namespace Opc.Ua.Bindings
         /// <param name="result">The result returned from the BeginClose call.</param>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Close"/>
-        public void EndClose(IAsyncResult result)
-        {
+        public void EndClose(IAsyncResult result) {
             throw new NotImplementedException();
         }
 
@@ -220,8 +204,7 @@ namespace Opc.Ua.Bindings
         /// <param name="request">The request to send.</param>
         /// <returns>The response returned by the server.</returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public IServiceResponse SendRequest(IServiceRequest request)
-        {
+        public IServiceResponse SendRequest(IServiceRequest request) {
             IAsyncResult result = BeginSendRequest(request, null, null);
             return EndSendRequest(result);
         }
@@ -229,8 +212,7 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Stores the results for an operation.
         /// </summary>
-        private class AsyncResult : AsyncResultBase
-        {
+        private class AsyncResult : AsyncResultBase {
             public HttpWebRequest WebRequest;
             public IServiceRequest Request;
 
@@ -240,9 +222,8 @@ namespace Opc.Ua.Bindings
                 int timeout,
                 IServiceRequest request,
                 HttpWebRequest webRequest)
-            :
-                base(callback, callbackData, timeout)
-            {
+                :
+                base(callback, callbackData, timeout) {
                 Request = request;
                 WebRequest = webRequest;
             }
@@ -251,26 +232,21 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Begins an asynchronous operation to send a request over the secure channel.
         /// </summary>
-        public IAsyncResult BeginSendRequest(IServiceRequest request, AsyncCallback callback, object callbackData)
-        {
-            #if !SILVERLIGHT
-            if (!m_servicePointInitialized)
-            {
+        public IAsyncResult BeginSendRequest(IServiceRequest request, AsyncCallback callback, object callbackData) {
+#if !SILVERLIGHT
+            if (!m_servicePointInitialized) {
                 ServicePoint sp = System.Net.ServicePointManager.FindServicePoint(m_url);
                 sp.ConnectionLimit = 1000;
                 m_servicePointInitialized = true;
             }
-            #endif
+#endif
 
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(m_url.ToString());
+            HttpWebRequest webRequest = (HttpWebRequest) HttpWebRequest.Create(m_url.ToString());
             webRequest.Method = "POST";
 
-            if (m_settings.Configuration.UseBinaryEncoding)
-            {
+            if (m_settings.Configuration.UseBinaryEncoding) {
                 webRequest.ContentType = "application/octet-stream";
-            }
-            else
-            {
+            } else {
                 StringBuilder contentType = new StringBuilder();
                 contentType.Append("application/soap+xml; charset=\"utf-8\"; action=\"");
                 contentType.Append(Namespaces.OpcUaWsdl);
@@ -278,14 +254,15 @@ namespace Opc.Ua.Bindings
 
                 string typeName = request.GetType().Name;
                 int index = typeName.LastIndexOf("Request");
-                contentType.Append(typeName.Substring(0, index)); ;
+                contentType.Append(typeName.Substring(0, index));
+                ;
                 contentType.Append("\"");
 
                 webRequest.ContentType = contentType.ToString();
-                
-                #if !SILVERLIGHT
+
+#if !SILVERLIGHT
                 webRequest.Headers.Add("OPCUA-SecurityPolicy", this.m_settings.Description.SecurityPolicyUri);
-                #endif
+#endif
             }
 
             AsyncResult result = new AsyncResult(callback, callbackData, m_operationTimeout, request, webRequest);
@@ -297,11 +274,10 @@ namespace Opc.Ua.Bindings
         /// Writes a message in SOAP/XML.
         /// </summary>
         public static void WriteSoapMessage(
-            Stream ostrm, 
-            string typeName, 
-            IEncodeable message, 
-            ServiceMessageContext messageContext)
-        {
+            Stream ostrm,
+            string typeName,
+            IEncodeable message,
+            ServiceMessageContext messageContext) {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Encoding = System.Text.Encoding.UTF8;
             settings.OmitXmlDeclaration = false;
@@ -335,17 +311,18 @@ namespace Opc.Ua.Bindings
             Stream istrm,
             string typeName,
             Type messageType,
-            ServiceMessageContext messageContext)
-        {
-            XmlReader reader = XmlReader.Create(istrm, new XmlReaderSettings()
-                { DtdProcessing = System.Xml.DtdProcessing.Prohibit, ValidationType = ValidationType.None });
+            ServiceMessageContext messageContext) {
+            XmlReader reader = XmlReader.Create(istrm,
+                new XmlReaderSettings() {
+                    DtdProcessing = System.Xml.DtdProcessing.Prohibit,
+                    ValidationType = ValidationType.None
+                });
 
             reader.MoveToContent();
             reader.ReadStartElement("Envelope", "http://www.w3.org/2003/05/soap-envelope");
             reader.MoveToContent();
 
-            while (!reader.IsStartElement("Body", "http://www.w3.org/2003/05/soap-envelope"))
-            {
+            while (!reader.IsStartElement("Body", "http://www.w3.org/2003/05/soap-envelope")) {
                 reader.Skip();
             }
 
@@ -365,62 +342,51 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Completes an asynchronous operation to send a request over the secure channel.
         /// </summary>
-        public void OnGetRequestStreamComplete(IAsyncResult result)
-        {
+        public void OnGetRequestStreamComplete(IAsyncResult result) {
             AsyncResult result2 = result.AsyncState as AsyncResult;
 
-            if (result2 == null)
-            {
+            if (result2 == null) {
                 return;
             }
 
-            try
-            {
+            try {
                 Stream ostrm = result2.WebRequest.EndGetRequestStream(result);
 
                 MemoryStream mstrm = new MemoryStream();
 
-                if (m_settings.Configuration.UseBinaryEncoding)
-                {
+                if (m_settings.Configuration.UseBinaryEncoding) {
                     BinaryEncoder encoder = new BinaryEncoder(mstrm, this.MessageContext);
                     encoder.EncodeMessage(result2.Request);
-                }
-                else
-                {
+                } else {
                     WriteSoapMessage(
-                        mstrm, 
+                        mstrm,
                         result2.Request.GetType().Name,
                         result2.Request,
                         this.MessageContext);
                 }
 
-                int bytesToRead = (int)mstrm.Position;
+                int bytesToRead = (int) mstrm.Position;
                 mstrm.Position = 0;
 
                 int bytesRead = 0;
                 int blockSize = 0;
                 byte[] buffer = new byte[4096];
 
-                do
-                {
+                do {
                     blockSize = mstrm.Read(buffer, 0, buffer.Length);
                     bytesRead += blockSize;
 
-                    if (bytesRead > bytesToRead)
-                    {
+                    if (bytesRead > bytesToRead) {
                         blockSize -= (bytesRead - bytesToRead);
                     }
 
                     ostrm.Write(buffer, 0, blockSize);
-                }
-                while (blockSize >= 0 && bytesRead < bytesToRead);
+                } while (blockSize >= 0 && bytesRead < bytesToRead);
 
                 ostrm.Close();
 
                 result2.InnerResult = result2.WebRequest.BeginGetResponse(OnBeginGetResponseComplete, result2);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 result2.Exception = exception;
                 result2.OperationCompleted();
             }
@@ -429,17 +395,14 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Completes an asynchronous operation to send a request over the secure channel.
         /// </summary>
-        public void OnBeginGetResponseComplete(IAsyncResult result)
-        {
+        public void OnBeginGetResponseComplete(IAsyncResult result) {
             AsyncResult result2 = result.AsyncState as AsyncResult;
 
-            if (result2 == null)
-            {
+            if (result2 == null) {
                 return;
             }
 
-            if (result2.InnerResult == null)
-            {
+            if (result2.InnerResult == null) {
                 result2.InnerResult = result;
             }
 
@@ -449,18 +412,16 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Completes an asynchronous operation to send a request over the secure channel.
         /// </summary>
-        public IServiceResponse EndSendRequest(IAsyncResult result)
-        {
+        public IServiceResponse EndSendRequest(IAsyncResult result) {
             AsyncResult result2 = result as AsyncResult;
 
-            if (result2 == null)
-            {
+            if (result2 == null) {
                 throw new ArgumentException("Invalid result object passed.", "result");
             }
 
             result2.WaitForComplete();
 
-            HttpWebResponse response = (HttpWebResponse)result2.WebRequest.EndGetResponse(result2.InnerResult);
+            HttpWebResponse response = (HttpWebResponse) result2.WebRequest.EndGetResponse(result2.InnerResult);
 
             Stream istrm = response.GetResponseStream();
             MemoryStream mstrm = new MemoryStream();
@@ -468,23 +429,19 @@ namespace Opc.Ua.Bindings
             int bytesRead = 0;
             byte[] buffer = new byte[4096];
 
-            do
-            {
+            do {
                 bytesRead = istrm.Read(buffer, 0, buffer.Length);
                 mstrm.Write(buffer, 0, bytesRead);
-            }
-            while (bytesRead != 0);
+            } while (bytesRead != 0);
+
             mstrm.Position = 0;
             istrm.Close();
 
             IEncodeable message = null;
 
-            if (m_settings.Configuration.UseBinaryEncoding)
-            {
+            if (m_settings.Configuration.UseBinaryEncoding) {
                 message = BinaryDecoder.DecodeMessage(mstrm, null, this.MessageContext);
-            }
-            else
-            {
+            } else {
                 string responseType = result2.Request.GetType().FullName.Replace("Request", "Response");
 
                 message = ReadSoapMessage(
@@ -504,8 +461,7 @@ namespace Opc.Ua.Bindings
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="settings">The settings.</param>
-        private void SaveSettings(Uri url, TransportChannelSettings settings)
-        {
+        private void SaveSettings(Uri url, TransportChannelSettings settings) {
             // save the settings.
             m_url = url;
             m_settings = settings;
@@ -531,9 +487,11 @@ namespace Opc.Ua.Bindings
 
             m_quotas.CertificateValidator = settings.CertificateValidator;
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
         private Uri m_url;
         private int m_operationTimeout;
@@ -543,6 +501,7 @@ namespace Opc.Ua.Bindings
 #if !SILVERLIGHT
         private bool m_servicePointInitialized;
 #endif
+
         #endregion
     }
 }

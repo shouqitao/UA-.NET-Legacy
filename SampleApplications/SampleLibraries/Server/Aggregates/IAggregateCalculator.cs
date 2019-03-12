@@ -31,14 +31,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// An interface that captures the original active API of the AggregateCalculator class
     /// required to integrate with the subscription code.
     /// </summary>
-    public interface IAggregateCalculator
-    {
+    public interface IAggregateCalculator {
         /// <summary>
         /// The aggregate function applied by the calculator.
         /// </summary>

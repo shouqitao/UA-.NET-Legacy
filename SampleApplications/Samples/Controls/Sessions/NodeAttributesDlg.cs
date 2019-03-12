@@ -36,56 +36,52 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class NodeAttributesDlg : Form
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class NodeAttributesDlg : Form {
         #region Constructors
-        public NodeAttributesDlg()
-        {
+
+        public NodeAttributesDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
         private ExpandedNodeId m_nodeId;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public void ShowDialog(Session session, ExpandedNodeId nodeId)
-        {
-            if (session == null)   throw new ArgumentNullException("session");
+        public void ShowDialog(Session session, ExpandedNodeId nodeId) {
+            if (session == null) throw new ArgumentNullException("session");
             if (nodeId == null) throw new ArgumentNullException("nodeId");
-            
+
             m_session = session;
-            m_nodeId  = nodeId;
+            m_nodeId = nodeId;
 
             AttributesCTRL.Initialize(session, nodeId);
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return;
             }
         }
+
         #endregion
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 AttributesCTRL.Initialize(m_session, m_nodeId);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

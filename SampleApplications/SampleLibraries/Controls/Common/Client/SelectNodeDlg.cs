@@ -34,28 +34,29 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to select an area to use as an event filter.
     /// </summary>
-    public partial class SelectNodeDlg : Form
-    {
+    public partial class SelectNodeDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public SelectNodeDlg()
-        {
+        public SelectNodeDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to select a node.
         /// </summary>
@@ -63,41 +64,35 @@ namespace Opc.Ua.Client.Controls
             Session session,
             NodeId rootId,
             string caption,
-            params NodeId[] referenceTypeIds)
-        {
+            params NodeId[] referenceTypeIds) {
             // set the caption.
-            if (!String.IsNullOrEmpty(caption))
-            {
+            if (!String.IsNullOrEmpty(caption)) {
                 this.Text = caption;
             }
 
             // set default root.
-            if (NodeId.IsNull(rootId))
-            {
+            if (NodeId.IsNull(rootId)) {
                 rootId = Opc.Ua.ObjectIds.ObjectsFolder;
             }
 
             // set default reference type.
-            if (referenceTypeIds == null)
-            {
-                referenceTypeIds = new NodeId[] { Opc.Ua.ReferenceTypeIds.HierarchicalReferences };
+            if (referenceTypeIds == null) {
+                referenceTypeIds = new NodeId[] {Opc.Ua.ReferenceTypeIds.HierarchicalReferences};
             }
 
             // initialize the control.
             BrowseCTRL.Initialize(session, rootId, referenceTypeIds);
 
             // display the dialog.
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             // convert to a node id.
             ReferenceDescription reference = BrowseCTRL.SelectedNode;
 
-            if (reference != null && !reference.NodeId.IsAbsolute)
-            {
-                return (NodeId)reference.NodeId;
+            if (reference != null && !reference.NodeId.IsAbsolute) {
+                return (NodeId) reference.NodeId;
             }
 
             return null;
@@ -109,26 +104,22 @@ namespace Opc.Ua.Client.Controls
         public ReferenceDescription ShowDialog(
             Session session,
             NodeId rootId,
-            ViewDescription view, 
+            ViewDescription view,
             string caption,
-            params NodeId[] referenceTypeIds)
-        {
+            params NodeId[] referenceTypeIds) {
             // set the caption.
-            if (!String.IsNullOrEmpty(caption))
-            {
+            if (!String.IsNullOrEmpty(caption)) {
                 this.Text = caption;
             }
-            
+
             // set default root.
-            if (NodeId.IsNull(rootId))
-            {
+            if (NodeId.IsNull(rootId)) {
                 rootId = Opc.Ua.ObjectIds.ObjectsFolder;
             }
 
             // set default reference type.
-            if (referenceTypeIds == null)
-            {
-                referenceTypeIds = new NodeId[] { Opc.Ua.ReferenceTypeIds.HierarchicalReferences };
+            if (referenceTypeIds == null) {
+                referenceTypeIds = new NodeId[] {Opc.Ua.ReferenceTypeIds.HierarchicalReferences};
             }
 
             // initialize the control.
@@ -136,19 +127,21 @@ namespace Opc.Ua.Client.Controls
             BrowseCTRL.View = view;
 
             // display the dialog.
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return BrowseCTRL.SelectedNode;
         }
+
         #endregion
-        
+
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
+
         #endregion
     }
 }

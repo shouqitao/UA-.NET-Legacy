@@ -33,101 +33,91 @@ using System.Text;
 using System.Threading;
 using System.Security.Principal;
 
-namespace Opc.Ua.Server
-{    
+namespace Opc.Ua.Server {
     /// <summary>
     /// An object that manages the sampling groups for a node manager.
     /// </summary>
-    public class SamplingGroupManager : IDisposable
-    {
+    public class SamplingGroupManager : IDisposable {
         #region Constructors
+
         /// <summary>
         /// Creates a new instance of a sampling group.
         /// </summary>
         public SamplingGroupManager(
-            IServerInternal                server,
-            INodeManager                   nodeManager,
-            uint                           maxQueueSize,
-            IEnumerable<SamplingRateGroup> samplingRates)
-        {
-            if (server == null)      throw new ArgumentNullException("server");
+            IServerInternal server,
+            INodeManager nodeManager,
+            uint maxQueueSize,
+            IEnumerable<SamplingRateGroup> samplingRates) {
+            if (server == null) throw new ArgumentNullException("server");
             if (nodeManager == null) throw new ArgumentNullException("nodeManager");
 
-            m_server          = server;
-            m_nodeManager     = nodeManager;
-            m_samplingGroups  = new List<SamplingGroup>();
-            m_sampledItems    = new Dictionary<ISampledDataChangeMonitoredItem,SamplingGroup>();
-            m_maxQueueSize    = maxQueueSize;
+            m_server = server;
+            m_nodeManager = nodeManager;
+            m_samplingGroups = new List<SamplingGroup>();
+            m_sampledItems = new Dictionary<ISampledDataChangeMonitoredItem, SamplingGroup>();
+            m_maxQueueSize = maxQueueSize;
 
-            if (samplingRates != null)
-            {
+            if (samplingRates != null) {
                 m_samplingRates = new List<SamplingRateGroup>(samplingRates);
-            
-                if (m_samplingRates.Count == 0)
-                {
+
+                if (m_samplingRates.Count == 0) {
                     m_samplingRates = new List<SamplingRateGroup>(s_DefaultSamplingRates);
                 }
             }
 
-            if (m_samplingRates == null)
-            {
+            if (m_samplingRates == null) {
                 m_samplingRates = new List<SamplingRateGroup>(s_DefaultSamplingRates);
             }
         }
+
         #endregion
-                 
+
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {  
-            if (disposing)
-            {
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
                 List<SamplingGroup> samplingGroups = null;
                 List<ISampledDataChangeMonitoredItem> monitoredItems = null;
 
-                lock (m_lock)
-                {
+                lock (m_lock) {
                     samplingGroups = new List<SamplingGroup>(m_samplingGroups);
                     m_samplingGroups.Clear();
 
                     monitoredItems = new List<ISampledDataChangeMonitoredItem>(m_sampledItems.Keys);
                     m_sampledItems.Clear();
                 }
-                
-                foreach (SamplingGroup samplingGroup in samplingGroups)
-                {
+
+                foreach (SamplingGroup samplingGroup in samplingGroups) {
                     Utils.SilentDispose(samplingGroup);
                 }
 
-                foreach (MonitoredItem monitoredItem in monitoredItems)
-                {
+                foreach (MonitoredItem monitoredItem in monitoredItems) {
                     Utils.SilentDispose(monitoredItem);
                 }
             }
         }
+
         #endregion
-           
+
         #region Public Methods
+
         /// <summary>
         /// Stops all sampling groups and clears all items.
         /// </summary>
-        public virtual void Shutdown()
-        {
-            lock (m_lock)
-            {
+        public virtual void Shutdown() {
+            lock (m_lock) {
                 // stop sampling groups.
-                foreach (SamplingGroup samplingGroup in m_samplingGroups)
-                {
+                foreach (SamplingGroup samplingGroup in m_samplingGroups) {
                     samplingGroup.Shutdown();
                 }
 
@@ -140,51 +130,44 @@ namespace Opc.Ua.Server
         /// Creates a new monitored item and calls StartMonitoring().
         /// </summary>
         public virtual MonitoredItem CreateMonitoredItem(
-            OperationContext           context,
-            uint                       subscriptionId,
-            double                     publishingInterval,
-            TimestampsToReturn         timestampsToReturn,
-            uint                       monitoredItemId,
-            object                     managerHandle,
+            OperationContext context,
+            uint subscriptionId,
+            double publishingInterval,
+            TimestampsToReturn timestampsToReturn,
+            uint monitoredItemId,
+            object managerHandle,
             MonitoredItemCreateRequest itemToCreate,
-            Range                      range,
-            double                     minimumSamplingInterval)
-        {
+            Range range,
+            double minimumSamplingInterval) {
             // use publishing interval as sampling interval.
             double samplingInterval = itemToCreate.RequestedParameters.SamplingInterval;
 
-            if (samplingInterval < 0)
-            {
+            if (samplingInterval < 0) {
                 samplingInterval = publishingInterval;
             }
 
             // limit the sampling interval.
-            if (minimumSamplingInterval > 0 && samplingInterval < minimumSamplingInterval)
-            {
+            if (minimumSamplingInterval > 0 && samplingInterval < minimumSamplingInterval) {
                 samplingInterval = minimumSamplingInterval;
             }
-            
+
             // calculate queue size.
             uint queueSize = itemToCreate.RequestedParameters.QueueSize;
-            
-            if (queueSize > m_maxQueueSize)
-            {
+
+            if (queueSize > m_maxQueueSize) {
                 queueSize = m_maxQueueSize;
             }
-            
+
             // get filter.
             MonitoringFilter filter = null;
 
-            if (!ExtensionObject.IsNull(itemToCreate.RequestedParameters.Filter))
-            {
-                filter = itemToCreate.RequestedParameters.Filter.Body as MonitoringFilter;               
+            if (!ExtensionObject.IsNull(itemToCreate.RequestedParameters.Filter)) {
+                filter = itemToCreate.RequestedParameters.Filter.Body as MonitoringFilter;
             }
-            
+
             // update limits for event filters.
-            if (filter is EventFilter)
-            {
-                if (queueSize == 0)
-                {
+            if (filter is EventFilter) {
+                if (queueSize == 0) {
                     queueSize = Int32.MaxValue;
                 }
 
@@ -192,11 +175,10 @@ namespace Opc.Ua.Server
             }
 
             // check if the queue size was not specified.
-            if (queueSize == 0)
-            {
+            if (queueSize == 0) {
                 queueSize = 1;
             }
-            
+
             // create monitored item.
             MonitoredItem monitoredItem = CreateMonitoredItem(
                 m_server,
@@ -217,7 +199,7 @@ namespace Opc.Ua.Server
                 queueSize,
                 itemToCreate.RequestedParameters.DiscardOldest,
                 samplingInterval);
-            
+
             // start sampling.
             StartMonitoring(context, monitoredItem);
 
@@ -248,25 +230,24 @@ namespace Opc.Ua.Server
         /// <param name="minimumSamplingInterval">The minimum sampling interval.</param>
         /// <returns>The monitored item.</returns>
         protected virtual MonitoredItem CreateMonitoredItem(
-            IServerInternal     server,
-            INodeManager        nodeManager,
-            object              managerHandle,
-            uint                subscriptionId,
-            uint                id,
-            Session             session,
-            ReadValueId         itemToMonitor,
-            DiagnosticsMasks    diagnosticsMasks,
-            TimestampsToReturn  timestampsToReturn,
-            MonitoringMode      monitoringMode,
-            uint                clientHandle,
-            MonitoringFilter    originalFilter,
-            MonitoringFilter    filterToUse,
-            Range               range,
-            double              samplingInterval,
-            uint                queueSize,
-            bool                discardOldest,
-            double              minimumSamplingInterval)
-        {
+            IServerInternal server,
+            INodeManager nodeManager,
+            object managerHandle,
+            uint subscriptionId,
+            uint id,
+            Session session,
+            ReadValueId itemToMonitor,
+            DiagnosticsMasks diagnosticsMasks,
+            TimestampsToReturn timestampsToReturn,
+            MonitoringMode monitoringMode,
+            uint clientHandle,
+            MonitoringFilter originalFilter,
+            MonitoringFilter filterToUse,
+            Range range,
+            double samplingInterval,
+            uint queueSize,
+            bool discardOldest,
+            double minimumSamplingInterval) {
             return new MonitoredItem(
                 server,
                 nodeManager,
@@ -287,60 +268,53 @@ namespace Opc.Ua.Server
                 discardOldest,
                 minimumSamplingInterval);
         }
-        
+
         /// <summary>
         /// Modifies a monitored item and calls ModifyMonitoring().
         /// </summary>
         public virtual ServiceResult ModifyMonitoredItem(
-            OperationContext           context,
-            TimestampsToReturn         timestampsToReturn,
-            ISampledDataChangeMonitoredItem   monitoredItem,
+            OperationContext context,
+            TimestampsToReturn timestampsToReturn,
+            ISampledDataChangeMonitoredItem monitoredItem,
             MonitoredItemModifyRequest itemToModify,
-            Range                      range)
-        {   
+            Range range) {
             // use existing interval as sampling interval.
             double samplingInterval = itemToModify.RequestedParameters.SamplingInterval;
 
-            if (samplingInterval < 0)
-            {
+            if (samplingInterval < 0) {
                 samplingInterval = monitoredItem.SamplingInterval;
             }
-            
+
             // limit the sampling interval.
             double minimumSamplingInterval = monitoredItem.MinimumSamplingInterval;
 
-            if (minimumSamplingInterval > 0 && samplingInterval < minimumSamplingInterval)
-            {
+            if (minimumSamplingInterval > 0 && samplingInterval < minimumSamplingInterval) {
                 samplingInterval = minimumSamplingInterval;
             }
-            
+
             // calculate queue size.
             uint queueSize = itemToModify.RequestedParameters.QueueSize;
 
-            if (queueSize == 0)
-            {
+            if (queueSize == 0) {
                 queueSize = monitoredItem.QueueSize;
             }
-        
-            if (queueSize > m_maxQueueSize)
-            {
+
+            if (queueSize > m_maxQueueSize) {
                 queueSize = m_maxQueueSize;
-            }            
+            }
 
             // get filter.
             MonitoringFilter filter = null;
 
-            if (!ExtensionObject.IsNull(itemToModify.RequestedParameters.Filter))
-            {
-                filter = (MonitoringFilter)itemToModify.RequestedParameters.Filter.Body;               
+            if (!ExtensionObject.IsNull(itemToModify.RequestedParameters.Filter)) {
+                filter = (MonitoringFilter) itemToModify.RequestedParameters.Filter.Body;
             }
 
             // update limits for event filters.
-            if (filter is EventFilter)
-            {
+            if (filter is EventFilter) {
                 samplingInterval = 0;
             }
-            
+
             // modify the item attributes.
             ServiceResult error = monitoredItem.ModifyAttributes(
                 context.DiagnosticsMask,
@@ -354,8 +328,7 @@ namespace Opc.Ua.Server
                 itemToModify.RequestedParameters.DiscardOldest);
 
             // state of item did not change if an error returned here.
-            if (ServiceResult.IsBad(error))
-            {
+            if (ServiceResult.IsBad(error)) {
                 return error;
             }
 
@@ -373,27 +346,23 @@ namespace Opc.Ua.Server
         /// It will use the external source for monitoring if the source accepts the item.
         /// The changes will not take affect until the ApplyChanges() method is called.
         /// </remarks>
-        public virtual void StartMonitoring(OperationContext context, ISampledDataChangeMonitoredItem monitoredItem)
-        {             
-            lock (m_lock)
-            {
+        public virtual void StartMonitoring(OperationContext context, ISampledDataChangeMonitoredItem monitoredItem) {
+            lock (m_lock) {
                 // do nothing for disabled or exception based items.
-                if (monitoredItem.MonitoringMode == MonitoringMode.Disabled || monitoredItem.MinimumSamplingInterval == 0)
-                {
+                if (monitoredItem.MonitoringMode == MonitoringMode.Disabled ||
+                    monitoredItem.MinimumSamplingInterval == 0) {
                     m_sampledItems.Add(monitoredItem, null);
                     return;
                 }
-                                
+
                 // find a suitable sampling group.
-                foreach (SamplingGroup samplingGroup in m_samplingGroups)
-                {
-                    if (samplingGroup.StartMonitoring(context, monitoredItem))
-                    {
+                foreach (SamplingGroup samplingGroup in m_samplingGroups) {
+                    if (samplingGroup.StartMonitoring(context, monitoredItem)) {
                         m_sampledItems.Add(monitoredItem, samplingGroup);
                         return;
                     }
                 }
-                
+
                 // create a new sampling group.
                 SamplingGroup samplingGroup2 = new SamplingGroup(
                     m_server,
@@ -416,26 +385,21 @@ namespace Opc.Ua.Server
         /// It will call the external source to change the monitoring if an external source was provided originally.
         /// The changes will not take affect until the ApplyChanges() method is called.
         /// </remarks>
-        public virtual void ModifyMonitoring(OperationContext context, ISampledDataChangeMonitoredItem monitoredItem)
-        {           
-            lock (m_lock)
-            {
+        public virtual void ModifyMonitoring(OperationContext context, ISampledDataChangeMonitoredItem monitoredItem) {
+            lock (m_lock) {
                 // find existing sampling group.
                 SamplingGroup samplingGroup = null;
 
-                if (m_sampledItems.TryGetValue(monitoredItem, out samplingGroup))
-                {    
-                    if (samplingGroup != null)
-                    {
-                        if (samplingGroup.ModifyMonitoring(context, monitoredItem))
-                        {
+                if (m_sampledItems.TryGetValue(monitoredItem, out samplingGroup)) {
+                    if (samplingGroup != null) {
+                        if (samplingGroup.ModifyMonitoring(context, monitoredItem)) {
                             return;
                         }
                     }
 
                     m_sampledItems.Remove(monitoredItem);
                 }
-                
+
                 // assign to a new sampling group.
                 StartMonitoring(context, monitoredItem);
                 return;
@@ -449,17 +413,13 @@ namespace Opc.Ua.Server
         /// It will call the external source to stop the monitoring if an external source was provided originally.
         /// The changes will not take affect until the ApplyChanges() method is called.
         /// </remarks>
-        public virtual void StopMonitoring(ISampledDataChangeMonitoredItem monitoredItem)
-        {            
-            lock (m_lock)
-            {
+        public virtual void StopMonitoring(ISampledDataChangeMonitoredItem monitoredItem) {
+            lock (m_lock) {
                 // check for sampling group.
                 SamplingGroup samplingGroup = null;
 
-                if (m_sampledItems.TryGetValue(monitoredItem, out samplingGroup))
-                {                         
-                    if (samplingGroup != null)
-                    {
+                if (m_sampledItems.TryGetValue(monitoredItem, out samplingGroup)) {
+                    if (samplingGroup != null) {
                         samplingGroup.StopMonitoring(monitoredItem);
                     }
 
@@ -472,53 +432,45 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Applies any pending changes caused by adding,changing or removing monitored items.
         /// </summary>
-        public virtual void ApplyChanges()
-        {            
-            lock (m_lock)
-            {
+        public virtual void ApplyChanges() {
+            lock (m_lock) {
                 List<SamplingGroup> unusedGroups = new List<SamplingGroup>();
 
                 // apply changes to groups.
-                foreach (SamplingGroup samplingGroup in m_samplingGroups)
-                {
-                    if (samplingGroup.ApplyChanges())
-                    {
+                foreach (SamplingGroup samplingGroup in m_samplingGroups) {
+                    if (samplingGroup.ApplyChanges()) {
                         unusedGroups.Add(samplingGroup);
                     }
                 }
-                
+
                 // remove unused groups.
-                foreach (SamplingGroup samplingGroup in unusedGroups)
-                {
+                foreach (SamplingGroup samplingGroup in unusedGroups) {
                     samplingGroup.Shutdown();
                     m_samplingGroups.Remove(samplingGroup);
                 }
-            }   
+            }
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
         private IServerInternal m_server;
         private INodeManager m_nodeManager;
         private List<SamplingGroup> m_samplingGroups;
-        private Dictionary<ISampledDataChangeMonitoredItem,SamplingGroup> m_sampledItems;
+        private Dictionary<ISampledDataChangeMonitoredItem, SamplingGroup> m_sampledItems;
         private List<SamplingRateGroup> m_samplingRates;
         private uint m_maxQueueSize;
 
         /// <summary>
         /// The default sampling rates.
         /// </summary>
-        private static readonly SamplingRateGroup[] s_DefaultSamplingRates = new SamplingRateGroup[]
-        {
-            new SamplingRateGroup(100, 100, 4),
-            new SamplingRateGroup(500, 250, 2),
-            new SamplingRateGroup(1000, 1000, 4),
-            new SamplingRateGroup(5000, 2500, 2),
-            new SamplingRateGroup(10000, 10000, 4),
-            new SamplingRateGroup(60000, 30000, 10),
-            new SamplingRateGroup(300000, 60000, 15),
-            new SamplingRateGroup(900000, 300000, 9),
+        private static readonly SamplingRateGroup[] s_DefaultSamplingRates = new SamplingRateGroup[] {
+            new SamplingRateGroup(100, 100, 4), new SamplingRateGroup(500, 250, 2),
+            new SamplingRateGroup(1000, 1000, 4), new SamplingRateGroup(5000, 2500, 2),
+            new SamplingRateGroup(10000, 10000, 4), new SamplingRateGroup(60000, 30000, 10),
+            new SamplingRateGroup(300000, 60000, 15), new SamplingRateGroup(900000, 300000, 9),
             new SamplingRateGroup(3600000, 900000, 0)
         };
 

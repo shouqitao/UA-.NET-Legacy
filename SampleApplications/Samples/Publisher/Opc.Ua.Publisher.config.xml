@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ApplicationConfiguration
   xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
   xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd"
-  schemaLocation="./Schema/ApplicationConfiguration.xsd"
->
+  schemaLocation="./Schema/ApplicationConfiguration.xsd">
   <!-- A human readable but not necessarily unique name for the application instance -->
   <ApplicationName>Opc.Ua.Publisher</ApplicationName>
 
@@ -422,19 +422,19 @@
           and follow the instructions below.
         -->
         <AmqpConnectionConfiguration>
-          
+
           <!-- A unique name for this connection -->
           <Name>My OPC Publishing Endpoint</Name>
-           
+
           <!-- The broker's host name - In case of e.g. an Azure broker, the host is part of the 
             connection string provided by the Azure portal and prefixed with 'Host='. Otherwise
             it is the server the broker runs on, such as localhost, etc. -->
           <Host>{Host}</Host>
-          
+
           <!-- Broker port - Omit to use default AMQP ports, such as 5671 for AMQPS and 443
             for websocket based AMQP connections. Only TLS secured connections are supported. -->
           <!-- <Port>5671</Port> -->
-          
+
           <!-- The publishing endpoint on the broker host - 
             Use the url that follows the host name starting with a '/'
             In case of an Azure broker, the endpoint is part of the connection string. 
@@ -446,12 +446,12 @@
                 /{Entity}
           -->
           <Endpoint>/devices/{DeviceId}/messages/events</Endpoint>
-          
+
           <!-- If the amqp connection is supposed to be over websocket transport, set the
             websocket url endpoint here.  Otherwise this can be omitted.
             For Azure IoTHub the websocket url on the host is '/$iothub/websocket' -->
           <!-- <WebSocketEndpoint>/$iothub/websocket</WebSocketEndpoint>  -->
-          
+
           <!-- User name and key/password to secure connection.  
             In case of e.g. an Azure broker, the key and principal name are part of 
             the connection string (prefix 'SharedAccessKeyName=' and 'SharedAccessKey').  
@@ -486,9 +486,9 @@
           <!-- <TokenLifetime>60000</TokenLifetime> -->
 
         </AmqpConnectionConfiguration>
-        
+
         <!-- Configure more connections to multiplex published messages ... -->
-        
+
       </ListOfAmqpConnectionConfigurations>
     </ua:XmlElement>
   </Extensions>

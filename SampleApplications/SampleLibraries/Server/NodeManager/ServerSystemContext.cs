@@ -31,20 +31,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// A generic implementation for ISystemContext interface.
     /// </summary>
-    public class ServerSystemContext : Opc.Ua.SystemContext
-    {
+    public class ServerSystemContext : Opc.Ua.SystemContext {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemContext"/> class.
         /// </summary>
         /// <param name="server">The server.</param>
-        public ServerSystemContext(IServerInternal server)
-        {
+        public ServerSystemContext(IServerInternal server) {
             OperationContext = null;
             NamespaceUris = server.NamespaceUris;
             ServerUris = server.ServerUris;
@@ -57,8 +55,7 @@ namespace Opc.Ua.Server
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="context">The context.</param>
-        public ServerSystemContext(IServerInternal server, OperationContext context)
-        {
+        public ServerSystemContext(IServerInternal server, OperationContext context) {
             OperationContext = context;
             NamespaceUris = server.NamespaceUris;
             ServerUris = server.ServerUris;
@@ -71,8 +68,7 @@ namespace Opc.Ua.Server
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="session">The session.</param>
-        public ServerSystemContext(IServerInternal server, Session session)
-        {
+        public ServerSystemContext(IServerInternal server, Session session) {
             OperationContext = null;
             SessionId = session.Id;
             UserIdentity = session.Identity;
@@ -82,16 +78,17 @@ namespace Opc.Ua.Server
             TypeTable = server.TypeTree;
             EncodeableFactory = server.Factory;
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The operation context associated with system context.
         /// </summary>
         /// <value>The operation context.</value>
-        public new OperationContext OperationContext
-        {
-            get { return base.OperationContext as OperationContext; } 
+        public new OperationContext OperationContext {
+            get { return base.OperationContext as OperationContext; }
             set { base.OperationContext = value; }
         }
 
@@ -99,9 +96,8 @@ namespace Opc.Ua.Server
         /// Creates a copy of the context that can be used with the specified operation context.
         /// </summary>
         /// <returns>A copy of the system context.</returns>
-        public ServerSystemContext Copy()
-        {
-            return (ServerSystemContext)MemberwiseClone();
+        public ServerSystemContext Copy() {
+            return (ServerSystemContext) MemberwiseClone();
         }
 
         /// <summary>
@@ -111,12 +107,10 @@ namespace Opc.Ua.Server
         /// <returns>
         /// A copy of the system context that references the new operation context.
         /// </returns>
-        public ServerSystemContext Copy(OperationContext context)
-        {
-            ServerSystemContext copy = (ServerSystemContext)MemberwiseClone();
+        public ServerSystemContext Copy(OperationContext context) {
+            ServerSystemContext copy = (ServerSystemContext) MemberwiseClone();
 
-            if (context != null)
-            {
+            if (context != null) {
                 copy.OperationContext = context;
             }
 
@@ -130,20 +124,16 @@ namespace Opc.Ua.Server
         /// <returns>
         /// A copy of the system context that references the new session.
         /// </returns>
-        public ServerSystemContext Copy(Session session)
-        {
-            ServerSystemContext copy = (ServerSystemContext)MemberwiseClone();
+        public ServerSystemContext Copy(Session session) {
+            ServerSystemContext copy = (ServerSystemContext) MemberwiseClone();
 
             copy.OperationContext = null;
 
-            if (session != null)
-            {
+            if (session != null) {
                 copy.SessionId = session.Id;
                 copy.UserIdentity = session.Identity;
                 copy.PreferredLocales = session.PreferredLocales;
-            }
-            else
-            {
+            } else {
                 copy.SessionId = null;
                 copy.UserIdentity = null;
                 copy.PreferredLocales = null;
@@ -159,12 +149,10 @@ namespace Opc.Ua.Server
         /// <returns>
         /// A copy of the system context that references the new server context.
         /// </returns>
-        public ServerSystemContext Copy(ServerSystemContext context)
-        {
-            ServerSystemContext copy = (ServerSystemContext)MemberwiseClone();
+        public ServerSystemContext Copy(ServerSystemContext context) {
+            ServerSystemContext copy = (ServerSystemContext) MemberwiseClone();
 
-            if (context != null)
-            {
+            if (context != null) {
                 copy.OperationContext = context.OperationContext;
                 copy.SessionId = context.SessionId;
                 copy.UserIdentity = context.UserIdentity;
@@ -177,6 +165,7 @@ namespace Opc.Ua.Server
 
             return copy;
         }
+
         #endregion
     }
 }

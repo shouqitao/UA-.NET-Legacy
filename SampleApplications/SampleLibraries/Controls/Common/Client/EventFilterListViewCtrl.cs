@@ -37,23 +37,21 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the results from a history read operation.
     /// </summary>
-    public partial class EventFilterListViewCtrl : UserControl
-    {
+    public partial class EventFilterListViewCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public EventFilterListViewCtrl()
-        {
+        public EventFilterListViewCtrl() {
             InitializeComponent();
             FilterDV.AutoGenerateColumns = false;
             ImageList = new ClientUtils().ImageList;
-            
+
             m_dataset = new DataSet();
             m_dataset.Tables.Add("Events");
 
@@ -70,86 +68,84 @@ namespace Opc.Ua.Client.Controls
             m_dataset.Tables[0].DefaultView.Sort = "Index";
 
             FilterDV.DataSource = m_dataset.Tables[0].DefaultView;
-
         }
+
         #endregion
 
         #region Private Fields
+
         private DataSet m_dataset;
         private Session m_session;
         private int m_counter;
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Changes the session used for the read request.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             m_session = session;
         }
 
         /// <summary>
         /// Sets the filter to edit.
         /// </summary>
-        public void SetFilter(FilterDeclaration filter)
-        {
+        public void SetFilter(FilterDeclaration filter) {
             m_dataset.Tables[0].Rows.Clear();
 
-            if (filter != null)
-            {
-                foreach (FilterDeclarationField field in filter.Fields)
-                {
+            if (filter != null) {
+                foreach (FilterDeclarationField field in filter.Fields) {
                     DataRow row = m_dataset.Tables[0].NewRow();
                     UpdateRow(row, field);
                     m_dataset.Tables[0].Rows.Add(row);
                 }
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Updates the row.
         /// </summary>
-        public void UpdateRow(DataRow row, FilterDeclarationField field)
-        {
+        public void UpdateRow(DataRow row, FilterDeclarationField field) {
             row[0] = field;
-            row[1] = ImageList.Images[ClientUtils.GetImageIndex(m_session, field.InstanceDeclaration.NodeClass, field.InstanceDeclaration.RootTypeId, false)];
+            row[1] = ImageList.Images[
+                ClientUtils.GetImageIndex(m_session, field.InstanceDeclaration.NodeClass,
+                    field.InstanceDeclaration.RootTypeId, false)];
             row[2] = field.InstanceDeclaration.BrowsePathDisplayText;
             row[3] = field.Selected;
             row[4] = field.DisplayInList;
             row[5] = field.FilterEnabled;
 
-            if (field.FilterEnabled)
-            {
+            if (field.FilterEnabled) {
                 row[6] = field.FilterOperator;
                 row[7] = field.FilterValue;
             }
 
             row[8] = m_counter++;
         }
+
         #endregion
 
         #region Event Handlers
-        private void FilterDV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (e.RowIndex == -1)
-                {
+
+        private void FilterDV_CellDoubleClick(object sender, DataGridViewCellEventArgs e) {
+            try {
+                if (e.RowIndex == -1) {
                     return;
                 }
 
                 DataRowView source = FilterDV.Rows[e.RowIndex].DataBoundItem as DataRowView;
-                FilterDeclarationField field = (FilterDeclarationField)source.Row[0];
+                FilterDeclarationField field = (FilterDeclarationField) source.Row[0];
 
-                if (e.ColumnIndex == 5)
-                {
+                if (e.ColumnIndex == 5) {
                     FilterOperator filterOperator = field.FilterOperator;
 
-                    if (new SetFilterOperatorDlg().ShowDialog(ref filterOperator))
-                    {
+                    if (new SetFilterOperatorDlg().ShowDialog(ref filterOperator)) {
                         field.FilterEnabled = true;
                         source.Row[5] = field.FilterEnabled;
 
@@ -160,10 +156,8 @@ namespace Opc.Ua.Client.Controls
                     return;
                 }
 
-                if (e.ColumnIndex == 6)
-                {
-                    if (field.FilterOperator == FilterOperator.IsNull)
-                    {
+                if (e.ColumnIndex == 6) {
+                    if (field.FilterOperator == FilterOperator.IsNull) {
                         field.FilterValue = Variant.Null;
                         return;
                     }
@@ -171,15 +165,14 @@ namespace Opc.Ua.Client.Controls
                     InstanceDeclaration declaration = field.InstanceDeclaration;
 
                     object result = new EditComplexValueDlg().ShowDialog(
-                        m_session, 
+                        m_session,
                         declaration.DisplayName,
-                        declaration.DataType, 
-                        declaration.ValueRank, 
-                        field.FilterValue.Value, 
+                        declaration.DataType,
+                        declaration.ValueRank,
+                        field.FilterValue.Value,
                         "Edit Filter Value");
 
-                    if (result != null)
-                    {
+                    if (result != null) {
                         field.FilterEnabled = true;
                         source.Row[5] = field.FilterEnabled;
                         source.Row[6] = field.FilterOperator;
@@ -190,126 +183,100 @@ namespace Opc.Ua.Client.Controls
 
                     return;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void FilterDV_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (e.RowIndex == -1)
-                {
+        private void FilterDV_CellContentClick(object sender, DataGridViewCellEventArgs e) {
+            try {
+                if (e.RowIndex == -1) {
                     return;
                 }
 
                 DataRowView source = FilterDV.Rows[e.RowIndex].DataBoundItem as DataRowView;
-                FilterDeclarationField field = (FilterDeclarationField)source.Row[0];
+                FilterDeclarationField field = (FilterDeclarationField) source.Row[0];
 
-                if (e.ColumnIndex == 2)
-                {
+                if (e.ColumnIndex == 2) {
                     field.Selected = !field.Selected;
                     source.Row[3] = field.Selected;
                     return;
                 }
 
-                if (e.ColumnIndex == 3)
-                {
+                if (e.ColumnIndex == 3) {
                     field.DisplayInList = !field.DisplayInList;
                     source.Row[4] = field.DisplayInList;
                     return;
                 }
 
-                if (e.ColumnIndex == 4)
-                {
+                if (e.ColumnIndex == 4) {
                     field.FilterEnabled = !field.FilterEnabled;
                     source.Row[5] = field.FilterEnabled;
                     return;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void MoveUpMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void MoveUpMI_Click(object sender, EventArgs e) {
+            try {
                 // need to sort the rows by index.
                 List<DataGridViewRow> rows = new List<DataGridViewRow>();
 
-                foreach (DataGridViewRow row in FilterDV.SelectedRows)
-                {
+                foreach (DataGridViewRow row in FilterDV.SelectedRows) {
                     bool inserted = false;
 
-                    for (int ii = 0; ii < rows.Count; ii++)
-                    {
-                        if (rows[ii].Index > row.Index)
-                        {
+                    for (int ii = 0; ii < rows.Count; ii++) {
+                        if (rows[ii].Index > row.Index) {
                             rows.Insert(ii, row);
                             inserted = true;
                             break;
                         }
                     }
 
-                    if (!inserted)
-                    {
+                    if (!inserted) {
                         rows.Add(row);
                     }
                 }
 
                 // move all of the rows up one.
-                for (int ii = 0; ii < rows.Count; ii++)
-                {
+                for (int ii = 0; ii < rows.Count; ii++) {
                     DataRowView source = FilterDV.Rows[rows[ii].Index].DataBoundItem as DataRowView;
 
-                    if (rows[ii].Index > 0)
-                    {
-                        DataRowView target = FilterDV.Rows[rows[ii].Index-1].DataBoundItem as DataRowView;
-                        int index = (int)target.Row[8];
+                    if (rows[ii].Index > 0) {
+                        DataRowView target = FilterDV.Rows[rows[ii].Index - 1].DataBoundItem as DataRowView;
+                        int index = (int) target.Row[8];
                         target.Row[8] = source.Row[8];
                         source.Row[8] = index;
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void FilterDV_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            try
-            {
-                if (e.ColumnIndex == 2)
-                {
+        private void FilterDV_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
+            try {
+                if (e.ColumnIndex == 2) {
                     bool state = false;
 
-                    if (m_dataset.Tables[0].DefaultView.Count > 0)
-                    {
-                        state = (bool)m_dataset.Tables[0].DefaultView[0].Row[3];
+                    if (m_dataset.Tables[0].DefaultView.Count > 0) {
+                        state = (bool) m_dataset.Tables[0].DefaultView[0].Row[3];
                     }
 
                     state = !state;
 
-                    foreach (DataRowView row in m_dataset.Tables[0].DefaultView)
-                    {
-                        FilterDeclarationField field = (FilterDeclarationField)row.Row[0];                        
+                    foreach (DataRowView row in m_dataset.Tables[0].DefaultView) {
+                        FilterDeclarationField field = (FilterDeclarationField) row.Row[0];
                         row.Row[3] = field.Selected = state;
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

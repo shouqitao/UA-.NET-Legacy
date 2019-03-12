@@ -35,36 +35,31 @@ using System.IO;
 using System.Xml;
 using System.Reflection;
 
-namespace Opc.Ua.Configuration
-{    
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Specifies how to configure an application during installation.
     /// </summary>
-    public partial class InstalledApplication
-    {
+    public partial class InstalledApplication {
         #region Public Methods
+
         /// <summary>
         /// Loads the application configuration from a configuration section.
         /// </summary>
-        public static InstalledApplicationCollection Load(string filePath)
-        {
+        public static InstalledApplicationCollection Load(string filePath) {
             FileInfo file = new FileInfo(filePath);
 
             // look in current directory.
-            if (!file.Exists)
-            {
+            if (!file.Exists) {
                 file = new FileInfo(Utils.Format("{0}\\{1}", Environment.CurrentDirectory, filePath));
             }
 
             // look in executable directory.
-            if (!file.Exists)
-            {
+            if (!file.Exists) {
                 file = new FileInfo(Utils.GetAbsoluteFilePath(filePath));
             }
 
             // file not found.
-            if (!file.Exists)
-            {
+            if (!file.Exists) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadConfigurationError,
                     "File does not exist: {0}\r\nCurrent directory is: {1}",
@@ -78,20 +73,17 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Loads a collection of security applications.
         /// </summary>
-        public static InstalledApplicationCollection Load(FileInfo file)
-        {
+        public static InstalledApplicationCollection Load(FileInfo file) {
             XmlTextReader reader = new XmlTextReader(file.Open(FileMode.Open, FileAccess.Read));
 
-            try
-            {
+            try {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(InstalledApplicationCollection));
                 return serializer.ReadObject(reader, false) as InstalledApplicationCollection;
-            }
-            finally
-            {
+            } finally {
                 reader.Close();
             }
         }
+
         #endregion
     }
 }

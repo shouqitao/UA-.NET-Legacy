@@ -23,14 +23,12 @@ using Opc.Ua.Bindings;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
-	/// The base interface for client proxies.
-	/// </summary>
+    /// The base interface for client proxies.
+    /// </summary>
     [ServiceContract(Namespace = Namespaces.OpcUaWsdl)]
-    public interface IChannelBase
-    {
+    public interface IChannelBase {
         /// <summary>
         /// Gets the endpoint that the channel is connected to.
         /// </summary>
@@ -65,7 +63,7 @@ namespace Opc.Ua
         /// </summary>
         [Obsolete("Should use the ITransportChannel interface to access this function.")]
         void CloseChannel();
-        
+
         /// <summary>
         /// Schedules an outgoing request.
         /// </summary>
@@ -75,13 +73,15 @@ namespace Opc.Ua
         /// <summary>
         /// The operation contract for the InvokeService service.
         /// </summary>
-        [OperationContract(Action = Namespaces.OpcUaWsdl + "/InvokeService", ReplyAction = Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
+        [OperationContract(Action = Namespaces.OpcUaWsdl + "/InvokeService",
+            ReplyAction = Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
         InvokeServiceResponseMessage InvokeService(InvokeServiceMessage request);
 
         /// <summary>
         /// The operation contract for the InvokeService service.
         /// </summary>
-        [OperationContractAttribute(AsyncPattern = true, Action = Namespaces.OpcUaWsdl + "/InvokeService", ReplyAction = Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
+        [OperationContractAttribute(AsyncPattern = true, Action = Namespaces.OpcUaWsdl + "/InvokeService",
+            ReplyAction = Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
         IAsyncResult BeginInvokeService(InvokeServiceMessage request, AsyncCallback callback, object asyncState);
 
         /// <summary>
@@ -93,8 +93,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that manages a request received from a client.
     /// </summary>
-    public interface IChannelOutgoingRequest
-    {
+    public interface IChannelOutgoingRequest {
         /// <summary>
         /// Gets the request.
         /// </summary>

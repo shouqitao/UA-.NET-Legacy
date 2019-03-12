@@ -22,14 +22,13 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using Opc.Ua.Bindings;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// An object used by clients to access a UA discovery service.
     /// </summary>
-    public partial class RegistrationClient
-    {
+    public partial class RegistrationClient {
         #region Constructors
+
         /// <summary>
         /// Creates a binding for to use for discovering servers.
         /// </summary>
@@ -39,20 +38,19 @@ namespace Opc.Ua
         /// <param name="bindingFactory">The binding factory.</param>
         /// <param name="instanceCertificate">The instance certificate.</param>
         /// <returns></returns>
-        public static RegistrationClient Create( 
+        public static RegistrationClient Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            EndpointConfiguration    endpointConfiguration,
-            BindingFactory           bindingFactory,
-            X509Certificate2         instanceCertificate)
-        {
+            EndpointDescription description,
+            EndpointConfiguration endpointConfiguration,
+            BindingFactory bindingFactory,
+            X509Certificate2 instanceCertificate) {
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (description == null) throw new ArgumentNullException("description");
 
             ITransportChannel channel = RegistrationChannel.Create(
-                configuration, 
-                description, 
-                endpointConfiguration, 
+                configuration,
+                description,
+                endpointConfiguration,
                 instanceCertificate,
                 new ServiceMessageContext());
 
@@ -87,15 +85,16 @@ namespace Opc.Ua
 
             return new RegistrationClient( channel );
         }*/
+
         #endregion
     }
-    
+
     /// <summary>
     /// A channel object used by clients to access a UA discovery service.
     /// </summary>
-    public partial class RegistrationChannel
-    {
+    public partial class RegistrationChannel {
         #region Constructors
+
         /// <summary>
         /// Creates a new transport channel that supports the IRegistrationChannel service contract.
         /// </summary>
@@ -110,8 +109,7 @@ namespace Opc.Ua
             EndpointDescription description,
             EndpointConfiguration endpointConfiguration,
             X509Certificate2 clientCertificate,
-            ServiceMessageContext messageContext)
-        {
+            ServiceMessageContext messageContext) {
             // create a UA binary channel.
             ITransportChannel channel = CreateUaBinaryChannel(
                 configuration,
@@ -121,8 +119,7 @@ namespace Opc.Ua
                 messageContext);
 
             // create a WCF XML channel.
-            if (channel == null)
-            {
+            if (channel == null) {
                 Uri endpointUrl = new Uri(description.EndpointUrl);
                 BindingFactory bindingFactory = BindingFactory.Create(configuration, messageContext);
                 Binding binding = bindingFactory.Create(endpointUrl.Scheme, description, endpointConfiguration);
@@ -197,12 +194,11 @@ namespace Opc.Ua
         [Obsolete("Must use the version that returns a ITransportChannel object.")]
         public static RegistrationChannel Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            EndpointConfiguration    endpointConfiguration,
-            Binding                  binding,
-            X509Certificate2         clientCertificate,
-            string                   configurationName)
-        {
+            EndpointDescription description,
+            EndpointConfiguration endpointConfiguration,
+            Binding binding,
+            X509Certificate2 clientCertificate,
+            string configurationName) {
             RegistrationChannel channel = new RegistrationChannel();
 
             channel.Initialize(
@@ -215,6 +211,7 @@ namespace Opc.Ua
 
             return channel;
         }
+
         #endregion
-    } 
+    }
 }

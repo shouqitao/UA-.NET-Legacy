@@ -20,57 +20,54 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{    
-	/// <summary>
-	/// The description of a value to read.
-	/// </summary>
-    public partial class HistoryUpdateDetails
-    {
+namespace Opc.Ua {
+    /// <summary>
+    /// The description of a value to read.
+    /// </summary>
+    public partial class HistoryUpdateDetails {
         #region Supporting Properties and Methods
+
         /// <summary>
         /// A handle assigned to the item during processing.
         /// </summary>
-        public object Handle
-        {
-            get { return m_handle;  }
+        public object Handle {
+            get { return m_handle; }
             set { m_handle = value; }
         }
-        
+
         /// <summary>
         /// Whether the value has been processed.
         /// </summary>
-        public bool Processed
-        {
-            get { return m_processed;  }
+        public bool Processed {
+            get { return m_processed; }
             set { m_processed = value; }
         }
-                
+
         /// <summary>
         /// Validates a HistoryUpdateDetails parameter.
         /// </summary>
-        public static ServiceResult Validate(HistoryUpdateDetails valueId)
-        {
+        public static ServiceResult Validate(HistoryUpdateDetails valueId) {
             // check for null structure.
-            if (valueId == null)
-            {
+            if (valueId == null) {
                 return StatusCodes.BadStructureMissing;
             }
 
             // null node ids are always invalid.
-            if (NodeId.IsNull(valueId.NodeId))
-            {
+            if (NodeId.IsNull(valueId.NodeId)) {
                 return StatusCodes.BadNodeIdInvalid;
             }
-            
+
             // passed basic validation.
             return null;
         }
+
         #endregion
-                            
+
         #region Private Fields
+
         private object m_handle;
         private bool m_processed;
+
         #endregion
     }
 }

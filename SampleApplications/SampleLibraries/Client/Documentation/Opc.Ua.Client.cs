@@ -27,8 +27,7 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-namespace Opc.Ua.Client
-{
+namespace Opc.Ua.Client {
     /// <summary>
     /// The <b>Opc.Ua.Client</b> namespace defines classes which can be used to implement a UA client.
     /// These classes manage client side state information, provide higher level abstractions for UA 
@@ -37,7 +36,5 @@ namespace Opc.Ua.Client
     /// </summary>
     ///<exclude/>
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NamespaceDoc
-    {
-    }
+    public class NamespaceDoc { }
 }

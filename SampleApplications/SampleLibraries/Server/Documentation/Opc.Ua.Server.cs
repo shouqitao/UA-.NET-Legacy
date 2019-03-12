@@ -27,8 +27,7 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// The <b>Opc.Ua.Server</b> namespace defines classes which can be used to implement a UA server.
     /// These classes manage session and subscriptions created by clients and provide a simplified 
@@ -36,7 +35,5 @@ namespace Opc.Ua.Server
     /// </summary>
     ///<exclude/>
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NamespaceDoc
-    {
-    }
+    public class NamespaceDoc { }
 }

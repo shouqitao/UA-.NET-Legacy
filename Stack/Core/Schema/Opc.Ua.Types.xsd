@@ -3,8 +3,7 @@
   xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
   xmlns:tns="http://opcfoundation.org/UA/2008/02/Types.xsd"
   targetNamespace="http://opcfoundation.org/UA/2008/02/Types.xsd"
-  elementFormDefault="qualified"
->
+  elementFormDefault="qualified">
   <xs:element name="Boolean" nillable="true" type="xs:boolean" />
 
   <xs:complexType name="ListOfBoolean">
@@ -155,7 +154,7 @@
       <xs:element name="XmlElement" minOccurs="0" maxOccurs="unbounded" nillable="true">
         <xs:complexType>
           <xs:sequence>
-            <xs:any minOccurs="0" processContents="lax"/>
+            <xs:any minOccurs="0" processContents="lax" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -233,7 +232,7 @@
   <xs:complexType name="LocalizedText">
     <xs:sequence>
       <xs:element name="Locale" type="xs:string" minOccurs="0" nillable="true" />
-      <xs:element name="Text" type="xs:string" minOccurs="0"  nillable="true" />
+      <xs:element name="Text" type="xs:string" minOccurs="0" nillable="true" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="LocalizedText" type="tns:LocalizedText" nillable="true" />
@@ -300,7 +299,7 @@
       <xs:element name="Body" minOccurs="0" nillable="true">
         <xs:complexType>
           <xs:sequence>
-            <xs:any minOccurs="0" processContents="lax"/>
+            <xs:any minOccurs="0" processContents="lax" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -467,7 +466,7 @@
       <xs:element name="ServerPicoseconds" type="xs:unsignedShort" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="DataValue" type="tns:DataValue" nillable="true"/>
+  <xs:element name="DataValue" type="tns:DataValue" nillable="true" />
 
   <xs:complexType name="ListOfDataValue">
     <xs:sequence>
@@ -489,7 +488,7 @@
 
   <xs:element name="BitFieldMaskDataType" type="xs:unsignedLong" />
 
-  <xs:simpleType  name="OpenFileMode">
+  <xs:simpleType name="OpenFileMode">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Read_1" />
       <xs:enumeration value="Write_2" />
@@ -506,7 +505,7 @@
   </xs:complexType>
   <xs:element name="ListOfOpenFileMode" type="tns:ListOfOpenFileMode" nillable="true"></xs:element>
 
-  <xs:simpleType  name="TrustListMasks">
+  <xs:simpleType name="TrustListMasks">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None_0" />
       <xs:enumeration value="TrustedCertificates_1" />
@@ -536,7 +535,7 @@
   </xs:complexType>
   <xs:element name="ListOfTrustListDataType" type="tns:ListOfTrustListDataType" nillable="true"></xs:element>
 
-  <xs:simpleType  name="IdType">
+  <xs:simpleType name="IdType">
     <xs:annotation>
       <xs:documentation>The type of identifier used in a node id.</xs:documentation>
     </xs:annotation>
@@ -556,7 +555,7 @@
   </xs:complexType>
   <xs:element name="ListOfIdType" type="tns:ListOfIdType" nillable="true"></xs:element>
 
-  <xs:simpleType  name="NodeClass">
+  <xs:simpleType name="NodeClass">
     <xs:annotation>
       <xs:documentation>A mask specifying the class of the node.</xs:documentation>
     </xs:annotation>
@@ -865,7 +864,7 @@
 
   <xs:element name="IntegerId" type="xs:unsignedInt" />
 
-  <xs:simpleType  name="ApplicationType">
+  <xs:simpleType name="ApplicationType">
     <xs:annotation>
       <xs:documentation>The types of applications.</xs:documentation>
     </xs:annotation>
@@ -1004,7 +1003,7 @@
 
   <xs:element name="ApplicationInstanceCertificate" type="xs:base64Binary" />
 
-  <xs:simpleType  name="MessageSecurityMode">
+  <xs:simpleType name="MessageSecurityMode">
     <xs:annotation>
       <xs:documentation>The type of security to use on a message.</xs:documentation>
     </xs:annotation>
@@ -1017,7 +1016,7 @@
   </xs:simpleType>
   <xs:element name="MessageSecurityMode" type="tns:MessageSecurityMode" />
 
-  <xs:simpleType  name="UserTokenType">
+  <xs:simpleType name="UserTokenType">
     <xs:annotation>
       <xs:documentation>The possible user token types.</xs:documentation>
     </xs:annotation>
@@ -1186,7 +1185,7 @@
   </xs:complexType>
   <xs:element name="RegisterServer2Response" type="tns:RegisterServer2Response" />
 
-  <xs:simpleType  name="SecurityTokenRequestType">
+  <xs:simpleType name="SecurityTokenRequestType">
     <xs:annotation>
       <xs:documentation>Indicates whether a token if being created or renewed.</xs:documentation>
     </xs:annotation>
@@ -1465,7 +1464,7 @@
   </xs:complexType>
   <xs:element name="CancelResponse" type="tns:CancelResponse" />
 
-  <xs:simpleType  name="NodeAttributesMask">
+  <xs:simpleType name="NodeAttributesMask">
     <xs:annotation>
       <xs:documentation>The bits used to specify default attributes for a new node.</xs:documentation>
     </xs:annotation>
@@ -1841,7 +1840,7 @@
   </xs:complexType>
   <xs:element name="DeleteReferencesResponse" type="tns:DeleteReferencesResponse" />
 
-  <xs:simpleType  name="AttributeWriteMask">
+  <xs:simpleType name="AttributeWriteMask">
     <xs:annotation>
       <xs:documentation>Define bits used to indicate which attributes are writable.</xs:documentation>
     </xs:annotation>
@@ -1873,7 +1872,7 @@
   </xs:simpleType>
   <xs:element name="AttributeWriteMask" type="tns:AttributeWriteMask" />
 
-  <xs:simpleType  name="BrowseDirection">
+  <xs:simpleType name="BrowseDirection">
     <xs:annotation>
       <xs:documentation>The directions of the references to return.</xs:documentation>
     </xs:annotation>
@@ -1920,7 +1919,7 @@
   </xs:complexType>
   <xs:element name="ListOfBrowseDescription" type="tns:ListOfBrowseDescription" nillable="true"></xs:element>
 
-  <xs:simpleType  name="BrowseResultMask">
+  <xs:simpleType name="BrowseResultMask">
     <xs:annotation>
       <xs:documentation>A bit mask which specifies what should be returned in a browse response.</xs:documentation>
     </xs:annotation>
@@ -2244,7 +2243,7 @@
   </xs:complexType>
   <xs:element name="ListOfNodeTypeDescription" type="tns:ListOfNodeTypeDescription" nillable="true"></xs:element>
 
-  <xs:simpleType  name="FilterOperator">
+  <xs:simpleType name="FilterOperator">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Equals_0" />
       <xs:enumeration value="IsNull_1" />
@@ -2476,7 +2475,7 @@
   </xs:complexType>
   <xs:element name="QueryNextResponse" type="tns:QueryNextResponse" />
 
-  <xs:simpleType  name="TimestampsToReturn">
+  <xs:simpleType name="TimestampsToReturn">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Source_0" />
       <xs:enumeration value="Server_1" />
@@ -2720,7 +2719,7 @@
   </xs:complexType>
   <xs:element name="HistoryUpdateDetails" type="tns:HistoryUpdateDetails" />
 
-  <xs:simpleType  name="HistoryUpdateType">
+  <xs:simpleType name="HistoryUpdateType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Insert_1" />
       <xs:enumeration value="Replace_2" />
@@ -2730,7 +2729,7 @@
   </xs:simpleType>
   <xs:element name="HistoryUpdateType" type="tns:HistoryUpdateType" />
 
-  <xs:simpleType  name="PerformUpdateType">
+  <xs:simpleType name="PerformUpdateType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Insert_1" />
       <xs:enumeration value="Replace_2" />
@@ -2895,7 +2894,7 @@
   </xs:complexType>
   <xs:element name="CallResponse" type="tns:CallResponse" />
 
-  <xs:simpleType  name="MonitoringMode">
+  <xs:simpleType name="MonitoringMode">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Disabled_0" />
       <xs:enumeration value="Sampling_1" />
@@ -2904,7 +2903,7 @@
   </xs:simpleType>
   <xs:element name="MonitoringMode" type="tns:MonitoringMode" />
 
-  <xs:simpleType  name="DataChangeTrigger">
+  <xs:simpleType name="DataChangeTrigger">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Status_0" />
       <xs:enumeration value="StatusValue_1" />
@@ -2913,7 +2912,7 @@
   </xs:simpleType>
   <xs:element name="DataChangeTrigger" type="tns:DataChangeTrigger" />
 
-  <xs:simpleType  name="DeadbandType">
+  <xs:simpleType name="DeadbandType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None_0" />
       <xs:enumeration value="Absolute_1" />
@@ -3458,7 +3457,7 @@
   </xs:complexType>
   <xs:element name="BuildInfo" type="tns:BuildInfo" />
 
-  <xs:simpleType  name="RedundancySupport">
+  <xs:simpleType name="RedundancySupport">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None_0" />
       <xs:enumeration value="Cold_1" />
@@ -3470,7 +3469,7 @@
   </xs:simpleType>
   <xs:element name="RedundancySupport" type="tns:RedundancySupport" />
 
-  <xs:simpleType  name="ServerState">
+  <xs:simpleType name="ServerState">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Running_0" />
       <xs:enumeration value="Failed_1" />
@@ -3721,7 +3720,7 @@
   </xs:complexType>
   <xs:element name="ListOfSubscriptionDiagnosticsDataType" type="tns:ListOfSubscriptionDiagnosticsDataType" nillable="true"></xs:element>
 
-  <xs:simpleType  name="ModelChangeStructureVerbMask">
+  <xs:simpleType name="ModelChangeStructureVerbMask">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NodeAdded_1" />
       <xs:enumeration value="NodeDeleted_2" />
@@ -3781,7 +3780,7 @@
   </xs:complexType>
   <xs:element name="EUInformation" type="tns:EUInformation" />
 
-  <xs:simpleType  name="AxisScaleEnumeration">
+  <xs:simpleType name="AxisScaleEnumeration">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Linear_0" />
       <xs:enumeration value="Log_1" />
@@ -3850,7 +3849,7 @@
   </xs:complexType>
   <xs:element name="Annotation" type="tns:Annotation" />
 
-  <xs:simpleType  name="ExceptionDeviationFormat">
+  <xs:simpleType name="ExceptionDeviationFormat">
     <xs:restriction base="xs:string">
       <xs:enumeration value="AbsoluteValue_0" />
       <xs:enumeration value="PercentOfValue_1" />

@@ -35,30 +35,24 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class DataChangeFilterEditDlg : Form
-    {
-        public DataChangeFilterEditDlg()
-        {
+namespace Opc.Ua.Sample.Controls {
+    public partial class DataChangeFilterEditDlg : Form {
+        public DataChangeFilterEditDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
-            
+
             Array values = Enum.GetValues(typeof(DataChangeTrigger));
 
-            foreach (object value in values)
-            {
+            foreach (object value in values) {
                 TriggerCB.Items.Add(value);
             }
-                        
+
             values = Enum.GetValues(typeof(DeadbandType));
 
-            foreach (object value in values)
-            {
+            foreach (object value in values) {
                 DeadbandTypeCB.Items.Add(value);
             }
         }
@@ -66,57 +60,49 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Prompts the user to specify the browse options.
         /// </summary>
-        public bool ShowDialog(Session session, MonitoredItem monitoredItem)
-        {
+        public bool ShowDialog(Session session, MonitoredItem monitoredItem) {
             if (monitoredItem == null) throw new ArgumentNullException("monitoredItem");
 
             DataChangeFilter filter = monitoredItem.Filter as DataChangeFilter;
 
-            if (filter == null)
-            {
+            if (filter == null) {
                 filter = new DataChangeFilter();
 
-                filter.Trigger       = DataChangeTrigger.StatusValue;
+                filter.Trigger = DataChangeTrigger.StatusValue;
                 filter.DeadbandValue = 0;
-                filter.DeadbandType  = (uint)(int)DeadbandType.None;
+                filter.DeadbandType = (uint) (int) DeadbandType.None;
             }
 
-            TriggerCB.SelectedItem      = filter.Trigger;
-            DeadbandTypeCB.SelectedItem = (DeadbandType)(int)filter.DeadbandType;
-            DeadbandNC.Value            = (decimal)filter.DeadbandValue;
-            
-            if (ShowDialog() != DialogResult.OK)
-            {
+            TriggerCB.SelectedItem = filter.Trigger;
+            DeadbandTypeCB.SelectedItem = (DeadbandType) (int) filter.DeadbandType;
+            DeadbandNC.Value = (decimal) filter.DeadbandValue;
+
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
-            filter.Trigger       = (DataChangeTrigger)TriggerCB.SelectedItem;
-            filter.DeadbandType  = Convert.ToUInt32(DeadbandTypeCB.SelectedItem);
-            filter.DeadbandValue = (double)DeadbandNC.Value;
+            filter.Trigger = (DataChangeTrigger) TriggerCB.SelectedItem;
+            filter.DeadbandType = Convert.ToUInt32(DeadbandTypeCB.SelectedItem);
+            filter.DeadbandValue = (double) DeadbandNC.Value;
 
             monitoredItem.Filter = filter;
 
             return true;
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {              
+        private void OkBTN_Click(object sender, EventArgs e) {
             DialogResult = DialogResult.OK;
         }
 
-        private void DeadbandTypeCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DeadbandType deadbandType = (DeadbandType)DeadbandTypeCB.SelectedItem;
+        private void DeadbandTypeCB_SelectedIndexChanged(object sender, EventArgs e) {
+            DeadbandType deadbandType = (DeadbandType) DeadbandTypeCB.SelectedItem;
 
             DeadbandNC.Enabled = deadbandType != DeadbandType.None;
 
-            if (deadbandType == DeadbandType.Percent)
-            {
+            if (deadbandType == DeadbandType.Percent) {
                 DeadbandNC.Minimum = 0;
                 DeadbandNC.Maximum = 100;
-            }
-            else
-            {
+            } else {
                 DeadbandNC.Minimum = Decimal.MinValue;
                 DeadbandNC.Maximum = Decimal.MaxValue;
             }

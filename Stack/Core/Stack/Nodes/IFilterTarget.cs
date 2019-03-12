@@ -17,15 +17,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// This interface is used by ContentFilterOperation to get values from the 
     /// NodeSet for use by the various filter operators. All NodeSets used in a
     /// ContentFilter must implement this interface.
     /// </summary>
-    public interface IFilterTarget
-    {        
+    public interface IFilterTarget {
         /// <summary>
         /// Checks whether the target is an instance of the specified type.
         /// </summary>
@@ -35,8 +33,8 @@ namespace Opc.Ua
         /// True if the object is an instance of the specified type.
         /// </returns>
         bool IsTypeOf(
-            FilterContext context, 
-            NodeId        typeDefinitionId);
+            FilterContext context,
+            NodeId typeDefinitionId);
 
         /// <summary>
         /// Returns the value of an attribute identified by the operand.
@@ -50,11 +48,11 @@ namespace Opc.Ua
         /// The attribute value. Returns null if the attribute does not exist.
         /// </returns>
         object GetAttributeValue(
-            FilterContext        context, 
-            NodeId               typeDefinitionId,
+            FilterContext context,
+            NodeId typeDefinitionId,
             IList<QualifiedName> relativePath,
-            uint                 attributeId,
-            NumericRange         indexRange);
+            uint attributeId,
+            NumericRange indexRange);
     }
 
     /// <summary>
@@ -62,8 +60,7 @@ namespace Opc.Ua
     /// NodeSet for use by the various filter operators. All NodeSets used in a
     /// ContentFilter must implement this interface.
     /// </summary>
-    public interface IAdvancedFilterTarget : IFilterTarget
-    {
+    public interface IAdvancedFilterTarget : IFilterTarget {
         /// <summary>
         /// Checks whether the target is an instance is in the specified view.
         /// </summary>
@@ -118,21 +115,20 @@ namespace Opc.Ua
             uint attributeId,
             NumericRange indexRange);
     }
-        
+
     /// <summary>
     /// Provides context information to used when searching the address space.
     /// </summary>
-    public class FilterContext : IOperationContext
-    {
+    public class FilterContext : IOperationContext {
         #region Contructors
+
         /// <summary>
         /// Initializes the context.
         /// </summary>
         /// <param name="namespaceUris">The namespace URIs.</param>
         /// <param name="typeTree">The type tree.</param>
         /// <param name="context">The context.</param>
-        public FilterContext(NamespaceTable namespaceUris, ITypeTable typeTree, IOperationContext context)
-        {
+        public FilterContext(NamespaceTable namespaceUris, ITypeTable typeTree, IOperationContext context) {
             if (namespaceUris == null) throw new ArgumentNullException("namespaceUris");
             if (typeTree == null) throw new ArgumentNullException("typeTree");
 
@@ -147,10 +143,8 @@ namespace Opc.Ua
         /// <param name="namespaceUris">The namespace URIs.</param>
         /// <param name="typeTree">The type tree.</param>
         public FilterContext(NamespaceTable namespaceUris, ITypeTable typeTree)
-        :
-            this(namespaceUris, typeTree, (IList<string>)null)
-        {
-        }
+            :
+            this(namespaceUris, typeTree, (IList<string>) null) { }
 
         /// <summary>
         /// Initializes the context.
@@ -158,8 +152,7 @@ namespace Opc.Ua
         /// <param name="namespaceUris">The namespace URIs.</param>
         /// <param name="typeTree">The type tree.</param>
         /// <param name="preferredLocales">The preferred locales.</param>
-        public FilterContext(NamespaceTable namespaceUris, ITypeTable typeTree, IList<string> preferredLocales)
-        {
+        public FilterContext(NamespaceTable namespaceUris, ITypeTable typeTree, IList<string> preferredLocales) {
             if (namespaceUris == null) throw new ArgumentNullException("namespaceUris");
             if (typeTree == null) throw new ArgumentNullException("typeTree");
 
@@ -168,15 +161,16 @@ namespace Opc.Ua
             m_context = null;
             m_preferredLocales = preferredLocales;
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// The namespace table to use when evaluating filters.
         /// </summary>
         /// <value>The namespace URIs.</value>
-        public NamespaceTable NamespaceUris
-        {
+        public NamespaceTable NamespaceUris {
             get { return m_namespaceUris; }
         }
 
@@ -184,23 +178,21 @@ namespace Opc.Ua
         /// The type tree to use when evaluating filters.
         /// </summary>
         /// <value>The type tree.</value>
-        public ITypeTable TypeTree
-        {
+        public ITypeTable TypeTree {
             get { return m_typeTree; }
         }
+
         #endregion
 
         #region IOperationContext Members
+
         /// <summary>
         /// The identifier for the session (null if multiple sessions are associated with the operation).
         /// </summary>
         /// <value>The session identifier.</value>
-        public NodeId SessionId
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public NodeId SessionId {
+            get {
+                if (m_context != null) {
                     return m_context.SessionId;
                 }
 
@@ -212,12 +204,9 @@ namespace Opc.Ua
         /// The identity of the user.
         /// </summary>
         /// <value>The user identity.</value>
-        public IUserIdentity UserIdentity
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public IUserIdentity UserIdentity {
+            get {
+                if (m_context != null) {
                     return m_context.UserIdentity;
                 }
 
@@ -229,12 +218,9 @@ namespace Opc.Ua
         /// The locales to use if available.
         /// </summary>
         /// <value>The preferred locales.</value>
-        public IList<string> PreferredLocales
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public IList<string> PreferredLocales {
+            get {
+                if (m_context != null) {
                     return m_context.PreferredLocales;
                 }
 
@@ -246,12 +232,9 @@ namespace Opc.Ua
         /// The mask to use when collecting any diagnostic information.
         /// </summary>
         /// <value>The diagnostics mask.</value>
-        public DiagnosticsMasks DiagnosticsMask
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public DiagnosticsMasks DiagnosticsMask {
+            get {
+                if (m_context != null) {
                     return m_context.DiagnosticsMask;
                 }
 
@@ -263,12 +246,9 @@ namespace Opc.Ua
         /// The table of strings which is used to store diagnostic string data.
         /// </summary>
         /// <value>The string table.</value>
-        public StringTable StringTable
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public StringTable StringTable {
+            get {
+                if (m_context != null) {
                     return m_context.StringTable;
                 }
 
@@ -280,12 +260,9 @@ namespace Opc.Ua
         /// When the operation times out.
         /// </summary>
         /// <value>The operation deadline.</value>
-        public DateTime OperationDeadline
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public DateTime OperationDeadline {
+            get {
+                if (m_context != null) {
                     return m_context.OperationDeadline;
                 }
 
@@ -297,12 +274,9 @@ namespace Opc.Ua
         /// The current status of the the operation (bad if the operation has been aborted).
         /// </summary>
         /// <value>The operation status.</value>
-        public StatusCode OperationStatus
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public StatusCode OperationStatus {
+            get {
+                if (m_context != null) {
                     return m_context.OperationStatus;
                 }
 
@@ -314,25 +288,25 @@ namespace Opc.Ua
         /// The audit identifier associated with the operation.
         /// </summary>
         /// <value>The audit entry identifier.</value>
-        public string AuditEntryId
-        {
-            get 
-            { 
-                if (m_context != null)
-                {
+        public string AuditEntryId {
+            get {
+                if (m_context != null) {
                     return m_context.AuditEntryId;
                 }
 
                 return null;
             }
         }
+
         #endregion
 
         #region Private Fields
+
         private NamespaceTable m_namespaceUris;
         private ITypeTable m_typeTree;
         private IOperationContext m_context;
         private IList<string> m_preferredLocales;
+
         #endregion
     }
 }

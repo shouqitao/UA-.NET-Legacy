@@ -24,39 +24,37 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using System.Threading;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary> 
     /// The base class for all variable nodes.
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaXsd)]
-    public abstract class BaseVariableState : BaseInstanceState
-    {
+    public abstract class BaseVariableState : BaseInstanceState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
         /// <param name="parent">The parent node.</param>
-        public BaseVariableState(NodeState parent) : base(NodeClass.Variable, parent)
-        {
+        public BaseVariableState(NodeState parent) : base(NodeClass.Variable, parent) {
             m_timestamp = DateTime.MinValue;
             m_accessLevel = m_userAccessLevel = AccessLevels.CurrentRead;
             m_copyPolicy = VariableCopyPolicy.CopyOnRead;
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance from another instance.
         /// </summary>
         /// <param name="context">The description how access the system containing the data.</param>
         /// <param name="source">A source node to be copied to this instance.</param>
-        protected override void Initialize(ISystemContext context, NodeState source)
-        {
+        protected override void Initialize(ISystemContext context, NodeState source) {
             BaseVariableState instance = source as BaseVariableState;
 
-            if (instance != null)
-            {
+            if (instance != null) {
                 m_value = ExtractValueFromVariant(context, instance.m_value, false);
                 m_timestamp = instance.m_timestamp;
                 m_statusCode = instance.m_statusCode;
@@ -68,8 +66,7 @@ namespace Opc.Ua
                 m_minimumSamplingInterval = instance.m_minimumSamplingInterval;
                 m_historizing = instance.m_historizing;
 
-                if (instance.m_arrayDimensions != null)
-                {
+                if (instance.m_arrayDimensions != null) {
                     m_arrayDimensions = new ReadOnlyList<uint>(instance.m_arrayDimensions, true);
                 }
 
@@ -84,8 +81,7 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="namespaceUris">The namespace uris.</param>
         /// <returns>Returns the id of the default type definition or <see cref="VariableTypes.BaseVariableType"/></returns> if not overridden
-        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
-        {
+        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris) {
             return VariableTypes.BaseVariableType;
         }
 
@@ -96,8 +92,7 @@ namespace Opc.Ua
         /// <returns>
         /// The id <see cref="NodeId"/> of the default data type node for the instance or <see cref="DataTypes.BaseDataType"/> if not overridden.
         /// </returns>
-        protected virtual NodeId GetDefaultDataTypeId(NamespaceTable namespaceUris)
-        {
+        protected virtual NodeId GetDefaultDataTypeId(NamespaceTable namespaceUris) {
             return DataTypes.BaseDataType;
         }
 
@@ -107,8 +102,7 @@ namespace Opc.Ua
         /// <returns>
         /// The id of the default value rank or <see cref="ValueRanks.Any"/> if not overridden.
         /// </returns>
-        protected virtual int GetDefaultValueRank()
-        {
+        protected virtual int GetDefaultValueRank() {
             return ValueRanks.Any;
         }
 
@@ -116,8 +110,7 @@ namespace Opc.Ua
         /// Converts a values contained in a variant to the value defined for the variable.
         /// </summary>
         [Obsolete("Should use the version that takes a ISystemContext (pass null if ISystemContext is not available).")]
-        protected virtual object ExtractValueFromVariant(object value, bool throwOnError)
-        {
+        protected virtual object ExtractValueFromVariant(object value, bool throwOnError) {
             return ExtractValueFromVariant(null, value, throwOnError);
         }
 
@@ -128,8 +121,7 @@ namespace Opc.Ua
         /// <param name="value">The value.</param>
         /// <param name="throwOnError">if set to <c>true</c> throw an exception on error.</param>
         /// <returns>If not overridden returns <paramref name="value"/>.</returns>
-        protected virtual object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError)
-        {
+        protected virtual object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError) {
             return value;
         }
 
@@ -141,10 +133,8 @@ namespace Opc.Ua
         /// <returns>
         /// The value contained by the <paramref name="variable"/> or the default value for the datatype if the variable is null.
         /// </returns>
-        public static T GetValue<T>(BaseDataVariableState<T> variable)
-        {
-            if (variable == null)
-            {
+        public static T GetValue<T>(BaseDataVariableState<T> variable) {
+            if (variable == null) {
                 return default(T);
             }
 
@@ -159,10 +149,8 @@ namespace Opc.Ua
         /// <returns>
         /// The value. The default value for the datatype if the property is null.
         /// </returns>
-        public static T GetValue<T>(PropertyState<T> property)
-        {
-            if (property == null)
-            {
+        public static T GetValue<T>(PropertyState<T> property) {
+            if (property == null) {
                 return default(T);
             }
 
@@ -173,8 +161,7 @@ namespace Opc.Ua
         /// Converts a values contained in a variant to the value defined for the variable.
         /// </summary>
         [Obsolete("Should use the version that takes a ISystemContext (pass null if ISystemContext is not available).")]
-        public static object ExtractValueFromVariant<T>(object value, bool throwOnError)
-        {
+        public static object ExtractValueFromVariant<T>(object value, bool throwOnError) {
             return ExtractValueFromVariant<T>(null, value, throwOnError);
         }
 
@@ -192,35 +179,29 @@ namespace Opc.Ua
         /// If throwOnError is <c>false</c> the default value for the type is returned if the value is not valid.
         /// </remarks>
         /// <exception cref="ServiceResultException">If cannot convert <paramref name="value"/>.</exception>
-        public static object ExtractValueFromVariant<T>(ISystemContext context, object value, bool throwOnError)
-        {
-            if (value == null)
-            {
+        public static object ExtractValueFromVariant<T>(ISystemContext context, object value, bool throwOnError) {
+            if (value == null) {
                 return default(T);
             }
 
-            if (typeof(T).IsInstanceOfType(value))
-            {
+            if (typeof(T).IsInstanceOfType(value)) {
                 return value;
             }
 
             ExtensionObject extension = value as ExtensionObject;
 
-            if (extension != null)
-            {
-                if (typeof(T).IsInstanceOfType(extension.Body))
-                {
+            if (extension != null) {
+                if (typeof(T).IsInstanceOfType(extension.Body)) {
                     return extension.Body;
                 }
 
-                if (typeof(IEncodeable).IsAssignableFrom(typeof(T)))
-                {
+                if (typeof(IEncodeable).IsAssignableFrom(typeof(T))) {
                     return DecodeExtensionObject(context, typeof(T), extension, throwOnError);
                 }
 
-                if (throwOnError)
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert {0} to {1}.", value.GetType().Name, typeof(T).Name);
+                if (throwOnError) {
+                    throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert {0} to {1}.",
+                        value.GetType().Name, typeof(T).Name);
                 }
 
                 return default(T);
@@ -228,40 +209,34 @@ namespace Opc.Ua
 
             Type elementType = typeof(T).GetElementType();
 
-            if (elementType != null)
-            {
+            if (elementType != null) {
                 // check for array of extensions.
                 IList<ExtensionObject> extensions = value as IList<ExtensionObject>;
 
-                if (extensions != null && typeof(IEncodeable).IsAssignableFrom(elementType))
-                {
+                if (extensions != null && typeof(IEncodeable).IsAssignableFrom(elementType)) {
                     Array encodeables = Array.CreateInstance(elementType, extensions.Count);
 
-                    for (int ii = 0; ii < extensions.Count; ii++)
-                    {
-                        if (ExtensionObject.IsNull(extensions[ii]))
-                        {
+                    for (int ii = 0; ii < extensions.Count; ii++) {
+                        if (ExtensionObject.IsNull(extensions[ii])) {
                             encodeables.SetValue(null, ii);
                             continue;
                         }
 
-                        if (elementType.IsInstanceOfType(extensions[ii].Body))
-                        {
+                        if (elementType.IsInstanceOfType(extensions[ii].Body)) {
                             encodeables.SetValue(extensions[ii].Body, ii);
                             continue;
                         }
 
                         object element = DecodeExtensionObject(context, elementType, extensions[ii], throwOnError);
 
-                        if (element != null)
-                        {
+                        if (element != null) {
                             encodeables.SetValue(element, ii);
                             continue;
                         }
 
-                        if (throwOnError)
-                        {
-                            throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert ExtensionObject to {0}. Index = {1}", elementType.Name, ii);
+                        if (throwOnError) {
+                            throw ServiceResultException.Create(StatusCodes.BadTypeMismatch,
+                                "Cannot convert ExtensionObject to {0}. Index = {1}", elementType.Name, ii);
                         }
                     }
 
@@ -271,22 +246,19 @@ namespace Opc.Ua
                 // check for array of variants.
                 IList<Variant> variants = value as IList<Variant>;
 
-                if (variants != null)
-                {
+                if (variants != null) {
                     // only support conversions to object[].
-                    if (elementType != typeof(object))
-                    {
-                        if (throwOnError)
-                        {
-                            throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert {0} to {1}.", value.GetType().Name, typeof(T).Name);
+                    if (elementType != typeof(object)) {
+                        if (throwOnError) {
+                            throw ServiceResultException.Create(StatusCodes.BadTypeMismatch,
+                                "Cannot convert {0} to {1}.", value.GetType().Name, typeof(T).Name);
                         }
                     }
 
                     // allocate and copy.
                     object[] objects = new object[variants.Count];
 
-                    for (int ii = 0; ii < variants.Count; ii++)
-                    {
+                    for (int ii = 0; ii < variants.Count; ii++) {
                         objects[ii] = variants[ii].Value;
                     }
 
@@ -294,17 +266,14 @@ namespace Opc.Ua
                 }
 
                 // check for array of uuids.
-                if (typeof(Guid).IsAssignableFrom(elementType))
-                {
+                if (typeof(Guid).IsAssignableFrom(elementType)) {
                     IList<Uuid> uuids = value as IList<Uuid>;
 
-                    if (uuids != null)
-                    {
+                    if (uuids != null) {
                         Guid[] guids = new Guid[uuids.Count];
 
-                        for (int ii = 0; ii < uuids.Count; ii++)
-                        {
-                            guids[ii] = (Guid)uuids[ii];
+                        for (int ii = 0; ii < uuids.Count; ii++) {
+                            guids[ii] = (Guid) uuids[ii];
                         }
 
                         return guids;
@@ -312,16 +281,13 @@ namespace Opc.Ua
                 }
 
                 // check for array of enumeration.
-                if (typeof(Enum).IsAssignableFrom(elementType))
-                {
+                if (typeof(Enum).IsAssignableFrom(elementType)) {
                     IList<int> values = value as IList<int>;
 
-                    if (values != null)
-                    {
+                    if (values != null) {
                         Array enums = Array.CreateInstance(elementType, values.Count);
 
-                        for (int ii = 0; ii < values.Count; ii++)
-                        {
+                        for (int ii = 0; ii < values.Count; ii++) {
                             enums.SetValue(values[ii], ii);
                         }
 
@@ -330,29 +296,25 @@ namespace Opc.Ua
                 }
             }
 
-            if (typeof(Guid).IsAssignableFrom(typeof(T)))
-            {
+            if (typeof(Guid).IsAssignableFrom(typeof(T))) {
                 Uuid? uuid = value as Uuid?;
 
-                if (uuid != null)
-                {
-                    return (Guid)uuid.Value;
-                }
-            } 
-            
-            if (typeof(Enum).IsAssignableFrom(typeof(T)))
-            {
-                int? number = value as int?;
-
-                if (number != null)
-                {
-                    return (T)(object)number.Value;
+                if (uuid != null) {
+                    return (Guid) uuid.Value;
                 }
             }
 
-            if (throwOnError)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert {0} to {1}.", value.GetType().Name, typeof(T).Name);
+            if (typeof(Enum).IsAssignableFrom(typeof(T))) {
+                int? number = value as int?;
+
+                if (number != null) {
+                    return (T) (object) number.Value;
+                }
+            }
+
+            if (throwOnError) {
+                throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert {0} to {1}.",
+                    value.GetType().Name, typeof(T).Name);
             }
 
             return default(T);
@@ -366,59 +328,48 @@ namespace Opc.Ua
         /// <param name="extension">The ExtensionObject to convert.</param>
         /// <param name="throwOnError">Whether to throw an exception on error.</param>
         /// <returns>The decoded instance. Null on error.</returns>
-        public static object DecodeExtensionObject(ISystemContext context, Type targetType, ExtensionObject extension, bool throwOnError)
-        {
-            if (targetType.IsInstanceOfType(extension.Body))
-            {
+        public static object DecodeExtensionObject(ISystemContext context, Type targetType, ExtensionObject extension,
+            bool throwOnError) {
+            if (targetType.IsInstanceOfType(extension.Body)) {
                 return extension.Body;
             }
 
             IEncodeable instance = Activator.CreateInstance(targetType) as IEncodeable;
 
-            if (instance != null)
-            {
+            if (instance != null) {
                 IDecoder decoder = null;
 
                 ServiceMessageContext messageContext = ServiceMessageContext.GlobalContext;
 
-                if (context != null)
-                {
+                if (context != null) {
                     messageContext = new ServiceMessageContext();
                     messageContext.NamespaceUris = context.NamespaceUris;
                     messageContext.ServerUris = context.ServerUris;
                     messageContext.Factory = context.EncodeableFactory;
                 }
 
-                if (extension.Encoding == ExtensionObjectEncoding.Binary)
-                {
+                if (extension.Encoding == ExtensionObjectEncoding.Binary) {
                     decoder = new BinaryDecoder(extension.Body as byte[], messageContext);
-                }
-
-                else if (extension.Encoding == ExtensionObjectEncoding.Xml)
-                {
+                } else if (extension.Encoding == ExtensionObjectEncoding.Xml) {
                     decoder = new XmlDecoder(extension.Body as XmlElement, messageContext);
                 }
 
-                if (decoder != null)
-                {
-                    try
-                    {
+                if (decoder != null) {
+                    try {
                         instance.Decode(decoder);
                         return instance;
-                    }
-                    catch (Exception e)
-                    {
-                        if (throwOnError)
-                        {
-                            throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert ExtensionObject to {0}. Error = {1}", targetType.Name, e.Message);
+                    } catch (Exception e) {
+                        if (throwOnError) {
+                            throw ServiceResultException.Create(StatusCodes.BadTypeMismatch,
+                                "Cannot convert ExtensionObject to {0}. Error = {1}", targetType.Name, e.Message);
                         }
                     }
                 }
             }
 
-            if (throwOnError)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert ExtensionObject to {0}.", targetType.Name);
+            if (throwOnError) {
+                throw ServiceResultException.Create(StatusCodes.BadTypeMismatch,
+                    "Cannot convert ExtensionObject to {0}.", targetType.Name);
             }
 
             return null;
@@ -432,42 +383,35 @@ namespace Opc.Ua
         /// <param name="throwOnError">if set to <c>true</c> <see cref="ServiceResultException"/> is thrown on error.</param>
         /// <returns>Returns <paramref name="value"/> or default for <typeparamref name="T"/></returns>
         /// <exception cref="ServiceResultException"> if it is impossible to cast the value or the value is null and <see cref="IsValueType"/> for the type <typeparamref name="T"/> returns true. </exception>
-        public static T CheckTypeBeforeCast<T>(object value, bool throwOnError)
-        {
-            if ((value == null && typeof(T).IsValueType) || (value != null && !typeof(T).IsInstanceOfType(value)))
-            {
-                if (throwOnError)
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert '{0}' to a {1}.", value, typeof(T).Name);
+        public static T CheckTypeBeforeCast<T>(object value, bool throwOnError) {
+            if ((value == null && typeof(T).IsValueType) || (value != null && !typeof(T).IsInstanceOfType(value))) {
+                if (throwOnError) {
+                    throw ServiceResultException.Create(StatusCodes.BadTypeMismatch, "Cannot convert '{0}' to a {1}.",
+                        value, typeof(T).Name);
                 }
 
                 return default(T);
             }
 
-            return (T)value;
+            return (T) value;
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The value of the variable.
         /// </summary>
-        public object Value
-        {
-            get
-            {
-                return m_value;
-            }
+        public object Value {
+            get { return m_value; }
 
-            set
-            {
-                if (value == null && IsValueType)
-                {
+            set {
+                if (value == null && IsValueType) {
                     value = ExtractValueFromVariant(null, value, false);
                 }
 
-                if (!Object.ReferenceEquals(m_value, value))
-                {
+                if (!Object.ReferenceEquals(m_value, value)) {
                     ChangeMasks |= NodeStateChangeMasks.Value;
                 }
 
@@ -478,8 +422,7 @@ namespace Opc.Ua
         /// <summary>
         /// Whether the value can be set to null.
         /// </summary>
-        public bool IsValueType
-        {
+        public bool IsValueType {
             get { return m_isValueType; }
             set { m_isValueType = value; }
         }
@@ -489,34 +432,21 @@ namespace Opc.Ua
         /// </summary>
         /// <value>The wrapped value as a Variant.</value>
         [DataMember(Name = "Value", Order = 0, IsRequired = false, EmitDefaultValue = false)]
-        public Variant WrappedValue
-        {
-            get
-            {
-                return new Variant(m_value);
-            }
+        public Variant WrappedValue {
+            get { return new Variant(m_value); }
 
-            set
-            {
-                Value = ExtractValueFromVariant(null, value.Value, false);
-            }
+            set { Value = ExtractValueFromVariant(null, value.Value, false); }
         }
 
         /// <summary>
         /// The timestamp associated with the variable value.
         /// </summary>
         /// <value>The timestamp.</value>
-        public DateTime Timestamp
-        {
-            get
-            {
-                return m_timestamp;
-            }
+        public DateTime Timestamp {
+            get { return m_timestamp; }
 
-            set
-            {
-                if (m_timestamp != value)
-                {
+            set {
+                if (m_timestamp != value) {
                     ChangeMasks |= NodeStateChangeMasks.Value;
                 }
 
@@ -528,17 +458,11 @@ namespace Opc.Ua
         /// The status code associated with the variable value.
         /// </summary>
         /// <value>The status code.</value>
-        public StatusCode StatusCode
-        {
-            get
-            {
-                return m_statusCode;
-            }
+        public StatusCode StatusCode {
+            get { return m_statusCode; }
 
-            set
-            {
-                if (m_statusCode != value)
-                {
+            set {
+                if (m_statusCode != value) {
                     ChangeMasks |= NodeStateChangeMasks.Value;
                 }
 
@@ -553,8 +477,7 @@ namespace Opc.Ua
         /// <remarks>
         /// This value is ignored if the OnReadValue or OnWriteValue event handlers are provided.
         /// </remarks>
-        public VariableCopyPolicy CopyPolicy
-        {
+        public VariableCopyPolicy CopyPolicy {
             get { return m_copyPolicy; }
             set { m_copyPolicy = value; }
         }
@@ -564,17 +487,11 @@ namespace Opc.Ua
         /// </summary>
         /// <value>The type of the data <see cref="NodeId"/>.</value>
         [DataMember(Name = "DataType", Order = 1, IsRequired = false, EmitDefaultValue = false)]
-        public NodeId DataType
-        {
-            get
-            {
-                return m_dataType;
-            }
+        public NodeId DataType {
+            get { return m_dataType; }
 
-            set
-            {
-                if (!Object.ReferenceEquals(m_dataType, value))
-                {
+            set {
+                if (!Object.ReferenceEquals(m_dataType, value)) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -588,17 +505,11 @@ namespace Opc.Ua
         /// <value>The value rank. </value>
         /// <remarks>Indicates whether the DataType is an array and how many dimensions the array has.</remarks>
         [DataMember(Name = "ValueRank", Order = 2, IsRequired = false, EmitDefaultValue = false)]
-        public int ValueRank
-        {
-            get
-            {
-                return m_valueRank;
-            }
+        public int ValueRank {
+            get { return m_valueRank; }
 
-            set
-            {
-                if (m_valueRank != value)
-                {
+            set {
+                if (m_valueRank != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -616,17 +527,11 @@ namespace Opc.Ua
         /// If the Value Rank attribute specifies an array of a specific dimension (i.e. ValueRank &gt; 0) then the Array Dimensions
         /// attribute shall be specified in the table defining the Variable.
         /// </remarks>
-        public ReadOnlyList<uint> ArrayDimensions
-        {
-            get
-            {
-                return m_arrayDimensions;
-            }
+        public ReadOnlyList<uint> ArrayDimensions {
+            get { return m_arrayDimensions; }
 
-            set
-            {
-                if (!Object.ReferenceEquals(m_arrayDimensions, value))
-                {
+            set {
+                if (!Object.ReferenceEquals(m_arrayDimensions, value)) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -639,17 +544,11 @@ namespace Opc.Ua
         /// </summary>
         /// <value>The access level.</value>
         [DataMember(Name = "AccessLevel", Order = 4, IsRequired = false, EmitDefaultValue = false)]
-        public byte AccessLevel
-        {
-            get
-            {
-                return m_accessLevel;
-            }
+        public byte AccessLevel {
+            get { return m_accessLevel; }
 
-            set
-            {
-                if (m_accessLevel != value)
-                {
+            set {
+                if (m_accessLevel != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -662,17 +561,11 @@ namespace Opc.Ua
         /// </summary>
         /// <value>The user access level.</value>
         [DataMember(Name = "UserAccessLevel", Order = 5, IsRequired = false, EmitDefaultValue = false)]
-        public byte UserAccessLevel
-        {
-            get
-            {
-                return m_userAccessLevel;
-            }
+        public byte UserAccessLevel {
+            get { return m_userAccessLevel; }
 
-            set
-            {
-                if (m_userAccessLevel != value)
-                {
+            set {
+                if (m_userAccessLevel != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -685,17 +578,11 @@ namespace Opc.Ua
         /// </summary>
         /// <value>The minimum sampling interval.</value>
         [DataMember(Name = "MinimumSamplingInterval", Order = 6, IsRequired = false, EmitDefaultValue = false)]
-        public double MinimumSamplingInterval
-        {
-            get
-            {
-                return m_minimumSamplingInterval;
-            }
+        public double MinimumSamplingInterval {
+            get { return m_minimumSamplingInterval; }
 
-            set
-            {
-                if (m_minimumSamplingInterval != value)
-                {
+            set {
+                if (m_minimumSamplingInterval != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -708,26 +595,22 @@ namespace Opc.Ua
         /// </summary>
         /// <value><c>true</c> if historizing; otherwise, <c>false</c>.</value>
         [DataMember(Name = "Historizing", Order = 7, IsRequired = false, EmitDefaultValue = false)]
-        public bool Historizing
-        {
-            get
-            {
-                return m_historizing;
-            }
+        public bool Historizing {
+            get { return m_historizing; }
 
-            set
-            {
-                if (m_historizing != value)
-                {
+            set {
+                if (m_historizing != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
                 m_historizing = value;
             }
         }
+
         #endregion
 
         #region Event Callbacks
+
         /// <summary>
         /// Raised when the Value attribute is read.
         /// </summary>
@@ -817,29 +700,28 @@ namespace Opc.Ua
         /// Raised when the Historizing attribute is written.
         /// </summary>
         public NodeAttributeEventHandler<bool> OnWriteHistorizing;
+
         #endregion
 
         #region Serialization Functions
+
         /// <summary>
         /// Exports a copy of the node to a <paramref name="node"/> node provided the <paramref name="node"/> type is compatible with <see cref="VariableNode"/>.
         /// </summary>
         /// <param name="context">The context that describes how access the system containing the data.</param>
         /// <param name="node">The node to be a copy of this instance.</param>
-        protected override void Export(ISystemContext context, Node node)
-        {
+        protected override void Export(ISystemContext context, Node node) {
             base.Export(context, node);
 
             VariableNode variableNode = node as VariableNode;
 
-            if (variableNode != null)
-            {
+            if (variableNode != null) {
                 variableNode.Value = new Variant(Utils.Clone(this.Value));
                 variableNode.DataType = this.DataType;
                 variableNode.ValueRank = this.ValueRank;
                 variableNode.ArrayDimensions = null;
 
-                if (this.ArrayDimensions != null)
-                {
+                if (this.ArrayDimensions != null) {
                     variableNode.ArrayDimensions = new UInt32Collection(this.ArrayDimensions);
                 }
 
@@ -855,54 +737,44 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="encoder">The encoder wrapping the stream to write.</param>
-        public override void Save(ISystemContext context, XmlEncoder encoder)
-        {
+        public override void Save(ISystemContext context, XmlEncoder encoder) {
             base.Save(context, encoder);
 
             encoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (m_value != null)
-            {
+            if (m_value != null) {
                 encoder.WriteVariant("Value", WrappedValue);
             }
 
-            if (StatusCode != StatusCodes.Good)
-            {
+            if (StatusCode != StatusCodes.Good) {
                 encoder.WriteStatusCode("StatusCode", StatusCode);
             }
 
-            if (!NodeId.IsNull(DataType))
-            {
+            if (!NodeId.IsNull(DataType)) {
                 encoder.WriteNodeId("DataType", DataType);
             }
 
-            if (ValueRank != ValueRanks.Any)
-            {
+            if (ValueRank != ValueRanks.Any) {
                 encoder.WriteInt32("ValueRank", ValueRank);
             }
 
-            if (ArrayDimensions != null)
-            {
+            if (ArrayDimensions != null) {
                 encoder.WriteString("ArrayDimensions", ArrayDimensionsToXml(ArrayDimensions));
             }
 
-            if (AccessLevel != 0)
-            {
+            if (AccessLevel != 0) {
                 encoder.WriteByte("AccessLevel", AccessLevel);
             }
 
-            if (UserAccessLevel != 0)
-            {
+            if (UserAccessLevel != 0) {
                 encoder.WriteByte("UserAccessLevel", UserAccessLevel);
             }
 
-            if (MinimumSamplingInterval != 0)
-            {
+            if (MinimumSamplingInterval != 0) {
                 encoder.WriteDouble("MinimumSamplingInterval", MinimumSamplingInterval);
             }
 
-            if (Historizing)
-            {
+            if (Historizing) {
                 encoder.WriteBoolean("Historizing", Historizing);
             }
 
@@ -914,84 +786,67 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="decoder">The decoder wrapping the stream to read.</param>
-        public override void Update(ISystemContext context, XmlDecoder decoder)
-        {
+        public override void Update(ISystemContext context, XmlDecoder decoder) {
             base.Update(context, decoder);
 
             decoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (decoder.Peek("Value"))
-            {
+            if (decoder.Peek("Value")) {
                 WrappedValue = decoder.ReadVariant("Value");
             }
 
-            if (decoder.Peek("Timestamp"))
-            {
+            if (decoder.Peek("Timestamp")) {
                 Timestamp = decoder.ReadDateTime("Timestamp");
             }
 
-            if (decoder.Peek("StatusCode"))
-            {
+            if (decoder.Peek("StatusCode")) {
                 StatusCode = decoder.ReadStatusCode("StatusCode");
-            }
-            else
-            {
+            } else {
                 StatusCode = StatusCodes.Good;
             }
 
-            if (decoder.Peek("DataType"))
-            {
+            if (decoder.Peek("DataType")) {
                 DataType = decoder.ReadNodeId("DataType");
             }
 
-            if (decoder.Peek("ValueRank"))
-            {
+            if (decoder.Peek("ValueRank")) {
                 ValueRank = decoder.ReadInt32("ValueRank");
             }
 
             // ensure the value has a suitable default value.
-            if (m_value == null && m_valueRank == ValueRanks.Scalar)
-            {
+            if (m_value == null && m_valueRank == ValueRanks.Scalar) {
                 bool isValueType = IsValueType;
 
-                if (!isValueType)
-                {
+                if (!isValueType) {
                     BuiltInType builtInType = DataTypes.GetBuiltInType(m_dataType, context.TypeTable);
 
-                    if (TypeInfo.IsValueType(builtInType))
-                    {
+                    if (TypeInfo.IsValueType(builtInType)) {
                         isValueType = true;
                     }
                 }
 
-                if (isValueType)
-                {
+                if (isValueType) {
                     m_value = TypeInfo.GetDefaultValue(m_dataType, m_valueRank, context.TypeTable);
                 }
             }
 
-            if (decoder.Peek("ArrayDimensions"))
-            {
+            if (decoder.Peek("ArrayDimensions")) {
                 ArrayDimensions = ArrayDimensionsFromXml(decoder.ReadString("ArrayDimensions"));
             }
 
-            if (decoder.Peek("AccessLevel"))
-            {
+            if (decoder.Peek("AccessLevel")) {
                 AccessLevel = decoder.ReadByte("AccessLevel");
             }
 
-            if (decoder.Peek("UserAccessLevel"))
-            {
+            if (decoder.Peek("UserAccessLevel")) {
                 UserAccessLevel = decoder.ReadByte("UserAccessLevel");
             }
 
-            if (decoder.Peek("MinimumSamplingInterval"))
-            {
+            if (decoder.Peek("MinimumSamplingInterval")) {
                 MinimumSamplingInterval = decoder.ReadDouble("MinimumSamplingInterval");
             }
 
-            if (decoder.Peek("Historizing"))
-            {
+            if (decoder.Peek("Historizing")) {
                 Historizing = decoder.ReadBoolean("Historizing");
             }
 
@@ -1005,55 +860,45 @@ namespace Opc.Ua
         /// <returns>
         /// A mask that specifies the available attributes.
         /// </returns>
-        public override AttributesToSave GetAttributesToSave(ISystemContext context)
-        {
+        public override AttributesToSave GetAttributesToSave(ISystemContext context) {
             AttributesToSave attributesToSave = base.GetAttributesToSave(context);
 
-            if (m_value != null)
-            {
+            if (m_value != null) {
                 attributesToSave |= AttributesToSave.Value;
             }
 
-            if (m_statusCode != StatusCodes.Good)
-            {
+            if (m_statusCode != StatusCodes.Good) {
                 attributesToSave |= AttributesToSave.StatusCode;
             }
 
-            if (!NodeId.IsNull(m_dataType))
-            {
+            if (!NodeId.IsNull(m_dataType)) {
                 attributesToSave |= AttributesToSave.DataType;
             }
 
-            if (m_valueRank != ValueRanks.Any)
-            {
+            if (m_valueRank != ValueRanks.Any) {
                 attributesToSave |= AttributesToSave.ValueRank;
             }
 
-            if (m_arrayDimensions != null)
-            {
+            if (m_arrayDimensions != null) {
                 attributesToSave |= AttributesToSave.ArrayDimensions;
             }
 
-            if (m_accessLevel != 0)
-            {
+            if (m_accessLevel != 0) {
                 attributesToSave |= AttributesToSave.AccessLevel;
             }
 
-            if (m_userAccessLevel != 0)
-            {
+            if (m_userAccessLevel != 0) {
                 attributesToSave |= AttributesToSave.UserAccessLevel;
             }
 
-            if (m_minimumSamplingInterval != 0)
-            {
+            if (m_minimumSamplingInterval != 0) {
                 attributesToSave |= AttributesToSave.MinimumSamplingInterval;
             }
 
-            if (m_historizing)
-            {
+            if (m_historizing) {
                 attributesToSave |= AttributesToSave.Historizing;
             }
-            
+
             return attributesToSave;
         }
 
@@ -1063,54 +908,44 @@ namespace Opc.Ua
         /// <param name="context">The context that describes how access the system containing the data..</param>
         /// <param name="encoder">The encoder to write to.</param>
         /// <param name="attributesToSave">The masks indicating what attributes to write.</param>
-        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave)
-        {
+        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave) {
             base.Save(context, encoder, attributesToSave);
 
-            if ((attributesToSave & AttributesToSave.Value) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.Value) != 0) {
                 encoder.WriteVariant(null, WrappedValue);
             }
 
-            if ((attributesToSave & AttributesToSave.StatusCode) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.StatusCode) != 0) {
                 encoder.WriteStatusCode(null, m_statusCode);
             }
 
-            if ((attributesToSave & AttributesToSave.DataType) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.DataType) != 0) {
                 encoder.WriteNodeId(null, m_dataType);
             }
 
-            if ((attributesToSave & AttributesToSave.ValueRank) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.ValueRank) != 0) {
                 encoder.WriteInt32(null, m_valueRank);
             }
 
-            if ((attributesToSave & AttributesToSave.ArrayDimensions) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.ArrayDimensions) != 0) {
                 encoder.WriteUInt32Array(null, m_arrayDimensions);
             }
 
-            if ((attributesToSave & AttributesToSave.AccessLevel) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.AccessLevel) != 0) {
                 encoder.WriteByte(null, m_accessLevel);
             }
 
-            if ((attributesToSave & AttributesToSave.UserAccessLevel) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.UserAccessLevel) != 0) {
                 encoder.WriteByte(null, m_userAccessLevel);
             }
 
-            if ((attributesToSave & AttributesToSave.MinimumSamplingInterval) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.MinimumSamplingInterval) != 0) {
                 encoder.WriteDouble(null, m_minimumSamplingInterval);
             }
 
-            if ((attributesToSave & AttributesToSave.Historizing) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.Historizing) != 0) {
                 encoder.WriteBoolean(null, m_historizing);
-            }            
+            }
         }
 
         /// <summary>
@@ -1119,63 +954,50 @@ namespace Opc.Ua
         /// <param name="context">The context.</param>
         /// <param name="decoder">The decoder.</param>
         /// <param name="attibutesToLoad">The attributes to load.</param>
-        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad)
-        {
+        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad) {
             base.Update(context, decoder, attibutesToLoad);
 
-            if ((attibutesToLoad & AttributesToSave.Value) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.Value) != 0) {
                 WrappedValue = decoder.ReadVariant(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.StatusCode) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.StatusCode) != 0) {
                 m_statusCode = decoder.ReadStatusCode(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.DataType) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.DataType) != 0) {
                 m_dataType = decoder.ReadNodeId(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.ValueRank) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.ValueRank) != 0) {
                 m_valueRank = decoder.ReadInt32(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.ArrayDimensions) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.ArrayDimensions) != 0) {
                 UInt32Collection arrayDimensions = decoder.ReadUInt32Array(null);
 
-                if (arrayDimensions != null && arrayDimensions.Count > 0)
-                {
+                if (arrayDimensions != null && arrayDimensions.Count > 0) {
                     m_arrayDimensions = new ReadOnlyList<uint>(arrayDimensions);
-                }
-                else
-                {
+                } else {
                     m_arrayDimensions = null;
                 }
             }
 
-            if ((attibutesToLoad & AttributesToSave.AccessLevel) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.AccessLevel) != 0) {
                 m_accessLevel = decoder.ReadByte(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.UserAccessLevel) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.UserAccessLevel) != 0) {
                 m_userAccessLevel = decoder.ReadByte(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.MinimumSamplingInterval) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.MinimumSamplingInterval) != 0) {
                 m_minimumSamplingInterval = decoder.ReadDouble(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.Historizing) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.Historizing) != 0) {
                 m_historizing = decoder.ReadBoolean(null);
-            }        
+            }
         }
 
         /// <summary>
@@ -1183,19 +1005,15 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="arrayDimensions">The array dimensions.</param>
         /// <returns>The XML string value.</returns>
-        internal static string ArrayDimensionsToXml(IList<uint> arrayDimensions)
-        {
-            if (arrayDimensions == null)
-            {
+        internal static string ArrayDimensionsToXml(IList<uint> arrayDimensions) {
+            if (arrayDimensions == null) {
                 return null;
             }
 
             StringBuilder buffer = new StringBuilder();
 
-            for (int ii = 0; ii < arrayDimensions.Count; ii++)
-            {
-                if (buffer.Length > 0)
-                {
+            for (int ii = 0; ii < arrayDimensions.Count; ii++) {
+                if (buffer.Length > 0) {
                     buffer.Append(',');
                 }
 
@@ -1210,56 +1028,50 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="value">The XML string value.</param>
         /// <returns>The array dimensions list.</returns>
-        internal static ReadOnlyList<uint> ArrayDimensionsFromXml(string value)
-        {
-            if (String.IsNullOrEmpty(value))
-            {
+        internal static ReadOnlyList<uint> ArrayDimensionsFromXml(string value) {
+            if (String.IsNullOrEmpty(value)) {
                 return null;
             }
 
-            string[] fields = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] fields = value.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
 
-            if (fields == null || fields.Length == 0)
-            {
+            if (fields == null || fields.Length == 0) {
                 return null;
             }
 
             uint[] arrayDimensions = new uint[fields.Length];
 
-            for (int ii = 0; ii < arrayDimensions.Length; ii++)
-            {
-                try
-                {
+            for (int ii = 0; ii < arrayDimensions.Length; ii++) {
+                try {
                     arrayDimensions[ii] = Convert.ToUInt32(fields[ii]);
-                }
-                catch
-                {
+                } catch {
                     arrayDimensions[ii] = 0;
                 }
             }
 
             return new ReadOnlyList<uint>(arrayDimensions);
         }
+
         #endregion
-        
+
         #region Overrridden Methods
+
         /// <summary>
         /// Recusively sets the status code and timestamp for the node and all child variables.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="statusCode">The status code.</param>
         /// <param name="timestamp">The timestamp. Not updated if set to DateTime.Min</param>
-        public override void SetStatusCode(ISystemContext context, StatusCode statusCode, DateTime timestamp)
-        {
+        public override void SetStatusCode(ISystemContext context, StatusCode statusCode, DateTime timestamp) {
             base.SetStatusCode(context, statusCode, timestamp);
 
             StatusCode = statusCode;
 
-            if (timestamp != DateTime.MinValue)
-            {
+            if (timestamp != DateTime.MinValue) {
                 Timestamp = timestamp;
             }
         }
+
         #endregion
 
         #region Read Support Functions
@@ -1277,132 +1089,109 @@ namespace Opc.Ua
         protected override ServiceResult ReadNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            ref object value)
-        {
+            ref object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.DataType:
-                {
+            switch (attributeId) {
+                case Attributes.DataType: {
                     NodeId dataType = m_dataType;
 
-                    if (OnReadDataType != null)
-                    {
+                    if (OnReadDataType != null) {
                         result = OnReadDataType(context, this, ref dataType);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = dataType;
                     }
 
                     return result;
                 }
 
-                case Attributes.ValueRank:
-                {
+                case Attributes.ValueRank: {
                     int valueRank = m_valueRank;
 
-                    if (OnReadValueRank != null)
-                    {
+                    if (OnReadValueRank != null) {
                         result = OnReadValueRank(context, this, ref valueRank);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = valueRank;
                     }
 
                     return result;
                 }
-                
-                case Attributes.ArrayDimensions:
-                {
+
+                case Attributes.ArrayDimensions: {
                     IList<uint> arrayDimensions = m_arrayDimensions;
 
-                    if (OnReadArrayDimensions != null)
-                    {
+                    if (OnReadArrayDimensions != null) {
                         result = OnReadArrayDimensions(context, this, ref arrayDimensions);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = arrayDimensions;
                     }
 
                     return result;
                 }
 
-                case Attributes.AccessLevel:
-                {
+                case Attributes.AccessLevel: {
                     byte accessLevel = m_accessLevel;
 
-                    if (OnReadAccessLevel != null)
-                    {
+                    if (OnReadAccessLevel != null) {
                         result = OnReadAccessLevel(context, this, ref accessLevel);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = accessLevel;
                     }
 
                     return result;
                 }
 
-                case Attributes.UserAccessLevel:
-                {
+                case Attributes.UserAccessLevel: {
                     byte userAccessLevel = m_userAccessLevel;
 
-                    if (OnReadUserAccessLevel != null)
-                    {
+                    if (OnReadUserAccessLevel != null) {
                         result = OnReadUserAccessLevel(context, this, ref userAccessLevel);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = userAccessLevel;
                     }
 
                     return result;
                 }
 
-                case Attributes.MinimumSamplingInterval:
-                {
+                case Attributes.MinimumSamplingInterval: {
                     double minimumSamplingInterval = m_minimumSamplingInterval;
 
-                    if (OnReadMinimumSamplingInterval != null)
-                    {
+                    if (OnReadMinimumSamplingInterval != null) {
                         result = OnReadMinimumSamplingInterval(context, this, ref minimumSamplingInterval);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = minimumSamplingInterval;
                     }
 
                     return result;
                 }
 
-                case Attributes.Historizing:
-                {
+                case Attributes.Historizing: {
                     bool historizing = m_historizing;
 
-                    if (OnReadHistorizing != null)
-                    {
+                    if (OnReadHistorizing != null) {
                         result = OnReadHistorizing(context, this, ref historizing);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = historizing;
                     }
 
                     return result;
                 }
             }
-            
+
             return base.ReadNonValueAttribute(context, attributeId, ref value);
         }
 
@@ -1423,22 +1212,18 @@ namespace Opc.Ua
             NumericRange indexRange,
             QualifiedName dataEncoding,
             ref object value,
-            ref DateTime sourceTimestamp)
-        {
+            ref DateTime sourceTimestamp) {
             // check the access level for the variable.
-            if ((m_accessLevel & AccessLevels.CurrentRead) == 0)
-            {
+            if ((m_accessLevel & AccessLevels.CurrentRead) == 0) {
                 return StatusCodes.BadNotReadable;
             }
 
-            if ((m_userAccessLevel & AccessLevels.CurrentRead) == 0)
-            {
+            if ((m_userAccessLevel & AccessLevels.CurrentRead) == 0) {
                 return StatusCodes.BadUserAccessDenied;
             }
 
             // ensure a value timestamp exists.
-            if (m_timestamp == DateTime.MinValue)
-            {
+            if (m_timestamp == DateTime.MinValue) {
                 m_timestamp = DateTime.UtcNow;
             }
 
@@ -1449,8 +1234,7 @@ namespace Opc.Ua
             ServiceResult result = null;
 
             // check if the read behavoir has been overridden.
-            if (OnReadValue != null)
-            {
+            if (OnReadValue != null) {
                 result = OnReadValue(
                     context,
                     this,
@@ -1460,14 +1244,12 @@ namespace Opc.Ua
                     ref statusCode,
                     ref sourceTimestamp);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
 
                 // return the correct status code if no errors.
-                if (ServiceResult.IsGood(result) && statusCode != StatusCodes.Good)
-                {
+                if (ServiceResult.IsGood(result) && statusCode != StatusCodes.Good) {
                     result = statusCode;
                 }
 
@@ -1475,36 +1257,31 @@ namespace Opc.Ua
             }
 
             // use default behavoir.
-            if (OnSimpleReadValue != null)
-            {
+            if (OnSimpleReadValue != null) {
                 result = OnSimpleReadValue(
                     context,
                     this,
                     ref value);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
             }
-            
+
             // apply the index range and encoding.
             result = ApplyIndexRangeAndDataEncoding(context, indexRange, dataEncoding, ref value);
 
-            if (ServiceResult.IsBad(result))
-            {
+            if (ServiceResult.IsBad(result)) {
                 return result;
             }
 
             // copy returned value.
-            if (m_copyPolicy == VariableCopyPolicy.CopyOnRead || m_copyPolicy == VariableCopyPolicy.Always)
-            {
+            if (m_copyPolicy == VariableCopyPolicy.CopyOnRead || m_copyPolicy == VariableCopyPolicy.Always) {
                 value = Utils.Clone(value);
             }
 
             // return the correct status code if no errors.
-            if (ServiceResult.IsGood(result) && statusCode != StatusCodes.Good)
-            {
+            if (ServiceResult.IsGood(result) && statusCode != StatusCodes.Good) {
                 result = statusCode;
             }
 
@@ -1523,24 +1300,20 @@ namespace Opc.Ua
             ISystemContext context,
             NumericRange indexRange,
             QualifiedName dataEncoding,
-            ref object value)
-        {
+            ref object value) {
             ServiceResult result = null;
 
             // apply index range.
-            if (indexRange != NumericRange.Empty)
-            {
+            if (indexRange != NumericRange.Empty) {
                 result = indexRange.ApplyRange(ref value);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
             }
 
             // apply data encoding.
-            if (!QualifiedName.IsNull(dataEncoding))
-            {
+            if (!QualifiedName.IsNull(dataEncoding)) {
                 ServiceMessageContext messageContext = new ServiceMessageContext();
 
                 messageContext.NamespaceUris = context.NamespaceUris;
@@ -1549,8 +1322,7 @@ namespace Opc.Ua
 
                 result = EncodeableObject.ApplyDataEncoding(messageContext, dataEncoding, ref value);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
             }
@@ -1559,8 +1331,9 @@ namespace Opc.Ua
         }
 
         #endregion
-        
+
         #region Write Support Functions
+
         /// <summary>
         /// Write the value for any non-value attribute.
         /// </summary>
@@ -1574,90 +1347,71 @@ namespace Opc.Ua
         protected override ServiceResult WriteNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            object value)
-        {
+            object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.DataType:
-                {
+            switch (attributeId) {
+                case Attributes.DataType: {
                     NodeId dataType = value as NodeId;
 
-                    if (dataType == null)
-                    {
+                    if (dataType == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.DataType) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.DataType) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
-                    if (OnWriteDataType != null)
-                    {
+                    if (OnWriteDataType != null) {
                         result = OnWriteDataType(context, this, ref dataType);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         DataType = dataType;
                     }
 
                     return result;
                 }
 
-                case Attributes.ValueRank:
-                {
+                case Attributes.ValueRank: {
                     int? valueRankRef = value as int?;
 
-                    if (valueRankRef == null)
-                    {
+                    if (valueRankRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.ValueRank) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.ValueRank) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     int valueRank = valueRankRef.Value;
 
-                    if (OnWriteValueRank != null)
-                    {
+                    if (OnWriteValueRank != null) {
                         result = OnWriteValueRank(context, this, ref valueRank);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         ValueRank = valueRank;
                     }
 
                     return result;
                 }
 
-                case Attributes.ArrayDimensions:
-                {
+                case Attributes.ArrayDimensions: {
                     IList<uint> arrayDimensions = value as IList<uint>;
 
-                    if ((WriteMask & AttributeWriteMask.ArrayDimensions) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.ArrayDimensions) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
-                    if (OnWriteArrayDimensions != null)
-                    {
+                    if (OnWriteArrayDimensions != null) {
                         result = OnWriteArrayDimensions(context, this, ref arrayDimensions);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
-                        if (arrayDimensions != null)
-                        {
+                    if (ServiceResult.IsGood(result)) {
+                        if (arrayDimensions != null) {
                             ArrayDimensions = new ReadOnlyList<uint>(arrayDimensions);
-                        }
-                        else
-                        {
+                        } else {
                             ArrayDimensions = null;
                         }
                     }
@@ -1665,123 +1419,103 @@ namespace Opc.Ua
                     return result;
                 }
 
-                case Attributes.AccessLevel:
-                {
+                case Attributes.AccessLevel: {
                     byte? accessLevelRef = value as byte?;
 
-                    if (accessLevelRef == null)
-                    {
+                    if (accessLevelRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.AccessLevel) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.AccessLevel) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     byte accessLevel = accessLevelRef.Value;
 
-                    if (OnWriteAccessLevel != null)
-                    {
+                    if (OnWriteAccessLevel != null) {
                         result = OnWriteAccessLevel(context, this, ref accessLevel);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         AccessLevel = accessLevel;
                     }
 
                     return result;
                 }
 
-                case Attributes.UserAccessLevel:
-                {
+                case Attributes.UserAccessLevel: {
                     byte? userAccessLevelRef = value as byte?;
 
-                    if (userAccessLevelRef == null)
-                    {
+                    if (userAccessLevelRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.UserAccessLevel) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.UserAccessLevel) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     byte userAccessLevel = userAccessLevelRef.Value;
 
-                    if (OnWriteUserAccessLevel != null)
-                    {
+                    if (OnWriteUserAccessLevel != null) {
                         result = OnWriteUserAccessLevel(context, this, ref userAccessLevel);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         UserAccessLevel = userAccessLevel;
                     }
 
                     return result;
                 }
 
-                case Attributes.MinimumSamplingInterval:
-                {
+                case Attributes.MinimumSamplingInterval: {
                     double? minimumSamplingIntervalRef = value as double?;
 
-                    if (minimumSamplingIntervalRef == null)
-                    {
+                    if (minimumSamplingIntervalRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.MinimumSamplingInterval) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.MinimumSamplingInterval) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     double minimumSamplingInterval = minimumSamplingIntervalRef.Value;
 
-                    if (OnWriteMinimumSamplingInterval != null)
-                    {
+                    if (OnWriteMinimumSamplingInterval != null) {
                         result = OnWriteMinimumSamplingInterval(context, this, ref minimumSamplingInterval);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         MinimumSamplingInterval = minimumSamplingInterval;
                     }
 
                     return result;
                 }
 
-                case Attributes.Historizing:
-                {
+                case Attributes.Historizing: {
                     bool? historizingRef = value as bool?;
 
-                    if (historizingRef == null)
-                    {
+                    if (historizingRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.Historizing) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.Historizing) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     bool historizing = historizingRef.Value;
 
-                    if (OnWriteHistorizing != null)
-                    {
+                    if (OnWriteHistorizing != null) {
                         result = OnWriteHistorizing(context, this, ref historizing);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         Historizing = historizing;
                     }
 
                     return result;
                 }
             }
-            
+
             return base.WriteNonValueAttribute(context, attributeId, value);
         }
 
@@ -1802,24 +1536,20 @@ namespace Opc.Ua
             NumericRange indexRange,
             object value,
             StatusCode statusCode,
-            DateTime sourceTimestamp)
-        {
+            DateTime sourceTimestamp) {
             ServiceResult result = null;
 
             // check the access level for the variable.
-            if ((m_accessLevel & AccessLevels.CurrentWrite) == 0)
-            {
+            if ((m_accessLevel & AccessLevels.CurrentWrite) == 0) {
                 return StatusCodes.BadNotWritable;
             }
 
-            if ((m_userAccessLevel & AccessLevels.CurrentWrite) == 0)
-            {
+            if ((m_userAccessLevel & AccessLevels.CurrentWrite) == 0) {
                 return StatusCodes.BadUserAccessDenied;
             }
 
             // check if the write behavoir has been overridden.
-            if (OnWriteValue != null)
-            {
+            if (OnWriteValue != null) {
                 result = OnWriteValue(
                     context,
                     this,
@@ -1829,18 +1559,16 @@ namespace Opc.Ua
                     ref statusCode,
                     ref sourceTimestamp);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
-                
+
                 m_value = value;
                 m_statusCode = statusCode;
                 m_timestamp = sourceTimestamp;
 
                 // update timestamp if not set by function.
-                if (sourceTimestamp == DateTime.MinValue)
-                {
+                if (sourceTimestamp == DateTime.MinValue) {
                     m_timestamp = DateTime.UtcNow;
                 }
 
@@ -1850,11 +1578,10 @@ namespace Opc.Ua
             }
 
             // ensure the source timestamp has a valid value.
-            if (sourceTimestamp == DateTime.MinValue)
-            {
+            if (sourceTimestamp == DateTime.MinValue) {
                 sourceTimestamp = DateTime.UtcNow;
             }
-            
+
             // verify data type.
             TypeInfo typeInfo = TypeInfo.IsInstanceOfDataType(
                 value,
@@ -1863,35 +1590,31 @@ namespace Opc.Ua
                 context.NamespaceUris,
                 context.TypeTable);
 
-            if (typeInfo == null || typeInfo == TypeInfo.Unknown)
-            {
+            if (typeInfo == null || typeInfo == TypeInfo.Unknown) {
                 //if xml element data decoding error appeared : a value of type status code is received with the error code
-                if (DataTypeIds.XmlElement == m_dataType)
-                {
-                    TypeInfo statusCodeTypeInfo = TypeInfo.IsInstanceOfDataType(value,DataTypeIds.UInt32,-1,context.NamespaceUris,context.TypeTable);
-                    if (statusCodeTypeInfo != null)
-                    {
+                if (DataTypeIds.XmlElement == m_dataType) {
+                    TypeInfo statusCodeTypeInfo = TypeInfo.IsInstanceOfDataType(value, DataTypeIds.UInt32, -1,
+                        context.NamespaceUris, context.TypeTable);
+                    if (statusCodeTypeInfo != null) {
                         //the error code
-                        return (StatusCode)(uint)value;
+                        return (StatusCode) (uint) value;
                     }
                 }
+
                 return StatusCodes.BadTypeMismatch;
             }
 
             value = ExtractValueFromVariant(context, value, true);
 
             // copy passed in value.
-            if (m_copyPolicy == VariableCopyPolicy.CopyOnWrite || m_copyPolicy == VariableCopyPolicy.Always)
-            {
+            if (m_copyPolicy == VariableCopyPolicy.CopyOnWrite || m_copyPolicy == VariableCopyPolicy.Always) {
                 value = Utils.Clone(value);
             }
 
             // check for simple write value handler.
-            if (OnSimpleWriteValue != null)
-            {
+            if (OnSimpleWriteValue != null) {
                 // index range writes not supported.
-                if (indexRange != NumericRange.Empty)
-                {
+                if (indexRange != NumericRange.Empty) {
                     return StatusCodes.BadIndexRangeInvalid;
                 }
 
@@ -1900,28 +1623,23 @@ namespace Opc.Ua
                     this,
                     ref value);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
-            }
-            else
-            {
+            } else {
                 // apply the index range.
-                if (indexRange != NumericRange.Empty)
-                {
+                if (indexRange != NumericRange.Empty) {
                     object target = m_value;
                     result = indexRange.UpdateRange(ref target, value);
 
-                    if (ServiceResult.IsBad(result))
-                    {
+                    if (ServiceResult.IsBad(result)) {
                         return result;
                     }
 
                     value = target;
                 }
             }
-            
+
             // update cached values.
             m_value = value;
             m_statusCode = statusCode;
@@ -1931,9 +1649,11 @@ namespace Opc.Ua
 
             return ServiceResult.Good;
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_value;
         private bool m_isValueType;
         private DateTime m_timestamp;
@@ -1946,40 +1666,39 @@ namespace Opc.Ua
         private double m_minimumSamplingInterval;
         private bool m_historizing;
         private VariableCopyPolicy m_copyPolicy;
+
         #endregion
     }
-    
+
     /// <summary> 
     /// A typed base class for all data variable nodes.
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaXsd)]
-    public class PropertyState : BaseVariableState
-    {
+    public class PropertyState : BaseVariableState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public PropertyState(NodeState parent) : base(parent)
-        {
-        }
+        public PropertyState(NodeState parent) : base(parent) { }
 
         /// <summary>
         /// Constructs an instance of a node.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns>The new node.</returns>
-        public static NodeState Construct(NodeState parent)
-        {
+        public static NodeState Construct(NodeState parent) {
             return new PropertyState(parent);
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             SymbolicName = Utils.Format("{0}_Instance1", Opc.Ua.BrowseNames.PropertyType);
             NodeId = null;
             BrowseName = new QualifiedName(SymbolicName, 1);
@@ -2003,10 +1722,10 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the id of the default type definition node for the instance.
         /// </summary>
-        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
-        {
+        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris) {
             return VariableTypes.PropertyType;
         }
+
         #endregion
     }
 
@@ -2014,25 +1733,25 @@ namespace Opc.Ua
     /// A typed base class for all data variable nodes.
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaXsd)]
-    public class PropertyState<T> : PropertyState
-    {
+    public class PropertyState<T> : PropertyState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public PropertyState(NodeState parent) : base(parent)
-        {
+        public PropertyState(NodeState parent) : base(parent) {
             Value = default(T);
             IsValueType = !typeof(T).IsValueType;
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             base.Initialize(context);
 
             Value = default(T);
@@ -2043,45 +1762,38 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the value to its default value if it is not valid.
         /// </summary>
-        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError)
-        {
+        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError) {
             return ExtractValueFromVariant<T>(context, value, throwOnError);
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The value of the variable.
         /// </summary>
-        public new T Value
-        {
-            get
-            {
-                return CheckTypeBeforeCast<T>(base.Value, true);
-            }
+        public new T Value {
+            get { return CheckTypeBeforeCast<T>(base.Value, true); }
 
-            set
-            {
-                base.Value = value;
-            }
+            set { base.Value = value; }
         }
+
         #endregion
     }
-    
+
     /// <summary> 
     /// A typed base class for all data variable nodes.
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaXsd)]
-    public class BaseDataVariableState : BaseVariableState
-    {
+    public class BaseDataVariableState : BaseVariableState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public BaseDataVariableState(NodeState parent) : base(parent)
-        {
-            if (parent != null)
-            {
+        public BaseDataVariableState(NodeState parent) : base(parent) {
+            if (parent != null) {
                 ReferenceTypeId = Opc.Ua.ReferenceTypeIds.HasComponent;
             }
         }
@@ -2091,18 +1803,18 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns>The new node.</returns>
-        public static NodeState Construct(NodeState parent)
-        {
+        public static NodeState Construct(NodeState parent) {
             return new BaseDataVariableState(parent);
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             SymbolicName = Utils.Format("{0}_Instance1", Opc.Ua.BrowseNames.BaseDataVariableType);
             NodeId = null;
             BrowseName = new QualifiedName(SymbolicName, 1);
@@ -2126,47 +1838,42 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the id of the default type definition node for the instance.
         /// </summary>
-        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
-        {
+        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris) {
             return VariableTypes.BaseDataVariableType;
         }
+
         #endregion
-        
+
         #region Public Properties
+
         /// <summary>
         /// The strings that describe the values for an enumeration.
         /// </summary>
-        public PropertyState<LocalizedText[]> EnumStrings
-        {
-            get
-            { 
-                return m_enumStrings;  
-            }
-            
-            set
-            {
-                if (!Object.ReferenceEquals(m_enumStrings, value))
-                {
+        public PropertyState<LocalizedText[]> EnumStrings {
+            get { return m_enumStrings; }
+
+            set {
+                if (!Object.ReferenceEquals(m_enumStrings, value)) {
                     ChangeMasks |= NodeStateChangeMasks.Children;
                 }
 
                 m_enumStrings = value;
             }
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Populates a list with the children that belong to the node.
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="children">The list of children to populate.</param>
         public override void GetChildren(
-            ISystemContext context, 
-            IList<BaseInstanceState> children)
-        {
-            if (m_enumStrings != null)
-            {
+            ISystemContext context,
+            IList<BaseInstanceState> children) {
+            if (m_enumStrings != null) {
                 children.Add(m_enumStrings);
             }
 
@@ -2180,30 +1887,21 @@ namespace Opc.Ua
             ISystemContext context,
             QualifiedName browseName,
             bool createOrReplace,
-            BaseInstanceState replacement)
-        {
-            if (QualifiedName.IsNull(browseName))
-            {
+            BaseInstanceState replacement) {
+            if (QualifiedName.IsNull(browseName)) {
                 return null;
             }
 
             BaseInstanceState instance = null;
 
-            switch (browseName.Name)
-            {
-                case BrowseNames.EnumStrings:
-                {
-                    if (createOrReplace)
-                    {
-                        if (EnumStrings == null)
-                        {
-                            if (replacement == null)
-                            {
+            switch (browseName.Name) {
+                case BrowseNames.EnumStrings: {
+                    if (createOrReplace) {
+                        if (EnumStrings == null) {
+                            if (replacement == null) {
                                 EnumStrings = new PropertyState<LocalizedText[]>(this);
-                            }
-                            else
-                            {
-                                EnumStrings = (PropertyState<LocalizedText[]>)replacement;
+                            } else {
+                                EnumStrings = (PropertyState<LocalizedText[]>) replacement;
                             }
                         }
                     }
@@ -2213,17 +1911,19 @@ namespace Opc.Ua
                 }
             }
 
-            if (instance != null)
-            {
+            if (instance != null) {
                 return instance;
             }
 
             return base.FindChild(context, browseName, createOrReplace, replacement);
         }
+
         #endregion
 
         #region Private Fields
+
         private PropertyState<LocalizedText[]> m_enumStrings;
+
         #endregion
     }
 
@@ -2231,26 +1931,26 @@ namespace Opc.Ua
     /// A typed base class for all data variable nodes.
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaXsd)]
-    public class BaseDataVariableState<T> : BaseDataVariableState
-    {
+    public class BaseDataVariableState<T> : BaseDataVariableState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public BaseDataVariableState(NodeState parent) : base(parent)
-        {
+        public BaseDataVariableState(NodeState parent) : base(parent) {
             Value = default(T);
             IsValueType = !typeof(T).IsValueType;
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
         /// <param name="context">An object that describes how access the system containing the data. </param>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             base.Initialize(context);
 
             Value = default(T);
@@ -2262,8 +1962,7 @@ namespace Opc.Ua
         /// Extracts a value of the specified type from a value stored in a variant.
         /// </summary>
         [Obsolete("Should use the version that takes a ISystemContext (pass null if ISystemContext is not available).")]
-        protected override object ExtractValueFromVariant(object value, bool throwOnError)
-        {
+        protected override object ExtractValueFromVariant(object value, bool throwOnError) {
             return ExtractValueFromVariant<T>(null, value, throwOnError);
         }
 
@@ -2277,67 +1976,61 @@ namespace Opc.Ua
         /// If throwOnError is false the default value for the type is returned if the value is not valid.
         /// </remarks>
         /// <returns>Returns value of the <c>T</c> type</returns>
-        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError)
-        {
+        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError) {
             return ExtractValueFromVariant<T>(context, value, throwOnError);
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The value of the variable.
         /// </summary>
-        public new T Value
-        {
-            get
-            {
-                return CheckTypeBeforeCast<T>(base.Value, true);
-            }
-            
-            set 
-            { 
-                base.Value = value; 
-            }
+        public new T Value {
+            get { return CheckTypeBeforeCast<T>(base.Value, true); }
+
+            set { base.Value = value; }
         }
+
         #endregion
     }
 
     #region BaseVariableValue Class
+
     /// <summary>
     /// A thread safe object that can be used to access the value of a structure variable.
     /// </summary>
-    public class BaseVariableValue
-    {
+    public class BaseVariableValue {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with a synchronization object.
         /// </summary>
-        public BaseVariableValue(object dataLock)
-        {
+        public BaseVariableValue(object dataLock) {
             m_lock = dataLock;
             m_copyPolicy = VariableCopyPolicy.CopyOnRead;
 
-            if (m_lock == null)
-            {
+            if (m_lock == null) {
                 m_lock = new object();
             }
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// An object used to synchronize access to the value.
         /// </summary>
-        public object Lock
-        {
+        public object Lock {
             get { return m_lock; }
         }
 
         /// <summary>
         /// The behavoir to use when reading or writing all or part of the object.
         /// </summary>
-        public VariableCopyPolicy CopyPolicy
-        {
+        public VariableCopyPolicy CopyPolicy {
             get { return m_copyPolicy; }
             set { m_copyPolicy = value; }
         }
@@ -2345,8 +2038,7 @@ namespace Opc.Ua
         /// <summary>
         /// Gets or sets the current error state.
         /// </summary>
-        public ServiceResult Error
-        {
+        public ServiceResult Error {
             get { return m_error; }
             set { m_error = value; }
         }
@@ -2354,8 +2046,7 @@ namespace Opc.Ua
         /// <summary>
         /// Gets or sets the timestamp associated with the value.
         /// </summary>
-        public DateTime Timestamp
-        {
+        public DateTime Timestamp {
             get { return m_timestamp; }
             set { m_timestamp = value; }
         }
@@ -2363,18 +2054,13 @@ namespace Opc.Ua
         /// <summary>
         /// Clears the change masks for all nodes in the update list.
         /// </summary>
-        public void ChangesComplete(ISystemContext context)
-        {
-            lock (m_lock)
-            {
-                if (m_updateList != null)
-                {
-                    for (int ii = 0; ii < m_updateList.Length; ii++)
-                    {
+        public void ChangesComplete(ISystemContext context) {
+            lock (m_lock) {
+                if (m_updateList != null) {
+                    for (int ii = 0; ii < m_updateList.Length; ii++) {
                         BaseInstanceState instance = m_updateList[ii];
 
-                        if (instance != null)
-                        {
+                        if (instance != null) {
                             instance.UpdateChangeMasks(NodeStateChangeMasks.Value);
                             instance.ClearChangeMasks(context, false);
                         }
@@ -2382,9 +2068,11 @@ namespace Opc.Ua
                 }
             }
         }
+
         #endregion
-        
+
         #region Event Callbacks
+
         /// <summary>
         /// Raised before the value is read.
         /// </summary>
@@ -2394,9 +2082,11 @@ namespace Opc.Ua
         /// Raised after the value is written.
         /// </summary>
         public VariableValueEventHandler OnAfterWrite;
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Does any processing before a read operation takes place.
         /// </summary>
@@ -2404,10 +2094,8 @@ namespace Opc.Ua
         /// <param name="node">The node.</param>
         protected void DoBeforeReadProcessing(
             ISystemContext context,
-            NodeState node)
-        {
-            if (OnBeforeRead != null)
-            {
+            NodeState node) {
+            if (OnBeforeRead != null) {
                 OnBeforeRead(context, this, node);
             }
         }
@@ -2422,21 +2110,17 @@ namespace Opc.Ua
             QualifiedName dataEncoding,
             ref object value,
             ref StatusCode statusCode,
-            ref DateTime timestamp)
-        {
-            lock (m_lock)
-            {
+            ref DateTime timestamp) {
+            lock (m_lock) {
                 // ensure a value timestamp exists.
-                if (m_timestamp == DateTime.MinValue)
-                {
+                if (m_timestamp == DateTime.MinValue) {
                     m_timestamp = DateTime.UtcNow;
                 }
-                   
+
                 timestamp = m_timestamp;
 
                 // check for errors.
-                if (ServiceResult.IsBad(m_error))
-                {
+                if (ServiceResult.IsBad(m_error)) {
                     value = null;
                     statusCode = m_error.StatusCode;
                     return m_error;
@@ -2444,23 +2128,21 @@ namespace Opc.Ua
 
                 // apply the index range and encoding.
                 ServiceResult result = BaseVariableState.ApplyIndexRangeAndDataEncoding(
-                    context, 
-                    indexRange, 
-                    dataEncoding, 
+                    context,
+                    indexRange,
+                    dataEncoding,
                     ref value);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     statusCode = result.StatusCode;
                     return result;
                 }
-                
+
                 // apply copy policy
-                if ((m_copyPolicy & VariableCopyPolicy.CopyOnRead) != 0)
-                {
+                if ((m_copyPolicy & VariableCopyPolicy.CopyOnRead) != 0) {
                     value = Utils.Clone(value);
-                }                       
-                
+                }
+
                 statusCode = StatusCodes.Good;
 
                 return ServiceResult.Good;
@@ -2470,22 +2152,16 @@ namespace Opc.Ua
         /// <summary>
         /// Reads the current value.
         /// </summary>
-        protected ServiceResult Read(object currentValue, ref object valueToRead)
-        {
-            lock (m_lock)
-            {
-                if (ServiceResult.IsBad(m_error))
-                {
+        protected ServiceResult Read(object currentValue, ref object valueToRead) {
+            lock (m_lock) {
+                if (ServiceResult.IsBad(m_error)) {
                     valueToRead = null;
                     return m_error;
                 }
-                
-                if ((m_copyPolicy & VariableCopyPolicy.CopyOnRead) != 0)
-                {
+
+                if ((m_copyPolicy & VariableCopyPolicy.CopyOnRead) != 0) {
                     valueToRead = Utils.Clone(currentValue);
-                }
-                else
-                {
+                } else {
                     valueToRead = currentValue;
                 }
 
@@ -2496,12 +2172,9 @@ namespace Opc.Ua
         /// <summary>
         /// Writes the current value.
         /// </summary>
-        protected object Write(object valueToWrite)
-        {
-            lock (m_lock)
-            {
-                if ((m_copyPolicy & VariableCopyPolicy.CopyOnWrite) != 0)
-                {
+        protected object Write(object valueToWrite) {
+            lock (m_lock) {
+                if ((m_copyPolicy & VariableCopyPolicy.CopyOnWrite) != 0) {
                     return Utils.Clone(valueToWrite);
                 }
 
@@ -2512,43 +2185,42 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the list of nodes which are updated when ClearChangeMasks is called.
         /// </summary>
-        protected void SetUpdateList(IList<BaseInstanceState> updateList)
-        {
-            lock (m_lock)
-            {
+        protected void SetUpdateList(IList<BaseInstanceState> updateList) {
+            lock (m_lock) {
                 m_updateList = null;
 
-                if (updateList != null && updateList.Count > 0)
-                {
+                if (updateList != null && updateList.Count > 0) {
                     m_updateList = new BaseInstanceState[updateList.Count];
 
-                    for (int ii = 0; ii < m_updateList.Length; ii++)
-                    {
+                    for (int ii = 0; ii < m_updateList.Length; ii++) {
                         m_updateList[ii] = updateList[ii];
 
                         // the copy copy is enforced by the value wrapper.
                         BaseVariableState variable = m_updateList[ii] as BaseVariableState;
-                        
-                        if (variable != null)
-                        {
+
+                        if (variable != null) {
                             variable.CopyPolicy = VariableCopyPolicy.Never;
                         }
                     }
                 }
             }
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock;
         private VariableCopyPolicy m_copyPolicy;
         private BaseInstanceState[] m_updateList;
         private ServiceResult m_error;
         private DateTime m_timestamp;
+
         #endregion
     }
+
     #endregion
-    
+
     /// <summary>
     /// Used to receive notifications when the value attribute is read or written.
     /// </summary>
@@ -2561,8 +2233,7 @@ namespace Opc.Ua
     /// Specifies the policies to use when handling reads and write to value.
     /// </summary>
     [Flags]
-    public enum VariableCopyPolicy
-    {
+    public enum VariableCopyPolicy {
         /// <summary>
         /// The value is copied when is is read.
         /// </summary>

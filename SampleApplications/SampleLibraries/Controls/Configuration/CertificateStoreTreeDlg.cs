@@ -36,58 +36,45 @@ using System.Windows.Forms;
 using System.Reflection;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a ApplicationDescription.
     /// </summary>
-    public partial class CertificateStoreTreeDlg : Form
-    {
+    public partial class CertificateStoreTreeDlg : Form {
         /// <summary>
         /// Contructs the object.
         /// </summary>
-        public CertificateStoreTreeDlg()
-        {
+        public CertificateStoreTreeDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
-        
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public CertificateStoreIdentifier ShowDialog(CertificateStoreIdentifier store)
-        {
+        public CertificateStoreIdentifier ShowDialog(CertificateStoreIdentifier store) {
             ContainersCTRL.Initialize();
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
-  
+
             return ContainersCTRL.SelectedStore;
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 // close the dialog.
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void ContainersCTRL_NodeSelected(object sender, TreeNodeActionEventArgs e)
-        {
-            try
-            {
+        private void ContainersCTRL_NodeSelected(object sender, TreeNodeActionEventArgs e) {
+            try {
                 OkBTN.Enabled = ContainersCTRL.SelectedStore != null;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

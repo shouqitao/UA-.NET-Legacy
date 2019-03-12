@@ -1,0 +1,15 @@
+﻿  stdafx.cpp
+  AssemblyInfo.cpp
+d:\codes\ua-.net-legacy\sampleapplications\workshop\comda\comclient\assemblyinfo.cpp(69): warning C4947: 'System::Security::Permissions::SecurityAction::RequestMinimum': marked as obsolete
+  d:\codes\ua-.net-legacy\sampleapplications\workshop\comda\comclient\assemblyinfo.cpp(69): note: Message: 'Assembly level declarative security is obsolete and is no longer enforced by the CLR by default. See http://go.microsoft.com/fwlink/?LinkID=155570 for more information.'
+  Client.cpp
+  ComDaClientUtils.cpp
+  ComDaDataCallback.cpp
+  ComDaTester.cpp
+  CreateServerDlg.cpp
+  EnterEndpointUrlDlg.cpp
+  MainForm.cpp
+  Generating Code...
+  .NETFramework,Version=v4.5.1.AssemblyAttributes.cpp
+app.rc(11): fatal error RC1015: cannot open include file 'afxres.h'.
+  

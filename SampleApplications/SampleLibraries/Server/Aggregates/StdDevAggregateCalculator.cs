@@ -31,14 +31,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Calculates the value of an aggregate. 
     /// </summary>
-    public class StdDevAggregateCalculator : AggregateCalculator
-    {
+    public class StdDevAggregateCalculator : AggregateCalculator {
         #region Constructors
+
         /// <summary>
         /// Initializes the aggregate calculator.
         /// </summary>
@@ -55,42 +54,36 @@ namespace Opc.Ua.Server
             double processingInterval,
             bool stepped,
             AggregateConfiguration configuration)
-        : 
-            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration)
-        {
+            :
+            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration) {
             SetPartialBit = true;
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Computes the value for the timeslice.
         /// </summary>
-        protected override DataValue ComputeValue(TimeSlice slice)
-        {
+        protected override DataValue ComputeValue(TimeSlice slice) {
             uint? id = AggregateId.Identifier as uint?;
 
-            if (id != null)
-            {
-                switch (id.Value)
-                {
-                    case Objects.AggregateFunction_StandardDeviationPopulation:
-                    {
+            if (id != null) {
+                switch (id.Value) {
+                    case Objects.AggregateFunction_StandardDeviationPopulation: {
                         return ComputeStdDev(slice, false, 1);
                     }
 
-                    case Objects.AggregateFunction_StandardDeviationSample:
-                    {
+                    case Objects.AggregateFunction_StandardDeviationSample: {
                         return ComputeStdDev(slice, false, 2);
                     }
 
-                    case Objects.AggregateFunction_VariancePopulation:
-                    {
+                    case Objects.AggregateFunction_VariancePopulation: {
                         return ComputeStdDev(slice, true, 1);
                     }
 
-                    case Objects.AggregateFunction_VarianceSample:
-                    {
+                    case Objects.AggregateFunction_VarianceSample: {
                         return ComputeStdDev(slice, true, 2);
                     }
                 }
@@ -98,20 +91,20 @@ namespace Opc.Ua.Server
 
             return base.ComputeValue(slice);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Calculates the RegSlope, RegConst and RegStdDev aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeRegression(TimeSlice slice, int valueType)
-        {
+        protected DataValue ComputeRegression(TimeSlice slice, int valueType) {
             // get the values in the slice.
             List<DataValue> values = GetValuesWithSimpleBounds(slice);
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -124,25 +117,20 @@ namespace Opc.Ua.Server
             double duration = 0;
             bool nonGoodDataExists = false;
 
-            for (int ii = 0; ii < regions.Count; ii++)
-            {
-                if (StatusCode.IsGood(regions[ii].StatusCode))
-                {
+            for (int ii = 0; ii < regions.Count; ii++) {
+                if (StatusCode.IsGood(regions[ii].StatusCode)) {
                     xData.Add(regions[ii].StartValue);
                     yData.Add(duration);
-                }
-                else
-                {
+                } else {
                     nonGoodDataExists = true;
                 }
 
                 // normalize to seconds.
-                duration += regions[ii].Duration/1000.0;
+                duration += regions[ii].Duration / 1000.0;
             }
 
             // check if no good data.
-            if (xData.Count == 0)
-            {
+            if (xData.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -151,15 +139,13 @@ namespace Opc.Ua.Server
             double regConst = 0;
             double regStdDev = 0;
 
-            if (xData.Count > 1)
-            {
+            if (xData.Count > 1) {
                 double xAvg = 0;
                 double yAvg = 0;
                 double xxAgv = 0;
                 double xyAvg = 0;
 
-                for (int ii = 0; ii < xData.Count; ii++)
-                {
+                for (int ii = 0; ii < xData.Count; ii++) {
                     xAvg += xData[ii];
                     yAvg += yData[ii];
                     xxAgv += xData[ii] * xData[ii];
@@ -173,13 +159,12 @@ namespace Opc.Ua.Server
 
                 regSlope = (xyAvg - xAvg * yAvg) / (xxAgv - xAvg * xAvg);
                 regConst = yAvg - regSlope * xAvg;
-                
+
                 List<double> errors = new List<double>();
 
                 double eAvg = 0;
 
-                for (int ii = 0; ii < xData.Count; ii++)
-                {
+                for (int ii = 0; ii < xData.Count; ii++) {
                     double error = yData[ii] - regConst - regSlope * xData[ii];
                     errors.Add(error);
                     eAvg += error;
@@ -189,8 +174,7 @@ namespace Opc.Ua.Server
 
                 double variance = 0;
 
-                for (int ii = 0; ii < errors.Count; ii++)
-                {
+                for (int ii = 0; ii < errors.Count; ii++) {
                     double error = errors[ii] - eAvg;
                     variance += error * error;
                 }
@@ -202,21 +186,28 @@ namespace Opc.Ua.Server
             // select the result.
             double result = 0;
 
-            switch (valueType)
-            {
-                case 1: { result = regSlope;  break; }
-                case 2: { result = regConst;  break; }
-                case 3: { result = regStdDev; break; }
+            switch (valueType) {
+                case 1: {
+                    result = regSlope;
+                    break;
+                }
+                case 2: {
+                    result = regConst;
+                    break;
+                }
+                case 3: {
+                    result = regStdDev;
+                    break;
+                }
             }
-            
+
             // set the timestamp and status.
             DataValue value = new DataValue();
             value.WrappedValue = new Variant(result, TypeInfo.Scalars.Double);
             value.SourceTimestamp = GetTimestamp(slice);
             value.ServerTimestamp = GetTimestamp(slice);
 
-            if (nonGoodDataExists)
-            {
+            if (nonGoodDataExists) {
                 value.StatusCode = StatusCodes.UncertainDataSubNormal;
             }
 
@@ -229,23 +220,18 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the StdDev, Variance, StdDev2 and Variance2 aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeStdDev(TimeSlice slice, bool includeBounds, int valueType)
-        {
+        protected DataValue ComputeStdDev(TimeSlice slice, bool includeBounds, int valueType) {
             // get the values in the slice.
             List<DataValue> values = null;
 
-            if (includeBounds)
-            {
+            if (includeBounds) {
                 values = GetValuesWithSimpleBounds(slice);
-            }
-            else
-            {
+            } else {
                 values = GetValues(slice);
             }
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -256,22 +242,17 @@ namespace Opc.Ua.Server
             double average = 0;
             bool nonGoodDataExists = false;
 
-            for (int ii = 0; ii < regions.Count; ii++)
-            {
-                if (StatusCode.IsGood(regions[ii].StatusCode))
-                {
+            for (int ii = 0; ii < regions.Count; ii++) {
+                if (StatusCode.IsGood(regions[ii].StatusCode)) {
                     xData.Add(regions[ii].StartValue);
                     average += regions[ii].StartValue;
-                }
-                else
-                {
+                } else {
                     nonGoodDataExists = true;
                 }
             }
 
             // check if no good data.
-            if (xData.Count == 0)
-            {
+            if (xData.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -280,31 +261,33 @@ namespace Opc.Ua.Server
             // calculate variance.
             double variance = 0;
 
-            for (int ii = 0; ii < xData.Count; ii++)
-            {
+            for (int ii = 0; ii < xData.Count; ii++) {
                 double error = xData[ii] - average;
-                variance += error*error;
+                variance += error * error;
             }
 
             // use the sample variance if bounds are included.
-            if (includeBounds)
-            {
+            if (includeBounds) {
                 variance /= (xData.Count + 1);
             }
-            
-           // use the population variance if bounds are not included.
-            else
-            {
+
+            // use the population variance if bounds are not included.
+            else {
                 variance /= xData.Count;
             }
 
             // select the result.
             double result = 0;
 
-            switch (valueType)
-            {
-                case 1: { result = Math.Sqrt(variance); break; }
-                case 2: { result = variance; break; }
+            switch (valueType) {
+                case 1: {
+                    result = Math.Sqrt(variance);
+                    break;
+                }
+                case 2: {
+                    result = variance;
+                    break;
+                }
             }
 
             // set the timestamp and status.
@@ -313,8 +296,7 @@ namespace Opc.Ua.Server
             value.SourceTimestamp = GetTimestamp(slice);
             value.ServerTimestamp = GetTimestamp(slice);
 
-            if (nonGoodDataExists)
-            {
+            if (nonGoodDataExists) {
                 value.StatusCode = StatusCodes.UncertainDataSubNormal;
             }
 
@@ -323,6 +305,7 @@ namespace Opc.Ua.Server
             // return result.
             return value;
         }
+
         #endregion
     }
 }

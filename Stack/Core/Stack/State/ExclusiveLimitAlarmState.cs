@@ -23,11 +23,10 @@ using System.Reflection;
 using System.Threading;
 using Opc.Ua;
 
-namespace Opc.Ua
-{
-    public partial class ExclusiveLimitAlarmState
-    {
+namespace Opc.Ua {
+    public partial class ExclusiveLimitAlarmState {
         #region Public Methods
+
         /// <summary>
         /// Sets the active state of the condition.
         /// </summary>
@@ -35,29 +34,23 @@ namespace Opc.Ua
         /// <param name="active">if set to <c>true</c> the condition is active.</param>
         public override void SetActiveState(
             ISystemContext context,
-            bool active)
-        {
+            bool active) {
             // set it inactive.
-            if (!active)
-            {
+            if (!active) {
                 SetLimitState(context, LimitAlarmStates.Inactive);
                 return;
             }
 
             // check if the level state machine needs an initial state.
-            if (this.LimitState.CurrentState.Id.Value != null)
-            {
+            if (this.LimitState.CurrentState.Id.Value != null) {
                 base.SetActiveState(context, true);
                 return;
             }
 
             // assume a high if the high limit is specified.
-            if (this.HighLimit != null)
-            {
+            if (this.HighLimit != null) {
                 SetLimitState(context, LimitAlarmStates.High);
-            }
-            else
-            {
+            } else {
                 SetLimitState(context, LimitAlarmStates.Low);
             }
         }
@@ -69,44 +62,38 @@ namespace Opc.Ua
         /// <param name="limit">The bit masks specifying the current state.</param>
         public virtual void SetLimitState(
             ISystemContext context,
-            LimitAlarmStates limit)
-        {
-            switch (limit)
-            {
-                case LimitAlarmStates.HighHigh:
-                {
+            LimitAlarmStates limit) {
+            switch (limit) {
+                case LimitAlarmStates.HighHigh: {
                     this.LimitState.SetState(context, Objects.ExclusiveLimitStateMachineType_HighHigh);
                     break;
                 }
 
-                case LimitAlarmStates.High:
-                {
+                case LimitAlarmStates.High: {
                     this.LimitState.SetState(context, Objects.ExclusiveLimitStateMachineType_High);
                     break;
                 }
 
-                case LimitAlarmStates.Low:
-                {
+                case LimitAlarmStates.Low: {
                     this.LimitState.SetState(context, Objects.ExclusiveLimitStateMachineType_Low);
                     break;
                 }
 
-                case LimitAlarmStates.LowLow:
-                {
+                case LimitAlarmStates.LowLow: {
                     this.LimitState.SetState(context, Objects.ExclusiveLimitStateMachineType_LowLow);
                     break;
                 }
 
-                default:
-                {
+                default: {
                     this.LimitState.SetState(context, 0);
                     break;
                 }
-           }
+            }
 
-           SetActiveEffectiveSubState(context, this.LimitState.CurrentState.Value, DateTime.UtcNow);
-           base.SetActiveState(context, limit != LimitAlarmStates.Inactive);
+            SetActiveEffectiveSubState(context, this.LimitState.CurrentState.Value, DateTime.UtcNow);
+            base.SetActiveState(context, limit != LimitAlarmStates.Inactive);
         }
+
         #endregion
     }
 }

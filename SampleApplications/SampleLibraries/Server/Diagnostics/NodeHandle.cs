@@ -31,8 +31,7 @@ using System;
 using System.Text;
 using Opc.Ua;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Stores information about a NodeId specified by the client.
     /// </summary>
@@ -42,30 +41,29 @@ namespace Opc.Ua.Server
     /// verify that the NodeId refers to a real Node and find a NodeState object that 
     /// can be used to access the Node.
     /// </remarks>
-    public class NodeHandle
-    {
+    public class NodeHandle {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeHandle"/> class.
         /// </summary>
-        public NodeHandle()
-        {
-        }
+        public NodeHandle() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeHandle"/> class.
         /// </summary>
         /// <param name="nodeId">The node id.</param>
         /// <param name="node">The node.</param>
-        public NodeHandle(NodeId nodeId, NodeState node)
-        {
+        public NodeHandle(NodeId nodeId, NodeState node) {
             this.NodeId = nodeId;
             this.Validated = true;
             this.Node = node;
         }
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// The NodeId provided by the client.
         /// </summary>
@@ -114,6 +112,7 @@ namespace Opc.Ua.Server
         /// An object that can be used to manage the items which are monitoring the node.
         /// </summary>
         public MonitoredNode2 MonitoredNode { get; set; }
+
         #endregion
     }
 }

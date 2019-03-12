@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ua:ConfiguredEndpointCollection
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd"
   xmlns:ua="http://opcfoundation.org/UA/SDK/Configuration.xsd">
   <ua:KnownHosts />
   <ua:Endpoints>
@@ -223,5 +224,5 @@
     </ua:ConfiguredEndpoint>
 
   </ua:Endpoints>
-  
+
 </ua:ConfiguredEndpointCollection>

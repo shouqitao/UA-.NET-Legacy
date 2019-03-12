@@ -14,15 +14,12 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-namespace Opc.Ua.Schema.Binary
-{
+namespace Opc.Ua.Schema.Binary {
     /// <summary>
     /// The <b>Opc.Ua.Schema.Binary</b> namespace provides classes which implement the OPC Binary
     /// Type Description schema which is defined in Part 3 of the UA specification.
     /// </summary>
     ///<exclude/>
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NamespaceDoc
-    {
-    }
+    public class NamespaceDoc { }
 }

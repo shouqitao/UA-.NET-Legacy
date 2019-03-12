@@ -20,34 +20,28 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Stores information about engineering units.
     /// </summary>
-    public partial class VariableAttributes
-    {
+    public partial class VariableAttributes {
         /// <summary>
         /// Initializes the object with the unitName and namespaceUri.
         /// </summary>
-        public VariableAttributes(object value, byte accessLevel)
-        {
+        public VariableAttributes(object value, byte accessLevel) {
             Initialize();
-            
-            Value                   = new Variant(value);
-            AccessLevel             = accessLevel;
-            UserAccessLevel         = accessLevel;
-            MinimumSamplingInterval = MinimumSamplingIntervals.Indeterminate;
-            Historizing             = false;
 
-            if (value == null)
-            {
-                DataType  = DataTypes.BaseDataType;
+            Value = new Variant(value);
+            AccessLevel = accessLevel;
+            UserAccessLevel = accessLevel;
+            MinimumSamplingInterval = MinimumSamplingIntervals.Indeterminate;
+            Historizing = false;
+
+            if (value == null) {
+                DataType = DataTypes.BaseDataType;
                 ValueRank = ValueRanks.Any;
-            }
-            else
-            {
-                DataType  = TypeInfo.GetDataTypeId(value);
+            } else {
+                DataType = TypeInfo.GetDataTypeId(value);
                 ValueRank = TypeInfo.GetValueRank(value);
             }
         }

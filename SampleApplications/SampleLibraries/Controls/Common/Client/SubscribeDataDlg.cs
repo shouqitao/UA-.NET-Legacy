@@ -36,34 +36,35 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Allows the user to edit and issue read requests.
     /// </summary>
-    public partial class SubscribeDataDlg : Form, ISessionForm
-    {
+    public partial class SubscribeDataDlg : Form, ISessionForm {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public SubscribeDataDlg()
-        {
+        public SubscribeDataDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private Session m_session;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Changes the session used for the subscription.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             SubscribeRequestCTRL.ChangeSession(session);
             m_session = session;
         }
@@ -71,19 +72,14 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns true if the dialog has an active subscription assigned.
         /// </summary>
-        public bool HasSubscription
-        {
-            get
-            {
-                return SubscribeRequestCTRL.HasSubscription;
-            }
+        public bool HasSubscription {
+            get { return SubscribeRequestCTRL.HasSubscription; }
         }
 
         /// <summary>
         /// Set the subscription managed by the control.
         /// </summary>
-        public void SetSubscription(Subscription subscription)
-        {
+        public void SetSubscription(Subscription subscription) {
             SubscribeRequestCTRL.SetSubscription(subscription);
             NextBTN.Visible = SubscribeRequestCTRL.CanCallNext;
             BackBTN.Visible = SubscribeRequestCTRL.CanCallBack;
@@ -92,64 +88,52 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Adds the items to monitor.
         /// </summary>
-        public void AddItems(params ReadValueId[] nodesToRead)
-        {
+        public void AddItems(params ReadValueId[] nodesToRead) {
             SubscribeRequestCTRL.AddItems(nodesToRead);
             NextBTN.Visible = SubscribeRequestCTRL.CanCallNext;
             BackBTN.Visible = SubscribeRequestCTRL.CanCallBack;
         }
+
         #endregion
 
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
-        private void NextBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void NextBTN_Click(object sender, EventArgs e) {
+            try {
                 SubscribeRequestCTRL.Next();
                 NextBTN.Visible = SubscribeRequestCTRL.CanCallNext;
                 BackBTN.Visible = SubscribeRequestCTRL.CanCallBack;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void BackBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BackBTN_Click(object sender, EventArgs e) {
+            try {
                 SubscribeRequestCTRL.Back();
                 NextBTN.Visible = SubscribeRequestCTRL.CanCallNext;
                 BackBTN.Visible = SubscribeRequestCTRL.CanCallBack;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void CloseBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.Modal)
-                {
+        private void CloseBTN_Click(object sender, EventArgs e) {
+            try {
+                if (this.Modal) {
                     DialogResult = DialogResult.Cancel;
-                }
-                else
-                {
+                } else {
                     this.Close();
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

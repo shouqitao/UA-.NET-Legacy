@@ -23,74 +23,70 @@ using System.IO;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Bindings
-{
+namespace Opc.Ua.Bindings {
     /// <summary>
     /// Wraps the TcpTransportChannel and provides an ITransportChannel implementation.
     /// </summary>
-    public class TcpTransportChannel : ITransportChannel
-    {
+    public class TcpTransportChannel : ITransportChannel {
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
                 Utils.SilentDispose(m_channel);
                 m_channel = null;
             }
         }
+
         #endregion
 
         #region ITransportChannel Members
+
         /// <summary>
         /// A masking indicating which features are implemented.
         /// </summary>
-        public TransportChannelFeatures SupportedFeatures
-        {
-            get { return TransportChannelFeatures.Open | TransportChannelFeatures.BeginOpen | TransportChannelFeatures.Reconnect | TransportChannelFeatures.BeginSendRequest; }
+        public TransportChannelFeatures SupportedFeatures {
+            get {
+                return TransportChannelFeatures.Open | TransportChannelFeatures.BeginOpen |
+                       TransportChannelFeatures.Reconnect | TransportChannelFeatures.BeginSendRequest;
+            }
         }
 
         /// <summary>
         /// Gets the description for the endpoint used by the channel.
         /// </summary>
-        public EndpointDescription EndpointDescription
-        {
+        public EndpointDescription EndpointDescription {
             get { return m_settings.Description; }
         }
 
         /// <summary>
         /// Gets the configuration for the channel.
         /// </summary>
-        public EndpointConfiguration EndpointConfiguration
-        {
+        public EndpointConfiguration EndpointConfiguration {
             get { return m_settings.Configuration; }
         }
 
         /// <summary>
         /// Gets the context used when serializing messages exchanged via the channel.
         /// </summary>
-        public ServiceMessageContext MessageContext
-        {
+        public ServiceMessageContext MessageContext {
             get { return m_quotas.MessageContext; }
         }
 
         /// <summary>
         /// Gets or sets the default timeout for requests send via the channel.
         /// </summary>
-        public int OperationTimeout
-        {
-            get { return m_operationTimeout;  }
+        public int OperationTimeout {
+            get { return m_operationTimeout; }
             set { m_operationTimeout = value; }
         }
 
@@ -102,8 +98,7 @@ namespace Opc.Ua.Bindings
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         public void Initialize(
             Uri url,
-            TransportChannelSettings settings)
-        {
+            TransportChannelSettings settings) {
             SaveSettings(url, settings);
         }
 
@@ -111,8 +106,7 @@ namespace Opc.Ua.Bindings
         /// Opens a secure channel with the endpoint identified by the URL.
         /// </summary>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Open()
-        {
+        public void Open() {
             // opens when the first request is called to preserve previous behavoir.
         }
 
@@ -126,10 +120,8 @@ namespace Opc.Ua.Bindings
         /// </returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Open"/>
-        public IAsyncResult BeginOpen(AsyncCallback callback, object callbackData)
-        {
-            lock (m_lock)
-            {
+        public IAsyncResult BeginOpen(AsyncCallback callback, object callbackData) {
+            lock (m_lock) {
                 // create the channel.
                 m_channel = new TcpClientChannel(
                     Guid.NewGuid().ToString(),
@@ -151,8 +143,7 @@ namespace Opc.Ua.Bindings
         /// <param name="result">The result returned from the BeginOpen call.</param>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Open"/>
-        public void EndOpen(IAsyncResult result)
-        {
+        public void EndOpen(IAsyncResult result) {
             m_channel.EndConnect(result);
         }
 
@@ -163,18 +154,16 @@ namespace Opc.Ua.Bindings
         /// <remarks>
         /// Calling this method will cause outstanding requests over the current secure channel to fail.
         /// </remarks>
-        public void Reconnect()
-        {
+        public void Reconnect() {
             Utils.Trace("TcpTransportChannel RECONNECT: Reconnecting to {0}.", m_url);
 
-            lock (m_lock)
-            {
+            lock (m_lock) {
                 // the new channel must be created first because WinSock will reuse sockets and this
                 // can result in messages sent over the old socket arriving as messages on the new socket.
                 // if this happens the new channel is shutdown because of a security violation.
                 TcpClientChannel channel = m_channel;
                 m_channel = null;
-                
+
                 // reconnect.
                 OpenOnDemand();
 
@@ -183,18 +172,12 @@ namespace Opc.Ua.Bindings
                 m_channel.EndConnect(result);
 
                 // close existing channel.
-                if (channel != null)
-                {
-                    try
-                    {
+                if (channel != null) {
+                    try {
                         channel.Close(1000);
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         // do nothing.
-                    }
-                    finally
-                    {
+                    } finally {
                         channel.Dispose();
                     }
                 }
@@ -211,8 +194,7 @@ namespace Opc.Ua.Bindings
         /// </returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Reconnect"/>
-        public IAsyncResult BeginReconnect(AsyncCallback callback, object callbackData)
-        {
+        public IAsyncResult BeginReconnect(AsyncCallback callback, object callbackData) {
             throw new NotImplementedException();
         }
 
@@ -222,8 +204,7 @@ namespace Opc.Ua.Bindings
         /// <param name="result">The result returned from the BeginReconnect call.</param>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Reconnect"/>
-        public void EndReconnect(IAsyncResult result)
-        {
+        public void EndReconnect(IAsyncResult result) {
             throw new NotImplementedException();
         }
 
@@ -231,14 +212,10 @@ namespace Opc.Ua.Bindings
         /// Closes the secure channel.
         /// </summary>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Close()
-        {
-            if (m_channel != null)
-            {
-                lock (m_lock)
-                {
-                    if (m_channel != null)
-                    {
+        public void Close() {
+            if (m_channel != null) {
+                lock (m_lock) {
+                    if (m_channel != null) {
                         m_channel.Close(1000);
                         m_channel = null;
                     }
@@ -256,8 +233,7 @@ namespace Opc.Ua.Bindings
         /// </returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Close"/>
-        public IAsyncResult BeginClose(AsyncCallback callback, object callbackData)
-        {
+        public IAsyncResult BeginClose(AsyncCallback callback, object callbackData) {
             throw new NotImplementedException();
         }
 
@@ -267,8 +243,7 @@ namespace Opc.Ua.Bindings
         /// <param name="result">The result returned from the BeginClose call.</param>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Close"/>
-        public void EndClose(IAsyncResult result)
-        {
+        public void EndClose(IAsyncResult result) {
             throw new NotImplementedException();
         }
 
@@ -278,8 +253,7 @@ namespace Opc.Ua.Bindings
         /// <param name="request">The request to send.</param>
         /// <returns>The response returned by the server.</returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public IServiceResponse SendRequest(IServiceRequest request)
-        {
+        public IServiceResponse SendRequest(IServiceRequest request) {
             IAsyncResult result = BeginSendRequest(request, null, null);
             return EndSendRequest(result);
         }
@@ -295,16 +269,12 @@ namespace Opc.Ua.Bindings
         /// </returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="SendRequest"/>
-        public IAsyncResult BeginSendRequest(IServiceRequest request, AsyncCallback callback, object callbackData)
-        {
+        public IAsyncResult BeginSendRequest(IServiceRequest request, AsyncCallback callback, object callbackData) {
             TcpClientChannel channel = m_channel;
 
-            if (channel == null)
-            {
-                lock (m_lock)
-                {
-                    if (m_channel == null)
-                    {
+            if (channel == null) {
+                lock (m_lock) {
+                    if (m_channel == null) {
                         OpenOnDemand();
                     }
 
@@ -322,12 +292,10 @@ namespace Opc.Ua.Bindings
         /// <returns></returns>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="SendRequest"/>
-        public IServiceResponse EndSendRequest(IAsyncResult result)
-        {
+        public IServiceResponse EndSendRequest(IAsyncResult result) {
             TcpClientChannel channel = m_channel;
 
-            if (channel == null)
-            {
+            if (channel == null) {
                 throw ServiceResultException.Create(StatusCodes.BadSecureChannelClosed, "Channel has been closed.");
             }
 
@@ -339,8 +307,7 @@ namespace Opc.Ua.Bindings
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="settings">The settings.</param>
-        private void SaveSettings(Uri url, TransportChannelSettings settings)
-        {
+        private void SaveSettings(Uri url, TransportChannelSettings settings) {
             // save the settings.
             m_url = url;
             m_settings = settings;
@@ -367,32 +334,35 @@ namespace Opc.Ua.Bindings
             m_quotas.CertificateValidator = settings.CertificateValidator;
 
             // create the buffer manager.
-            m_bufferManager = new BufferManager("Client", (int)Int32.MaxValue, settings.Configuration.MaxBufferSize);
+            m_bufferManager = new BufferManager("Client", (int) Int32.MaxValue, settings.Configuration.MaxBufferSize);
         }
 
         /// <summary>
         /// Opens the channel before sending the request.
         /// </summary>
-        private void OpenOnDemand()
-        {
+        private void OpenOnDemand() {
             // create the channel.
             m_channel = new TcpClientChannel(
                 Guid.NewGuid().ToString(),
                 m_bufferManager,
                 m_quotas,
-                m_settings.ClientCertificateChain==null? m_settings.ClientCertificate: m_settings.ClientCertificateChain[0],
+                m_settings.ClientCertificateChain == null
+                    ? m_settings.ClientCertificate
+                    : m_settings.ClientCertificateChain[0],
                 m_settings.ServerCertificate,
                 m_settings.Description);
 
-            ((TcpClientChannel)m_channel).ClientCertificateChain = m_settings.ClientCertificateChain;
+            ((TcpClientChannel) m_channel).ClientCertificateChain = m_settings.ClientCertificateChain;
 
             // begin connect operation.
             // IAsyncResult result = m_channel.BeginConnect(m_url, m_operationTimeout, null, null);
             // m_channel.EndConnect(result);
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
         private Uri m_url;
         private int m_operationTimeout;
@@ -400,6 +370,7 @@ namespace Opc.Ua.Bindings
         private TcpChannelQuotas m_quotas;
         private BufferManager m_bufferManager;
         private TcpClientChannel m_channel;
+
         #endregion
     }
 }

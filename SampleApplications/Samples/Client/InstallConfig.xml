@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <s0:InstalledApplication
   xmlns:s0="http://opcfoundation.org/UA/SDK/Installation.xsd"
   xmlns:s1="http://opcfoundation.org/UA/SDK/Configuration.xsd"
@@ -32,5 +33,5 @@
     <!-- Show Only Security, ServiceResultExceptions, Errors and Trace -->
     <!-- <s1:TraceMasks>519</s1:TraceMasks> -->
   </s0:TraceConfiguration>
-  
+
 </s0:InstalledApplication>

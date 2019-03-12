@@ -38,13 +38,11 @@ using System.Globalization;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-namespace TestData
-{
+namespace TestData {
     /// <summary>
     /// An interface to an object which can access historical data for a variable.
     /// </summary>
-    public interface IHistoryDataSource
-    {
+    public interface IHistoryDataSource {
         /// <summary>
         /// Returns the next value in the archive.
         /// </summary>

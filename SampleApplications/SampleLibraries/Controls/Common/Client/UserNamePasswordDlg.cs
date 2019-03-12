@@ -36,18 +36,15 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to enter a user name/password.
     /// </summary>
-    public partial class UserNamePasswordDlg : Form
-    {
+    public partial class UserNamePasswordDlg : Form {
         /// <summary>
         /// Contructs the object.
         /// </summary>
-        public UserNamePasswordDlg()
-        {
+        public UserNamePasswordDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
@@ -55,26 +52,21 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public UserIdentity ShowDialog(IUserIdentity identity, string caption)
-        {
-            if (!String.IsNullOrEmpty(caption))
-            {
+        public UserIdentity ShowDialog(IUserIdentity identity, string caption) {
+            if (!String.IsNullOrEmpty(caption)) {
                 this.Text = caption;
             }
 
-            if (identity != null)
-            {
+            if (identity != null) {
                 UserNameIdentityToken token = identity.GetIdentityToken() as UserNameIdentityToken;
 
-                if (token != null)
-                {
+                if (token != null) {
                     UserNameTB.Text = token.UserName;
                     PasswordTB.Text = token.DecryptedPassword;
                 }
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 

@@ -22,32 +22,30 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace Opc.Ua
-{
-    public partial class DialogConditionState
-    {
+namespace Opc.Ua {
+    public partial class DialogConditionState {
         #region Initialization
+
         /// <summary>
         /// Called after a node is created.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
 
-            if (this.Respond != null)
-            {
+            if (this.Respond != null) {
                 this.Respond.OnCall = OnRespondCalled;
             }
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Activates the dialog.
         /// </summary>
         /// <param name="context">The system context.</param>
-        public void Activate(ISystemContext context)
-        {
+        public void Activate(ISystemContext context) {
             TranslationInfo state = new TranslationInfo(
                 "ConditionStateDialogActive",
                 "en-US",
@@ -56,8 +54,7 @@ namespace Opc.Ua
             this.DialogState.Value = new LocalizedText(state);
             this.DialogState.Id.Value = true;
 
-            if (this.DialogState.TransitionTime != null)
-            {
+            if (this.DialogState.TransitionTime != null) {
                 this.DialogState.TransitionTime.Value = DateTime.UtcNow;
             }
 
@@ -69,8 +66,7 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The system context.</param>
         /// <param name="response">The selected response.</param>
-        public virtual void SetResponse(ISystemContext context, int response)
-        {
+        public virtual void SetResponse(ISystemContext context, int response) {
             this.LastResponse.Value = response;
 
             TranslationInfo state = new TranslationInfo(
@@ -81,16 +77,17 @@ namespace Opc.Ua
             this.DialogState.Value = new LocalizedText(state);
             this.DialogState.Id.Value = false;
 
-            if (this.DialogState.TransitionTime != null)
-            {
+            if (this.DialogState.TransitionTime != null) {
                 this.DialogState.TransitionTime.Value = DateTime.UtcNow;
             }
 
             UpdateEffectiveState(context);
         }
+
         #endregion
 
         #region Event Handlers
+
         /// <summary>
         /// Raised when a dialog receives a Response.
         /// </summary>
@@ -98,17 +95,17 @@ namespace Opc.Ua
         /// Return code can be used to cancel the operation.
         /// </remarks>
         public DialogResponseEventHandler OnRespond;
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Updates the effective state for the condition.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void UpdateEffectiveState(ISystemContext context)
-        {            
-            if (!this.EnabledState.Id.Value)
-            {
+        protected override void UpdateEffectiveState(ISystemContext context) {
+            if (!this.EnabledState.Id.Value) {
                 base.UpdateEffectiveState(context);
                 return;
             }
@@ -117,8 +114,7 @@ namespace Opc.Ua
 
             string locale = null;
 
-            if (this.DialogState.Value != null)
-            {
+            if (this.DialogState.Value != null) {
                 locale = this.DialogState.Value.Locale;
                 builder.Append(this.DialogState.Value);
             }
@@ -140,44 +136,34 @@ namespace Opc.Ua
             ISystemContext context,
             MethodState method,
             NodeId objectId,
-            int selectedResponse)
-        {
+            int selectedResponse) {
             ServiceResult error = null;
 
-            try
-            {
-                if (!this.EnabledState.Id.Value)
-                {
+            try {
+                if (!this.EnabledState.Id.Value) {
                     return error = StatusCodes.BadConditionDisabled;
                 }
 
-                if (!this.DialogState.Id.Value)
-                {
+                if (!this.DialogState.Id.Value) {
                     return error = StatusCodes.BadDialogNotActive;
                 }
 
-                if (selectedResponse < 0 || selectedResponse >= this.ResponseOptionSet.Value.Length)
-                {
+                if (selectedResponse < 0 || selectedResponse >= this.ResponseOptionSet.Value.Length) {
                     return error = StatusCodes.BadDialogResponseInvalid;
                 }
 
-                if (OnRespond == null)
-                {
+                if (OnRespond == null) {
                     return error = StatusCodes.BadNotSupported;
                 }
 
                 error = OnRespond(context, this, selectedResponse);
 
                 // report a state change event.
-                if (ServiceResult.IsGood(error))
-                {
+                if (ServiceResult.IsGood(error)) {
                     ReportStateChange(context, false);
                 }
-            }
-            finally
-            {
-                if (this.AreEventsMonitored)
-                {
+            } finally {
+                if (this.AreEventsMonitored) {
                     AuditConditionRespondEventState e = new AuditConditionRespondEventState(null);
 
                     TranslationInfo info = new TranslationInfo(
@@ -199,7 +185,7 @@ namespace Opc.Ua
                     e.MethodId.Value = method.NodeId;
 
                     e.InputArguments = new PropertyState<object[]>(e);
-                    e.InputArguments.Value = new object[] { selectedResponse };
+                    e.InputArguments.Value = new object[] {selectedResponse};
 
                     ReportEvent(context, e);
                 }
@@ -207,6 +193,7 @@ namespace Opc.Ua
 
             return error;
         }
+
         #endregion
     }
 

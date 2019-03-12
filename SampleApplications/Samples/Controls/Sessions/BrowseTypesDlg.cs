@@ -35,71 +35,68 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class BrowseTypesDlg : Form
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class BrowseTypesDlg : Form {
         #region Constructors
-        public BrowseTypesDlg()
-        {
+
+        public BrowseTypesDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
         private ILocalNode m_selectedType;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
         public void Show(
             Session session,
-            NodeId  typeId)
-        {
+            NodeId typeId) {
             if (session == null) throw new ArgumentNullException("session");
 
-            m_session = session;                    
-            
+            m_session = session;
+
             TypeNavigatorCTRL.Initialize(m_session, typeId);
             TypeHierarchyCTRL.Initialize(m_session, typeId);
 
             Show();
             BringToFront();
         }
+
         #endregion
-        
+
         #region Private Methods
+
         #endregion
-        
+
         #region Event Handler
-        private void TypeNavigatorCTRL_TypeSelected(object sender, TypeNavigatorEventArgs e)
-        {
-            try
-            {
+
+        private void TypeNavigatorCTRL_TypeSelected(object sender, TypeNavigatorEventArgs e) {
+            try {
                 m_selectedType = e.Node;
 
-                if (m_selectedType != null)
-                {
+                if (m_selectedType != null) {
                     TypeHierarchyCTRL.Initialize(m_session, m_selectedType.NodeId);
-                }
-                else
-                {
+                } else {
                     TypeHierarchyCTRL.Initialize(m_session, null);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

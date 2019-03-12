@@ -20,20 +20,18 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// A message return in a Publish response.
     /// </summary>
-    public partial class NotificationMessage
-    {
+    public partial class NotificationMessage {
         #region Public Interface
+
         /// <summary>
         /// The string table that was received with the message.
         /// </summary>
-        public List<string> StringTable
-        {
-            get { return m_stringTable;  }
+        public List<string> StringTable {
+            get { return m_stringTable; }
             set { m_stringTable = value; }
         }
 
@@ -43,14 +41,11 @@ namespace Opc.Ua
         /// <value>
         ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEmpty
-        {
-            get
-            {
+        public bool IsEmpty {
+            get {
                 if (SequenceNumber == 0 &&
                     PublishTime == DateTime.MinValue &&
-                    NotificationData.Count == 0)
-                {
+                    NotificationData.Count == 0) {
                     return true;
                 }
 
@@ -61,47 +56,36 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the data changes contained in the notification message.
         /// </summary>
-        public IList<MonitoredItemNotification> GetDataChanges(bool reverse)
-        {
+        public IList<MonitoredItemNotification> GetDataChanges(bool reverse) {
             List<MonitoredItemNotification> datachanges = new List<MonitoredItemNotification>();
 
-            for (int jj = 0; jj < m_notificationData.Count; jj++)
-            {
+            for (int jj = 0; jj < m_notificationData.Count; jj++) {
                 ExtensionObject extension = m_notificationData[jj];
 
-                if (ExtensionObject.IsNull(extension))
-                {
+                if (ExtensionObject.IsNull(extension)) {
                     continue;
                 }
 
                 DataChangeNotification notification = extension.Body as DataChangeNotification;
-                                
-                if (notification == null)
-                {
+
+                if (notification == null) {
                     continue;
                 }
-    
-                if (reverse)
-                {
-                    for (int ii = notification.MonitoredItems.Count-1; ii >= 0; ii--)
-                    {
+
+                if (reverse) {
+                    for (int ii = notification.MonitoredItems.Count - 1; ii >= 0; ii--) {
                         MonitoredItemNotification datachange = notification.MonitoredItems[ii];
 
-                        if (datachange != null)
-                        {
+                        if (datachange != null) {
                             datachange.Message = this;
                             datachanges.Add(datachange);
                         }
                     }
-                }
-                else
-                {
-                    for (int ii = 0; ii < notification.MonitoredItems.Count; ii++)
-                    {
+                } else {
+                    for (int ii = 0; ii < notification.MonitoredItems.Count; ii++) {
                         MonitoredItemNotification datachange = notification.MonitoredItems[ii];
 
-                        if (datachange != null)
-                        {
+                        if (datachange != null) {
                             datachange.Message = this;
                             datachanges.Add(datachange);
                         }
@@ -111,49 +95,38 @@ namespace Opc.Ua
 
             return datachanges;
         }
-        
+
         /// <summary>
         /// Returns the events contained in the notification message.
         /// </summary>
-        public IList<EventFieldList> GetEvents(bool reverse)
-        {
+        public IList<EventFieldList> GetEvents(bool reverse) {
             List<EventFieldList> events = new List<EventFieldList>();
 
-            foreach (ExtensionObject extension in m_notificationData)
-            {
-                if (ExtensionObject.IsNull(extension))
-                {
+            foreach (ExtensionObject extension in m_notificationData) {
+                if (ExtensionObject.IsNull(extension)) {
                     continue;
                 }
 
                 EventNotificationList notification = extension.Body as EventNotificationList;
-                                
-                if (notification == null)
-                {
+
+                if (notification == null) {
                     continue;
-                }            
-    
-                if (reverse)
-                {
-                    for (int ii = notification.Events.Count-1; ii >= 0; ii--)
-                    {
+                }
+
+                if (reverse) {
+                    for (int ii = notification.Events.Count - 1; ii >= 0; ii--) {
                         EventFieldList eventFields = notification.Events[ii];
 
-                        if (eventFields != null)
-                        {
+                        if (eventFields != null) {
                             eventFields.Message = this;
                             events.Add(eventFields);
                         }
                     }
-                }
-                else
-                {
-                    for (int ii = 0; ii < notification.Events.Count; ii++)
-                    {
+                } else {
+                    for (int ii = 0; ii < notification.Events.Count; ii++) {
                         EventFieldList eventFields = notification.Events[ii];
 
-                        if (eventFields != null)
-                        {
+                        if (eventFields != null) {
                             eventFields.Message = this;
                             events.Add(eventFields);
                         }
@@ -163,10 +136,13 @@ namespace Opc.Ua
 
             return events;
         }
+
         #endregion
 
         #region Private Fields
+
         private List<string> m_stringTable;
+
         #endregion
     }
 }

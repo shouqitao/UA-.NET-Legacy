@@ -20,31 +20,28 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     #region ViewDescription Class
+
     /// <summary>
     /// Describes a view to browse or query.
     /// </summary>
-    public partial class ViewDescription
-    {
+    public partial class ViewDescription {
         /// <summary>
         /// Returns true if the view description represents the default (null) view.
         /// </summary>
-        public static bool IsDefault(ViewDescription view)
-        {
-            if (view == null)
-            {
+        public static bool IsDefault(ViewDescription view) {
+            if (view == null) {
                 return true;
             }
 
-            if (NodeId.IsNull(view.m_viewId) && view.m_viewVersion == 0 && view.m_timestamp == DateTime.MinValue)
-            {
+            if (NodeId.IsNull(view.m_viewId) && view.m_viewVersion == 0 && view.m_timestamp == DateTime.MinValue) {
                 return true;
             }
 
             return false;
         }
     }
+
     #endregion
 }

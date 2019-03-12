@@ -35,86 +35,81 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class CallMethodDlg : Form
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class CallMethodDlg : Form {
         #region Constructors
-        public CallMethodDlg()
-        {
+
+        public CallMethodDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
             m_SessionClosing = new EventHandler(Session_Closing);
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
         private EventHandler m_SessionClosing;
         private NodeId m_objectId;
         private NodeId m_methodId;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public void Show(Session session, NodeId objectId, NodeId methodId)
-        {
-            if (session == null)  throw new ArgumentNullException("session");
+        public void Show(Session session, NodeId objectId, NodeId methodId) {
+            if (session == null) throw new ArgumentNullException("session");
             if (methodId == null) throw new ArgumentNullException("methodId");
-            
-            if (m_session != null)
-            {
+
+            if (m_session != null) {
                 m_session.SessionClosing -= m_SessionClosing;
             }
 
             m_session = session;
             m_session.SessionClosing += m_SessionClosing;
-        
-            m_objectId = objectId;            
+
+            m_objectId = objectId;
             m_methodId = methodId;
 
-            InputArgumentsCTRL.Update(session, methodId, true);     
+            InputArgumentsCTRL.Update(session, methodId, true);
             OutputArgumentsCTRL.Update(session, methodId, false);
-            
+
             Node target = session.NodeCache.Find(objectId) as Node;
             Node method = session.NodeCache.Find(methodId) as Node;
 
-            if (target != null && method != null)
-            {
+            if (target != null && method != null) {
                 Text = String.Format("Call {0}.{1}", target, method);
             }
 
             Show();
             BringToFront();
         }
+
         #endregion
-                
-        private void Session_Closing(object sender, EventArgs e)
-        {
-            if (Object.ReferenceEquals(sender, m_session))
-            {
+
+        private void Session_Closing(object sender, EventArgs e) {
+            if (Object.ReferenceEquals(sender, m_session)) {
                 m_session.SessionClosing -= m_SessionClosing;
                 m_session = null;
                 Close();
             }
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 VariantCollection inputArguments = InputArgumentsCTRL.GetValues();
-                                
+
                 CallMethodRequest request = new CallMethodRequest();
 
-                request.ObjectId       = m_objectId;
-                request.MethodId       = m_methodId;
+                request.ObjectId = m_objectId;
+                request.MethodId = m_methodId;
                 request.InputArguments = inputArguments;
 
                 CallMethodRequestCollection requests = new CallMethodRequestCollection();
@@ -129,39 +124,29 @@ namespace Opc.Ua.Sample.Controls
                     out results,
                     out diagnosticInfos);
 
-                if (StatusCode.IsBad(results[0].StatusCode))
-                {
-                    throw new ServiceResultException(new ServiceResult(results[0].StatusCode, 0, diagnosticInfos, responseHeader.StringTable));
+                if (StatusCode.IsBad(results[0].StatusCode)) {
+                    throw new ServiceResultException(new ServiceResult(results[0].StatusCode, 0, diagnosticInfos,
+                        responseHeader.StringTable));
                 }
 
                 OutputArgumentsCTRL.SetValues(results[0].OutputArguments);
 
-                if (results[0].OutputArguments.Count == 0)
-                {
+                if (results[0].OutputArguments.Count == 0) {
                     MessageBox.Show(this, "Method executed successfully.");
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void CancelBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (Modal)
-                {
+        private void CancelBTN_Click(object sender, EventArgs e) {
+            try {
+                if (Modal) {
                     DialogResult = DialogResult.Cancel;
-                }
-                else
-                {
+                } else {
                     Close();
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

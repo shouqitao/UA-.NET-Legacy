@@ -37,53 +37,45 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control with button that displays edit array dialog.
     /// </summary>
-    public partial class SelectProfileCtrl : UserControl
-    {
+    public partial class SelectProfileCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Creates a new instance of the control.
         /// </summary>
-        public SelectProfileCtrl()
-        {
+        public SelectProfileCtrl() {
             InitializeComponent();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private event EventHandler m_ProfilesChanged;
         private Opc.Ua.Security.ListOfSecurityProfiles m_profiles;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// The list of available security profiles.
         /// </summary>
-        public Opc.Ua.Security.ListOfSecurityProfiles Profiles 
-        {
-            get 
-            { 
-                return m_profiles; 
-            }
+        public Opc.Ua.Security.ListOfSecurityProfiles Profiles {
+            get { return m_profiles; }
 
-            set
-            {
-                if (CurrentProfilesControl != null)
-                {
+            set {
+                if (CurrentProfilesControl != null) {
                     StringBuilder builder = new StringBuilder();
 
-                    if (value != null)
-                    {
-                        for (int ii = 0; ii < value.Count; ii++)
-                        {
-                            if (value[ii].Enabled)
-                            {
-                                if (builder.Length > 0)
-                                {
+                    if (value != null) {
+                        for (int ii = 0; ii < value.Count; ii++) {
+                            if (value[ii].Enabled) {
+                                if (builder.Length > 0) {
                                     builder.Append(", ");
                                 }
 
@@ -96,10 +88,9 @@ namespace Opc.Ua.Client.Controls
                 }
 
                 m_profiles = value;
-
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the control that is stores with the current file path.
         /// </summary>
@@ -108,35 +99,33 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Raised when the profiles are changed.
         /// </summary>
-        public event EventHandler ProfilesChanged
-        {
+        public event EventHandler ProfilesChanged {
             add { m_ProfilesChanged += value; }
             remove { m_ProfilesChanged -= value; }
         }
+
         #endregion
 
         #region Event Handlers
-        private void BrowseBTN_Click(object sender, EventArgs e)
-        {
-            if (CurrentProfilesControl == null)
-            {
+
+        private void BrowseBTN_Click(object sender, EventArgs e) {
+            if (CurrentProfilesControl == null) {
                 return;
             }
 
             Opc.Ua.Security.ListOfSecurityProfiles profiles = new SelectProfileDlg().ShowDialog(Profiles, null);
 
-            if (profiles == null)
-            {
+            if (profiles == null) {
                 return;
             }
 
             Profiles = profiles;
 
-            if (m_ProfilesChanged != null)
-            {
+            if (m_ProfilesChanged != null) {
                 m_ProfilesChanged(this, e);
             }
         }
+
         #endregion
     }
 }

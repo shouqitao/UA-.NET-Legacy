@@ -22,14 +22,13 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using Opc.Ua.Bindings;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
-	///  A channel object used by clients to access a UA service.
-	/// </summary>
-    public partial class SessionChannel 
-    {
+    ///  A channel object used by clients to access a UA service.
+    /// </summary>
+    public partial class SessionChannel {
         #region Constructors
+
         /// <summary>
         /// Creates a new transport channel that supports the ISessionChannel service contract.
         /// </summary>
@@ -44,8 +43,7 @@ namespace Opc.Ua
             EndpointDescription description,
             EndpointConfiguration endpointConfiguration,
             X509Certificate2 clientCertificate,
-            ServiceMessageContext messageContext)
-        {
+            ServiceMessageContext messageContext) {
             // create a UA binary channel.
             ITransportChannel channel = CreateUaBinaryChannel(
                 configuration,
@@ -53,11 +51,10 @@ namespace Opc.Ua
                 endpointConfiguration,
                 clientCertificate,
                 messageContext);
-            
-            #if !SILVERLIGHT
+
+#if !SILVERLIGHT
             // create a WCF XML channel.
-            if (channel == null)
-            {
+            if (channel == null) {
                 Uri endpointUrl = new Uri(description.EndpointUrl);
                 BindingFactory bindingFactory = BindingFactory.Create(configuration, messageContext);
                 Binding binding = bindingFactory.Create(endpointUrl.Scheme, description, endpointConfiguration);
@@ -74,8 +71,8 @@ namespace Opc.Ua
 
                 channel = wcfXmlChannel;
             }
-            #endif
-            
+#endif
+
             return channel;
         }
 
@@ -93,8 +90,7 @@ namespace Opc.Ua
             EndpointDescription description,
             EndpointConfiguration endpointConfiguration,
             X509Certificate2Collection clientCertificates,
-            ServiceMessageContext messageContext)
-        {
+            ServiceMessageContext messageContext) {
             // create a UA binary channel.
             ITransportChannel channel = CreateUaBinaryChannel(
                 configuration,
@@ -105,8 +101,7 @@ namespace Opc.Ua
 
 #if !SILVERLIGHT
             // create a WCF XML channel.
-            if (channel == null)
-            {
+            if (channel == null) {
                 Uri endpointUrl = new Uri(description.EndpointUrl);
                 BindingFactory bindingFactory = BindingFactory.Create(configuration, messageContext);
                 Binding binding = bindingFactory.Create(endpointUrl.Scheme, description, endpointConfiguration);
@@ -127,9 +122,9 @@ namespace Opc.Ua
 
             return channel;
         }
-        
 
-        #if !SILVERLIGHT
+
+#if !SILVERLIGHT
         /// <summary>
         /// Initializes a channel from the EndpointDescription and loads the behavoir from the configuration file.
         /// </summary>
@@ -140,9 +135,8 @@ namespace Opc.Ua
         [Obsolete("Must use the version that returns a ITransportChannel object.")]
         public static SessionChannel Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            string                   configurationName)
-        {
+            EndpointDescription description,
+            string configurationName) {
             return Create(configuration, description, null, BindingFactory.Default, null, configurationName);
         }
 
@@ -157,11 +151,11 @@ namespace Opc.Ua
         [Obsolete("Must use the version that returns a ITransportChannel object.")]
         public static SessionChannel Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            EndpointConfiguration    endpointConfiguration,
-            string                   configurationName)
-        {
-            return Create(configuration, description, endpointConfiguration, BindingFactory.Default, null, configurationName);
+            EndpointDescription description,
+            EndpointConfiguration endpointConfiguration,
+            string configurationName) {
+            return Create(configuration, description, endpointConfiguration, BindingFactory.Default, null,
+                configurationName);
         }
 
         /// <summary>
@@ -174,9 +168,8 @@ namespace Opc.Ua
         [Obsolete("Must use the version that returns a ITransportChannel object.")]
         public static SessionChannel Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            X509Certificate2         clientCertificate)
-        {
+            EndpointDescription description,
+            X509Certificate2 clientCertificate) {
             return Create(configuration, description, null, BindingFactory.Default, clientCertificate, null);
         }
 
@@ -191,11 +184,11 @@ namespace Opc.Ua
         [Obsolete("Must use the version that returns a ITransportChannel object.")]
         public static SessionChannel Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            EndpointConfiguration    endpointConfiguration,
-            X509Certificate2         clientCertificate)
-        {
-            return Create(configuration, description, endpointConfiguration, BindingFactory.Default, clientCertificate, null);
+            EndpointDescription description,
+            EndpointConfiguration endpointConfiguration,
+            X509Certificate2 clientCertificate) {
+            return Create(configuration, description, endpointConfiguration, BindingFactory.Default, clientCertificate,
+                null);
         }
 
         /// <summary>
@@ -211,21 +204,21 @@ namespace Opc.Ua
         [Obsolete("Must use the version that returns a ITransportChannel object.")]
         public static SessionChannel Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            EndpointConfiguration    endpointConfiguration,
-            BindingFactory           bindingFactory,
-            X509Certificate2         clientCertificate,
-            string                   configurationName)
-        {
-            if (description == null)    throw new ArgumentNullException("description");
-            if (configuration == null)  throw new ArgumentNullException("configuration");
+            EndpointDescription description,
+            EndpointConfiguration endpointConfiguration,
+            BindingFactory bindingFactory,
+            X509Certificate2 clientCertificate,
+            string configurationName) {
+            if (description == null) throw new ArgumentNullException("description");
+            if (configuration == null) throw new ArgumentNullException("configuration");
             if (bindingFactory == null) throw new ArgumentNullException("bindingFactory");
-            
+
             Uri uri = new Uri(description.EndpointUrl);
-        
-            Binding binding = bindingFactory.Create(uri.Scheme, description, endpointConfiguration); 
-          
-            return Create(configuration, description, endpointConfiguration, binding, clientCertificate, configurationName);
+
+            Binding binding = bindingFactory.Create(uri.Scheme, description, endpointConfiguration);
+
+            return Create(configuration, description, endpointConfiguration, binding, clientCertificate,
+                configurationName);
         }
 
         /// <summary>
@@ -241,14 +234,13 @@ namespace Opc.Ua
         [Obsolete("Must use the version that returns a ITransportChannel object.")]
         public static SessionChannel Create(
             ApplicationConfiguration configuration,
-            EndpointDescription      description,
-            EndpointConfiguration    endpointConfiguration,
-            Binding                  binding,
-            X509Certificate2         clientCertificate,
-            string                   configurationName)
-        {
+            EndpointDescription description,
+            EndpointConfiguration endpointConfiguration,
+            Binding binding,
+            X509Certificate2 clientCertificate,
+            string configurationName) {
             SessionChannel channel = new SessionChannel();
-            
+
             channel.Initialize(
                 configuration,
                 description,
@@ -256,10 +248,11 @@ namespace Opc.Ua
                 binding,
                 clientCertificate,
                 configurationName);
-            
+
             return channel;
         }
 #endif
+
         #endregion
     }
 }

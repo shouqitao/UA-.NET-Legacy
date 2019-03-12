@@ -34,41 +34,33 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 using System.ComponentModel;
 using System.IO;
-
 using Opc.Ua.Configuration;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.ServerTest
-{
-    static class Program
-    {
+namespace Opc.Ua.ServerTest {
+    static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             ApplicationInstance application = new ApplicationInstance();
-            application.ApplicationName   = "UA Server Test Tool";
-            application.ApplicationType   = ApplicationType.Client;
+            application.ApplicationName = "UA Server Test Tool";
+            application.ApplicationType = ApplicationType.Client;
             application.ConfigSectionName = "Opc.Ua.ServerTestTool";
 
-            try
-            {
+            try {
                 // process and command line arguments.
-                if (application.ProcessCommandLine())
-                {
+                if (application.ProcessCommandLine()) {
                     return;
                 }
 
                 // run the application interactively.
                 Application.Run(new MainForm());
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 ExceptionDlg.Show(application.ApplicationName, e);
                 return;
             }
@@ -77,18 +69,18 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Runs the test in a console.
         /// </summary>
-        private static void RunInConsole(string endpointUrl)
-        {
-            ApplicationConfiguration m_configuration = GuiUtils.DoStartupChecks("Opc.Ua.ServerTestTool", ApplicationType.Client, null, true);
+        private static void RunInConsole(string endpointUrl) {
+            ApplicationConfiguration m_configuration =
+                GuiUtils.DoStartupChecks("Opc.Ua.ServerTestTool", ApplicationType.Client, null, true);
 
-            if (m_configuration == null)
-            {
+            if (m_configuration == null) {
                 return;
             }
 
             GuiUtils.OverrideUaTcpImplementation(m_configuration);
 
-            m_configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+            m_configuration.CertificateValidator.CertificateValidation +=
+                new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             ServerTestConfiguration m_testConfiguration = ServerTestConfiguration.Load(m_configuration.Extensions);
 
             m_testConfiguration.Coverage = 30;
@@ -98,34 +90,28 @@ namespace Opc.Ua.ServerTest
             // initialize the log file.
             m_logFilePath = null;
 
-            if (m_configuration.TraceConfiguration != null)
-            {
-                m_logFilePath = Utils.GetAbsoluteFilePath(m_configuration.TraceConfiguration.OutputFilePath, true, false, true);
+            if (m_configuration.TraceConfiguration != null) {
+                m_logFilePath = Utils.GetAbsoluteFilePath(m_configuration.TraceConfiguration.OutputFilePath, true,
+                    false, true);
                 FileInfo file = new FileInfo(m_logFilePath);
                 m_logFilePath = file.DirectoryName;
                 m_logFilePath += "\\Opc.Ua.ServerTestTool";
             }
 
-            if (String.IsNullOrEmpty(m_logFilePath))
-            {
+            if (String.IsNullOrEmpty(m_logFilePath)) {
                 m_logFilePath = m_configuration.SourceFilePath;
             }
 
-            if (!String.IsNullOrEmpty(m_logFilePath))
-            {
-                try
-                {
+            if (!String.IsNullOrEmpty(m_logFilePath)) {
+                try {
                     m_logFilePath += ".";
                     m_logFilePath += Utils.GetAssemblyBuildNumber();
                     m_logFilePath += ".log.txt";
 
-                    using (StreamWriter logWriter = new StreamWriter(File.Open(m_logFilePath, FileMode.Create)))
-                    {
+                    using (StreamWriter logWriter = new StreamWriter(File.Open(m_logFilePath, FileMode.Create))) {
                         logWriter.WriteLine(Utils.Format("Logging Started at {0:HH:mm:ss}", DateTime.Now));
                     }
-                }
-                catch (Exception exception)
-                {
+                } catch (Exception exception) {
                     Console.WriteLine(exception.Message);
                 }
             }
@@ -136,7 +122,8 @@ namespace Opc.Ua.ServerTest
             ConfiguredEndpointCollection collection = new ConfiguredEndpointCollection();
             ConfiguredEndpoint endpoint = collection.Create(endpointUrl);
 
-            testClient.ReportResult += new EventHandler<ServerTestClient.ReportResultEventArgs>(TestClient_ReportTestResult);
+            testClient.ReportResult +=
+                new EventHandler<ServerTestClient.ReportResultEventArgs>(TestClient_ReportTestResult);
             testClient.Run(endpoint, m_testConfiguration);
         }
 
@@ -147,21 +134,14 @@ namespace Opc.Ua.ServerTest
         /// <param name="e">The <see cref="Opc.Ua.ServerTest.ServerTestClient.ReportResultEventArgs"/> instance containing the event data.</param>
         private static void TestClient_ReportTestResult(
             object sender,
-            ServerTestClient.ReportResultEventArgs e)
-        {
-            try
-            {
-                if (e.Args == null || e.Args.Length == 0)
-                {
+            ServerTestClient.ReportResultEventArgs e) {
+            try {
+                if (e.Args == null || e.Args.Length == 0) {
                     LogMessage(e.Format);
-                }
-                else
-                {
+                } else {
                     LogMessage(Utils.Format(e.Format, e.Args));
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 Console.WriteLine(exception.Message);
             }
         }
@@ -169,29 +149,24 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Logs a message.
         /// </summary>
-        private static void LogMessage(string message)
-        {
-            try
-            {
-                if (!String.IsNullOrEmpty(m_logFilePath))
-                {
-                    using (StreamWriter logWriter = new StreamWriter(File.Open(m_logFilePath, FileMode.Append)))
-                    {
+        private static void LogMessage(string message) {
+            try {
+                if (!String.IsNullOrEmpty(m_logFilePath)) {
+                    using (StreamWriter logWriter = new StreamWriter(File.Open(m_logFilePath, FileMode.Append))) {
                         logWriter.WriteLine(message);
                     }
                 }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(Utils.Format("ERROR WRITING TO LOGFILE: {0}\r\n", exception.Message.ToUpperInvariant()));
+            } catch (Exception exception) {
+                Console.WriteLine(Utils.Format("ERROR WRITING TO LOGFILE: {0}\r\n",
+                    exception.Message.ToUpperInvariant()));
             }
         }
 
         /// <summary>
         /// Accepts server certificates.
         /// </summary>
-        static void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
+        static void CertificateValidator_CertificateValidation(CertificateValidator validator,
+            CertificateValidationEventArgs e) {
             // always safe to trust servers when connecting as a test application.
             e.Accept = true;
         }

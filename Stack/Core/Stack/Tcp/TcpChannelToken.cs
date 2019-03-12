@@ -20,84 +20,74 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Bindings
-{
+namespace Opc.Ua.Bindings {
     /// <summary>
     /// Represents a security token associate with a channel.
     /// </summary>
-    public class TcpChannelToken
-    {
+    public class TcpChannelToken {
         #region Constructors
+
         /// <summary>
         /// Creates an object with default values.
         /// </summary>
-        public TcpChannelToken()
-        {
-        }
+        public TcpChannelToken() { }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// The id assigned to the channel that the token belongs to.
         /// </summary>
-        public uint ChannelId
-        {
-            get { return m_channelId;  }            
+        public uint ChannelId {
+            get { return m_channelId; }
             set { m_channelId = value; }
         }
-        
+
         /// <summary>
         /// The id assigned to the token.
         /// </summary>
-        public uint TokenId
-        {
-            get { return m_tokenId;  }            
+        public uint TokenId {
+            get { return m_tokenId; }
             set { m_tokenId = value; }
         }
 
         /// <summary>
         /// When the token was created by the server (refers to the server's clock).
         /// </summary>
-        public DateTime CreatedAt
-        {
-            get { return m_createdAt;  }            
+        public DateTime CreatedAt {
+            get { return m_createdAt; }
             set { m_createdAt = value; }
         }
 
         /// <summary>
         /// The lifetime of the token in milliseconds.
         /// </summary>
-        public int Lifetime
-        {
-            get { return m_lifetime;  }            
+        public int Lifetime {
+            get { return m_lifetime; }
             set { m_lifetime = value; }
-        }        
+        }
 
         /// <summary>
         /// Whether the token has expired.
         /// </summary>
-        public bool Expired
-        {
-            get 
-            { 
-                if (DateTime.UtcNow > m_createdAt.AddMilliseconds(m_lifetime))
-                {
+        public bool Expired {
+            get {
+                if (DateTime.UtcNow > m_createdAt.AddMilliseconds(m_lifetime)) {
                     return true;
                 }
 
-                return false;  
-            } 
+                return false;
+            }
         }
 
         /// <summary>
         /// Whether the token should be activated in case a new one is already created.
         /// </summary>
-        public bool ActivationRequired
-        {
-            get
-            {
-                if (DateTime.UtcNow > m_createdAt.AddMilliseconds(m_lifetime*TcpMessageLimits.TokenActivationPeriod))
-                {
+        public bool ActivationRequired {
+            get {
+                if (DateTime.UtcNow >
+                    m_createdAt.AddMilliseconds(m_lifetime * TcpMessageLimits.TokenActivationPeriod)) {
                     return true;
                 }
 
@@ -108,121 +98,119 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// The nonce provided by the client.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ClientNonce
-        {
-            get { return m_clientNonce;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ClientNonce {
+            get { return m_clientNonce; }
             set { m_clientNonce = value; }
         }
 
         /// <summary>
         /// The nonce provided by the server.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ServerNonce
-        {
-            get { return m_serverNonce;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ServerNonce {
+            get { return m_serverNonce; }
             set { m_serverNonce = value; }
         }
-        
+
         /// <summary>
         /// The key used to sign messages sent by the client.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ClientSigningKey
-        {
-            get { return m_clientSigningKey;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ClientSigningKey {
+            get { return m_clientSigningKey; }
             set { m_clientSigningKey = value; }
         }
 
         /// <summary>
         /// The key used to encrypt messages sent by the client.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ClientEncryptingKey
-        {
-            get { return m_clientEncryptingKey;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ClientEncryptingKey {
+            get { return m_clientEncryptingKey; }
             set { m_clientEncryptingKey = value; }
         }
 
         /// <summary>
         /// The initialization vector by the client when encrypting a message.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ClientInitializationVector
-        {
-            get { return m_clientInitializationVector;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ClientInitializationVector {
+            get { return m_clientInitializationVector; }
             set { m_clientInitializationVector = value; }
         }
 
         /// <summary>
         /// The key used to sign messages sent by the server.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ServerSigningKey
-        {
-            get { return m_serverSigningKey;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ServerSigningKey {
+            get { return m_serverSigningKey; }
             set { m_serverSigningKey = value; }
         }
 
         /// <summary>
         /// The key used to encrypt messages sent by the server.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ServerEncryptingKey
-        {
-            get { return m_serverEncryptingKey;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ServerEncryptingKey {
+            get { return m_serverEncryptingKey; }
             set { m_serverEncryptingKey = value; }
         }
 
         /// <summary>
         /// The initialization vector by the server when encrypting a message.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public byte[] ServerInitializationVector
-        {
-            get { return m_serverInitializationVector;  }            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays")]
+        public byte[] ServerInitializationVector {
+            get { return m_serverInitializationVector; }
             set { m_serverInitializationVector = value; }
         }
 
         /// <summary>
         /// The SymmetricAlgorithm object used by the client to encrypt messages.
         /// </summary>
-        public SymmetricAlgorithm ClientEncryptor
-        {
-            get { return m_clientEncryptor;  }            
+        public SymmetricAlgorithm ClientEncryptor {
+            get { return m_clientEncryptor; }
             set { m_clientEncryptor = value; }
         }
 
         /// <summary>
         /// The SymmetricAlgorithm object used by the server to encrypt messages.
         /// </summary>
-        public SymmetricAlgorithm ServerEncryptor
-        {
-            get { return m_serverEncryptor;  }            
+        public SymmetricAlgorithm ServerEncryptor {
+            get { return m_serverEncryptor; }
             set { m_serverEncryptor = value; }
         }
 
         /// <summary>
         /// The HMAC object used by the client to sign messages.
         /// </summary>
-        public HMAC ClientHmac
-        {
-            get { return m_clientHmac;  }            
+        public HMAC ClientHmac {
+            get { return m_clientHmac; }
             set { m_clientHmac = value; }
         }
 
         /// <summary>
         /// The HMAC object used by the server to sign messages.
         /// </summary>
-        public HMAC ServerHmac
-        {
-            get { return m_serverHmac;  }            
+        public HMAC ServerHmac {
+            get { return m_serverHmac; }
             set { m_serverHmac = value; }
         }
-        #endregion       
+
+        #endregion
 
         #region Private Fields
+
         private uint m_channelId;
         private uint m_tokenId;
         private DateTime m_createdAt;
@@ -239,6 +227,7 @@ namespace Opc.Ua.Bindings
         private HMAC m_serverHmac;
         private SymmetricAlgorithm m_clientEncryptor;
         private SymmetricAlgorithm m_serverEncryptor;
+
         #endregion
     }
 }

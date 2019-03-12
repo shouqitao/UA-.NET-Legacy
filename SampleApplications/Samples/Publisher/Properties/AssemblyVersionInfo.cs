@@ -28,8 +28,7 @@ using System.Text;
 /// <summary>
 /// Defines string constants for SDK version information.
 /// </summary>
-internal static class AssemblyVersionInfo
-{
+internal static class AssemblyVersionInfo {
     /// <summary>
     /// The current copy right notice.
     /// </summary>

@@ -38,13 +38,11 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Creates UserName.
     /// </summary>
-    public class UserNameCreator
-    {
+    public class UserNameCreator {
         /// <summary>
         /// Triple DES Key
         /// </summary>
@@ -56,13 +54,14 @@ namespace Opc.Ua.Configuration
         private const string strIV = "Zse5";
 
         #region Constructors
+
         /// <summary>
         /// The default constructor.
         /// </summary>
-        public UserNameCreator(string applicationName)
-        {
+        public UserNameCreator(string applicationName) {
             m_UserNameIdentityTokens = LoadUserName(applicationName);
         }
+
         #endregion
 
         #region Public Methods
@@ -73,12 +72,9 @@ namespace Opc.Ua.Configuration
         /// <param name="applicationName">The Application Name.</param>
         /// <param name="userName">The UserName.</param>
         /// <param name="password">The Password.</param>
-        public void Add(string applicationName, string userName, string password)
-        {
-            lock (m_lock)
-            {
-                UserNameIdentityToken newUserNameToken = new UserNameIdentityToken()
-                {
+        public void Add(string applicationName, string userName, string password) {
+            lock (m_lock) {
+                UserNameIdentityToken newUserNameToken = new UserNameIdentityToken() {
                     UserName = userName,
                     DecryptedPassword = password,
                 };
@@ -97,21 +93,18 @@ namespace Opc.Ua.Configuration
         /// <param name="applicationName">The Application Name.</param>
         /// <param name="userName">The  UserName.</param>
         /// <returns>True if the item deleted from list.</returns>
-        public bool Delete(string applicationName, string userName)
-        {
-            lock (m_lock)
-            {
-                string relativePath = Utils.Format("%CommonApplicationData%\\OPC Foundation\\Accounts\\{0}\\{1}.xml", applicationName, userName);
+        public bool Delete(string applicationName, string userName) {
+            lock (m_lock) {
+                string relativePath = Utils.Format("%CommonApplicationData%\\OPC Foundation\\Accounts\\{0}\\{1}.xml",
+                    applicationName, userName);
                 string absolutePath = Utils.GetAbsoluteFilePath(relativePath, false, false, true);
 
                 // oops - nothing found.
-                if (absolutePath == null)
-                {
+                if (absolutePath == null) {
                     absolutePath = Utils.GetAbsoluteFilePath(relativePath, true, false, true);
                 }
 
-                if (File.Exists(absolutePath))
-                {   // delete a file.
+                if (File.Exists(absolutePath)) { // delete a file.
                     File.Delete(absolutePath);
                 }
 
@@ -123,44 +116,40 @@ namespace Opc.Ua.Configuration
         /// Load UserNameIdentityToken.
         /// </summary>
         /// <returns>UserNameIdentityToken list.</returns>
-        public static Dictionary<string, UserNameIdentityToken> LoadUserName(string applicationName)
-        {
+        public static Dictionary<string, UserNameIdentityToken> LoadUserName(string applicationName) {
             Dictionary<string, UserNameIdentityToken> resultTokens = new Dictionary<string, UserNameIdentityToken>();
 
-            try
-            {
-                string relativePath = Utils.Format("%CommonApplicationData%\\OPC Foundation\\Accounts\\{0}", applicationName);
+            try {
+                string relativePath =
+                    Utils.Format("%CommonApplicationData%\\OPC Foundation\\Accounts\\{0}", applicationName);
                 string absolutePath = Utils.GetAbsoluteDirectoryPath(relativePath, false, false, false);
 
-                if (string.IsNullOrEmpty(absolutePath))
-                {
+                if (string.IsNullOrEmpty(absolutePath)) {
                     return resultTokens;
                 }
 
-                foreach (string filePath in Directory.GetFiles(absolutePath))
-                {
+                foreach (string filePath in Directory.GetFiles(absolutePath)) {
                     // oops - nothing found.
-                    if (filePath == null)
-                    {
+                    if (filePath == null) {
                         continue;
                     }
 
                     // open the file.
-                    using (FileStream istrm = File.Open(filePath, FileMode.Open, FileAccess.Read))
-                    {
-                        using (XmlTextReader reader = new XmlTextReader(istrm))
-                        {
-                            DataContractSerializer serializer = new DataContractSerializer(typeof(UserNameIdentityToken));
-                            UserNameIdentityToken userNameToken = (UserNameIdentityToken)serializer.ReadObject(reader, false);
+                    using (FileStream istrm = File.Open(filePath, FileMode.Open, FileAccess.Read)) {
+                        using (XmlTextReader reader = new XmlTextReader(istrm)) {
+                            DataContractSerializer serializer =
+                                new DataContractSerializer(typeof(UserNameIdentityToken));
+                            UserNameIdentityToken userNameToken =
+                                (UserNameIdentityToken) serializer.ReadObject(reader, false);
 
-                            if (userNameToken.UserName == null || userNameToken.Password == null)
-                            {  // The configuration file has problem.
+                            if (userNameToken.UserName == null || userNameToken.Password == null) {
+                                // The configuration file has problem.
                                 Utils.Trace("Unexpected error saving user configuration for COM Wrapper.");
                                 continue;
                             }
 
-                            if (resultTokens.ContainsKey(userNameToken.UserName))
-                            {   // When I already exist, I ignore it.
+                            if (resultTokens.ContainsKey(userNameToken.UserName)) {
+                                // When I already exist, I ignore it.
                                 Utils.Trace("When I already exist, I ignore it. UserName={0}", userNameToken.UserName);
                                 continue;
                             }
@@ -172,9 +161,7 @@ namespace Opc.Ua.Configuration
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error saving user configuration for COM Wrapper.");
             }
 
@@ -188,21 +175,18 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Save UserNameIdentityToken.
         /// </summary>
-        private static void SaveUserName(string applicationName, UserNameIdentityToken userNameToken)
-        {
-            try
-            {
-                string relativePath = Utils.Format("%CommonApplicationData%\\OPC Foundation\\Accounts\\{0}\\{1}.xml", applicationName, userNameToken.UserName);
+        private static void SaveUserName(string applicationName, UserNameIdentityToken userNameToken) {
+            try {
+                string relativePath = Utils.Format("%CommonApplicationData%\\OPC Foundation\\Accounts\\{0}\\{1}.xml",
+                    applicationName, userNameToken.UserName);
                 string absolutePath = Utils.GetAbsoluteFilePath(relativePath, false, false, true);
 
                 // oops - nothing found.
-                if (absolutePath == null)
-                {
+                if (absolutePath == null) {
                     absolutePath = Utils.GetAbsoluteFilePath(relativePath, true, false, true);
                 }
 
-                UserNameIdentityToken outputToken = new UserNameIdentityToken()
-                {
+                UserNameIdentityToken outputToken = new UserNameIdentityToken() {
                     UserName = userNameToken.UserName,
                     Password = EncryptPassword(userNameToken.Password),
                     EncryptionAlgorithm = "Triple DES",
@@ -211,15 +195,13 @@ namespace Opc.Ua.Configuration
                 // open the file.
                 FileStream ostrm = File.Open(absolutePath, FileMode.Create, FileAccess.ReadWrite);
 
-                using (XmlTextWriter writer = new XmlTextWriter(ostrm, System.Text.Encoding.UTF8))
-                {
+                using (XmlTextWriter writer = new XmlTextWriter(ostrm, System.Text.Encoding.UTF8)) {
                     DataContractSerializer serializer = new DataContractSerializer(typeof(UserNameIdentityToken));
                     serializer.WriteObject(writer, outputToken);
                 }
-            }
-            catch (Exception e)
-            {
-                Utils.Trace(e, "Unexpected error saving user configuration for COM Wrapper with UserName={0}.", userNameToken.UserName);
+            } catch (Exception e) {
+                Utils.Trace(e, "Unexpected error saving user configuration for COM Wrapper with UserName={0}.",
+                    userNameToken.UserName);
             }
         }
 
@@ -228,8 +210,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="srcPassword">The Source Password.</param>
         /// <returns>Encrypted Password.</returns>
-        private static byte[] EncryptPassword(byte[] srcPassword)
-        {
+        private static byte[] EncryptPassword(byte[] srcPassword) {
             byte[] encryptedPassword;
             TripleDESCryptoServiceProvider tdes; // Triple DES service provider
             MemoryStream outStream = null;
@@ -244,8 +225,7 @@ namespace Opc.Ua.Configuration
 
             // Create result stream and encrypt stream.
             using (outStream = new MemoryStream())
-            using (encStream = new CryptoStream(outStream, tdes.CreateEncryptor(key, IV), CryptoStreamMode.Write))
-            {
+            using (encStream = new CryptoStream(outStream, tdes.CreateEncryptor(key, IV), CryptoStreamMode.Write)) {
                 // Encrypt
                 encStream.Write(srcPassword, 0, srcPassword.Length);
                 encStream.Close();
@@ -260,8 +240,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="srcPassword">The Source Password.</param>
         /// <returns>Decrypted Password.</returns>
-        private static byte[] DecryptPassword(byte[] srcPassword)
-        {
+        private static byte[] DecryptPassword(byte[] srcPassword) {
             byte[] decryptedPassword;
             TripleDESCryptoServiceProvider tdes; // Triple DES service provider
             MemoryStream outStream = null;
@@ -276,8 +255,7 @@ namespace Opc.Ua.Configuration
 
             // Create result stream and decrypt stream.
             using (outStream = new MemoryStream())
-            using (decStream = new CryptoStream(outStream, tdes.CreateDecryptor(key, IV), CryptoStreamMode.Write))
-            {
+            using (decStream = new CryptoStream(outStream, tdes.CreateDecryptor(key, IV), CryptoStreamMode.Write)) {
                 // Decrypt
                 decStream.Write(srcPassword, 0, srcPassword.Length);
                 decStream.Close();
@@ -290,8 +268,12 @@ namespace Opc.Ua.Configuration
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
-        private Dictionary<string, UserNameIdentityToken> m_UserNameIdentityTokens = new Dictionary<string, UserNameIdentityToken>();
+
+        private Dictionary<string, UserNameIdentityToken> m_UserNameIdentityTokens =
+            new Dictionary<string, UserNameIdentityToken>();
+
         #endregion
     }
 }

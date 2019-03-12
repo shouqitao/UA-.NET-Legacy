@@ -37,21 +37,19 @@ using System.Threading;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-namespace TestData
-{
+namespace TestData {
     /// <summary>
     /// A node manager for a variety of test data.
     /// </summary>
-    public class TestDataNodeManager : CustomNodeManager2, ITestDataSystemCallback
-    {
+    public class TestDataNodeManager : CustomNodeManager2, ITestDataSystemCallback {
         #region Constructors
+
         /// <summary>
         /// Initializes the node manager.
         /// </summary>
         public TestDataNodeManager(Opc.Ua.Server.IServerInternal server, ApplicationConfiguration configuration)
-        :
-            base(server, configuration)
-        {
+            :
+            base(server, configuration) {
             // update the namespaces.
             List<string> namespaceUris = new List<string>();
 
@@ -64,12 +62,11 @@ namespace TestData
             m_configuration = configuration.ParseExtension<TestDataNodeManagerConfiguration>();
 
             // use suitable defaults if no configuration exists.
-            if (m_configuration == null)
-            {
+            if (m_configuration == null) {
                 m_configuration = new TestDataNodeManagerConfiguration();
             }
 
-            m_lastUsedId = m_configuration.NextUnusedId-1;
+            m_lastUsedId = m_configuration.NextUnusedId - 1;
 
             // create the object used to access the test system.
             m_system = new TestDataSystem(this, server.NamespaceUris, server.ServerUris);
@@ -77,16 +74,16 @@ namespace TestData
             // update the default context.
             SystemContext.SystemHandle = m_system;
         }
+
         #endregion
 
         #region ITestDataSystemCallback Members
+
         /// <summary>
         /// Updates the variable after receiving a notification that it has changed in the underlying system.
         /// </summary>
-        public void OnDataChange(BaseVariableState variable, object value, StatusCode statusCode, DateTime timestamp)
-        {
-            lock (Lock)
-            {
+        public void OnDataChange(BaseVariableState variable, object value, StatusCode statusCode, DateTime timestamp) {
+            lock (Lock) {
                 variable.Value = value;
                 variable.StatusCode = statusCode;
                 variable.Timestamp = timestamp;
@@ -95,23 +92,26 @@ namespace TestData
                 variable.ClearChangeMasks(SystemContext, false);
             }
         }
+
         #endregion
 
         #region INodeIdFactory Members
+
         /// <summary>
         /// Creates the NodeId for the specified node.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="node">The node.</param>
         /// <returns>The new NodeId.</returns>
-        public override NodeId New(ISystemContext context, NodeState node)
-        {
+        public override NodeId New(ISystemContext context, NodeState node) {
             uint id = Utils.IncrementIdentifier(ref m_lastUsedId);
             return new NodeId(id, m_namespaceIndex);
         }
+
         #endregion
 
         #region INodeManager Members
+
         /// <summary>
         /// Does any initialization required before the address space can be used.
         /// </summary>
@@ -120,50 +120,46 @@ namespace TestData
         /// in other node managers. For example, the 'Objects' node is managed by the CoreNodeManager and
         /// should have a reference to the root folder node(s) exposed by this node manager.  
         /// </remarks>
-        public override void CreateAddressSpace(IDictionary<NodeId, IList<IReference>> externalReferences)
-        {
-            lock (Lock)
-            {
+        public override void CreateAddressSpace(IDictionary<NodeId, IList<IReference>> externalReferences) {
+            lock (Lock) {
                 // ensure the namespace used by the node manager is in the server's namespace table.
                 m_typeNamespaceIndex = Server.NamespaceUris.GetIndexOrAppend(Namespaces.TestData);
                 m_namespaceIndex = Server.NamespaceUris.GetIndexOrAppend(Namespaces.TestData + "/Instance");
 
                 base.CreateAddressSpace(externalReferences);
-                                
+
                 // start monitoring the system status.
-                m_systemStatusCondition = (TestSystemConditionState)FindPredefinedNode(
-                    new NodeId(Objects.Data_Conditions_SystemStatus, m_typeNamespaceIndex), 
+                m_systemStatusCondition = (TestSystemConditionState) FindPredefinedNode(
+                    new NodeId(Objects.Data_Conditions_SystemStatus, m_typeNamespaceIndex),
                     typeof(TestSystemConditionState));
 
-                if (m_systemStatusCondition != null)
-                {
+                if (m_systemStatusCondition != null) {
                     m_systemStatusTimer = new Timer(OnCheckSystemStatus, null, 5000, 5000);
                     m_systemStatusCondition.Retain.Value = true;
                 }
-                
+
                 // link all conditions to the conditions folder.
-                NodeState conditionsFolder = (NodeState)FindPredefinedNode(
-                    new NodeId(Objects.Data_Conditions, m_typeNamespaceIndex), 
+                NodeState conditionsFolder = (NodeState) FindPredefinedNode(
+                    new NodeId(Objects.Data_Conditions, m_typeNamespaceIndex),
                     typeof(NodeState));
 
-                foreach (NodeState node in PredefinedNodes.Values)
-                {
+                foreach (NodeState node in PredefinedNodes.Values) {
                     ConditionState condition = node as ConditionState;
 
-                    if (condition != null && !Object.ReferenceEquals(condition.Parent, conditionsFolder))
-                    {
+                    if (condition != null && !Object.ReferenceEquals(condition.Parent, conditionsFolder)) {
                         condition.AddNotifier(SystemContext, null, true, conditionsFolder);
                         conditionsFolder.AddNotifier(SystemContext, null, false, condition);
                     }
                 }
-                
+
                 // enable history for all numeric scalar values.
-                ScalarValueObjectState scalarValues = (ScalarValueObjectState)FindPredefinedNode(
-                    new NodeId(Objects.Data_Dynamic_Scalar, m_typeNamespaceIndex), 
+                ScalarValueObjectState scalarValues = (ScalarValueObjectState) FindPredefinedNode(
+                    new NodeId(Objects.Data_Dynamic_Scalar, m_typeNamespaceIndex),
                     typeof(ScalarValueObjectState));
 
                 scalarValues.Int32Value.Historizing = true;
-                scalarValues.Int32Value.AccessLevel = (byte)(scalarValues.Int32Value.AccessLevel | AccessLevels.HistoryRead);
+                scalarValues.Int32Value.AccessLevel =
+                    (byte) (scalarValues.Int32Value.AccessLevel | AccessLevels.HistoryRead);
 
                 m_system.EnableHistoryArchiving(scalarValues.Int32Value);
             }
@@ -172,172 +168,144 @@ namespace TestData
         /// <summary>
         /// Loads a node set from a file or resource and addes them to the set of predefined nodes.
         /// </summary>
-        protected override NodeStateCollection LoadPredefinedNodes(ISystemContext context)
-        {
+        protected override NodeStateCollection LoadPredefinedNodes(ISystemContext context) {
             NodeStateCollection predefinedNodes = new NodeStateCollection();
-            predefinedNodes.LoadFromBinaryResource(context, "Opc.Ua.Sample.TestData.TestData.PredefinedNodes.uanodes", null, true);
+            predefinedNodes.LoadFromBinaryResource(context, "Opc.Ua.Sample.TestData.TestData.PredefinedNodes.uanodes",
+                null, true);
             return predefinedNodes;
         }
 
         /// <summary>
         /// Replaces the generic node with a node specific to the model.
         /// </summary>
-        protected override NodeState AddBehaviourToPredefinedNode(ISystemContext context, NodeState predefinedNode)
-        {
+        protected override NodeState AddBehaviourToPredefinedNode(ISystemContext context, NodeState predefinedNode) {
             BaseObjectState passiveNode = predefinedNode as BaseObjectState;
 
-            if (passiveNode == null)
-            {
+            if (passiveNode == null) {
                 return predefinedNode;
             }
 
             NodeId typeId = passiveNode.TypeDefinitionId;
 
-            if (!IsNodeIdInNamespace(typeId) || typeId.IdType != IdType.Numeric)
-            {
+            if (!IsNodeIdInNamespace(typeId) || typeId.IdType != IdType.Numeric) {
                 return predefinedNode;
             }
 
-            switch ((uint)typeId.Identifier)
-            {
-                case ObjectTypes.TestSystemConditionType:
-                {
-                    if (passiveNode is TestSystemConditionState)
-                    {
+            switch ((uint) typeId.Identifier) {
+                case ObjectTypes.TestSystemConditionType: {
+                    if (passiveNode is TestSystemConditionState) {
                         break;
                     }
 
                     TestSystemConditionState activeNode = new TestSystemConditionState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
                     return activeNode;
                 }
 
-                case ObjectTypes.ScalarValueObjectType:
-                {
-                    if (passiveNode is ScalarValueObjectState)
-                    {
+                case ObjectTypes.ScalarValueObjectType: {
+                    if (passiveNode is ScalarValueObjectState) {
                         break;
                     }
 
                     ScalarValueObjectState activeNode = new ScalarValueObjectState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
                     return activeNode;
                 }
 
-                case ObjectTypes.AnalogScalarValueObjectType:
-                {
-                    if (passiveNode is AnalogScalarValueObjectState)
-                    {
+                case ObjectTypes.AnalogScalarValueObjectType: {
+                    if (passiveNode is AnalogScalarValueObjectState) {
                         break;
                     }
 
                     AnalogScalarValueObjectState activeNode = new AnalogScalarValueObjectState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
                     return activeNode;
                 }
 
-                case ObjectTypes.ArrayValueObjectType:
-                {
-                    if (passiveNode is ArrayValueObjectState)
-                    {
+                case ObjectTypes.ArrayValueObjectType: {
+                    if (passiveNode is ArrayValueObjectState) {
                         break;
                     }
 
                     ArrayValueObjectState activeNode = new ArrayValueObjectState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
                     return activeNode;
                 }
 
-                case ObjectTypes.AnalogArrayValueObjectType:
-                {
-                    if (passiveNode is AnalogArrayValueObjectState)
-                    {
+                case ObjectTypes.AnalogArrayValueObjectType: {
+                    if (passiveNode is AnalogArrayValueObjectState) {
                         break;
                     }
 
                     AnalogArrayValueObjectState activeNode = new AnalogArrayValueObjectState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
                     return activeNode;
                 }
 
-                case ObjectTypes.UserScalarValueObjectType:
-                {
-                    if (passiveNode is UserScalarValueObjectState)
-                    {
+                case ObjectTypes.UserScalarValueObjectType: {
+                    if (passiveNode is UserScalarValueObjectState) {
                         break;
                     }
 
                     UserScalarValueObjectState activeNode = new UserScalarValueObjectState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
                     return activeNode;
                 }
 
-                case ObjectTypes.UserArrayValueObjectType:
-                {
-                    if (passiveNode is UserArrayValueObjectState)
-                    {
+                case ObjectTypes.UserArrayValueObjectType: {
+                    if (passiveNode is UserArrayValueObjectState) {
                         break;
                     }
 
                     UserArrayValueObjectState activeNode = new UserArrayValueObjectState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
                     return activeNode;
                 }
 
-                case ObjectTypes.MethodTestType:
-                {
-                    if (passiveNode is MethodTestState)
-                    {
+                case ObjectTypes.MethodTestType: {
+                    if (passiveNode is MethodTestState) {
                         break;
                     }
 
                     MethodTestState activeNode = new MethodTestState(passiveNode.Parent);
                     activeNode.Create(context, passiveNode);
 
-                    if (passiveNode.Parent != null)
-                    {
+                    if (passiveNode.Parent != null) {
                         passiveNode.Parent.ReplaceChild(context, activeNode);
                     }
 
@@ -351,17 +319,17 @@ namespace TestData
         /// <summary>
         /// Restores a previously cached history reader.
         /// </summary>
-        protected virtual HistoryDataReader RestoreDataReader(Opc.Ua.Server.ServerSystemContext context, byte[] continuationPoint)
-        {
-            if (context == null || context.OperationContext == null || context.OperationContext.Session == null)
-            {
+        protected virtual HistoryDataReader RestoreDataReader(Opc.Ua.Server.ServerSystemContext context,
+            byte[] continuationPoint) {
+            if (context == null || context.OperationContext == null || context.OperationContext.Session == null) {
                 return null;
             }
 
-            HistoryDataReader reader = context.OperationContext.Session.RestoreHistoryContinuationPoint(continuationPoint) as HistoryDataReader;
+            HistoryDataReader reader =
+                context.OperationContext.Session
+                    .RestoreHistoryContinuationPoint(continuationPoint) as HistoryDataReader;
 
-            if (reader == null)
-            {
+            if (reader == null) {
                 return null;
             }
 
@@ -371,10 +339,8 @@ namespace TestData
         /// <summary>
         /// Saves a history data reader.
         /// </summary>
-        protected virtual void SaveDataReader(Opc.Ua.Server.ServerSystemContext context, HistoryDataReader reader)
-        {
-            if (context == null || context.OperationContext == null || context.OperationContext.Session == null)
-            {
+        protected virtual void SaveDataReader(Opc.Ua.Server.ServerSystemContext context, HistoryDataReader reader) {
+            if (context == null || context.OperationContext == null || context.OperationContext.Session == null) {
                 return;
             }
 
@@ -387,12 +353,10 @@ namespace TestData
         protected virtual ServiceResult GetHistoryDataSource(
             Opc.Ua.Server.ServerSystemContext context,
             BaseVariableState variable,
-            out IHistoryDataSource datasource)
-        {
+            out IHistoryDataSource datasource) {
             datasource = m_system.GetHistoryFile(variable);
 
-            if (datasource == null)
-            {
+            if (datasource == null) {
                 return StatusCodes.BadNotReadable;
             }
 
@@ -403,114 +367,100 @@ namespace TestData
         /// Reads the raw data for a variable
         /// </summary>
         protected ServiceResult HistoryReadRaw(
-            ISystemContext context, 
-            BaseVariableState source, 
-            ReadRawModifiedDetails details, 
-            TimestampsToReturn timestampsToReturn, 
-            bool releaseContinuationPoints, 
-            HistoryReadValueId nodeToRead, 
-            HistoryReadResult result)
-        {
+            ISystemContext context,
+            BaseVariableState source,
+            ReadRawModifiedDetails details,
+            TimestampsToReturn timestampsToReturn,
+            bool releaseContinuationPoints,
+            HistoryReadValueId nodeToRead,
+            HistoryReadResult result) {
             ServerSystemContext serverContext = context as ServerSystemContext;
 
             HistoryDataReader reader = null;
             HistoryData data = new HistoryData();
 
-            if (nodeToRead.ContinuationPoint != null && nodeToRead.ContinuationPoint.Length > 0)
-            {
+            if (nodeToRead.ContinuationPoint != null && nodeToRead.ContinuationPoint.Length > 0) {
                 // restore the continuation point.
                 reader = RestoreDataReader(serverContext, nodeToRead.ContinuationPoint);
 
-                if (reader == null)
-                {
+                if (reader == null) {
                     return StatusCodes.BadContinuationPointInvalid;
                 }
 
                 // node id must match previous node id.
-                if (reader.VariableId != nodeToRead.NodeId)
-                {
+                if (reader.VariableId != nodeToRead.NodeId) {
                     Utils.SilentDispose(reader);
                     return StatusCodes.BadContinuationPointInvalid;
                 }
 
                 // check if releasing continuation points.
-                if (releaseContinuationPoints)
-                {
+                if (releaseContinuationPoints) {
                     Utils.SilentDispose(reader);
                     return ServiceResult.Good;
                 }
-            }
-            else
-            {
+            } else {
                 // get the source for the variable.
                 IHistoryDataSource datasource = null;
                 ServiceResult error = GetHistoryDataSource(serverContext, source, out datasource);
 
-                if (ServiceResult.IsBad(error))
-                {
+                if (ServiceResult.IsBad(error)) {
                     return error;
                 }
 
                 // create a reader.
                 reader = new HistoryDataReader(nodeToRead.NodeId, datasource);
-                
+
                 // start reading.
                 reader.BeginReadRaw(
-                    serverContext, 
-                    details, 
-                    timestampsToReturn, 
+                    serverContext,
+                    details,
+                    timestampsToReturn,
                     nodeToRead.ParsedIndexRange,
                     nodeToRead.DataEncoding,
                     data.DataValues);
             }
-     
+
             // continue reading data until done or max values reached.
             bool complete = reader.NextReadRaw(
-                serverContext, 
-                timestampsToReturn, 
+                serverContext,
+                timestampsToReturn,
                 nodeToRead.ParsedIndexRange,
                 nodeToRead.DataEncoding,
                 data.DataValues);
 
             // save continuation point.
-            if (!complete)
-            {
+            if (!complete) {
                 SaveDataReader(serverContext, reader);
                 result.StatusCode = StatusCodes.GoodMoreData;
             }
 
             // return the dat.
             result.HistoryData = new ExtensionObject(data);
-            
+
             return result.StatusCode;
         }
 
         /// <summary>
         /// Returns true if the system must be scanning to provide updates for the monitored item.
         /// </summary>
-        private bool SystemScanRequired(MonitoredNode2 monitoredNode, IDataChangeMonitoredItem2 monitoredItem)
-        {
+        private bool SystemScanRequired(MonitoredNode2 monitoredNode, IDataChangeMonitoredItem2 monitoredItem) {
             // ingore other types of monitored items.
-            if (monitoredItem == null)
-            {
+            if (monitoredItem == null) {
                 return false;
             }
 
             // only care about variables.
             BaseDataVariableState source = monitoredNode.Node as BaseDataVariableState;
 
-            if (source == null)
-            {
+            if (source == null) {
                 return false;
             }
 
             // check for variables that need to be scanned.
-            if (monitoredItem.AttributeId == Attributes.Value)
-            {
+            if (monitoredItem.AttributeId == Attributes.Value) {
                 TestDataObjectState test = source.Parent as TestDataObjectState;
-                
-                if (test != null && test.SimulationActive.Value)
-                {
+
+                if (test != null && test.SimulationActive.Value) {
                     return true;
                 }
             }
@@ -527,18 +477,15 @@ namespace TestData
         protected override void OnMonitoredItemCreated(
             ServerSystemContext context,
             NodeHandle handle,
-            MonitoredItem monitoredItem)
-        {
-            if (SystemScanRequired(handle.MonitoredNode, monitoredItem))
-            {
-                if (monitoredItem.MonitoringMode != MonitoringMode.Disabled)
-                {
+            MonitoredItem monitoredItem) {
+            if (SystemScanRequired(handle.MonitoredNode, monitoredItem)) {
+                if (monitoredItem.MonitoringMode != MonitoringMode.Disabled) {
                     m_system.StartMonitoringValue(
-                        monitoredItem.Id, 
-                        monitoredItem.SamplingInterval, 
+                        monitoredItem.Id,
+                        monitoredItem.SamplingInterval,
                         handle.Node as BaseVariableState);
                 }
-            }    
+            }
         }
 
         /// <summary>
@@ -550,12 +497,9 @@ namespace TestData
         protected override void OnMonitoredItemModified(
             ServerSystemContext context,
             NodeHandle handle,
-            MonitoredItem monitoredItem)
-        {
-            if (SystemScanRequired(handle.MonitoredNode, monitoredItem))
-            {
-                if (monitoredItem.MonitoringMode != MonitoringMode.Disabled)
-                {
+            MonitoredItem monitoredItem) {
+            if (SystemScanRequired(handle.MonitoredNode, monitoredItem)) {
+                if (monitoredItem.MonitoringMode != MonitoringMode.Disabled) {
                     BaseVariableState source = handle.Node as BaseVariableState;
                     m_system.StopMonitoringValue(monitoredItem.Id);
                     m_system.StartMonitoringValue(monitoredItem.Id, monitoredItem.SamplingInterval, source);
@@ -572,11 +516,9 @@ namespace TestData
         protected override void OnMonitoredItemDeleted(
             ServerSystemContext context,
             NodeHandle handle,
-            MonitoredItem monitoredItem)
-        {
+            MonitoredItem monitoredItem) {
             // check for variables that need to be scanned.
-            if (SystemScanRequired(handle.MonitoredNode, monitoredItem))
-            {
+            if (SystemScanRequired(handle.MonitoredNode, monitoredItem)) {
                 m_system.StopMonitoringValue(monitoredItem.Id);
             }
         }
@@ -594,31 +536,29 @@ namespace TestData
             NodeHandle handle,
             MonitoredItem monitoredItem,
             MonitoringMode previousMode,
-            MonitoringMode monitoringMode)
-        {
-            if (SystemScanRequired(handle.MonitoredNode, monitoredItem))
-            {
+            MonitoringMode monitoringMode) {
+            if (SystemScanRequired(handle.MonitoredNode, monitoredItem)) {
                 BaseVariableState source = handle.Node as BaseVariableState;
 
-                if (previousMode != MonitoringMode.Disabled && monitoredItem.MonitoringMode == MonitoringMode.Disabled)
-                {
+                if (previousMode != MonitoringMode.Disabled &&
+                    monitoredItem.MonitoringMode == MonitoringMode.Disabled) {
                     m_system.StopMonitoringValue(monitoredItem.Id);
                 }
 
-                if (previousMode == MonitoringMode.Disabled && monitoredItem.MonitoringMode != MonitoringMode.Disabled)
-                {
+                if (previousMode == MonitoringMode.Disabled &&
+                    monitoredItem.MonitoringMode != MonitoringMode.Disabled) {
                     m_system.StartMonitoringValue(monitoredItem.Id, monitoredItem.SamplingInterval, source);
                 }
             }
         }
+
         #endregion
 
         /// <summary>
         /// Peridically checks the system state.
         /// </summary>
-        private void OnCheckSystemStatus(object state)
-        {
-            #if CONDITION_SAMPLES
+        private void OnCheckSystemStatus(object state) {
+#if CONDITION_SAMPLES
             lock (Lock)
             {
                 try
@@ -686,10 +626,10 @@ namespace TestData
                     Utils.Trace(e, "Unexpected error monitoring system status.");
                 }
             }
-            #endif
-        }    
-        
-        #if CONDITION_SAMPLES
+#endif
+        }
+
+#if CONDITION_SAMPLES
         /// <summary>
         /// Handles a user response to a dialog.
         /// </summary>
@@ -706,9 +646,10 @@ namespace TestData
 
             return ServiceResult.Good;
         }
-        #endif
+#endif
 
         #region Private Fields
+
         private TestDataNodeManagerConfiguration m_configuration;
         private ushort m_namespaceIndex;
         private ushort m_typeNamespaceIndex;
@@ -716,10 +657,11 @@ namespace TestData
         private long m_lastUsedId;
         private Timer m_systemStatusTimer;
         private TestSystemConditionState m_systemStatusCondition;
-        
-        #if CONDITION_SAMPLES
+
+#if CONDITION_SAMPLES
         private DialogConditionState m_dialog;
-        #endif
+#endif
+
         #endregion
     }
 }

@@ -37,24 +37,22 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the results from a history read operation.
     /// </summary>
-    public partial class SubscribeDataListViewCtrl : UserControl
-    {
+    public partial class SubscribeDataListViewCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public SubscribeDataListViewCtrl()
-        {
+        public SubscribeDataListViewCtrl() {
             InitializeComponent();
             m_PublishStatusChanged = new EventHandler(OnPublishStatusChanged);
             ResultsDV.AutoGenerateColumns = false;
             ImageList = new ClientUtils().ImageList;
-            
+
             m_dataset = new DataSet();
             m_dataset.Tables.Add("Requests");
 
@@ -78,53 +76,52 @@ namespace Opc.Ua.Client.Controls
 
             ResultsDV.DataSource = m_dataset.Tables[0];
         }
+
         #endregion
 
         #region Private Fields
+
         private DataSet m_dataset;
         private Session m_session;
         private Subscription m_subscription;
         private DisplayState m_state;
         private EditComplexValueDlg m_EditComplexValueDlg;
         private EventHandler m_PublishStatusChanged;
+
         #endregion
 
         #region Stage Enum
+
         /// <summary>
         /// The diplays state.
         /// </summary>
-        private enum DisplayState
-        {
+        private enum DisplayState {
             EditItems,
             ApplyChanges,
             ViewUpdates
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Changes the session used.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
-            if (!Object.ReferenceEquals(session, m_session))
-            {
+        public void ChangeSession(Session session) {
+            if (!Object.ReferenceEquals(session, m_session)) {
                 m_session = session;
 
-                if (m_subscription != null)
-                {
+                if (m_subscription != null) {
                     m_subscription.PublishStatusChanged -= m_PublishStatusChanged;
                     m_subscription.FastDataChangeCallback = null;
                     m_subscription = null;
                 }
 
-                if (m_session != null)
-                {
+                if (m_session != null) {
                     // find new subscription.
-                    foreach (Subscription subscription in m_session.Subscriptions)
-                    {
-                        if (Object.ReferenceEquals(subscription.Handle, this))
-                        {
+                    foreach (Subscription subscription in m_session.Subscriptions) {
+                        if (Object.ReferenceEquals(subscription.Handle, this)) {
                             m_subscription = subscription;
                             m_subscription.PublishStatusChanged += m_PublishStatusChanged;
                             m_subscription.FastDataChangeCallback = OnDataChange;
@@ -133,19 +130,15 @@ namespace Opc.Ua.Client.Controls
                     }
 
                     // update references to monitored items.
-                    if (m_subscription != null)
-                    {
-                        foreach (MonitoredItem monitoredItem in m_subscription.MonitoredItems)
-                        {
-                            DataRow row = (DataRow)monitoredItem.Handle;
+                    if (m_subscription != null) {
+                        foreach (MonitoredItem monitoredItem in m_subscription.MonitoredItems) {
+                            DataRow row = (DataRow) monitoredItem.Handle;
                             row[0] = monitoredItem;
 
-                            if (m_EditComplexValueDlg != null)
-                            {
-                                MonitoredItem oldMonitoredItem = (MonitoredItem)m_EditComplexValueDlg.Tag;
+                            if (m_EditComplexValueDlg != null) {
+                                MonitoredItem oldMonitoredItem = (MonitoredItem) m_EditComplexValueDlg.Tag;
 
-                                if (Object.ReferenceEquals(oldMonitoredItem.Handle, monitoredItem.Handle))
-                                {
+                                if (Object.ReferenceEquals(oldMonitoredItem.Handle, monitoredItem.Handle)) {
                                     m_EditComplexValueDlg.Tag = monitoredItem;
                                 }
                             }
@@ -153,8 +146,7 @@ namespace Opc.Ua.Client.Controls
                     }
                 }
 
-                if (m_EditComplexValueDlg != null)
-                {
+                if (m_EditComplexValueDlg != null) {
                     m_EditComplexValueDlg.ChangeSession(session);
                 }
             }
@@ -163,21 +155,15 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns true if the control has an active subscription assigned.
         /// </summary>
-        public bool HasSubscription
-        {
-            get
-            {
-                return m_subscription != null;
-            }
+        public bool HasSubscription {
+            get { return m_subscription != null; }
         }
 
         /// <summary>
         /// Sets the subscription used with the control.
         /// </summary>
-        public void SetSubscription(Subscription subscription)
-        {
-            if (m_subscription != null)
-            {
+        public void SetSubscription(Subscription subscription) {
+            if (m_subscription != null) {
                 m_subscription.PublishStatusChanged -= m_PublishStatusChanged;
                 m_subscription.FastDataChangeCallback = null;
                 m_subscription = null;
@@ -190,34 +176,28 @@ namespace Opc.Ua.Client.Controls
             m_subscription.FastDataChangeCallback = OnDataChange;
             m_dataset.Tables[0].Rows.Clear();
 
-            if (m_subscription != null)
-            {
+            if (m_subscription != null) {
                 m_session = subscription.Session;
                 m_subscription.Handle = this;
             }
         }
-        
+
         /// <summary>
         /// Adds the monitored items to the subscription.
         /// </summary>
-        public void AddItems(params ReadValueId[] itemsToMonitor)
-        {
-            if (m_subscription == null)
-            {
+        public void AddItems(params ReadValueId[] itemsToMonitor) {
+            if (m_subscription == null) {
                 throw new ServiceResultException(StatusCodes.BadNoSubscription);
             }
 
-            if (itemsToMonitor != null)
-            {
+            if (itemsToMonitor != null) {
                 SetDisplayState(DisplayState.EditItems);
 
-                for (int ii = 0; ii < itemsToMonitor.Length; ii++)
-                {
-                    if (itemsToMonitor[ii] == null)
-                    {
+                for (int ii = 0; ii < itemsToMonitor.Length; ii++) {
+                    if (itemsToMonitor[ii] == null) {
                         continue;
                     }
-                    
+
                     DataRow row = m_dataset.Tables[0].NewRow();
 
                     MonitoredItem monitoredItem = new MonitoredItem(m_subscription.DefaultItem);
@@ -237,53 +217,39 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Whether the next command does anything.
         /// </summary>
-        public bool CanCallNext
-        {
-            get
-            {
-                return m_state != DisplayState.ViewUpdates;
-            }
+        public bool CanCallNext {
+            get { return m_state != DisplayState.ViewUpdates; }
         }
 
         /// <summary>
         /// Whether the back command does anything.
         /// </summary>
-        public bool CanCallBack
-        {
-            get
-            {
-                return m_state != DisplayState.EditItems;
-            }
+        public bool CanCallBack {
+            get { return m_state != DisplayState.EditItems; }
         }
 
         /// <summary>
         /// Moves the grid to the next state.
         /// </summary>
-        public void Next()
-        {
-            if (m_state == DisplayState.ViewUpdates)
-            {
+        public void Next() {
+            if (m_state == DisplayState.ViewUpdates) {
                 return;
             }
 
             SetDisplayState(++m_state);
 
             // clear any selection.
-            foreach (DataGridViewRow row in ResultsDV.Rows)
-            {
+            foreach (DataGridViewRow row in ResultsDV.Rows) {
                 row.Selected = false;
             }
 
-            if (m_subscription != null)
-            {
+            if (m_subscription != null) {
                 // apply any changes.
-                if (m_state == DisplayState.ApplyChanges)
-                {
+                if (m_state == DisplayState.ApplyChanges) {
                     m_subscription.ApplyChanges();
 
-                    foreach (DataRow row in m_dataset.Tables[0].Rows)
-                    {
-                        MonitoredItem monitoredItem = (MonitoredItem)row[0];
+                    foreach (DataRow row in m_dataset.Tables[0].Rows) {
+                        MonitoredItem monitoredItem = (MonitoredItem) row[0];
                         UpdateRow(row, monitoredItem.Status);
                     }
                 }
@@ -293,40 +259,36 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Moves the grid back to the edit items state.
         /// </summary>
-        public void Back()
-        {
-            if (m_state == DisplayState.EditItems)
-            {
+        public void Back() {
+            if (m_state == DisplayState.EditItems) {
                 return;
             }
 
             SetDisplayState(DisplayState.EditItems);
 
             // clear any selection.
-            foreach (DataGridViewRow row in ResultsDV.Rows)
-            {
+            foreach (DataGridViewRow row in ResultsDV.Rows) {
                 row.Selected = false;
 
                 // revert to specified parameters.
                 DataRowView source = row.DataBoundItem as DataRowView;
-                MonitoredItem monitoredItem = (MonitoredItem)source.Row[0];
+                MonitoredItem monitoredItem = (MonitoredItem) source.Row[0];
                 UpdateRow(source.Row, monitoredItem);
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Sets the display state for the control.
         /// </summary>
-        private void SetDisplayState(DisplayState state)
-        {
+        private void SetDisplayState(DisplayState state) {
             m_state = state;
 
-            switch (m_state)
-            {
-                case DisplayState.EditItems:
-                {
+            switch (m_state) {
+                case DisplayState.EditItems: {
                     SamplingIntervalCH.Visible = true;
                     QueueSizeCH.Visible = true;
                     DiscardOldestCH.Visible = true;
@@ -340,8 +302,7 @@ namespace Opc.Ua.Client.Controls
                     break;
                 }
 
-                case DisplayState.ApplyChanges:
-                {
+                case DisplayState.ApplyChanges: {
                     SamplingIntervalCH.Visible = true;
                     QueueSizeCH.Visible = true;
                     DiscardOldestCH.Visible = true;
@@ -355,8 +316,7 @@ namespace Opc.Ua.Client.Controls
                     break;
                 }
 
-                case DisplayState.ViewUpdates:
-                {
+                case DisplayState.ViewUpdates: {
                     SamplingIntervalCH.Visible = false;
                     QueueSizeCH.Visible = false;
                     DiscardOldestCH.Visible = false;
@@ -375,11 +335,11 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the row with the monitored item.
         /// </summary>
-        private void UpdateRow(DataRow row, MonitoredItem monitoredItem)
-        {
+        private void UpdateRow(DataRow row, MonitoredItem monitoredItem) {
             row[0] = monitoredItem;
             row[1] = ImageList.Images[ClientUtils.GetImageIndex(monitoredItem.AttributeId, null)];
-            row[2] = m_session.NodeCache.GetDisplayText(monitoredItem.StartNodeId) + "/" + Attributes.GetBrowseName(monitoredItem.AttributeId);
+            row[2] = m_session.NodeCache.GetDisplayText(monitoredItem.StartNodeId) + "/" +
+                     Attributes.GetBrowseName(monitoredItem.AttributeId);
             row[3] = monitoredItem.IndexRange;
             row[4] = monitoredItem.Encoding;
             row[5] = monitoredItem.MonitoringMode;
@@ -392,20 +352,16 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the row with the monitored item status.
         /// </summary>
-        private void UpdateRow(DataRow row, MonitoredItemStatus status)
-        {
+        private void UpdateRow(DataRow row, MonitoredItemStatus status) {
             row[5] = status.MonitoringMode;
             row[6] = status.SamplingInterval;
             row[7] = status.QueueSize;
             row[8] = status.DiscardOldest;
             row[9] = status.Filter;
 
-            if (ServiceResult.IsBad(status.Error))
-            {
+            if (ServiceResult.IsBad(status.Error)) {
                 row[10] = new StatusCode(status.Error.Code);
-            }
-            else
-            {
+            } else {
                 row[10] = new StatusCode();
             }
         }
@@ -413,15 +369,13 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the row with the data value.
         /// </summary>
-        private void UpdateRow(DataRow row, MonitoredItemNotification notification)
-        {
+        private void UpdateRow(DataRow row, MonitoredItemNotification notification) {
             DataValue value = notification.Value;
 
             row[11] = value;
 
-            if (value != null)
-            {
-                row[1]  = ImageList.Images[ClientUtils.GetImageIndex(Attributes.Value, value.Value)];
+            if (value != null) {
+                row[1] = ImageList.Images[ClientUtils.GetImageIndex(Attributes.Value, value.Value)];
                 row[12] = (value.WrappedValue.TypeInfo != null) ? value.WrappedValue.TypeInfo.ToString() : String.Empty;
                 row[13] = value.WrappedValue;
                 row[14] = value.StatusCode;
@@ -433,8 +387,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Gets the display string for the subscription status.
         /// </summary>
-        private string GetDisplayString(Subscription subscription)
-        {
+        private string GetDisplayString(Subscription subscription) {
             StringBuilder buffer = new StringBuilder();
 
             buffer.Append((subscription.CurrentPublishingEnabled) ? "Enabled" : "Disabled");
@@ -445,94 +398,80 @@ namespace Opc.Ua.Client.Controls
             buffer.Append("/");
             buffer.Append(subscription.CurrentLifetimeCount);
             buffer.Append("}");
-            
+
             return buffer.ToString();
         }
+
         #endregion
 
         #region Event Handlers
-        private void OnPublishStatusChanged(object sender, EventArgs e)
-        {
-            if (!Object.ReferenceEquals(sender, m_subscription))
-            {
+
+        private void OnPublishStatusChanged(object sender, EventArgs e) {
+            if (!Object.ReferenceEquals(sender, m_subscription)) {
                 return;
             }
 
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 this.BeginInvoke(m_PublishStatusChanged, sender, e);
                 return;
             }
 
-            try
-            {
-                if (m_subscription.PublishingStopped)
-                {
+            try {
+                if (m_subscription.PublishingStopped) {
                     SubscriptionStateTB.Text = "STOPPED";
                     SubscriptionStateTB.ForeColor = Color.Red;
-                }
-                else
-                {
+                } else {
                     SubscriptionStateTB.Text = GetDisplayString(m_subscription);
                     SubscriptionStateTB.ForeColor = Color.Empty;
                 }
 
                 SequenceNumberTB.Text = m_subscription.SequenceNumber.ToString();
                 LastNotificationTB.Text = m_subscription.LastNotificationTime.ToLocalTime().ToString("HH:mm:ss");
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void OnDataChange(Subscription subscription, DataChangeNotification notification, IList<string> stringTable)
-        {
-            if (!Object.ReferenceEquals(subscription, m_subscription))
-            {
+        private void OnDataChange(Subscription subscription, DataChangeNotification notification,
+            IList<string> stringTable) {
+            if (!Object.ReferenceEquals(subscription, m_subscription)) {
                 return;
             }
 
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new FastDataChangeNotificationEventHandler(OnDataChange), subscription, notification, stringTable);
+            if (this.InvokeRequired) {
+                this.BeginInvoke(new FastDataChangeNotificationEventHandler(OnDataChange), subscription, notification,
+                    stringTable);
                 return;
             }
 
-            try
-            {
-                foreach (MonitoredItemNotification itemNotification in notification.MonitoredItems)
-                {
+            try {
+                foreach (MonitoredItemNotification itemNotification in notification.MonitoredItems) {
                     MonitoredItem monitoredItem = subscription.FindItemByClientHandle(itemNotification.ClientHandle);
 
-                    if (monitoredItem == null)
-                    {
+                    if (monitoredItem == null) {
                         continue;
                     }
 
-                    DataRow row = (DataRow)monitoredItem.Handle;
+                    DataRow row = (DataRow) monitoredItem.Handle;
 
-                    if (row.RowState == DataRowState.Detached)
-                    {
+                    if (row.RowState == DataRowState.Detached) {
                         continue;
                     }
 
                     UpdateRow(row, itemNotification);
 
-                    if (m_EditComplexValueDlg != null && Object.ReferenceEquals(m_EditComplexValueDlg.Tag, monitoredItem))
-                    {
-                        m_EditComplexValueDlg.UpdateValue(monitoredItem.ResolvedNodeId, monitoredItem.AttributeId, null, itemNotification.Value.Value);
+                    if (m_EditComplexValueDlg != null &&
+                        Object.ReferenceEquals(m_EditComplexValueDlg.Tag, monitoredItem)) {
+                        m_EditComplexValueDlg.UpdateValue(monitoredItem.ResolvedNodeId, monitoredItem.AttributeId, null,
+                            itemNotification.Value.Value);
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void PopupMenu_Opening(object sender, CancelEventArgs e)
-        {
+        private void PopupMenu_Opening(object sender, CancelEventArgs e) {
             NewMI.Visible = m_state == DisplayState.EditItems;
             EditMI.Enabled = ResultsDV.SelectedRows.Count > 0;
             DeleteMI.Enabled = ResultsDV.SelectedRows.Count > 0;
@@ -540,116 +479,91 @@ namespace Opc.Ua.Client.Controls
             SetMonitoringModeMI.Visible = m_state != DisplayState.ApplyChanges;
         }
 
-        private void NewMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void NewMI_Click(object sender, EventArgs e) {
+            try {
                 MonitoredItem monitoredItem = null;
 
-                foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                {
+                foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                     DataRowView source = row.DataBoundItem as DataRowView;
-                    monitoredItem = (MonitoredItem)source.Row[0];
+                    monitoredItem = (MonitoredItem) source.Row[0];
                     break;
                 }
 
-                if (monitoredItem == null)
-                {
+                if (monitoredItem == null) {
                     monitoredItem = new MonitoredItem(m_subscription.DefaultItem);
-                }
-                else
-                {
+                } else {
                     monitoredItem = new MonitoredItem(monitoredItem);
                 }
 
-                if (new EditMonitoredItemDlg().ShowDialog(m_session, monitoredItem, false))
-                {
+                if (new EditMonitoredItemDlg().ShowDialog(m_session, monitoredItem, false)) {
                     m_subscription.AddItem(monitoredItem);
                     DataRow row = m_dataset.Tables[0].NewRow();
                     monitoredItem.Handle = row;
                     UpdateRow(row, monitoredItem);
                     m_dataset.Tables[0].Rows.Add(row);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void EditMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void EditMI_Click(object sender, EventArgs e) {
+            try {
                 MonitoredItem monitoredItem = null;
 
-                foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                {
+                foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                     DataRowView source = row.DataBoundItem as DataRowView;
-                    monitoredItem = (MonitoredItem)source.Row[0];
+                    monitoredItem = (MonitoredItem) source.Row[0];
                     break;
                 }
 
-                if (monitoredItem == null)
-                {
+                if (monitoredItem == null) {
                     return;
                 }
 
-                if (new EditMonitoredItemDlg().ShowDialog(m_session, monitoredItem, false))
-                {
-                    DataRow row = (DataRow)monitoredItem.Handle;
+                if (new EditMonitoredItemDlg().ShowDialog(m_session, monitoredItem, false)) {
+                    DataRow row = (DataRow) monitoredItem.Handle;
                     UpdateRow(row, monitoredItem);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void DeleteMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                {
+        private void DeleteMI_Click(object sender, EventArgs e) {
+            try {
+                foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                     DataRowView source = row.DataBoundItem as DataRowView;
-                    MonitoredItem monitoredItem = (MonitoredItem)source.Row[0];
+                    MonitoredItem monitoredItem = (MonitoredItem) source.Row[0];
                     m_subscription.RemoveItem(monitoredItem);
                     source.Row.Delete();
                 }
 
                 m_dataset.AcceptChanges();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ViewValueMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void ViewValueMI_Click(object sender, EventArgs e) {
+            try {
                 MonitoredItem monitoredItem = null;
                 DataValue value = null;
 
-                foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                {
+                foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                     DataRowView source = row.DataBoundItem as DataRowView;
-                    monitoredItem = (MonitoredItem)source.Row[0];
-                    value = (DataValue)source.Row[11];
+                    monitoredItem = (MonitoredItem) source.Row[0];
+                    value = (DataValue) source.Row[11];
                     break;
                 }
 
-                if (monitoredItem == null)
-                {
+                if (monitoredItem == null) {
                     return;
                 }
 
                 m_EditComplexValueDlg = new EditComplexValueDlg();
                 m_EditComplexValueDlg.Tag = monitoredItem;
-                    
+
                 m_EditComplexValueDlg.ShowDialog(
                     m_session,
                     monitoredItem.ResolvedNodeId,
@@ -660,103 +574,79 @@ namespace Opc.Ua.Client.Controls
                     "View Data Change");
 
                 m_EditComplexValueDlg = null;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ResultsDV_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_state == DisplayState.EditItems)
-                {
+        private void ResultsDV_DoubleClick(object sender, EventArgs e) {
+            try {
+                if (m_state == DisplayState.EditItems) {
                     EditMI_Click(sender, e);
-                }
-                else
-                {
+                } else {
                     ViewValueMI_Click(sender, e);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void SetMonitoringModeMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void SetMonitoringModeMI_Click(object sender, EventArgs e) {
+            try {
                 List<MonitoredItem> monitoredItems = new List<MonitoredItem>();
 
-                foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                {
+                foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                     DataRowView source = row.DataBoundItem as DataRowView;
-                    monitoredItems.Add((MonitoredItem)source.Row[0]);
+                    monitoredItems.Add((MonitoredItem) source.Row[0]);
                 }
 
-                if (monitoredItems.Count == 0)
-                {
+                if (monitoredItems.Count == 0) {
                     return;
                 }
 
                 MonitoringMode oldMonitoringMode = monitoredItems[0].MonitoringMode;
                 MonitoringMode newMonitoringMode = new EditMonitoredItemDlg().ShowDialog(oldMonitoringMode);
 
-                if (oldMonitoringMode != newMonitoringMode) 
-                {
+                if (oldMonitoringMode != newMonitoringMode) {
                     List<MonitoredItem> itemsToModify = new List<MonitoredItem>();
-                    
-                    foreach (MonitoredItem monitoredItem in monitoredItems)
-                    {
-                        DataRow row = (DataRow)monitoredItem.Handle;
+
+                    foreach (MonitoredItem monitoredItem in monitoredItems) {
+                        DataRow row = (DataRow) monitoredItem.Handle;
                         row[5] = newMonitoringMode;
 
-                        if (monitoredItem.Created)
-                        {
+                        if (monitoredItem.Created) {
                             itemsToModify.Add(monitoredItem);
                             continue;
                         }
 
                         monitoredItem.MonitoringMode = newMonitoringMode;
                     }
-                    
-                    if (itemsToModify.Count != 0)
-                    {
+
+                    if (itemsToModify.Count != 0) {
                         m_subscription.SetMonitoringMode(newMonitoringMode, itemsToModify);
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void Subscription_EditMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (new EditSubscriptionDlg().ShowDialog(m_subscription))
-                {
+        private void Subscription_EditMI_Click(object sender, EventArgs e) {
+            try {
+                if (new EditSubscriptionDlg().ShowDialog(m_subscription)) {
                     m_subscription.Modify();
 
-                    if (m_subscription.PublishingEnabled != m_subscription.CurrentPublishingEnabled)
-                    {
+                    if (m_subscription.PublishingEnabled != m_subscription.CurrentPublishingEnabled) {
                         m_subscription.SetPublishingMode(m_subscription.PublishingEnabled);
                     }
 
                     SubscriptionStateTB.Text = GetDisplayString(m_subscription);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

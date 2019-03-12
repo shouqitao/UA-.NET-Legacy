@@ -18,13 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// This is an interface to a channel which supports 
     /// </summary>
-    public interface ITransportChannel : IDisposable
-    {
+    public interface ITransportChannel : IDisposable {
         /// <summary>
         /// A masking indicating which features are implemented.
         /// </summary>
@@ -75,7 +73,7 @@ namespace Opc.Ua
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
         /// <seealso cref="Open"/>
         IAsyncResult BeginOpen(
-            AsyncCallback callback, 
+            AsyncCallback callback,
             object callbackData);
 
         /// <summary>
@@ -169,8 +167,7 @@ namespace Opc.Ua
     /// The masks for the optional features which may not be supported by every transport channel.
     /// </summary>
     [Flags]
-    public enum TransportChannelFeatures
-    {
+    public enum TransportChannelFeatures {
         /// <summary>
         /// The channel does not support any optional features.
         /// </summary>
@@ -190,7 +187,7 @@ namespace Opc.Ua
         /// The channel supports Reconnect.
         /// </summary>
         Reconnect = 0x0004,
-        
+
         /// <summary>
         /// The channel supports asynchronous Reconnect.
         /// </summary>

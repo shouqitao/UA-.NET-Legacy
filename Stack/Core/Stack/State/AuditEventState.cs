@@ -21,11 +21,10 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace Opc.Ua
-{
-    public partial class AuditEventState
-    {
+namespace Opc.Ua {
+    public partial class AuditEventState {
         #region Initialization
+
         /// <summary>
         /// Initializes a new event.
         /// </summary>
@@ -36,42 +35,38 @@ namespace Opc.Ua
         /// <param name="status">Whether the operation that caused the event succeeded.</param>
         /// <param name="actionTimestamp">When the operation started.</param>
         public virtual void Initialize(
-            ISystemContext context, 
-            NodeState source, 
+            ISystemContext context,
+            NodeState source,
             EventSeverity severity,
             LocalizedText message,
             bool status,
-            DateTime actionTimestamp)
-        {
+            DateTime actionTimestamp) {
             base.Initialize(context, source, severity, message);
 
             m_status = new PropertyState<bool>(this);
             m_status.Value = status;
 
-            if (actionTimestamp != DateTime.MinValue)
-            {
+            if (actionTimestamp != DateTime.MinValue) {
                 m_actionTimeStamp = new PropertyState<DateTime>(this);
                 m_actionTimeStamp.Value = actionTimestamp;
             }
 
-            if (context.NamespaceUris != null)
-            {
+            if (context.NamespaceUris != null) {
                 m_serverId = new PropertyState<string>(this);
                 m_serverId.Value = context.NamespaceUris.GetString(1);
             }
 
-            if (context.AuditEntryId != null)
-            {
+            if (context.AuditEntryId != null) {
                 m_clientAuditEntryId = new PropertyState<string>(this);
                 m_clientAuditEntryId.Value = context.AuditEntryId;
             }
 
-            if (context.UserIdentity != null)
-            {
+            if (context.UserIdentity != null) {
                 m_clientUserId = new PropertyState<string>(this);
                 m_clientUserId.Value = context.UserIdentity.DisplayName;
             }
         }
+
         #endregion
     }
 }

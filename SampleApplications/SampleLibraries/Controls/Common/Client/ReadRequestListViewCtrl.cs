@@ -37,23 +37,21 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the results from a history read operation.
     /// </summary>
-    public partial class ReadRequestListViewCtrl : UserControl
-    {
+    public partial class ReadRequestListViewCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public ReadRequestListViewCtrl()
-        {
+        public ReadRequestListViewCtrl() {
             InitializeComponent();
             ResultsDV.AutoGenerateColumns = false;
             ImageList = new ClientUtils().ImageList;
-            
+
             m_dataset = new DataSet();
             m_dataset.Tables.Add("Requests");
 
@@ -72,34 +70,33 @@ namespace Opc.Ua.Client.Controls
 
             ResultsDV.DataSource = m_dataset.Tables[0];
         }
+
         #endregion
 
         #region Private Fields
+
         private DataSet m_dataset;
         private Session m_session;
         private bool m_showResults;
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Changes the session used for the read request.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             m_session = session;
         }
 
         /// <summary>
         /// Adds a node to the read request.
         /// </summary>
-        public void AddNodes(params ReadValueId[] nodesToRead)
-        {
-            if (nodesToRead != null)
-            {
-                for (int ii = 0; ii < nodesToRead.Length; ii++)
-                {
-                    if (nodesToRead[ii] == null)
-                    {
+        public void AddNodes(params ReadValueId[] nodesToRead) {
+            if (nodesToRead != null) {
+                for (int ii = 0; ii < nodesToRead.Length; ii++) {
+                    if (nodesToRead[ii] == null) {
                         continue;
                     }
 
@@ -113,24 +110,21 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Reads the values displayed in the control and moves to the display results state.
         /// </summary>
-        public void Read()
-        {
-            if (m_session == null)
-            {
+        public void Read() {
+            if (m_session == null) {
                 throw new ServiceResultException(StatusCodes.BadNotConnected);
             }
 
             // build list of values to read.
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            foreach (DataGridViewRow row in ResultsDV.Rows)
-            {
+            foreach (DataGridViewRow row in ResultsDV.Rows) {
                 DataRowView source = row.DataBoundItem as DataRowView;
-                ReadValueId value = (ReadValueId)source.Row[0];
+                ReadValueId value = (ReadValueId) source.Row[0];
                 row.Selected = false;
                 nodesToRead.Add(value);
             }
-            
+
             // read the values.
             DataValueCollection results = null;
             DiagnosticInfoCollection diagnosticInfos = null;
@@ -156,8 +150,7 @@ namespace Opc.Ua.Client.Controls
             m_showResults = true;
 
             // add the results to the display.
-            for (int ii = 0; ii < results.Count; ii++)
-            {
+            for (int ii = 0; ii < results.Count; ii++) {
                 DataRowView source = ResultsDV.Rows[ii].DataBoundItem as DataRowView;
                 UpdateRow(source.Row, results[ii]);
             }
@@ -166,8 +159,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the grid to edit ReadValueIds state.
         /// </summary>
-        public void Back()
-        {
+        public void Back() {
             IndexRangeCH.Visible = true;
             DataEncodingCH.Visible = true;
             DataTypeCH.Visible = false;
@@ -178,166 +170,147 @@ namespace Opc.Ua.Client.Controls
             m_showResults = false;
 
             // clear any selection.
-            foreach (DataGridViewRow row in ResultsDV.Rows)
-            {
+            foreach (DataGridViewRow row in ResultsDV.Rows) {
                 row.Selected = false;
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Updates the row with the node to read.
         /// </summary>
-        public void UpdateRow(DataRow row, DataValue value)
-        {
+        public void UpdateRow(DataRow row, DataValue value) {
             row[6] = value;
             row[7] = (value.WrappedValue.TypeInfo != null) ? value.WrappedValue.TypeInfo.ToString() : String.Empty;
             row[8] = value.WrappedValue;
             row[9] = value.StatusCode;
-            row[10] = (value.SourceTimestamp != DateTime.MinValue) ? Utils.Format("{0:HH:mm:ss.fff}", value.SourceTimestamp.ToLocalTime()) : String.Empty;
-            row[11] = (value.ServerTimestamp != DateTime.MinValue) ? Utils.Format("{0:HH:mm:ss.fff}", value.ServerTimestamp.ToLocalTime()) : String.Empty;
+            row[10] = (value.SourceTimestamp != DateTime.MinValue)
+                ? Utils.Format("{0:HH:mm:ss.fff}", value.SourceTimestamp.ToLocalTime())
+                : String.Empty;
+            row[11] = (value.ServerTimestamp != DateTime.MinValue)
+                ? Utils.Format("{0:HH:mm:ss.fff}", value.ServerTimestamp.ToLocalTime())
+                : String.Empty;
         }
 
         /// <summary>
         /// Updates the row with the node to read.
         /// </summary>
-        public void UpdateRow(DataRow row, ReadValueId nodeToRead)
-        {
+        public void UpdateRow(DataRow row, ReadValueId nodeToRead) {
             row[0] = nodeToRead;
             row[1] = ImageList.Images[ClientUtils.GetImageIndex(nodeToRead.AttributeId, null)];
-            row[2] = (m_session != null) ? m_session.NodeCache.GetDisplayText(nodeToRead.NodeId) : Utils.ToString(nodeToRead.NodeId);
+            row[2] = (m_session != null)
+                ? m_session.NodeCache.GetDisplayText(nodeToRead.NodeId)
+                : Utils.ToString(nodeToRead.NodeId);
             row[3] = Attributes.GetBrowseName(nodeToRead.AttributeId);
             row[4] = nodeToRead.IndexRange;
             row[5] = (nodeToRead.DataEncoding != null) ? nodeToRead.DataEncoding : QualifiedName.Null;
         }
+
         #endregion
 
         #region Event Handlers
-        private void PopupMenu_Opening(object sender, CancelEventArgs e)
-        {
+
+        private void PopupMenu_Opening(object sender, CancelEventArgs e) {
             NewMI.Visible = !m_showResults;
             EditMI.Enabled = ResultsDV.SelectedRows.Count > 0;
             DeleteMI.Enabled = ResultsDV.SelectedRows.Count > 0;
             DeleteMI.Visible = !m_showResults;
         }
 
-        private void NewMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!m_showResults)
-                {
+        private void NewMI_Click(object sender, EventArgs e) {
+            try {
+                if (!m_showResults) {
                     ReadValueId nodeToRead = null;
 
                     // use the first selected row as a template.
-                    foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                    {
+                    foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                         DataRowView source = row.DataBoundItem as DataRowView;
-                        ReadValueId value = (ReadValueId)source.Row[0];
-                        nodeToRead = (ReadValueId)value.Clone();
+                        ReadValueId value = (ReadValueId) source.Row[0];
+                        nodeToRead = (ReadValueId) value.Clone();
                         break;
                     }
 
-                    if (nodeToRead == null)
-                    {
-                        nodeToRead = new ReadValueId() { AttributeId = Attributes.Value };
+                    if (nodeToRead == null) {
+                        nodeToRead = new ReadValueId() {AttributeId = Attributes.Value};
                     }
 
                     // edit the parameters.
                     ReadValueId[] results = new EditReadValueIdDlg().ShowDialog(m_session, nodeToRead);
 
-                    if (results != null)
-                    {
+                    if (results != null) {
                         // add the new rows.
-                        for (int ii = 0; ii < results.Length; ii++)
-                        {
+                        for (int ii = 0; ii < results.Length; ii++) {
                             DataRow row = m_dataset.Tables[0].NewRow();
                             UpdateRow(row, results[ii]);
                             m_dataset.Tables[0].Rows.Add(row);
                         }
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void EditMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_showResults)
-                {
-                    foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                    {
+        private void EditMI_Click(object sender, EventArgs e) {
+            try {
+                if (m_showResults) {
+                    foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                         DataRowView source = row.DataBoundItem as DataRowView;
-                        ReadValueId nodeToRead = (ReadValueId)source.Row[0];
-                        DataValue value = (DataValue)source.Row[6];
+                        ReadValueId nodeToRead = (ReadValueId) source.Row[0];
+                        DataValue value = (DataValue) source.Row[6];
 
                         new EditComplexValueDlg().ShowDialog(
                             m_session,
                             null,
                             0,
-                            null, 
+                            null,
                             value,
                             true,
                             "View Read Result");
 
                         break;
                     }
-                }
-                else
-                {
+                } else {
                     List<ReadValueId> nodesToRead = new List<ReadValueId>();
 
-                    foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                    {
+                    foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                         DataRowView source = row.DataBoundItem as DataRowView;
-                        ReadValueId value = (ReadValueId)source.Row[0];
+                        ReadValueId value = (ReadValueId) source.Row[0];
                         nodesToRead.Add(value);
                     }
 
                     ReadValueId[] results = new EditReadValueIdDlg().ShowDialog(m_session, nodesToRead.ToArray());
 
-                    if (results != null)
-                    {
-                        for (int ii = 0; ii < results.Length; ii++)
-                        {
+                    if (results != null) {
+                        for (int ii = 0; ii < results.Length; ii++) {
                             DataRowView source = ResultsDV.SelectedRows[ii].DataBoundItem as DataRowView;
                             UpdateRow(source.Row, results[ii]);
                         }
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void DeleteMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!m_showResults)
-                {
-                    foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                    {
+        private void DeleteMI_Click(object sender, EventArgs e) {
+            try {
+                if (!m_showResults) {
+                    foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                         DataRowView source = row.DataBoundItem as DataRowView;
                         source.Row.Delete();
                     }
 
                     m_dataset.AcceptChanges();
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

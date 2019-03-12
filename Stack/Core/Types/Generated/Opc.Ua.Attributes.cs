@@ -30,15 +30,13 @@
 using System;
 using System.Reflection;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// A class that defines constants used by UA applications.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.CodeGenerator", "1.0.0.0")]
-    public static partial class Attributes
-    {
+    public static partial class Attributes {
         /// <summary>
         /// The canonical identifier for the node.
         /// </summary>

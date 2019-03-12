@@ -14,15 +14,12 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// The <b>Opc.Ua</b> namespace contains classes and interfaces which implement all of the types 
     /// and services defined by the UA specification.
     /// </summary>
     ///<exclude/>
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NamespaceDoc
-    {
-    }
+    public class NamespaceDoc { }
 }

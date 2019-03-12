@@ -33,8 +33,7 @@ using System.Collections.Generic;
 
 #pragma warning disable 0618
 
-namespace Opc.Ua.Server
-{    
+namespace Opc.Ua.Server {
 #if LEGACY_CORENODEMANAGER
     /// <summary>
     /// An interface to an object that produces current data for multiple variables.

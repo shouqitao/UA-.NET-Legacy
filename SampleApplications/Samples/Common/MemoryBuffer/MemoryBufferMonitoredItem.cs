@@ -33,37 +33,35 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-namespace MemoryBuffer
-{
+namespace MemoryBuffer {
     /// <summary>
     /// Provides a basic monitored item implementation which does not support queuing.
     /// </summary>
-    public class MemoryBufferMonitoredItem : MonitoredItem
-    {
-		/// <summary>
-		/// Initializes the object with its node type.
-		/// </summary>
+    public class MemoryBufferMonitoredItem : MonitoredItem {
+        /// <summary>
+        /// Initializes the object with its node type.
+        /// </summary>
         public MemoryBufferMonitoredItem(
-            IServerInternal     server,
-            INodeManager        nodeManager,
-            object              mangerHandle,
-            uint                offset,
-            uint                subscriptionId,
-            uint                id,
-            Session             session,
-            ReadValueId         itemToMonitor,
-            DiagnosticsMasks    diagnosticsMasks,
-            TimestampsToReturn  timestampsToReturn,
-            MonitoringMode      monitoringMode,
-            uint                clientHandle,
-            MonitoringFilter    originalFilter,
-            MonitoringFilter    filterToUse,
-            Range               range,
-            double              samplingInterval,
-            uint                queueSize,
-            bool                discardOldest,
-            double              minimumSamplingInterval)
-        :
+            IServerInternal server,
+            INodeManager nodeManager,
+            object mangerHandle,
+            uint offset,
+            uint subscriptionId,
+            uint id,
+            Session session,
+            ReadValueId itemToMonitor,
+            DiagnosticsMasks diagnosticsMasks,
+            TimestampsToReturn timestampsToReturn,
+            MonitoringMode monitoringMode,
+            uint clientHandle,
+            MonitoringFilter originalFilter,
+            MonitoringFilter filterToUse,
+            Range range,
+            double samplingInterval,
+            uint queueSize,
+            bool discardOldest,
+            double minimumSamplingInterval)
+            :
             base(
                 server,
                 nodeManager,
@@ -82,8 +80,7 @@ namespace MemoryBuffer
                 samplingInterval,
                 queueSize,
                 discardOldest,
-                minimumSamplingInterval)
-		{
+                minimumSamplingInterval) {
             m_offset = offset;
         }
 
@@ -94,8 +91,7 @@ namespace MemoryBuffer
             DiagnosticsMasks diagnosticsMasks,
             TimestampsToReturn timestampsToReturn,
             uint clientHandle,
-            double samplingInterval)
-        {
+            double samplingInterval) {
             return base.ModifyAttributes(diagnosticsMasks,
                 timestampsToReturn,
                 clientHandle,
@@ -110,14 +106,10 @@ namespace MemoryBuffer
         /// <summary>
         /// The offset in the memory buffer.
         /// </summary>
-        public uint Offset
-        {
-            get
-            {
-                return m_offset;
-            }
+        public uint Offset {
+            get { return m_offset; }
         }
-        
+
         private uint m_offset;
 
         /*

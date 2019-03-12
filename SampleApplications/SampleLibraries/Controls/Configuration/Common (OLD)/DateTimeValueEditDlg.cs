@@ -36,62 +36,54 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A dialog to edit a date/time value
     /// </summary>
-    public partial class DateTimeValueEditDlg : Form
-    {
+    public partial class DateTimeValueEditDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeValueEditDlg"/> class.
         /// </summary>
-        public DateTimeValueEditDlg()
-        {
+        public DateTimeValueEditDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(ref DateTime value)
-        {
-            if (value < ValueCTRL.MinDate)
-            {
+        public bool ShowDialog(ref DateTime value) {
+            if (value < ValueCTRL.MinDate) {
                 ValueCTRL.Value = ValueCTRL.MinDate;
-            }
-            else if (value > ValueCTRL.MaxDate)
-            {
+            } else if (value > ValueCTRL.MaxDate) {
                 ValueCTRL.Value = ValueCTRL.MaxDate;
-            }
-            else
-            {
+            } else {
                 ValueCTRL.Value = value;
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
-            
+
             value = ValueCTRL.Value;
 
-            if (value == ValueCTRL.MinDate)
-            {
+            if (value == ValueCTRL.MinDate) {
                 value = DateTime.MinValue;
             }
 
-            if (value == ValueCTRL.MaxDate)
-            {
+            if (value == ValueCTRL.MaxDate) {
                 value = DateTime.MaxValue;
             }
 
             return true;
         }
+
         #endregion
     }
 }

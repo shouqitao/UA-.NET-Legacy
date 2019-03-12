@@ -33,13 +33,11 @@ using System.Collections.Generic;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Stores a type declaration retrieved from a server.
     /// </summary>
-    public class TypeDeclaration
-    {
+    public class TypeDeclaration {
         /// <summary>
         /// The node if for the type.
         /// </summary>
@@ -54,8 +52,7 @@ namespace Opc.Ua.Client.Controls
     /// <summary>
     /// Stores an instance declaration fetched from the server.
     /// </summary>
-    public class InstanceDeclaration
-    {
+    public class InstanceDeclaration {
         /// <summary>
         /// The type that the declaration belongs to.
         /// </summary>
@@ -135,13 +132,11 @@ namespace Opc.Ua.Client.Controls
     /// <summary>
     /// A field in a filter declaration.
     /// </summary>
-    public class FilterDeclarationField
-    {
+    public class FilterDeclarationField {
         /// <summary>
         /// Creates a new instance of a FilterDeclarationField.
         /// </summary>
-        public FilterDeclarationField()
-        {
+        public FilterDeclarationField() {
             Selected = true;
             DisplayInList = false;
             FilterEnabled = false;
@@ -153,8 +148,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Creates a new instance of a FilterDeclarationField.
         /// </summary>
-        public FilterDeclarationField(InstanceDeclaration instanceDeclaration)
-        {
+        public FilterDeclarationField(InstanceDeclaration instanceDeclaration) {
             Selected = true;
             DisplayInList = false;
             FilterEnabled = false;
@@ -166,8 +160,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Creates a new instance of a FilterDeclarationField.
         /// </summary>
-        public FilterDeclarationField(FilterDeclarationField field)
-        {
+        public FilterDeclarationField(FilterDeclarationField field) {
             Selected = field.Selected;
             DisplayInList = field.DisplayInList;
             FilterEnabled = field.FilterEnabled;
@@ -210,13 +203,11 @@ namespace Opc.Ua.Client.Controls
     /// <summary>
     /// A declararion of an event filter.
     /// </summary>
-    public class FilterDeclaration
-    {
+    public class FilterDeclaration {
         /// <summary>
         /// Creates a new instance of a FilterDeclaration.
         /// </summary>
-        public FilterDeclaration()
-        {
+        public FilterDeclaration() {
             EventTypeId = Opc.Ua.ObjectTypeIds.BaseEventType;
             Fields = new List<FilterDeclarationField>();
         }
@@ -224,20 +215,16 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Creates a new instance of a FilterDeclaration.
         /// </summary>
-        public FilterDeclaration(TypeDeclaration eventType, FilterDeclaration template)
-        {
+        public FilterDeclaration(TypeDeclaration eventType, FilterDeclaration template) {
             EventTypeId = eventType.NodeId;
             Fields = new List<FilterDeclarationField>();
 
-            foreach (InstanceDeclaration instanceDeclaration in eventType.Declarations)
-            {
-                if (instanceDeclaration.NodeClass == NodeClass.Method)
-                {
+            foreach (InstanceDeclaration instanceDeclaration in eventType.Declarations) {
+                if (instanceDeclaration.NodeClass == NodeClass.Method) {
                     continue;
                 }
 
-                if (NodeId.IsNull(instanceDeclaration.ModellingRule))
-                {
+                if (NodeId.IsNull(instanceDeclaration.ModellingRule)) {
                     continue;
                 }
 
@@ -245,21 +232,18 @@ namespace Opc.Ua.Client.Controls
                 Fields.Add(element);
 
                 // set reasonable defaults.
-                if (template == null)
-                {
-                    if (instanceDeclaration.RootTypeId == Opc.Ua.ObjectTypeIds.BaseEventType && instanceDeclaration.BrowseName != Opc.Ua.BrowseNames.EventId)
-                    {
+                if (template == null) {
+                    if (instanceDeclaration.RootTypeId == Opc.Ua.ObjectTypeIds.BaseEventType &&
+                        instanceDeclaration.BrowseName != Opc.Ua.BrowseNames.EventId) {
                         element.DisplayInList = true;
                     }
                 }
 
                 // preserve filter settings.
-                else
-                {
-                    foreach (FilterDeclarationField field in template.Fields)
-                    {
-                        if (field.InstanceDeclaration.BrowsePathDisplayText == element.InstanceDeclaration.BrowsePathDisplayText)
-                        {
+                else {
+                    foreach (FilterDeclarationField field in template.Fields) {
+                        if (field.InstanceDeclaration.BrowsePathDisplayText ==
+                            element.InstanceDeclaration.BrowsePathDisplayText) {
                             element.DisplayInList = field.DisplayInList;
                             element.FilterEnabled = field.FilterEnabled;
                             element.FilterOperator = field.FilterOperator;
@@ -274,13 +258,11 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Creates a new instance of a FilterDeclaration.
         /// </summary>
-        public FilterDeclaration(FilterDeclaration declaration)
-        {
+        public FilterDeclaration(FilterDeclaration declaration) {
             EventTypeId = declaration.EventTypeId;
             Fields = new List<FilterDeclarationField>(declaration.Fields.Count);
 
-            for (int ii = 0; ii < declaration.Fields.Count; ii++)
-            {
+            for (int ii = 0; ii < declaration.Fields.Count; ii++) {
                 Fields.Add(new FilterDeclarationField(declaration.Fields[ii]));
             }
         }
@@ -288,60 +270,55 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the event filter defined by the filter declaration.
         /// </summary>
-        public EventFilter GetFilter()
-        {
+        public EventFilter GetFilter() {
             EventFilter filter = new EventFilter();
             filter.SelectClauses = GetSelectClause();
             filter.WhereClause = GetWhereClause();
             return filter;
         }
-        
+
         /// <summary>
         /// Adds a simple field to the declaration.
         /// </summary>
-        public void AddSimpleField(QualifiedName browseName, BuiltInType dataType, bool displayInList)
-        {
-            AddSimpleField(new QualifiedName[] { browseName }, NodeClass.Variable, dataType, ValueRanks.Scalar, displayInList);
+        public void AddSimpleField(QualifiedName browseName, BuiltInType dataType, bool displayInList) {
+            AddSimpleField(new QualifiedName[] {browseName}, NodeClass.Variable, dataType, ValueRanks.Scalar,
+                displayInList);
         }
 
         /// <summary>
         /// Adds a simple field to the declaration.
         /// </summary>
-        public void AddSimpleField(QualifiedName browseName, BuiltInType dataType, int valueRank, bool displayInList)
-        {
-            AddSimpleField(new QualifiedName[] { browseName }, NodeClass.Variable, dataType, valueRank, displayInList);
+        public void AddSimpleField(QualifiedName browseName, BuiltInType dataType, int valueRank, bool displayInList) {
+            AddSimpleField(new QualifiedName[] {browseName}, NodeClass.Variable, dataType, valueRank, displayInList);
         }
 
         /// <summary>
         /// Adds a simple field to the declaration.
         /// </summary>
-        public void AddSimpleField(QualifiedName[] browseNames, BuiltInType dataType, int valueRank, bool displayInList)
-        {
+        public void AddSimpleField(QualifiedName[] browseNames, BuiltInType dataType, int valueRank,
+            bool displayInList) {
             AddSimpleField(browseNames, NodeClass.Variable, dataType, valueRank, displayInList);
         }
 
         /// <summary>
         /// Adds a simple field to the declaration.
         /// </summary>
-        public void AddSimpleField(QualifiedName[] browseNames, NodeClass nodeClass, BuiltInType dataType, int valueRank, bool displayInList)
-        {
+        public void AddSimpleField(QualifiedName[] browseNames, NodeClass nodeClass, BuiltInType dataType,
+            int valueRank, bool displayInList) {
             FilterDeclarationField field = new FilterDeclarationField();
 
             field.DisplayInList = displayInList;
             field.InstanceDeclaration = new InstanceDeclaration();
             field.InstanceDeclaration.NodeClass = nodeClass;
 
-            if (browseNames != null)
-            {
+            if (browseNames != null) {
                 field.InstanceDeclaration.BrowseName = browseNames[browseNames.Length - 1];
                 field.InstanceDeclaration.BrowsePath = new QualifiedNameCollection();
 
                 StringBuilder path = new StringBuilder();
 
-                for (int ii = 0; ii < browseNames.Length; ii++)
-                {
-                    if (path.Length > 0)
-                    {
+                for (int ii = 0; ii < browseNames.Length; ii++) {
+                    if (path.Length > 0) {
                         path.Append('/');
                     }
 
@@ -353,12 +330,11 @@ namespace Opc.Ua.Client.Controls
             }
 
             field.InstanceDeclaration.BuiltInType = dataType;
-            field.InstanceDeclaration.DataType = (uint)dataType;
+            field.InstanceDeclaration.DataType = (uint) dataType;
             field.InstanceDeclaration.ValueRank = valueRank;
             field.InstanceDeclaration.DataTypeDisplayText = dataType.ToString();
 
-            if (valueRank >= 0)
-            {
+            if (valueRank >= 0) {
                 field.InstanceDeclaration.DataTypeDisplayText += "[]";
             }
 
@@ -371,8 +347,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the select clause defined by the filter declaration.
         /// </summary>
-        public SimpleAttributeOperandCollection GetSelectClause()
-        {
+        public SimpleAttributeOperandCollection GetSelectClause() {
             SimpleAttributeOperandCollection selectClause = new SimpleAttributeOperandCollection();
 
             SimpleAttributeOperand operand = new SimpleAttributeOperand();
@@ -380,13 +355,13 @@ namespace Opc.Ua.Client.Controls
             operand.AttributeId = Attributes.NodeId;
             selectClause.Add(operand);
 
-            foreach (FilterDeclarationField field in Fields)
-            {
-                if (field.Selected)
-                {
+            foreach (FilterDeclarationField field in Fields) {
+                if (field.Selected) {
                     operand = new SimpleAttributeOperand();
                     operand.TypeDefinitionId = field.InstanceDeclaration.RootTypeId;
-                    operand.AttributeId = (field.InstanceDeclaration.NodeClass == NodeClass.Object) ? Attributes.NodeId : Attributes.Value;
+                    operand.AttributeId = (field.InstanceDeclaration.NodeClass == NodeClass.Object)
+                        ? Attributes.NodeId
+                        : Attributes.Value;
                     operand.BrowsePath = field.InstanceDeclaration.BrowsePath;
                     selectClause.Add(operand);
                 }
@@ -394,24 +369,23 @@ namespace Opc.Ua.Client.Controls
 
             return selectClause;
         }
-        
+
         /// <summary>
         /// Returns the where clause defined by the filter declaration.
         /// </summary>
-        public ContentFilter GetWhereClause()
-        {
+        public ContentFilter GetWhereClause() {
             ContentFilter whereClause = new ContentFilter();
             ContentFilterElement element1 = whereClause.Push(FilterOperator.OfType, EventTypeId);
 
             EventFilter filter = new EventFilter();
 
-            foreach (FilterDeclarationField field in Fields)
-            {
-                if (field.FilterEnabled)
-                {
+            foreach (FilterDeclarationField field in Fields) {
+                if (field.FilterEnabled) {
                     SimpleAttributeOperand operand1 = new SimpleAttributeOperand();
                     operand1.TypeDefinitionId = field.InstanceDeclaration.RootTypeId;
-                    operand1.AttributeId = (field.InstanceDeclaration.NodeClass == NodeClass.Object) ? Attributes.NodeId : Attributes.Value;
+                    operand1.AttributeId = (field.InstanceDeclaration.NodeClass == NodeClass.Object)
+                        ? Attributes.NodeId
+                        : Attributes.Value;
                     operand1.BrowsePath = field.InstanceDeclaration.BrowsePath;
 
                     LiteralOperand operand2 = new LiteralOperand();
@@ -428,32 +402,25 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the value for the specified browse name.
         /// </summary>
-        public T GetValue<T>(QualifiedName browseName, VariantCollection fields, T defaultValue)
-        {
-            if (fields == null || fields.Count == 0)
-            {
+        public T GetValue<T>(QualifiedName browseName, VariantCollection fields, T defaultValue) {
+            if (fields == null || fields.Count == 0) {
                 return defaultValue;
             }
 
-            if (browseName == null)
-            {
+            if (browseName == null) {
                 browseName = QualifiedName.Null;
             }
 
-            for (int ii = 0; ii < this.Fields.Count; ii++)
-            {
-                if (this.Fields[ii].InstanceDeclaration.BrowseName == browseName)
-                {
-                    if (ii >= fields.Count+1)
-                    {
+            for (int ii = 0; ii < this.Fields.Count; ii++) {
+                if (this.Fields[ii].InstanceDeclaration.BrowseName == browseName) {
+                    if (ii >= fields.Count + 1) {
                         return defaultValue;
                     }
 
-                    object value = fields[ii+1].Value;
+                    object value = fields[ii + 1].Value;
 
-                    if (typeof(T).IsInstanceOfType(value))
-                    {
-                        return (T)value;
+                    if (typeof(T).IsInstanceOfType(value)) {
+                        return (T) value;
                     }
 
                     break;

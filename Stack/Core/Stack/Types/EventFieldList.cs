@@ -20,19 +20,17 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{    
+namespace Opc.Ua {
     /// <summary>
     /// A list of event field values returned in a NotificationMessage.
     /// </summary>
-	public partial class EventFieldList
-	{
+    public partial class EventFieldList {
         #region Public Properties
+
         /// <summary>
         /// The handle cast to a notification message.
         /// </summary>
-        public NotificationMessage Message
-        {
+        public NotificationMessage Message {
             get { return m_handle as NotificationMessage; }
             set { m_handle = value; }
         }
@@ -40,15 +38,17 @@ namespace Opc.Ua
         /// <summary>
         /// A handle associated withe the event instance.
         /// </summary>
-        public object Handle
-        {
+        public object Handle {
             get { return m_handle; }
             set { m_handle = value; }
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_handle;
+
         #endregion
     }
 }

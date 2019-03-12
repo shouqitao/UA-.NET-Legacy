@@ -20,13 +20,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.Threading;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// An interface to a service response message.
     /// </summary>
-    public interface IServerBase 
-    {
+    public interface IServerBase {
         /// <summary>
         /// The message context to use with the service.
         /// </summary>
@@ -57,8 +55,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that manages a request received from a client.
     /// </summary>
-    public interface IEndpointIncomingRequest
-    {
+    public interface IEndpointIncomingRequest {
         /// <summary>
         /// Gets the request.
         /// </summary>
@@ -98,8 +95,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface which the service host object.
     /// </summary>
-    public interface IServiceHostBase
-    {
+    public interface IServiceHostBase {
         /// <summary>
         /// The UA server instance associated with the service host.
         /// </summary>

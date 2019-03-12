@@ -30,50 +30,48 @@ using System.ServiceModel.Description;
 using System.Reflection;
 using System.Xml;
 
-namespace Opc.Ua.Bindings
-{
-    #if !NET4_CLIENT_FRAMEWORK
+namespace Opc.Ua.Bindings {
+#if !NET4_CLIENT_FRAMEWORK
     /// <summary>
     /// Manages the connections for a UA HTTPS server.
     /// </summary>
-    public partial class UaHttpsChannelListener : IDisposable, ITransportListener
-    {
+    public partial class UaHttpsChannelListener : IDisposable, ITransportListener {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UaTcpChannelListener"/> class.
         /// </summary>
-        public UaHttpsChannelListener()
-        {
-        }
+        public UaHttpsChannelListener() { }
+
         #endregion
 
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "m_simulator")]
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing) 
-            {
-                lock (m_lock)
-                {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed",
+            MessageId = "m_simulator")]
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                lock (m_lock) {
                     Utils.SilentDispose(m_host);
                     m_host = null;
                 }
             }
         }
+
         #endregion
-        
+
         #region ITransportListener Members
+
         /// <summary>
         /// Opens the listener and starts accepting connection.
         /// </summary>
@@ -82,8 +80,7 @@ namespace Opc.Ua.Bindings
         /// <param name="callback">The callback to use when requests arrive via the channel.</param>
         /// <exception cref="ArgumentNullException">Thrown if any parameter is null.</exception>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Open(Uri baseAddress, TransportListenerSettings settings, ITransportListenerCallback callback)
-        {
+        public void Open(Uri baseAddress, TransportListenerSettings settings, ITransportListenerCallback callback) {
             // assign a unique guid to the listener.
             m_listenerId = Guid.NewGuid().ToString();
 
@@ -122,80 +119,72 @@ namespace Opc.Ua.Bindings
         /// Closes the listener and stops accepting connection.
         /// </summary>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Close()
-        {
+        public void Close() {
             Stop();
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Gets the URL for the listener's endpoint.
         /// </summary>
         /// <value>The URL for the listener's endpoint.</value>
-        public Uri EndpointUrl
-        {
+        public Uri EndpointUrl {
             get { return m_uri; }
         }
 
         [ServiceContract]
-        private interface ICrossDomainPolicy
-        {
+        private interface ICrossDomainPolicy {
             [OperationContract]
             [WebGet(UriTemplate = "ClientAccessPolicy.xml")]
             Message ProvidePolicyFile();
         }
 
         [ServiceContract]
-        private interface IInvokeService
-        {
+        private interface IInvokeService {
             [OperationContract, WebInvoke(UriTemplate = "*")]
             Stream Post(Stream istrm);
         }
 
-        [ServiceBehavior(Namespace = Namespaces.OpcUaWsdl, ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode=InstanceContextMode.Single)]
-        private class Service : IInvokeService, ICrossDomainPolicy
-        {
-            public Service()
-            {
-            }
+        [ServiceBehavior(Namespace = Namespaces.OpcUaWsdl, ConcurrencyMode = ConcurrencyMode.Multiple,
+            InstanceContextMode = InstanceContextMode.Single)]
+        private class Service : IInvokeService, ICrossDomainPolicy {
+            public Service() { }
 
-            public UaHttpsChannelListener Listener
-            {
+            public UaHttpsChannelListener Listener {
                 get { return m_listener; }
                 set { m_listener = value; }
             }
 
             private UaHttpsChannelListener m_listener;
 
-            public System.ServiceModel.Channels.Message ProvidePolicyFile()
-            {
+            public System.ServiceModel.Channels.Message ProvidePolicyFile() {
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream istrm = assembly.GetManifestResourceStream("Opc.Ua.Stack.Server.ClientAccessPolicy.xml");
 
-                if (istrm != null)
-                {
+                if (istrm != null) {
                     XmlReader reader = XmlReader.Create(istrm);
-                    System.ServiceModel.Channels.Message result = Message.CreateMessage(MessageVersion.None, "", reader);
+                    System.ServiceModel.Channels.Message result =
+                        Message.CreateMessage(MessageVersion.None, "", reader);
                     return result;
                 }
 
                 return null;
             }
 
-            public Stream Post(Stream istrm)
-            {
+            public Stream Post(Stream istrm) {
                 MemoryStream mstrm = new MemoryStream();
 
                 int bytesRead = 0;
                 byte[] buffer = new byte[4096];
 
-                do
-                {
+                do {
                     bytesRead = istrm.Read(buffer, 0, buffer.Length);
                     mstrm.Write(buffer, 0, bytesRead);
-                }
-                while (bytesRead != 0);
+                } while (bytesRead != 0);
+
                 mstrm.Position = 0;
 
                 Dictionary<string, string> options = Parse(WebOperationContext.Current.IncomingRequest.ContentType);
@@ -204,31 +193,23 @@ namespace Opc.Ua.Bindings
                 StringBuilder contentType2 = new StringBuilder();
                 string action = null;
 
-                if (options[String.Empty] == "application/octet-stream")
-                {
+                if (options[String.Empty] == "application/octet-stream") {
                     contentType2.Append("application/octet-stream");
-                }
-
-                else if (options[String.Empty] == "application/soap+xml")
-                {
+                } else if (options[String.Empty] == "application/soap+xml") {
                     action = options["action"];
 
-                    if (action == null)
-                    {
+                    if (action == null) {
                         throw new WebException("SOAP Action not specified.");
                     }
 
-                    action = action.Substring(Namespaces.OpcUaWsdl.Length+1);
+                    action = action.Substring(Namespaces.OpcUaWsdl.Length + 1);
 
                     contentType2.Append("application/soap+xml; charset=\"utf-8\"; action=\"");
                     contentType2.Append(Namespaces.OpcUaWsdl);
                     contentType2.Append("/");
                     contentType2.Append(action);
                     contentType2.Append("Response");
-                }
-
-                else
-                {
+                } else {
                     throw new WebException("ContentType not supported.");
                 }
 
@@ -243,27 +224,22 @@ namespace Opc.Ua.Bindings
             /// <summary>
             /// Parses the content type.
             /// </summary>
-            private Dictionary<string, string> Parse(string contentType)
-            {
+            private Dictionary<string, string> Parse(string contentType) {
                 Dictionary<string, string> options = new Dictionary<string, string>();
 
                 string[] fields = contentType.Split(';');
 
-                for (int ii = 0; ii < fields.Length; ii++)
-                {
+                for (int ii = 0; ii < fields.Length; ii++) {
                     string key = String.Empty;
                     string value = null;
 
                     int index = fields[ii].IndexOf('=');
 
-                    if (index != -1)
-                    {
+                    if (index != -1) {
                         key = fields[ii].Substring(0, index).Trim();
                         value = fields[ii].Substring(index + 1).Trim();
                         value = value.Trim('"');
-                    }
-                    else
-                    {
+                    } else {
                         value = fields[ii].Trim();
                     }
 
@@ -277,10 +253,8 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Starts listening at the specified port.
         /// </summary>
-        public void Start()
-        {
-            lock (m_lock)
-            {
+        public void Start() {
+            lock (m_lock) {
                 UriBuilder root = new UriBuilder(m_uri);
 
                 string path = root.Path;
@@ -288,19 +262,17 @@ namespace Opc.Ua.Bindings
 
                 WebHttpBinding binding = null;
 
-                if (root.Scheme == Utils.UriSchemeHttps)
-                {
+                if (root.Scheme == Utils.UriSchemeHttps) {
                     binding = new WebHttpBinding(WebHttpSecurityMode.Transport);
-                }
-                else
-                {
+                } else {
                     binding = new WebHttpBinding();
                 }
 
                 Service service = new Service();
                 service.Listener = this;
                 m_host = new System.ServiceModel.ServiceHost(service, m_uri);
-                m_host.AddServiceEndpoint(typeof(ICrossDomainPolicy), binding, root.Uri).Behaviors.Add(new WebHttpBehavior());
+                m_host.AddServiceEndpoint(typeof(ICrossDomainPolicy), binding, root.Uri).Behaviors
+                    .Add(new WebHttpBehavior());
                 m_host.AddServiceEndpoint(typeof(IInvokeService), binding, "").Behaviors.Add(new WebHttpBehavior());
                 m_host.Open();
             }
@@ -309,31 +281,28 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Stops listening.
         /// </summary>
-        public void Stop()
-        {
-            lock (m_lock)
-            {
-                if (m_host != null)
-                {
+        public void Stop() {
+            lock (m_lock) {
+                if (m_host != null) {
                     m_host.Close();
                     m_host = null;
                 }
             }
         }
+
         #endregion
-                
+
         #region Private Methods
+
         /// <summary>
         /// Handles requests arriving from a channel.
         /// </summary>
-        private IAsyncResult BeginProcessRequest(Stream istrm, string action, string securityPolicyUri, object callbackData)
-        {
+        private IAsyncResult BeginProcessRequest(Stream istrm, string action, string securityPolicyUri,
+            object callbackData) {
             IAsyncResult result = null;
 
-            try
-            {
-                if (m_callback != null)
-                {
+            try {
+                if (m_callback != null) {
                     string contentType = WebOperationContext.Current.IncomingRequest.ContentType;
                     Uri uri = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri;
 
@@ -341,17 +310,13 @@ namespace Opc.Ua.Bindings
 
                     EndpointDescription endpoint = null;
 
-                    for (int ii = 0; ii < m_descriptions.Count; ii++)
-                    {
-                        if (m_descriptions[ii].EndpointUrl.StartsWith(scheme))
-                        {
-                            if (endpoint == null)
-                            {
+                    for (int ii = 0; ii < m_descriptions.Count; ii++) {
+                        if (m_descriptions[ii].EndpointUrl.StartsWith(scheme)) {
+                            if (endpoint == null) {
                                 endpoint = m_descriptions[ii];
                             }
 
-                            if (m_descriptions[ii].SecurityPolicyUri == securityPolicyUri)
-                            {
+                            if (m_descriptions[ii].SecurityPolicyUri == securityPolicyUri) {
                                 endpoint = m_descriptions[ii];
                                 break;
                             }
@@ -359,13 +324,10 @@ namespace Opc.Ua.Bindings
                     }
 
                     IEncodeable request = null;
-                    
-                    if (String.IsNullOrEmpty(action))
-                    {
+
+                    if (String.IsNullOrEmpty(action)) {
                         request = BinaryDecoder.DecodeMessage(istrm, null, this.m_quotas.MessageContext);
-                    }
-                    else
-                    {
+                    } else {
                         string requestType = "Opc.Ua." + action + "Request";
 
                         request = HttpsTransportChannel.ReadSoapMessage(
@@ -382,34 +344,26 @@ namespace Opc.Ua.Bindings
                         null,
                         callbackData);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "HTTPSLISTENER - Unexpected error processing request.");
             }
 
             return result;
         }
 
-        private Stream EndProcessRequest(IAsyncResult result)
-        {
+        private Stream EndProcessRequest(IAsyncResult result) {
             MemoryStream ostrm = new MemoryStream();
 
-            try
-            {
-                if (m_callback != null)
-                {
+            try {
+                if (m_callback != null) {
                     IServiceResponse response = m_callback.EndProcessRequest(result);
 
                     string contentType = WebOperationContext.Current.IncomingRequest.ContentType;
 
-                    if (contentType == "application/octet-stream")
-                    {
+                    if (contentType == "application/octet-stream") {
                         BinaryEncoder encoder = new BinaryEncoder(ostrm, this.m_quotas.MessageContext);
                         encoder.EncodeMessage(response);
-                    }
-                    else
-                    {
+                    } else {
                         HttpsTransportChannel.WriteSoapMessage(
                             ostrm,
                             response.GetType().Name,
@@ -419,9 +373,7 @@ namespace Opc.Ua.Bindings
 
                     ostrm.Position = 0;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "TCPLISTENER - Unexpected error sending result.");
             }
 
@@ -431,28 +383,24 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Sets the URI for the listener.
         /// </summary>
-        private void SetUri(Uri baseAddress, string relativeAddress)
-        {
+        private void SetUri(Uri baseAddress, string relativeAddress) {
             if (baseAddress == null) throw new ArgumentNullException("baseAddress");
 
             // validate uri.
-            if (!baseAddress.IsAbsoluteUri)
-            {
+            if (!baseAddress.IsAbsoluteUri) {
                 throw new ArgumentException(Utils.Format("Base address must be an absolute URI."), "baseAddress");
             }
 
-            if (String.Compare(baseAddress.Scheme, Utils.UriSchemeOpcTcp, StringComparison.OrdinalIgnoreCase) != 0)
-            {
-                throw new ArgumentException(Utils.Format("Invalid URI scheme: {0}.", baseAddress.Scheme), "baseAddress");
+            if (String.Compare(baseAddress.Scheme, Utils.UriSchemeOpcTcp, StringComparison.OrdinalIgnoreCase) != 0) {
+                throw new ArgumentException(Utils.Format("Invalid URI scheme: {0}.", baseAddress.Scheme),
+                    "baseAddress");
             }
 
             m_uri = baseAddress;
 
             // append the relative path to the base address.
-            if (!String.IsNullOrEmpty(relativeAddress))
-            {
-                if (!baseAddress.AbsolutePath.EndsWith("/", StringComparison.Ordinal))
-                {
+            if (!String.IsNullOrEmpty(relativeAddress)) {
+                if (!baseAddress.AbsolutePath.EndsWith("/", StringComparison.Ordinal)) {
                     UriBuilder uriBuilder = new UriBuilder(baseAddress);
                     uriBuilder.Path = uriBuilder.Path + "/";
                     baseAddress = uriBuilder.Uri;
@@ -461,9 +409,11 @@ namespace Opc.Ua.Bindings
                 m_uri = new Uri(baseAddress, relativeAddress);
             }
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
 
         private string m_listenerId;
@@ -473,7 +423,8 @@ namespace Opc.Ua.Bindings
         private TcpChannelQuotas m_quotas;
         private ITransportListenerCallback m_callback;
         private System.ServiceModel.ServiceHost m_host;
+
         #endregion
-    }    
-    #endif
+    }
+#endif
 }

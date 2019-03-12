@@ -19,16 +19,14 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Flags that can be set for the EventNotifier attribute.
     /// </summary>
     /// <remarks>
     /// Flags that can be set for the EventNotifier attribute.
     /// </remarks>
-    public static class EventNotifiers
-    {
+    public static class EventNotifiers {
         /// <summary>
         /// The Object or View produces no event and has no event history.
         /// </summary>
@@ -43,7 +41,7 @@ namespace Opc.Ua
         /// The Object has an event history which may be read.
         /// </summary>
         public const byte HistoryRead = 0x4;
-        
+
         /// <summary>
         /// The Object has an event history which may be updated.
         /// </summary>
@@ -56,8 +54,7 @@ namespace Opc.Ua
     /// <remarks>
     /// Flags that can be set for the AccessLevel attribute.
     /// </remarks>
-    public static class AccessLevels
-    {
+    public static class AccessLevels {
         /// <summary>
         /// The Variable value cannot be accessed and has no event history.
         /// </summary>
@@ -67,12 +64,12 @@ namespace Opc.Ua
         /// The current value of the Variable may be read.
         /// </summary>
         public const byte CurrentRead = 0x1;
-        
+
         /// <summary>
         /// The current value of the Variable may be written.
         /// </summary>
         public const byte CurrentWrite = 0x2;
-        
+
         /// <summary>
         /// The current value of the Variable may be read or written.
         /// </summary>
@@ -82,17 +79,17 @@ namespace Opc.Ua
         /// The history for the Variable may be read.
         /// </summary>
         public const byte HistoryRead = 0x4;
-        
+
         /// <summary>
         /// The history for the Variable may be updated.
         /// </summary>
         public const byte HistoryWrite = 0x8;
-        
+
         /// <summary>
         /// The history value of the Variable may be read or updated.
         /// </summary>
         public const byte HistoryReadOrWrite = 0xC;
-        
+
         /// <summary>
         /// Indicates if the Variable generates SemanticChangeEvents when its value changes.
         /// </summary>
@@ -115,18 +112,17 @@ namespace Opc.Ua
     /// <remarks>
     /// Constants defined for the ValueRank attribute.
     /// </remarks>
-    public static class ValueRanks
-    {
+    public static class ValueRanks {
         /// <summary>
         /// The variable may be a scalar or a one dimensional array.
         /// </summary>
         public const int ScalarOrOneDimension = -3;
-        
+
         /// <summary>
         /// The variable may be a scalar or an array of any dimension.
         /// </summary>
         public const int Any = -2;
-        
+
         /// <summary>
         /// The variable is always a scalar.
         /// </summary>
@@ -146,105 +142,86 @@ namespace Opc.Ua
         /// The variable is always an array with two or more dimensions.
         /// </summary>
         public const int TwoDimensions = 2;
-        
+
         /// <summary>
         /// Checks if the actual value rank is compatible with the expected value rank.
         /// </summary>
-        public static bool IsValid(int actualValueRank, int expectedValueRank)
-        {
-            if (actualValueRank == expectedValueRank)
-            {
+        public static bool IsValid(int actualValueRank, int expectedValueRank) {
+            if (actualValueRank == expectedValueRank) {
                 return true;
             }
-    
-            switch (expectedValueRank)
-            {
-                case ValueRanks.Any:
-                {
+
+            switch (expectedValueRank) {
+                case ValueRanks.Any: {
                     return true;
                 }
 
-                case ValueRanks.OneOrMoreDimensions:
-                {
-                    if (actualValueRank < 0)
-                    {
+                case ValueRanks.OneOrMoreDimensions: {
+                    if (actualValueRank < 0) {
                         return false;
                     }
 
                     break;
                 }
 
-                case ValueRanks.ScalarOrOneDimension:
-                {
-                    if (actualValueRank != ValueRanks.Scalar && actualValueRank != ValueRanks.OneDimension)
-                    {
+                case ValueRanks.ScalarOrOneDimension: {
+                    if (actualValueRank != ValueRanks.Scalar && actualValueRank != ValueRanks.OneDimension) {
                         return false;
                     }
 
                     break;
                 }
 
-                default:
-                {
+                default: {
                     return false;
                 }
             }
 
             return true;
         }
-        
+
         /// <summary>
         /// Checks if the actual array diminesions is compatible with the expected value rank and array dimensions.
         /// </summary>
-        public static bool IsValid(IList<uint> actualArrayDimensions, int valueRank, IList<uint> expectedArrayDimensions)
-        {
+        public static bool IsValid(IList<uint> actualArrayDimensions, int valueRank,
+            IList<uint> expectedArrayDimensions) {
             // check if parameter omitted.
-            if (actualArrayDimensions == null || actualArrayDimensions.Count == 0)
-            {
+            if (actualArrayDimensions == null || actualArrayDimensions.Count == 0) {
                 return expectedArrayDimensions == null || expectedArrayDimensions.Count == 0;
             }
 
             // no array dimensions allowed for scalars.
-            if (valueRank == ValueRanks.Scalar)
-            {
+            if (valueRank == ValueRanks.Scalar) {
                 return false;
             }
 
             // check if one dimension required.
-            if (valueRank == ValueRanks.OneDimension || valueRank == ValueRanks.ScalarOrOneDimension)
-            {
-                if (actualArrayDimensions.Count != 1)
-                {
+            if (valueRank == ValueRanks.OneDimension || valueRank == ValueRanks.ScalarOrOneDimension) {
+                if (actualArrayDimensions.Count != 1) {
                     return false;
                 }
             }
 
             // check number of dimensions.
-            if (valueRank != ValueRanks.OneOrMoreDimensions)
-            {
-                if (actualArrayDimensions.Count != valueRank)
-                {
+            if (valueRank != ValueRanks.OneOrMoreDimensions) {
+                if (actualArrayDimensions.Count != valueRank) {
                     return false;
                 }
             }
 
             // nothing more to do if expected dimensions omitted.
-            if (expectedArrayDimensions == null || expectedArrayDimensions.Count == 0)
-            {
+            if (expectedArrayDimensions == null || expectedArrayDimensions.Count == 0) {
                 return true;
             }
 
             // check dimensions.
-            if (expectedArrayDimensions.Count != actualArrayDimensions.Count)
-            {
+            if (expectedArrayDimensions.Count != actualArrayDimensions.Count) {
                 return false;
             }
 
             // check length of each dimension.
-            for (int ii = 0; ii < expectedArrayDimensions.Count; ii++)
-            {
-                if (expectedArrayDimensions[ii] != actualArrayDimensions[ii] && expectedArrayDimensions[ii] != 0)
-                {
+            for (int ii = 0; ii < expectedArrayDimensions.Count; ii++) {
+                if (expectedArrayDimensions[ii] != actualArrayDimensions[ii] && expectedArrayDimensions[ii] != 0) {
                     return false;
                 }
             }
@@ -253,15 +230,14 @@ namespace Opc.Ua
             return true;
         }
     }
-    
+
     /// <summary>
     /// Constants defined for the MinimumSamplingInterval attribute.
     /// </summary>
     /// <remarks>
     /// Constants defined for the MinimumSamplingInterval attribute.
     /// </remarks>
-    public static class MinimumSamplingIntervals
-    {
+    public static class MinimumSamplingIntervals {
         /// <summary>
         /// The server does not know how fast the value can be sampled.
         /// </summary>
@@ -272,5 +248,4 @@ namespace Opc.Ua
         /// </summary>
         public const double Continuous = 0;
     }
-
-}//namespace
+} //namespace

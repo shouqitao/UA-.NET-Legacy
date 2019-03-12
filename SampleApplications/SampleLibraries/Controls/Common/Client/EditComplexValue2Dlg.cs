@@ -37,40 +37,40 @@ using System.Xml.Serialization;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class EditComplexValue2Dlg : Form
-    {
+    public partial class EditComplexValue2Dlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public EditComplexValue2Dlg()
-        {
+        public EditComplexValue2Dlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
         private NodeId m_variableId;
         private Variant m_value;
         private bool m_textChanged;
         private QualifiedName m_encodingName;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to edit a value.
         /// </summary>
-        public Variant ShowDialog(Session session, NodeId variableId, Variant value, string caption)
-        {
-            if (caption != null)
-            {
+        public Variant ShowDialog(Session session, NodeId variableId, Variant value, string caption) {
+            if (caption != null) {
                 this.Text = caption;
             }
 
@@ -79,28 +79,26 @@ namespace Opc.Ua.Client.Controls
 
             SetValue(value);
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return Variant.Null;
             }
 
             return GetValue();
         }
+
         #endregion
 
         /// <summary>
         /// Sets the value shown in the control.
         /// </summary>
-        private void SetValue(Variant value)
-        {
+        private void SetValue(Variant value) {
             ValueTB.ForeColor = Color.Empty;
             ValueTB.Font = new Font(ValueTB.Font, FontStyle.Regular);
 
             m_textChanged = false;
 
             // check for null.
-            if (Variant.Null == value)
-            {
+            if (Variant.Null == value) {
                 ValueTB.Text = String.Empty;
                 m_value = Variant.Null;
                 return;
@@ -109,17 +107,20 @@ namespace Opc.Ua.Client.Controls
             // get the source type.
             TypeInfo sourceType = value.TypeInfo;
 
-            if (sourceType == null)
-            {
+            if (sourceType == null) {
                 sourceType = TypeInfo.Construct(value.Value);
             }
 
             m_value = new Variant(value.Value, sourceType);
-            
+
             // display value as text.
             StringBuilder buffer = new StringBuilder();
-            XmlWriter writer = XmlWriter.Create(buffer, new XmlWriterSettings() { Indent = true, OmitXmlDeclaration = true });
-            XmlEncoder encoder = new XmlEncoder(new XmlQualifiedName("Value", Namespaces.OpcUaXsd), writer, m_session.MessageContext);
+            XmlWriter writer = XmlWriter.Create(buffer, new XmlWriterSettings() {
+                Indent = true,
+                OmitXmlDeclaration = true
+            });
+            XmlEncoder encoder = new XmlEncoder(new XmlQualifiedName("Value", Namespaces.OpcUaXsd), writer,
+                m_session.MessageContext);
             encoder.WriteVariantContents(m_value.Value, m_value.TypeInfo);
             writer.Close();
 
@@ -129,21 +130,16 @@ namespace Opc.Ua.Client.Controls
             ExpandedNodeId encodingId = null;
             ExtensionObjectEncoding encoding = ExtensionObjectEncoding.None;
 
-            if (sourceType.BuiltInType == BuiltInType.ExtensionObject)
-            {
+            if (sourceType.BuiltInType == BuiltInType.ExtensionObject) {
                 ExtensionObject extension = null;
 
-                if (sourceType.ValueRank == ValueRanks.Scalar)
-                {
-                    extension = (ExtensionObject)m_value.Value;
-                }
-                else
-                {
+                if (sourceType.ValueRank == ValueRanks.Scalar) {
+                    extension = (ExtensionObject) m_value.Value;
+                } else {
                     // only use the first item in the list for arrays.
-                    ExtensionObject[] list = (ExtensionObject[])m_value.Value;
+                    ExtensionObject[] list = (ExtensionObject[]) m_value.Value;
 
-                    if (list.Length > 0)
-                    {
+                    if (list.Length > 0) {
                         extension = list[0];
                     }
                 }
@@ -152,8 +148,7 @@ namespace Opc.Ua.Client.Controls
                 encoding = extension.Encoding;
             }
 
-            if (encodingId == null)
-            {
+            if (encodingId == null) {
                 StatusCTRL.Visible = false;
                 return;
             }
@@ -161,19 +156,15 @@ namespace Opc.Ua.Client.Controls
             // check if the encoding is known.
             IObject encodingNode = m_session.NodeCache.Find(encodingId) as IObject;
 
-            if (encodingNode == null)
-            {
+            if (encodingNode == null) {
                 StatusCTRL.Visible = false;
                 return;
             }
 
             // update the encoding shown.
-            if (encoding == ExtensionObjectEncoding.EncodeableObject)
-            {
+            if (encoding == ExtensionObjectEncoding.EncodeableObject) {
                 EncodingCB.Text = "(Converted to XML by Client)";
-            }
-            else
-            {
+            } else {
                 EncodingCB.Text = m_session.NodeCache.GetDisplayText(encodingNode);
             }
 
@@ -182,18 +173,16 @@ namespace Opc.Ua.Client.Controls
             // find the data type for the encoding.
             IDataType dataTypeNode = null;
 
-            foreach (INode node in m_session.NodeCache.Find(encodingNode.NodeId, Opc.Ua.ReferenceTypeIds.HasEncoding, true, false))
-            {
+            foreach (INode node in m_session.NodeCache.Find(encodingNode.NodeId, Opc.Ua.ReferenceTypeIds.HasEncoding,
+                true, false)) {
                 dataTypeNode = node as IDataType;
 
-                if (dataTypeNode != null)
-                {
+                if (dataTypeNode != null) {
                     break;
                 }
             }
 
-            if (dataTypeNode == null)
-            {
+            if (dataTypeNode == null) {
                 StatusCTRL.Visible = false;
                 return;
             }
@@ -205,12 +194,11 @@ namespace Opc.Ua.Client.Controls
             // update encoding drop down.
             EncodingCB.DropDownItems.Clear();
 
-            foreach (INode node in m_session.NodeCache.Find(dataTypeNode.NodeId, Opc.Ua.ReferenceTypeIds.HasEncoding, false, false))
-            {
+            foreach (INode node in m_session.NodeCache.Find(dataTypeNode.NodeId, Opc.Ua.ReferenceTypeIds.HasEncoding,
+                false, false)) {
                 IObject encodingNode2 = node as IObject;
 
-                if (encodingNode2 != null)
-                {
+                if (encodingNode2 != null) {
                     ToolStripMenuItem item = new ToolStripMenuItem(m_session.NodeCache.GetDisplayText(encodingNode2));
                     item.Tag = encodingNode2;
                     item.Click += new EventHandler(EncodingCB_Item_Click);
@@ -224,25 +212,21 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Converts the XML back to a value.
         /// </summary>
-        private Variant GetValue()
-        {
-            if (!m_textChanged)
-            {
+        private Variant GetValue() {
+            if (!m_textChanged) {
                 return m_value;
             }
 
             XmlDocument document = new XmlDocument();
             document.InnerXml = ValueTB.Text;
-            
+
             // find the first element.
             XmlElement element = null;
-            
-            for (XmlNode node = document.DocumentElement.FirstChild; node != null; node = node.NextSibling)
-            {
+
+            for (XmlNode node = document.DocumentElement.FirstChild; node != null; node = node.NextSibling) {
                 element = node as XmlElement;
 
-                if (element != null)
-                {
+                if (element != null) {
                     break;
                 }
             }
@@ -257,43 +241,34 @@ namespace Opc.Ua.Client.Controls
         }
 
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
 
-        private void EncodingCB_Item_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void EncodingCB_Item_Click(object sender, EventArgs e) {
+            try {
                 ToolStripMenuItem item = sender as ToolStripMenuItem;
 
-                if (item != null)
-                {
+                if (item != null) {
                     IObject encodingNode = item.Tag as IObject;
                     m_encodingName = encodingNode.BrowseName;
                     EncodingCB.Text = item.Text;
                     ValueTB.Text = null;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void RefreshBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void RefreshBTN_Click(object sender, EventArgs e) {
+            try {
                 ReadValueId nodeToRead = new ReadValueId();
                 nodeToRead.NodeId = m_variableId;
                 nodeToRead.AttributeId = Attributes.Value;
@@ -319,8 +294,7 @@ namespace Opc.Ua.Client.Controls
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
                 // check for error.
-                if (StatusCode.IsBad(results[0].StatusCode))
-                {
+                if (StatusCode.IsBad(results[0].StatusCode)) {
                     ValueTB.Text = results[0].StatusCode.ToString();
                     ValueTB.ForeColor = Color.Red;
                     ValueTB.Font = new Font(ValueTB.Font, FontStyle.Bold);
@@ -328,17 +302,13 @@ namespace Opc.Ua.Client.Controls
                 }
 
                 SetValue(results[0].WrappedValue);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void UpdateBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void UpdateBTN_Click(object sender, EventArgs e) {
+            try {
                 WriteValue nodeToWrite = new WriteValue();
                 nodeToWrite.NodeId = m_variableId;
                 nodeToWrite.AttributeId = Attributes.Value;
@@ -362,25 +332,18 @@ namespace Opc.Ua.Client.Controls
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToWrite);
 
                 // check for error.
-                if (StatusCode.IsBad(results[0]))
-                {
+                if (StatusCode.IsBad(results[0])) {
                     throw ServiceResultException.Create(results[0], 0, diagnosticInfos, responseHeader.StringTable);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ValueTB_TextChanged(object sender, EventArgs e)
-        {
+        private void ValueTB_TextChanged(object sender, EventArgs e) {
             m_textChanged = true;
         }
 
-        private void EncodingCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void EncodingCB_SelectedIndexChanged(object sender, EventArgs e) { }
     }
 }

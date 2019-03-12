@@ -33,35 +33,36 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to specify a new access rule for a file.
     /// </summary>
-    public partial class ViewCertificateDlg : Form
-    {
+    public partial class ViewCertificateDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Initializes the dialog.
         /// </summary>
-        public ViewCertificateDlg()
-        {
+        public ViewCertificateDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         private string m_currentDirectory;
         private CertificateIdentifier m_certificate;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(CertificateIdentifier certificate)
-        {
+        public bool ShowDialog(CertificateIdentifier certificate) {
             m_certificate = certificate;
 
             CertificateStoreCTRL.StoreType = null;
@@ -77,8 +78,7 @@ namespace Opc.Ua.Client.Controls
             ValidToTB.Text = null;
             ThumbprintTB.Text = null;
 
-            if (certificate != null)
-            {
+            if (certificate != null) {
                 CertificateStoreCTRL.StoreType = certificate.StoreType;
                 CertificateStoreCTRL.StorePath = certificate.StorePath;
                 SubjectNameTB.Text = certificate.SubjectName;
@@ -86,78 +86,64 @@ namespace Opc.Ua.Client.Controls
 
                 X509Certificate2 data = certificate.Find();
 
-                if (data != null)
-                {
+                if (data != null) {
                     // fill in subject name.
                     StringBuilder buffer = new StringBuilder();
 
-                    foreach (string element in Utils.ParseDistinguishedName(data.Subject))
-                    {
-                        if (element.StartsWith("CN="))
-                        {
+                    foreach (string element in Utils.ParseDistinguishedName(data.Subject)) {
+                        if (element.StartsWith("CN=")) {
                             ApplicationNameTB.Text = element.Substring(3);
                         }
 
-                        if (element.StartsWith("O="))
-                        {
-
+                        if (element.StartsWith("O=")) {
                             OrganizationTB.Text = element.Substring(2);
                         }
 
-                        if (buffer.Length > 0)
-                        {
+                        if (buffer.Length > 0) {
                             buffer.Append('/');
                         }
 
                         buffer.Append(element);
                     }
-                    
-                    if (buffer.Length > 0)
-                    {
+
+                    if (buffer.Length > 0) {
                         SubjectNameTB.Text = buffer.ToString();
                     }
 
                     // fill in issuer name.
                     buffer = new StringBuilder();
 
-                    foreach (string element in Utils.ParseDistinguishedName(data.Issuer))
-                    {
-                        if (buffer.Length > 0)
-                        {
+                    foreach (string element in Utils.ParseDistinguishedName(data.Issuer)) {
+                        if (buffer.Length > 0) {
                             buffer.Append('/');
                         }
 
                         buffer.Append(element);
                     }
 
-                    if (buffer.Length > 0)
-                    {
+                    if (buffer.Length > 0) {
                         IssuerNameTB.Text = buffer.ToString();
                     }
 
                     // fill in application uri.
                     string applicationUri = Utils.GetApplicationUriFromCertficate(data);
 
-                    if (!String.IsNullOrEmpty(applicationUri))
-                    {
+                    if (!String.IsNullOrEmpty(applicationUri)) {
                         ApplicationUriTB.Text = applicationUri;
                     }
 
                     // fill in domains.
                     buffer = new StringBuilder();
 
-                    foreach (string domain in Utils.GetDomainsFromCertficate(data))
-                    {
-                        if (buffer.Length > 0)
-                        {
+                    foreach (string domain in Utils.GetDomainsFromCertficate(data)) {
+                        if (buffer.Length > 0) {
                             buffer.Append(", ");
                         }
 
                         buffer.Append(domain);
                     }
 
-                    if (buffer.Length > 0)
-                    {
+                    if (buffer.Length > 0) {
                         DomainsTB.Text = buffer.ToString();
                     }
 
@@ -167,70 +153,57 @@ namespace Opc.Ua.Client.Controls
                 }
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
             return true;
         }
+
         #endregion
 
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, System.Reflection.MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void DetailsBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void DetailsBTN_Click(object sender, EventArgs e) {
+            try {
                 new CertificateDlg().ShowDialog(m_certificate);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, System.Reflection.MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void ExportBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void ExportBTN_Click(object sender, EventArgs e) {
+            try {
                 const string caption = "Export Certificate";
 
-                if (m_currentDirectory == null)
-                {
+                if (m_currentDirectory == null) {
                     m_currentDirectory = Utils.GetAbsoluteDirectoryPath("%LocalApplicationData%", false, false, false);
                 }
 
-                if (m_currentDirectory == null)
-                {
+                if (m_currentDirectory == null) {
                     m_currentDirectory = Environment.CurrentDirectory;
                 }
 
                 X509Certificate2 certificate = m_certificate.Find();
 
-                if (certificate == null)
-                {
-                    MessageBox.Show("Cannot export an invalid certificate.", caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (certificate == null) {
+                    MessageBox.Show("Cannot export an invalid certificate.", caption, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
 
                 string displayName = null;
 
-                foreach (string element in Utils.ParseDistinguishedName(certificate.Subject))
-                {
-                    if (element.StartsWith("CN="))
-                    {
+                foreach (string element in Utils.ParseDistinguishedName(certificate.Subject)) {
+                    if (element.StartsWith("CN=")) {
                         displayName = element.Substring(3);
                         break;
                     }
@@ -238,8 +211,7 @@ namespace Opc.Ua.Client.Controls
 
                 StringBuilder filePath = new StringBuilder();
 
-                if (!String.IsNullOrEmpty(displayName))
-                {
+                if (!String.IsNullOrEmpty(displayName)) {
                     filePath.Append(displayName);
                     filePath.Append(" ");
                 }
@@ -259,8 +231,7 @@ namespace Opc.Ua.Client.Controls
                 dialog.FileName = filePath.ToString();
                 dialog.InitialDirectory = m_currentDirectory;
 
-                if (dialog.ShowDialog() != DialogResult.OK)
-                {
+                if (dialog.ShowDialog() != DialogResult.OK) {
                     return;
                 }
 
@@ -268,17 +239,15 @@ namespace Opc.Ua.Client.Controls
                 m_currentDirectory = fileInfo.DirectoryName;
 
                 // save the file.
-                using (Stream ostrm = fileInfo.Open(FileMode.Create, FileAccess.ReadWrite, FileShare.None))
-                {
+                using (Stream ostrm = fileInfo.Open(FileMode.Create, FileAccess.ReadWrite, FileShare.None)) {
                     byte[] data = certificate.RawData;
                     ostrm.Write(data, 0, data.Length);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, System.Reflection.MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

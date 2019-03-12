@@ -34,20 +34,16 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// An application that is managed by the configuration tool.
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaConfig)]
-    public class ManagedApplication 
-    {
+    public class ManagedApplication {
         /// <summary>
         /// Initializes a new instance of the <see cref="ManagedApplication"/> class.
         /// </summary>
-        public ManagedApplication()
-        {
-        }
+        public ManagedApplication() { }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -55,20 +51,16 @@ namespace Opc.Ua.Configuration
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            if (!String.IsNullOrEmpty(m_displayName))
-            {
+        public override string ToString() {
+            if (!String.IsNullOrEmpty(m_displayName)) {
                 return m_displayName;
             }
 
-            if (!String.IsNullOrEmpty(m_executablePath))
-            {
+            if (!String.IsNullOrEmpty(m_executablePath)) {
                 return new FileInfo(m_executablePath).Name;
             }
 
-            if (!String.IsNullOrEmpty(m_configurationPath))
-            {
+            if (!String.IsNullOrEmpty(m_configurationPath)) {
                 return new FileInfo(m_configurationPath).Name;
             }
 
@@ -79,8 +71,7 @@ namespace Opc.Ua.Configuration
         /// Gets the source file.
         /// </summary>
         /// <value>The source file.</value>
-        public FileInfo SourceFile
-        {
+        public FileInfo SourceFile {
             get { return m_sourceFile; }
         }
 
@@ -90,8 +81,7 @@ namespace Opc.Ua.Configuration
         /// <value>
         /// 	<c>true</c> if this application is SDK compatible; otherwise, <c>false</c>.
         /// </value>
-        public bool IsSdkCompatible
-        {
+        public bool IsSdkCompatible {
             get { return m_isSdkCompatible; }
         }
 
@@ -99,8 +89,7 @@ namespace Opc.Ua.Configuration
         /// Gets the application.
         /// </summary>
         /// <value>The application.</value>
-        public Opc.Ua.Security.SecuredApplication Application
-        {
+        public Opc.Ua.Security.SecuredApplication Application {
             get { return m_application; }
         }
 
@@ -108,9 +97,8 @@ namespace Opc.Ua.Configuration
         /// Gets or sets the display name.
         /// </summary>
         /// <value>The display name.</value>
-        [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 0)]  
-        public string DisplayName
-        {
+        [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 0)]
+        public string DisplayName {
             get { return m_displayName; }
             set { m_displayName = value; }
         }
@@ -119,9 +107,8 @@ namespace Opc.Ua.Configuration
         /// Gets or sets the executable path.
         /// </summary>
         /// <value>The executable path.</value>
-        [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 1)]  
-        public string ExecutablePath
-        {
+        [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 1)]
+        public string ExecutablePath {
             get { return m_executablePath; }
             set { m_executablePath = value; }
         }
@@ -130,9 +117,8 @@ namespace Opc.Ua.Configuration
         /// Gets or sets the configuration path.
         /// </summary>
         /// <value>The configuration path.</value>
-        [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 2)]  
-        public string ConfigurationPath
-        {
+        [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 2)]
+        public string ConfigurationPath {
             get { return m_configurationPath; }
             set { m_configurationPath = value; }
         }
@@ -142,8 +128,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <value>The certificate.</value>
         [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 3)]
-        public CertificateIdentifier Certificate
-        {
+        public CertificateIdentifier Certificate {
             get { return m_certificate; }
             set { m_certificate = value; }
         }
@@ -153,8 +138,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <value>The trust list.</value>
         [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 4)]
-        public CertificateStoreIdentifier TrustList
-        {
+        public CertificateStoreIdentifier TrustList {
             get { return m_trustList; }
             set { m_trustList = value; }
         }
@@ -164,8 +148,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <value>The trust list.</value>
         [DataMember(IsRequired = false, EmitDefaultValue = false, Order = 5)]
-        public StringCollection BaseAddresses
-        {
+        public StringCollection BaseAddresses {
             get { return m_baseAddresses; }
             set { m_baseAddresses = value; }
         }
@@ -175,21 +158,17 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="filePath">The file path.</param>
         /// <returns></returns>
-        public static ManagedApplication Load(string filePath)
-        {
-            using (Stream istrm = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite))
-            {
+        public static ManagedApplication Load(string filePath) {
+            using (Stream istrm = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite)) {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(ManagedApplication));
-                ManagedApplication application = (ManagedApplication)serializer.ReadObject(istrm);
+                ManagedApplication application = (ManagedApplication) serializer.ReadObject(istrm);
                 application.m_sourceFile = new FileInfo(filePath);
 
-                if (String.IsNullOrEmpty(application.DisplayName))
-                {
+                if (String.IsNullOrEmpty(application.DisplayName)) {
                     string name = application.m_sourceFile.Name;
                     int index = name.LastIndexOf('.');
 
-                    if (index > 0)
-                    {
+                    if (index > 0) {
                         name = name.Substring(0, index);
                     }
 
@@ -205,24 +184,19 @@ namespace Opc.Ua.Configuration
         /// Saves the specified file path.
         /// </summary>
         /// <param name="filePath">The file path. Uses the original source file path if not provided.</param>
-        public void Save(string filePath)
-        {
-            if (String.IsNullOrEmpty(filePath))
-            {
-                if (m_sourceFile == null)
-                {
-                    filePath = Utils.GetAbsoluteDirectoryPath("%LocalApplicationData%\\OPC Foundation\\Applications\\", false, false, true);
+        public void Save(string filePath) {
+            if (String.IsNullOrEmpty(filePath)) {
+                if (m_sourceFile == null) {
+                    filePath = Utils.GetAbsoluteDirectoryPath("%LocalApplicationData%\\OPC Foundation\\Applications\\",
+                        false, false, true);
                     filePath += m_displayName;
                     filePath += "*.xml";
-                }
-                else
-                {
+                } else {
                     filePath = m_sourceFile.FullName;
                 }
             }
 
-            using (Stream ostrm = File.Open(filePath, FileMode.Create))
-            {
+            using (Stream ostrm = File.Open(filePath, FileMode.Create)) {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(ManagedApplication));
                 serializer.WriteObject(ostrm, this);
             }
@@ -234,10 +208,8 @@ namespace Opc.Ua.Configuration
         /// Sets the executable file.
         /// </summary>
         /// <param name="filePath">The file path.</param>
-        public void SetExecutableFile(string filePath)
-        {
-            if (String.IsNullOrEmpty(filePath))
-            {
+        public void SetExecutableFile(string filePath) {
+            if (String.IsNullOrEmpty(filePath)) {
                 m_executablePath = null;
                 return;
             }
@@ -248,13 +220,12 @@ namespace Opc.Ua.Configuration
             m_application = null;
 
             FileInfo executableFile = new FileInfo(m_executablePath);
-            m_displayName = executableFile.Name.Substring(0, executableFile.Name.Length-4);
+            m_displayName = executableFile.Name.Substring(0, executableFile.Name.Length - 4);
 
             FileInfo configFile = new FileInfo(executableFile.FullName + ".config");
             // Utils.Trace(1, "APPCONFIG={0}", configFile);
 
-            if (configFile.Exists)
-            {
+            if (configFile.Exists) {
                 // save the .NET config file.
                 m_configurationPath = configFile.FullName;
 
@@ -262,12 +233,9 @@ namespace Opc.Ua.Configuration
                 string configurationPath = GetConfigFileFromAppConfig(configFile);
                 // Utils.Trace(1, "UACONFIG={0}", configurationPath);
 
-                if (configurationPath != null)
-                {
+                if (configurationPath != null) {
                     m_configurationPath = configurationPath;
-                }
-                else
-                {
+                } else {
                     m_configurationPath = configFile.FullName;
                 }
 
@@ -275,13 +243,11 @@ namespace Opc.Ua.Configuration
             }
 
             // set display name.
-            if (m_sourceFile == null || String.IsNullOrEmpty(m_displayName))
-            {
+            if (m_sourceFile == null || String.IsNullOrEmpty(m_displayName)) {
                 string name = executableFile.Name;
                 int index = name.LastIndexOf('.');
 
-                if (index > 0)
-                {
+                if (index > 0) {
                     name = name.Substring(0, index);
                 }
 
@@ -292,13 +258,11 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Tries to loads the SDK config file.
         /// </summary>
-        private void LoadSdkConfigFile()
-        {
+        private void LoadSdkConfigFile() {
             m_isSdkCompatible = false;
             m_application = null;
 
-            if (String.IsNullOrEmpty(m_configurationPath))
-            {
+            if (String.IsNullOrEmpty(m_configurationPath)) {
                 return;
             }
 
@@ -306,30 +270,28 @@ namespace Opc.Ua.Configuration
             string currentDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = executablePath.DirectoryName;
 
-            try
-            {
-                try
-                {
+            try {
+                try {
                     m_application = GetApplicationSettings(m_configurationPath);
 
-                    if (m_application != null)
-                    {
+                    if (m_application != null) {
                         m_isSdkCompatible = true;
-                        m_certificate = Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(m_application.ApplicationCertificate);
-                        m_trustList = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(m_application.TrustedCertificateStore);
+                        m_certificate =
+                            Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(m_application
+                                .ApplicationCertificate);
+                        m_trustList =
+                            Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(m_application
+                                .TrustedCertificateStore);
                         m_application.ExecutableFile = m_executablePath;
                         m_configurationPath = m_application.ConfigurationFile;
                     }
                 }
 
                 // ignore errors.
-                catch (Exception)
-                {
+                catch (Exception) {
                     m_application = null;
                 }
-            }
-            finally
-            {
+            } finally {
                 Environment.CurrentDirectory = currentDirectory;
             }
         }
@@ -338,14 +300,12 @@ namespace Opc.Ua.Configuration
         /// Sets the configuration file.
         /// </summary>
         /// <param name="filePath">The file path.</param>
-        public void SetConfigurationFile(string filePath)
-        {
-            if (String.IsNullOrEmpty(filePath))
-            {
+        public void SetConfigurationFile(string filePath) {
+            if (String.IsNullOrEmpty(filePath)) {
                 m_configurationPath = null;
                 return;
             }
-            
+
             m_configurationPath = filePath;
 
             FileInfo configFile = new FileInfo(filePath);
@@ -353,8 +313,7 @@ namespace Opc.Ua.Configuration
             m_application = null;
             m_configurationPath = configFile.FullName;
 
-            if (configFile.Exists)
-            {
+            if (configFile.Exists) {
                 LoadSdkConfigFile();
             }
         }
@@ -362,20 +321,17 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Reloads the configuration from disk.
         /// </summary>
-        public void Reload()
-        {
+        public void Reload() {
             LoadSdkConfigFile();
         }
 
         /// <summary>
         /// Gets the application secuirty settings from a file.
         /// </summary>
-        private Opc.Ua.Security.SecuredApplication GetApplicationSettings(string filePath)
-        {
+        private Opc.Ua.Security.SecuredApplication GetApplicationSettings(string filePath) {
             string absolutePath = Utils.GetAbsoluteFilePath(filePath, true, false, false);
 
-            if (absolutePath == null)
-            {
+            if (absolutePath == null) {
                 return null;
             }
 
@@ -385,39 +341,32 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Gets the config file location from app config.
         /// </summary>
-        private string GetConfigFileFromAppConfig(FileInfo appConfigFile)
-        {
-            try
-            {
-                XmlTextReader reader = new XmlTextReader(appConfigFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+        private string GetConfigFileFromAppConfig(FileInfo appConfigFile) {
+            try {
+                XmlTextReader reader =
+                    new XmlTextReader(appConfigFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 
-                try
-                {
+                try {
                     reader.MoveToContent();
 
-                    if (reader.ReadToDescendant("ConfigurationLocation", Namespaces.OpcUaConfig))
-                    {
-                        if (reader.ReadToDescendant("FilePath", Namespaces.OpcUaConfig))
-                        {
+                    if (reader.ReadToDescendant("ConfigurationLocation", Namespaces.OpcUaConfig)) {
+                        if (reader.ReadToDescendant("FilePath", Namespaces.OpcUaConfig)) {
                             reader.MoveToContent();
                             return reader.ReadInnerXml();
                         }
                     }
 
                     return null;
-                }
-                finally
-                {
+                } finally {
                     reader.Close();
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 return null;
             }
         }
 
         #region Private Fields
+
         private FileInfo m_sourceFile;
         private bool m_isSdkCompatible;
         private Opc.Ua.Security.SecuredApplication m_application;
@@ -427,6 +376,7 @@ namespace Opc.Ua.Configuration
         private CertificateIdentifier m_certificate;
         private CertificateStoreIdentifier m_trustList;
         private StringCollection m_baseAddresses;
-        #endregion 
+
+        #endregion
     }
 }

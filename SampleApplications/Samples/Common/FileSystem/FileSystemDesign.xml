@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <opc:ModelDesign
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:opc="http://opcfoundation.org/UA/ModelDesign.xsd"
-	xmlns:ua="http://opcfoundation.org/UA/"
-	xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd"
-	xmlns="http://tempuri.org/UA/FileSystem/"
-	TargetNamespace="http://tempuri.org/UA/FileSystem/"
->
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:opc="http://opcfoundation.org/UA/ModelDesign.xsd"
+  xmlns:ua="http://opcfoundation.org/UA/"
+  xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd"
+  xmlns="http://tempuri.org/UA/FileSystem/"
+  TargetNamespace="http://tempuri.org/UA/FileSystem/">
   <opc:Namespaces>
     <opc:Namespace Name="OpcUa" Prefix="Opc.Ua" XmlNamespace="http://opcfoundation.org/UA/2008/02/Types.xsd">http://opcfoundation.org/UA/</opc:Namespace>
     <opc:Namespace Name="FileSystem" Prefix="FileSystem">http://tempuri.org/UA/FileSystem/</opc:Namespace>
@@ -20,7 +20,7 @@
       <opc:Property SymbolicName="State" DataType="ua:Int32" AccessLevel="ReadWrite" />
     </opc:Children>
   </opc:ObjectType>
-  
+
   <opc:Method SymbolicName="CreateControllerMethodType" ModellingRule="Mandatory">
     <opc:InputArguments>
       <opc:Argument Name="Name" DataType="ua:String">
@@ -41,7 +41,7 @@
       <opc:Method SymbolicName="CreateController" TypeDefinition="CreateControllerMethodType"></opc:Method>
     </opc:Children>
   </opc:ObjectType>
-  
+
   <opc:ObjectType SymbolicName="ControllerType" BaseType="ua:BaseObjectType">
     <opc:Description>A generic controller</opc:Description>
     <opc:Children>

@@ -23,27 +23,22 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Manages a set of user roles.
     /// </summary>
-    public class UserRoleManager
-    {
+    public class UserRoleManager {
         /// <summary>
         /// Initializes the manager to use the specified directory.
         /// </summary>
-        public UserRoleManager(string directory)
-        {
-            if (directory == null)
-            {
+        public UserRoleManager(string directory) {
+            if (directory == null) {
                 throw new ArgumentNullException("directory");
             }
 
             directory = Utils.GetAbsoluteDirectoryPath(directory, false, false, false);
 
-            if (directory == null)
-            {
+            if (directory == null) {
                 throw new ArgumentException("Specified user user role directory does not exist.", "directory");
             }
 
@@ -53,12 +48,10 @@ namespace Opc.Ua
         /// <summary>
         /// Enumerates the available roles.
         /// </summary>
-        public string[] EnumerateRoles()
-        {
+        public string[] EnumerateRoles() {
             List<string> templates = new List<string>();
 
-            foreach (FileInfo file in m_directory.GetFiles("*" + m_FileExtension))
-            {
+            foreach (FileInfo file in m_directory.GetFiles("*" + m_FileExtension)) {
                 templates.Add(file.Name.Substring(0, file.Name.Length - file.Extension.Length));
             }
 
@@ -68,29 +61,24 @@ namespace Opc.Ua
         /// <summary>
         /// Returns true if the current Windows user has access to the the specified template.
         /// </summary>
-        public bool HasAccess(string template)
-        {
-            string filePath = Utils.GetAbsoluteFilePath(m_directory.FullName + template + m_FileExtension, false, false, false);
+        public bool HasAccess(string template) {
+            string filePath =
+                Utils.GetAbsoluteFilePath(m_directory.FullName + template + m_FileExtension, false, false, false);
 
             // nothing more to do if no file.
-            if (filePath == null)
-            {
+            if (filePath == null) {
                 return false;
             }
 
             // check if account has access to semaphore file.
-            try
-            {
-                using (Stream ostrm = File.OpenRead(filePath))
-                {
+            try {
+                using (Stream ostrm = File.OpenRead(filePath)) {
                     ostrm.Close();
                 }
 
                 // access granted.
                 return true;
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 // no access or no file.
             }
 
@@ -100,8 +88,7 @@ namespace Opc.Ua
         /// <summary>
         /// Creates a user role file.
         /// </summary>
-        public static void CreateRole(string directory, string roleName, params WellKnownSidType[] sids)
-        {
+        public static void CreateRole(string directory, string roleName, params WellKnownSidType[] sids) {
             string filePath = directory + " \\" + roleName + m_FileExtension;
             AccessTemplateManager.CreateFile(filePath, sids);
         }
@@ -109,8 +96,7 @@ namespace Opc.Ua
         /// <summary>
         /// Deletes a user role file.
         /// </summary>
-        public static void DeleteRole(string directory, string roleName)
-        {
+        public static void DeleteRole(string directory, string roleName) {
             string filePath = directory + " \\" + roleName + m_FileExtension;
             AccessTemplateManager.DeleteFile(filePath);
         }

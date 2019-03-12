@@ -14,8 +14,7 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-namespace Opc.Ua.Bindings
-{
+namespace Opc.Ua.Bindings {
     /// <summary>
     /// The <b>Opc.Ua.Bindings</b> namespace contains classes that implement the WCF bindings for the
     /// mappings described in Part 6 of the UA specification. It also includes an implementation for
@@ -23,7 +22,5 @@ namespace Opc.Ua.Bindings
     /// </summary>
     ///<exclude/>
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NamespaceDoc
-    {
-    }
+    public class NamespaceDoc { }
 }

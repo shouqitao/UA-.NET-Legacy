@@ -31,20 +31,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
-
 using System.Security;
 using System.Management;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Allows to add privileges to Local Security Policy.
     /// You can use this class to add the LogOn as service privilege to an account.
     /// </summary>
-    public class LocalSecurityPolicy : IDisposable
-    {
+    public class LocalSecurityPolicy : IDisposable {
         #region DllImport
 
         [DllImport("advapi32.dll", PreserveSig = true)]
@@ -84,22 +81,19 @@ namespace Opc.Ua.Configuration
         [DllImport("advapi32.dll")]
         private static extern long LsaNtStatusToWinError(long status);
 
-
         #endregion
 
         #region Struct
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct LSA_UNICODE_STRING
-        {
+        private struct LSA_UNICODE_STRING {
             public UInt16 Length;
             public UInt16 MaximumLength;
             public IntPtr Buffer;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct LSA_OBJECT_ATTRIBUTES
-        {
+        private struct LSA_OBJECT_ATTRIBUTES {
             public int Length;
             public IntPtr RootDirectory;
             public LSA_UNICODE_STRING ObjectName;
@@ -112,8 +106,7 @@ namespace Opc.Ua.Configuration
 
         #region Enum
 
-        private enum LSA_AccessPolicy : long
-        {
+        private enum LSA_AccessPolicy : long {
             POLICY_VIEW_LOCAL_INFORMATION = 0x00000001L,
             POLICY_VIEW_AUDIT_INFORMATION = 0x00000002L,
             POLICY_GET_PRIVATE_INFORMATION = 0x00000004L,
@@ -145,21 +138,19 @@ namespace Opc.Ua.Configuration
         /// Constructor for <see cref="LocalSecurityPolicy"/>
         /// </summary>
         public LocalSecurityPolicy()
-            : this(null)
-        { }
+            : this(null) { }
 
         /// <summary>
         /// Constructor for <see cref="LocalSecurityPolicy"/>
         /// </summary>
         /// <param name="systemName">local system if systemName is null</param>
-        public LocalSecurityPolicy(string systemName)
-        {
+        public LocalSecurityPolicy(string systemName) {
             lsaHandle = IntPtr.Zero;
             LSA_UNICODE_STRING system = InitLsaString(systemName);
-            
+
 
             //combine all policies
-            int access = (int)(
+            int access = (int) (
                 LSA_AccessPolicy.POLICY_AUDIT_LOG_ADMIN |
                 LSA_AccessPolicy.POLICY_CREATE_ACCOUNT |
                 LSA_AccessPolicy.POLICY_CREATE_PRIVILEGE |
@@ -173,7 +164,7 @@ namespace Opc.Ua.Configuration
                 LSA_AccessPolicy.POLICY_TRUST_ADMIN |
                 LSA_AccessPolicy.POLICY_VIEW_AUDIT_INFORMATION |
                 LSA_AccessPolicy.POLICY_VIEW_LOCAL_INFORMATION
-                );
+            );
             //initialize a pointer for the policy handle
             IntPtr policyHandle = IntPtr.Zero;
 
@@ -189,15 +180,15 @@ namespace Opc.Ua.Configuration
             uint ret = LsaOpenPolicy(ref system, ref ObjectAttributes, access, out lsaHandle);
             if (ret == 0)
                 return;
-            if (ret == STATUS_ACCESS_DENIED)
-            {
+            if (ret == STATUS_ACCESS_DENIED) {
                 throw new UnauthorizedAccessException();
             }
-            if ((ret == STATUS_INSUFFICIENT_RESOURCES) || (ret == STATUS_NO_MEMORY))
-            {
+
+            if ((ret == STATUS_INSUFFICIENT_RESOURCES) || (ret == STATUS_NO_MEMORY)) {
                 throw new OutOfMemoryException();
             }
-            throw new Win32Exception((int)LsaNtStatusToWinError(ret));
+
+            throw new Win32Exception((int) LsaNtStatusToWinError(ret));
         }
 
 
@@ -206,20 +197,19 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="account">The account name (domain\userName)</param>
         /// <param name="privilege">The name of the privilege to add</param>
-        public void AddPrivilege(string account, string privilege)
-        {
+        public void AddPrivilege(string account, string privilege) {
             IntPtr pSid = GetSIDInformation(account);
             LSA_UNICODE_STRING[] privileges = new LSA_UNICODE_STRING[1];
             privileges[0] = InitLsaString(privilege);
             long ret = LsaAddAccountRights(lsaHandle, pSid, privileges, 1);
-            if (ret != 0)//ret = 0 Success
+            if (ret != 0) //ret = 0 Success
             {
                 if (ret == STATUS_ACCESS_DENIED)
                     throw new UnauthorizedAccessException();
                 if ((ret == STATUS_INSUFFICIENT_RESOURCES) || (ret == STATUS_NO_MEMORY))
                     throw new OutOfMemoryException();
-                
-                throw new Win32Exception((int)LsaNtStatusToWinError((int)ret));
+
+                throw new Win32Exception((int) LsaNtStatusToWinError((int) ret));
             }
         }
 
@@ -227,8 +217,7 @@ namespace Opc.Ua.Configuration
         /// Add the privilege for the given account to logon as service.
         /// </summary>
         /// <param name="account">The account name (domain\userName)</param>
-        public void AddLogonAsServicePrivilege(string account)
-        {
+        public void AddLogonAsServicePrivilege(string account) {
             AddPrivilege(account, "SeServiceLogonRight");
         }
 
@@ -236,54 +225,53 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Release all unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            if (lsaHandle != IntPtr.Zero)
-            {
+        public void Dispose() {
+            if (lsaHandle != IntPtr.Zero) {
                 LsaClose(lsaHandle);
                 lsaHandle = IntPtr.Zero;
             }
 
             GC.SuppressFinalize(this);
         }
+
         /// <summary>
         /// 
         /// </summary>
-        ~LocalSecurityPolicy()
-        { Dispose(); }
+        ~LocalSecurityPolicy() {
+            Dispose();
+        }
 
 
         #region helper functions
 
-        IntPtr GetSIDInformation(string account)
-        {
+        IntPtr GetSIDInformation(string account) {
             //pointer an size for the SID
-			IntPtr sid = IntPtr.Zero;
-			int sidSize = 0;
+            IntPtr sid = IntPtr.Zero;
+            int sidSize = 0;
             //StringBuilder and size for the domain name
-			StringBuilder domainName = new StringBuilder();
-			int nameSize = 0;
-			//account-type variable for lookup
-			int accountType = 0;
+            StringBuilder domainName = new StringBuilder();
+            int nameSize = 0;
+            //account-type variable for lookup
+            int accountType = 0;
 
-			//get required buffer size
+            //get required buffer size
             LookupAccountName(String.Empty, account, sid, ref sidSize, domainName, ref nameSize, ref accountType);
-			
-			//allocate buffers
-			domainName = new StringBuilder(nameSize);
-			sid = Marshal.AllocHGlobal(sidSize);
 
-			//lookup the SID for the account
-            bool result = LookupAccountName(String.Empty, account, sid, ref sidSize, domainName, ref nameSize, ref accountType);			
-            if(!result)
-            {
+            //allocate buffers
+            domainName = new StringBuilder(nameSize);
+            sid = Marshal.AllocHGlobal(sidSize);
+
+            //lookup the SID for the account
+            bool result = LookupAccountName(String.Empty, account, sid, ref sidSize, domainName, ref nameSize,
+                ref accountType);
+            if (!result) {
                 Marshal.ThrowExceptionForHR(GetLastError());
-            }    
+            }
+
             return sid;
         }
 
-        private static LSA_UNICODE_STRING InitLsaString(string s)
-        {
+        private static LSA_UNICODE_STRING InitLsaString(string s) {
             if (string.IsNullOrEmpty(s))
                 return new LSA_UNICODE_STRING();
 
@@ -292,12 +280,11 @@ namespace Opc.Ua.Configuration
                 throw new ArgumentException("String too long");
             LSA_UNICODE_STRING lus = new LSA_UNICODE_STRING();
             lus.Buffer = Marshal.StringToHGlobalUni(s);
-            lus.Length = (UInt16)(s.Length * UnicodeEncoding.CharSize);
-            lus.MaximumLength = (UInt16)((s.Length + 1) * UnicodeEncoding.CharSize);			
+            lus.Length = (UInt16) (s.Length * UnicodeEncoding.CharSize);
+            lus.MaximumLength = (UInt16) ((s.Length + 1) * UnicodeEncoding.CharSize);
             return lus;
         }
 
         #endregion
     }
-
 }

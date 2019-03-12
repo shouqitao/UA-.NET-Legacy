@@ -24,28 +24,23 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Stores a collection of nodes.
     /// </summary>
-    public class NodeStateCollection : List<NodeState>
-    {
+    public class NodeStateCollection : List<NodeState> {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeStateCollection"/> class.
         /// </summary>
-        public NodeStateCollection()
-        {
-        }
+        public NodeStateCollection() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeStateCollection"/> class.
         /// </summary>
         /// <param name="capacity">The initial capacity.</param>
-        public NodeStateCollection(int capacity) : base(capacity)
-        {
-        }
+        public NodeStateCollection(int capacity) : base(capacity) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeStateCollection"/> class.
@@ -54,28 +49,25 @@ namespace Opc.Ua
         /// <exception cref="T:System.ArgumentNullException">
         /// 	<paramref name="collection"/> is null.
         /// </exception>
-        public NodeStateCollection(IEnumerable<NodeState> collection) : base(collection)
-        {
-        }
+        public NodeStateCollection(IEnumerable<NodeState> collection) : base(collection) { }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Writes the collection to a stream using the NodeSet schema.
         /// </summary>
-        public void SaveAsNodeSet(ISystemContext context, Stream ostrm)
-        {
+        public void SaveAsNodeSet(ISystemContext context, Stream ostrm) {
             NodeTable nodeTable = new NodeTable(context.NamespaceUris, context.ServerUris, null);
-            
-            for (int ii = 0; ii < this.Count; ii++)
-            {
+
+            for (int ii = 0; ii < this.Count; ii++) {
                 this[ii].Export(context, nodeTable);
             }
 
             NodeSet nodeSet = new NodeSet();
-            
-            foreach (ILocalNode node in nodeTable)
-            {
+
+            foreach (ILocalNode node in nodeTable) {
                 nodeSet.Add(node, nodeTable.NamespaceUris, nodeTable.ServerUris);
             }
 
@@ -86,21 +78,19 @@ namespace Opc.Ua
             settings.ConformanceLevel = ConformanceLevel.Document;
             settings.Indent = true;
 
-            using (XmlWriter writer = XmlWriter.Create(ostrm, settings))
-            {
+            using (XmlWriter writer = XmlWriter.Create(ostrm, settings)) {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(NodeSet));
                 serializer.WriteObject(writer, nodeSet);
             }
         }
 
         #region Well-Known Aliases
+
         /// <summary>
         /// Stores a well known alias.
         /// </summary>
-        private struct AliasToUse
-        {
-            public AliasToUse(string alias, NodeId nodeId)
-            {
+        private struct AliasToUse {
+            public AliasToUse(string alias, NodeId nodeId) {
                 Alias = alias;
                 NodeId = nodeId;
             }
@@ -112,11 +102,9 @@ namespace Opc.Ua
         /// <summary>
         /// The list of aliases to use.
         /// </summary>
-        private AliasToUse[] s_AliasesToUse = new AliasToUse[]
-        {
+        private AliasToUse[] s_AliasesToUse = new AliasToUse[] {
             new AliasToUse(BrowseNames.Boolean, DataTypeIds.Boolean),
-            new AliasToUse(BrowseNames.SByte, DataTypeIds.SByte),
-            new AliasToUse(BrowseNames.Byte, DataTypeIds.Byte),
+            new AliasToUse(BrowseNames.SByte, DataTypeIds.SByte), new AliasToUse(BrowseNames.Byte, DataTypeIds.Byte),
             new AliasToUse(BrowseNames.Int16, DataTypeIds.Int16),
             new AliasToUse(BrowseNames.UInt16, DataTypeIds.UInt16),
             new AliasToUse(BrowseNames.Int32, DataTypeIds.Int32),
@@ -150,32 +138,29 @@ namespace Opc.Ua
             new AliasToUse(BrowseNames.HasEncoding, ReferenceTypeIds.HasEncoding),
             new AliasToUse(BrowseNames.HasDescription, ReferenceTypeIds.HasDescription)
         };
+
         #endregion
-        
+
         /// <summary>
         /// Writes the collection to a stream using the Opc.Ua.Schema.UANodeSet schema.
         /// </summary>
-        public void SaveAsNodeSet2(ISystemContext context, Stream ostrm)
-        {
+        public void SaveAsNodeSet2(ISystemContext context, Stream ostrm) {
             SaveAsNodeSet2(context, ostrm, null);
         }
 
         /// <summary>
         /// Writes the collection to a stream using the Opc.Ua.Schema.UANodeSet schema.
         /// </summary>
-        public void SaveAsNodeSet2(ISystemContext context, Stream ostrm, string version)
-        {
+        public void SaveAsNodeSet2(ISystemContext context, Stream ostrm, string version) {
             Opc.Ua.Export.UANodeSet nodeSet = new Opc.Ua.Export.UANodeSet();
             nodeSet.LastModified = DateTime.UtcNow;
             nodeSet.LastModifiedSpecified = true;
 
-            for (int ii = 0; ii < s_AliasesToUse.Length; ii++)
-            {
+            for (int ii = 0; ii < s_AliasesToUse.Length; ii++) {
                 nodeSet.AddAlias(context, s_AliasesToUse[ii].Alias, s_AliasesToUse[ii].NodeId);
             }
 
-            for (int ii = 0; ii < this.Count; ii++)
-            {
+            for (int ii = 0; ii < this.Count; ii++) {
                 nodeSet.Export(context, this[ii]);
             }
 
@@ -185,16 +170,14 @@ namespace Opc.Ua
         /// <summary>
         /// Writes the schema information to a static XML export file.
         /// </summary>
-        public void SaveAsXml(ISystemContext context, Stream ostrm)
-        {
+        public void SaveAsXml(ISystemContext context, Stream ostrm) {
             SaveAsXml(context, ostrm, false);
         }
 
         /// <summary>
         /// Writes the schema information in an XML format to a byte stream. The stream is closed by this method.
         /// </summary>
-        public void SaveAsXml(ISystemContext context, Stream ostrm, bool keepStreamOpen)
-        {
+        public void SaveAsXml(ISystemContext context, Stream ostrm, bool keepStreamOpen) {
             XmlWriterSettings settings = new XmlWriterSettings();
 
             settings.Encoding = Encoding.UTF8;
@@ -208,20 +191,17 @@ namespace Opc.Ua
             messageContext.ServerUris = context.ServerUris;
             messageContext.Factory = context.EncodeableFactory;
 
-            using (XmlWriter writer = XmlWriter.Create(ostrm, settings))
-            {
+            using (XmlWriter writer = XmlWriter.Create(ostrm, settings)) {
                 XmlQualifiedName root = new XmlQualifiedName("ListOfNodeState", Namespaces.OpcUaXsd);
                 XmlEncoder encoder = new XmlEncoder(root, writer, messageContext);
 
                 encoder.SaveStringTable("NamespaceUris", "NamespaceUri", context.NamespaceUris);
                 encoder.SaveStringTable("ServerUris", "ServerUri", context.ServerUris);
 
-                for (int ii = 0; ii < this.Count; ii++)
-                {
+                for (int ii = 0; ii < this.Count; ii++) {
                     NodeState state = this[ii];
 
-                    if (state != null)
-                    {
+                    if (state != null) {
                         state.SaveAsXml(context, encoder);
                     }
                 }
@@ -233,8 +213,7 @@ namespace Opc.Ua
         /// <summary>
         /// Writes the collection to a binary stream. The stream is closed by this method.
         /// </summary>
-        public void SaveAsBinary(ISystemContext context, Stream ostrm)
-        {
+        public void SaveAsBinary(ISystemContext context, Stream ostrm) {
             ServiceMessageContext messageContext = new ServiceMessageContext();
 
             messageContext.NamespaceUris = context.NamespaceUris;
@@ -248,8 +227,7 @@ namespace Opc.Ua
 
             encoder.WriteInt32(null, this.Count);
 
-            for (int ii = 0; ii < this.Count; ii++)
-            {
+            for (int ii = 0; ii < this.Count; ii++) {
                 NodeState state = this[ii];
                 state.SaveAsBinary(context, encoder);
             }
@@ -260,32 +238,26 @@ namespace Opc.Ua
         /// <summary>
         /// Reads the schema information from a XML document.
         /// </summary>
-        public void LoadFromBinary(ISystemContext context, Stream istrm, bool updateTables)
-        {
+        public void LoadFromBinary(ISystemContext context, Stream istrm, bool updateTables) {
             ServiceMessageContext messageContext = new ServiceMessageContext();
 
             messageContext.NamespaceUris = context.NamespaceUris;
             messageContext.ServerUris = context.ServerUris;
             messageContext.Factory = context.EncodeableFactory;
 
-            using (BinaryDecoder decoder = new BinaryDecoder(istrm, messageContext))
-            {
+            using (BinaryDecoder decoder = new BinaryDecoder(istrm, messageContext)) {
                 // check if a namespace table was provided.
                 NamespaceTable namespaceUris = new NamespaceTable();
 
-                if (!decoder.LoadStringTable(namespaceUris))
-                {
+                if (!decoder.LoadStringTable(namespaceUris)) {
                     namespaceUris = null;
                 }
 
                 // update namespace table.
-                if (updateTables)
-                {
-                    if (namespaceUris != null && context.NamespaceUris != null)
-                    {
-                        for (int ii = 0; ii < namespaceUris.Count; ii++)
-                        {
-                            context.NamespaceUris.GetIndexOrAppend(namespaceUris.GetString((uint)ii));
+                if (updateTables) {
+                    if (namespaceUris != null && context.NamespaceUris != null) {
+                        for (int ii = 0; ii < namespaceUris.Count; ii++) {
+                            context.NamespaceUris.GetIndexOrAppend(namespaceUris.GetString((uint) ii));
                         }
                     }
                 }
@@ -293,24 +265,19 @@ namespace Opc.Ua
                 // check if a server uri table was provided.
                 StringTable serverUris = new StringTable();
 
-                if (namespaceUris != null && namespaceUris.Count > 1)
-                {
+                if (namespaceUris != null && namespaceUris.Count > 1) {
                     serverUris.Append(namespaceUris.GetString(1));
                 }
 
-                if (!decoder.LoadStringTable(serverUris))
-                {
+                if (!decoder.LoadStringTable(serverUris)) {
                     serverUris = null;
                 }
 
                 // update server table.
-                if (updateTables)
-                {
-                    if (serverUris != null && context.ServerUris != null)
-                    {
-                        for (int ii = 0; ii < serverUris.Count; ii++)
-                        {
-                            context.ServerUris.GetIndexOrAppend(serverUris.GetString((uint)ii));
+                if (updateTables) {
+                    if (serverUris != null && context.ServerUris != null) {
+                        for (int ii = 0; ii < serverUris.Count; ii++) {
+                            context.ServerUris.GetIndexOrAppend(serverUris.GetString((uint) ii));
                         }
                     }
                 }
@@ -320,8 +287,7 @@ namespace Opc.Ua
 
                 int count = decoder.ReadInt32(null);
 
-                for (int ii = 0; ii < count; ii++)
-                {
+                for (int ii = 0; ii < count; ii++) {
                     NodeState state = NodeState.LoadNode(context, decoder);
                     this.Add(state);
                 }
@@ -331,53 +297,43 @@ namespace Opc.Ua
         /// <summary>
         /// Reads the schema information from a XML document.
         /// </summary>
-        public void LoadFromXml(ISystemContext context, Stream istrm, bool updateTables)
-        {
+        public void LoadFromXml(ISystemContext context, Stream istrm, bool updateTables) {
             ServiceMessageContext messageContext = new ServiceMessageContext();
 
             messageContext.NamespaceUris = context.NamespaceUris;
             messageContext.ServerUris = context.ServerUris;
             messageContext.Factory = context.EncodeableFactory;
 
-            using (XmlReader reader = XmlReader.Create(istrm))
-            {
+            using (XmlReader reader = XmlReader.Create(istrm)) {
                 XmlQualifiedName root = new XmlQualifiedName("ListOfNodeState", Namespaces.OpcUaXsd);
                 XmlDecoder decoder = new XmlDecoder(null, reader, messageContext);
 
                 NamespaceTable namespaceUris = new NamespaceTable();
 
-                if (!decoder.LoadStringTable("NamespaceUris", "NamespaceUri", namespaceUris))
-                {
+                if (!decoder.LoadStringTable("NamespaceUris", "NamespaceUri", namespaceUris)) {
                     namespaceUris = null;
                 }
 
                 // update namespace table.
-                if (updateTables)
-                {
-                    if (namespaceUris != null && context.NamespaceUris != null)
-                    {
-                        for (int ii = 0; ii < namespaceUris.Count; ii++)
-                        {
-                            context.NamespaceUris.GetIndexOrAppend(namespaceUris.GetString((uint)ii));
+                if (updateTables) {
+                    if (namespaceUris != null && context.NamespaceUris != null) {
+                        for (int ii = 0; ii < namespaceUris.Count; ii++) {
+                            context.NamespaceUris.GetIndexOrAppend(namespaceUris.GetString((uint) ii));
                         }
                     }
                 }
 
                 StringTable serverUris = new StringTable();
 
-                if (!decoder.LoadStringTable("ServerUris", "ServerUri", context.ServerUris))
-                {
+                if (!decoder.LoadStringTable("ServerUris", "ServerUri", context.ServerUris)) {
                     serverUris = null;
                 }
 
                 // update server table.
-                if (updateTables)
-                {
-                    if (serverUris != null && context.ServerUris != null)
-                    {
-                        for (int ii = 0; ii < serverUris.Count; ii++)
-                        {
-                            context.ServerUris.GetIndexOrAppend(serverUris.GetString((uint)ii));
+                if (updateTables) {
+                    if (serverUris != null && context.ServerUris != null) {
+                        for (int ii = 0; ii < serverUris.Count; ii++) {
+                            context.ServerUris.GetIndexOrAppend(serverUris.GetString((uint) ii));
                         }
                     }
                 }
@@ -389,8 +345,7 @@ namespace Opc.Ua
 
                 NodeState state = NodeState.LoadNode(context, decoder);
 
-                while (state != null)
-                {
+                while (state != null) {
                     this.Add(state);
 
                     state = NodeState.LoadNode(context, decoder);
@@ -407,20 +362,19 @@ namespace Opc.Ua
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="assembly">The assembly containing the resource.</param>
         /// <param name="updateTables">if set to <c>true</c> the namespace and server tables are updated with any new URIs.</param>
-        public void LoadFromResource(ISystemContext context, string resourcePath, Assembly assembly, bool updateTables)
-        {
+        public void LoadFromResource(ISystemContext context, string resourcePath, Assembly assembly,
+            bool updateTables) {
             if (resourcePath == null) throw new ArgumentNullException("resourcePath");
 
-            if (assembly == null)
-            {
+            if (assembly == null) {
                 assembly = Assembly.GetCallingAssembly();
             }
 
             Stream istrm = assembly.GetManifestResourceStream(resourcePath);
 
-            if (istrm == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadDecodingError, "Could not load nodes from resource: {0}", resourcePath);
+            if (istrm == null) {
+                throw ServiceResultException.Create(StatusCodes.BadDecodingError,
+                    "Could not load nodes from resource: {0}", resourcePath);
             }
 
             LoadFromXml(context, istrm, updateTables);
@@ -433,32 +387,31 @@ namespace Opc.Ua
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="assembly">The assembly containing the resource.</param>
         /// <param name="updateTables">if set to <c>true</c> the namespace and server tables are updated with any new URIs.</param>
-        public void LoadFromBinaryResource(ISystemContext context, string resourcePath, Assembly assembly, bool updateTables)
-        {
+        public void LoadFromBinaryResource(ISystemContext context, string resourcePath, Assembly assembly,
+            bool updateTables) {
             if (resourcePath == null) throw new ArgumentNullException("resourcePath");
 
-            if (assembly == null)
-            {
+            if (assembly == null) {
                 assembly = Assembly.GetCallingAssembly();
             }
 
             Stream istrm = assembly.GetManifestResourceStream(resourcePath);
 
-            if (istrm == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadDecodingError, "Could not load nodes from resource: {0}", resourcePath);
+            if (istrm == null) {
+                throw ServiceResultException.Create(StatusCodes.BadDecodingError,
+                    "Could not load nodes from resource: {0}", resourcePath);
             }
 
             LoadFromBinary(context, istrm, updateTables);
         }
+
         #endregion
     }
 
     /// <summary>
     /// A class that creates instances of nodes based on the paramters provided.
     /// </summary>
-    public class NodeStateFactory
-    {
+    public class NodeStateFactory {
         /// <summary>
         /// Creates a new instance. 
         /// </summary>
@@ -470,31 +423,26 @@ namespace Opc.Ua
         /// <param name="typeDefinitionId">The type definition.</param>
         /// <returns>Returns null if the type is not known.</returns>
         public virtual NodeState CreateInstance(
-            ISystemContext context, 
+            ISystemContext context,
             NodeState parent,
             NodeClass nodeClass,
-            QualifiedName browseName, 
-            NodeId referenceTypeId, 
-            NodeId typeDefinitionId)
-        {
+            QualifiedName browseName,
+            NodeId referenceTypeId,
+            NodeId typeDefinitionId) {
             NodeState child = null;
 
-            if (m_types != null && !NodeId.IsNull(typeDefinitionId))
-            {
+            if (m_types != null && !NodeId.IsNull(typeDefinitionId)) {
                 Type type = null;
 
-                if (m_types.TryGetValue(typeDefinitionId, out type))
-                {
+                if (m_types.TryGetValue(typeDefinitionId, out type)) {
                     return Activator.CreateInstance(type, parent) as NodeState;
                 }
             }
 
-            switch (nodeClass)
-            {
-                case NodeClass.Variable:
-                {
-                    if (context.TypeTable != null && context.TypeTable.IsTypeOf(referenceTypeId, ReferenceTypeIds.HasProperty))
-                    {
+            switch (nodeClass) {
+                case NodeClass.Variable: {
+                    if (context.TypeTable != null &&
+                        context.TypeTable.IsTypeOf(referenceTypeId, ReferenceTypeIds.HasProperty)) {
                         child = new PropertyState(parent);
                         break;
                     }
@@ -503,50 +451,42 @@ namespace Opc.Ua
                     break;
                 }
 
-                case NodeClass.Object:
-                {
+                case NodeClass.Object: {
                     child = new BaseObjectState(parent);
                     break;
                 }
 
-                case NodeClass.Method:
-                {
+                case NodeClass.Method: {
                     child = new MethodState(parent);
                     break;
                 }
 
-                case NodeClass.ReferenceType:
-                {
+                case NodeClass.ReferenceType: {
                     child = new ReferenceTypeState();
                     break;
                 }
 
-                case NodeClass.ObjectType:
-                {
+                case NodeClass.ObjectType: {
                     child = new BaseObjectTypeState();
                     break;
                 }
 
-                case NodeClass.VariableType:
-                {
+                case NodeClass.VariableType: {
                     child = new BaseDataVariableTypeState();
                     break;
                 }
 
-                case NodeClass.DataType:
-                {
+                case NodeClass.DataType: {
                     child = new DataTypeState();
                     break;
                 }
 
-                case NodeClass.View:
-                {
+                case NodeClass.View: {
                     child = new ViewState();
                     break;
                 }
 
-                default:
-                {
+                default: {
                     child = null;
                     break;
                 }
@@ -560,13 +500,11 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="typeDefinitionId">The type definition.</param>
         /// <param name="type">The system type.</param>
-        public void RegisterType(NodeId typeDefinitionId, Type type)
-        {
+        public void RegisterType(NodeId typeDefinitionId, Type type) {
             if (NodeId.IsNull(typeDefinitionId)) throw new ArgumentNullException("typeDefinitionId");
             if (type == null) throw new ArgumentNullException("type");
-            
-            if (m_types == null)
-            {
+
+            if (m_types == null) {
                 m_types = new NodeIdDictionary<Type>();
             }
 
@@ -577,16 +515,14 @@ namespace Opc.Ua
         /// Unregisters a type with the factory.
         /// </summary>
         /// <param name="typeDefinitionId">The type definition.</param>
-        public void UnRegisterType(NodeId typeDefinitionId)
-        {
+        public void UnRegisterType(NodeId typeDefinitionId) {
             if (NodeId.IsNull(typeDefinitionId)) throw new ArgumentNullException("typeDefinitionId");
 
-            if (m_types != null)
-            {
+            if (m_types != null) {
                 m_types.Remove(typeDefinitionId);
             }
         }
-        
+
         private NodeIdDictionary<Type> m_types;
     }
 }

@@ -36,35 +36,30 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to answer a yes-no question.
     /// </summary>
-    public partial class YesNoDlg : Form
-    {
+    public partial class YesNoDlg : Form {
         /// <summary>
         /// Contructs the object.
         /// </summary>
-        public YesNoDlg()
-        {
+        public YesNoDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
-        
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public DialogResult ShowDialog(string message, string caption)
-        {
+        public DialogResult ShowDialog(string message, string caption) {
             return ShowDialog(message, caption, false);
         }
 
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public DialogResult ShowDialog(string message, string caption, bool yesToAll)
-        {
+        public DialogResult ShowDialog(string message, string caption, bool yesToAll) {
             this.YesToAllBTN.Visible = yesToAll;
             this.Text = caption;
             this.MessageLB.Text = message;

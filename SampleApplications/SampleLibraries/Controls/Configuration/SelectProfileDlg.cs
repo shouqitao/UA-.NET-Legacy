@@ -38,57 +38,53 @@ using System.Data;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class SelectProfileDlg : Form
-    {
+    public partial class SelectProfileDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public SelectProfileDlg()
-        {
+        public SelectProfileDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to edit an array value.
         /// </summary>
-        public Opc.Ua.Security.ListOfSecurityProfiles ShowDialog(Opc.Ua.Security.ListOfSecurityProfiles profiles, string caption)
-        {
-            if (caption != null)
-            {
+        public Opc.Ua.Security.ListOfSecurityProfiles ShowDialog(Opc.Ua.Security.ListOfSecurityProfiles profiles,
+            string caption) {
+            if (caption != null) {
                 this.Text = caption;
             }
 
             ProfilesLV.Items.Clear();
 
-            if (profiles != null)
-            {
-                for (int ii = 0; ii < profiles.Count; ii++)
-                {
+            if (profiles != null) {
+                for (int ii = 0; ii < profiles.Count; ii++) {
                     ProfilesLV.Items.Add(profiles[ii].ProfileUri, profiles[ii].Enabled);
                 }
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             Opc.Ua.Security.ListOfSecurityProfiles results = new Opc.Ua.Security.ListOfSecurityProfiles();
 
-            for (int ii = 0; ii < ProfilesLV.Items.Count; ii++)
-            {
+            for (int ii = 0; ii < ProfilesLV.Items.Count; ii++) {
                 Opc.Ua.Security.SecurityProfile profile = new Opc.Ua.Security.SecurityProfile();
                 profile.ProfileUri = ProfilesLV.Items[ii] as string;
                 profile.Enabled = ProfilesLV.CheckedIndices.Contains(ii);
@@ -97,6 +93,7 @@ namespace Opc.Ua.Client.Controls
 
             return results;
         }
+
         #endregion
     }
 }

@@ -18,13 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// This is an interface to a listener which supports UA binary encoding.
     /// </summary>
-    public interface ITransportListener : IDisposable
-    {
+    public interface ITransportListener : IDisposable {
         /// <summary>
         /// Opens the listener and starts accepting connection.
         /// </summary>

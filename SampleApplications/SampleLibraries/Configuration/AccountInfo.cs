@@ -35,180 +35,158 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.IO;
 using System.Runtime.InteropServices;
-
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Stores information about an account.
     /// </summary>
-    public class AccountInfo : IComparable
-    {
+    public class AccountInfo : IComparable {
         #region Public Properties
+
         /// <summary>
         /// The name of the account.
         /// </summary>
-        public string Name
-        {
-            get { return m_name;  } 
+        public string Name {
+            get { return m_name; }
             set { m_name = value; }
         }
 
         /// <summary>
         /// The domain that the account belongs to.
         /// </summary>
-        public string Domain
-        {
-            get { return m_domain;  } 
+        public string Domain {
+            get { return m_domain; }
             set { m_domain = value; }
         }
 
         /// <summary>
         /// The SID for the account.
         /// </summary>
-        public string Sid
-        {
-            get { return m_sid;  } 
+        public string Sid {
+            get { return m_sid; }
             set { m_sid = value; }
         }
 
         /// <summary>
         /// The type of SID used by the account.
         /// </summary>
-        public AccountSidType SidType
-        {
-            get { return m_sidType;  } 
+        public AccountSidType SidType {
+            get { return m_sidType; }
             set { m_sidType = value; }
         }
 
         /// <summary>
         /// Thr description for the account.
         /// </summary>
-        public string Description
-        {
-            get { return m_description;  } 
+        public string Description {
+            get { return m_description; }
             set { m_description = value; }
         }
 
         /// <summary>
         /// Thr current status for the account.
         /// </summary>
-        public string Status
-        {
-            get { return m_status;  } 
+        public string Status {
+            get { return m_status; }
             set { m_status = value; }
         }
-        #endregion 
-        
+
+        #endregion
+
         #region Overridden Methods
+
         /// <summary cref="Object.ToString()" />
-        public override string ToString()
-        {
-            try
-            {                
+        public override string ToString() {
+            try {
                 IdentityReference identity = GetIdentityReference();
-                            
-                if (identity != null && m_sid != identity.Value)
-                {
+
+                if (identity != null && m_sid != identity.Value) {
                     return identity.Value;
                 }
-            }
-            catch
-            {
+            } catch {
                 // don't care about invalid accounts when displaying a string.
             }
 
-            if (String.IsNullOrEmpty(m_name))
-            {
+            if (String.IsNullOrEmpty(m_name)) {
                 return m_sid;
             }
-            
-            if (!String.IsNullOrEmpty(m_domain))
-            {
+
+            if (!String.IsNullOrEmpty(m_domain)) {
                 return Utils.Format(@"{0}\{1}", m_domain, m_name);
             }
 
             return m_name;
         }
-        #endregion 
+
+        #endregion
 
         #region IComparable Members
+
         /// <summary>
         /// Compares the obj.
         /// </summary>
-        public int CompareTo(object obj)
-        {
+        public int CompareTo(object obj) {
             AccountInfo target = obj as AccountInfo;
 
-            if (Object.ReferenceEquals(target, null))
-            {
+            if (Object.ReferenceEquals(target, null)) {
                 return -1;
             }
 
-            if (Object.ReferenceEquals(target, this))
-            {
+            if (Object.ReferenceEquals(target, this)) {
                 return 0;
             }
-            
-            if (m_domain == null)
-            {
-                return (target.m_domain == null)?0:-1;
+
+            if (m_domain == null) {
+                return (target.m_domain == null) ? 0 : -1;
             }
 
             int result = m_domain.CompareTo(target.m_domain);
 
-            if (result != 0)
-            {
+            if (result != 0) {
                 return result;
             }
 
-            if (m_name == null)
-            {
-                return (target.m_name == null)?0:-1;
+            if (m_name == null) {
+                return (target.m_name == null) ? 0 : -1;
             }
 
             result = m_name.CompareTo(target.m_name);
 
-            if (result != 0)
-            {
+            if (result != 0) {
                 return result;
             }
-            
-            if (m_sid == null)
-            {
-                return (target.m_sid == null)?0:-1;
+
+            if (m_sid == null) {
+                return (target.m_sid == null) ? 0 : -1;
             }
 
             return m_sid.CompareTo(target.m_sid);
         }
+
         #endregion
- 
+
         #region Public Methods
+
         /// <summary>
         /// Returns the identity reference for the account.
         /// </summary>
-        public IdentityReference GetIdentityReference()
-        {
+        public IdentityReference GetIdentityReference() {
             string domain = m_domain;
 
-            if (String.Compare(domain, System.Net.Dns.GetHostName(), true) == 0)
-            {
+            if (String.Compare(domain, System.Net.Dns.GetHostName(), true) == 0) {
                 domain = null;
             }
 
-            if (!String.IsNullOrEmpty(m_name))
-            {
-                if (String.IsNullOrEmpty(domain))
-                {
+            if (!String.IsNullOrEmpty(m_name)) {
+                if (String.IsNullOrEmpty(domain)) {
                     return new NTAccount(m_name);
                 }
 
                 return new NTAccount(domain, m_name);
             }
 
-            if (!String.IsNullOrEmpty(m_sid))
-            {
+            if (!String.IsNullOrEmpty(m_sid)) {
                 return new SecurityIdentifier(m_sid);
             }
 
@@ -218,29 +196,22 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Returns the application rights implied by the file system rights.
         /// </summary>
-        public static ApplicationAccessRight GetApplicationRights(Opc.Ua.AccessControlType accessType, FileSystemRights accessRights)
-        {
-            if (accessType == Opc.Ua.AccessControlType.Allow)
-            {
-                if ((accessRights & ReadWrite) == ReadWrite)
-                {
+        public static ApplicationAccessRight GetApplicationRights(Opc.Ua.AccessControlType accessType,
+            FileSystemRights accessRights) {
+            if (accessType == Opc.Ua.AccessControlType.Allow) {
+                if ((accessRights & ReadWrite) == ReadWrite) {
                     return ApplicationAccessRight.Configure;
                 }
 
-                if ((accessRights & ReadOnly) == ReadOnly)
-                {
+                if ((accessRights & ReadOnly) == ReadOnly) {
                     return ApplicationAccessRight.Run;
                 }
-            }                        
-            else if (accessType == Opc.Ua.AccessControlType.Deny)
-            {
-                if ((accessRights & ReadOnly) != 0)
-                {
+            } else if (accessType == Opc.Ua.AccessControlType.Deny) {
+                if ((accessRights & ReadOnly) != 0) {
                     return ApplicationAccessRight.Run;
                 }
 
-                if ((accessRights & WriteOnly) != 0)
-                {
+                if ((accessRights & WriteOnly) != 0) {
                     return ApplicationAccessRight.Configure;
                 }
             }
@@ -251,42 +222,35 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Returns the directory that is the source for the specified access rule.
         /// </summary>
-        public static DirectoryInfo GetAccessRuleSource(FileInfo file, FileSystemAccessRule inheritedRule)
-        {
+        public static DirectoryInfo GetAccessRuleSource(FileInfo file, FileSystemAccessRule inheritedRule) {
             DirectoryInfo parent = file.Directory;
 
-            while (parent != null)
-            {                    
+            while (parent != null) {
                 DirectorySecurity security = parent.GetAccessControl(AccessControlSections.Access);
 
-                foreach (AuthorizationRule rule in security.GetAccessRules(true, true, typeof(NTAccount)))
-                {
-                    if (rule.IsInherited)
-                    {
+                foreach (AuthorizationRule rule in security.GetAccessRules(true, true, typeof(NTAccount))) {
+                    if (rule.IsInherited) {
                         continue;
                     }
 
-                    if (inheritedRule.IdentityReference.Value != rule.IdentityReference.Value)
-                    {
+                    if (inheritedRule.IdentityReference.Value != rule.IdentityReference.Value) {
                         continue;
                     }
 
                     FileSystemAccessRule accessRule = rule as FileSystemAccessRule;
-                    
-                    if (accessRule == null)
-                    {
+
+                    if (accessRule == null) {
                         continue;
                     }
 
-                    if (accessRule.AccessControlType != inheritedRule.AccessControlType)
-                    {
+                    if (accessRule.AccessControlType != inheritedRule.AccessControlType) {
                         continue;
                     }
 
                     return parent;
                 }
 
-                parent = parent.Parent;   
+                parent = parent.Parent;
             }
 
             return null;
@@ -295,23 +259,18 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Queries the SID table for the specified account name.
         /// </summary>
-        public static string LookupDomainSid(string domainName)
-        {          
+        public static string LookupDomainSid(string domainName) {
             StringBuilder builder = new StringBuilder();
             builder.AppendFormat("DomainName='{0}'", domainName);
 
-            SelectQuery query = new SelectQuery("Win32_NTDomain", builder.ToString());  
+            SelectQuery query = new SelectQuery("Win32_NTDomain", builder.ToString());
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-            
-            try
-            {
-                foreach (ManagementObject target in searcher.Get())
-                {
+
+            try {
+                foreach (ManagementObject target in searcher.Get()) {
                     return target["SID"] as string;
                 }
-            }
-            finally
-            {
+            } finally {
                 searcher.Dispose();
             }
 
@@ -321,18 +280,14 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Queries the SID table for the specified account name.
         /// </summary>
-        public static string LookupAccountSid(string accountName)
-        {   
-            if (String.IsNullOrEmpty(accountName))
-            {
+        public static string LookupAccountSid(string accountName) {
+            if (String.IsNullOrEmpty(accountName)) {
                 return null;
             }
 
             // check if already a SID.
-            if (accountName.StartsWith("S-"))
-            {
-                if (Create(accountName) == null)
-                {
+            if (accountName.StartsWith("S-")) {
+                if (Create(accountName) == null) {
                     return null;
                 }
 
@@ -343,106 +298,88 @@ namespace Opc.Ua.Configuration
 
             int index = accountName.IndexOf('\\');
 
-            if (index != -1)
-            {
+            if (index != -1) {
                 domain = accountName.Substring(0, index).ToUpper();
-                accountName = accountName.Substring(index+1);
+                accountName = accountName.Substring(index + 1);
             }
 
             StringBuilder builder = new StringBuilder();
 
             builder.AppendFormat("Name='{0}'", accountName);
-            
-            if (!String.IsNullOrEmpty(domain))
-            {
-                if (domain != "BUILTIN" && domain != "NT AUTHORITY")
-                {
+
+            if (!String.IsNullOrEmpty(domain)) {
+                if (domain != "BUILTIN" && domain != "NT AUTHORITY") {
                     builder.AppendFormat(" AND Domain='{0}'", domain);
                 }
             }
 
-            SelectQuery query = new SelectQuery("Win32_Account", builder.ToString());  
+            SelectQuery query = new SelectQuery("Win32_Account", builder.ToString());
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-            
-            try
-            {
-                foreach (ManagementObject target in searcher.Get())
-                {
+
+            try {
+                foreach (ManagementObject target in searcher.Get()) {
                     return target["SID"] as string;
                 }
-            }
-            finally
-            {
+            } finally {
                 searcher.Dispose();
             }
 
             return null;
         }
-        
+
         /// <summary>
         /// Creates an account info object from an identity name.
         /// </summary>
-        public static AccountInfo Create(string identityName)
-        {
+        public static AccountInfo Create(string identityName) {
             Console.WriteLine("CONFIGURATION CONSOLE AccountInfo {0}", identityName);
 
             // check for null.
-            if (String.IsNullOrEmpty(identityName))
-            {
+            if (String.IsNullOrEmpty(identityName)) {
                 return null;
             }
 
             StringBuilder builder = new StringBuilder();
 
             // check for SID based query.
-            if (identityName.StartsWith("S-"))
-            {
+            if (identityName.StartsWith("S-")) {
                 builder.AppendFormat("SID='{0}'", identityName);
             }
 
             // search by account name.
-            else
-            {
+            else {
                 string domain = null;
                 string name = identityName;
 
                 int index = identityName.IndexOf('\\');
 
-                if (index != -1)
-                {
+                if (index != -1) {
                     domain = identityName.Substring(0, index);
-                    name = identityName.Substring(index+1);
+                    name = identityName.Substring(index + 1);
                 }
-           
+
                 builder.AppendFormat("Name='{0}'", name);
 
-                if (!String.IsNullOrEmpty(domain))
-                {
+                if (!String.IsNullOrEmpty(domain)) {
                     // check for non-existent domain.
-                    if (String.Compare(domain, System.Net.Dns.GetHostName(), true) != 0)
-                    {
-                        if (String.IsNullOrEmpty(LookupDomainSid(domain)))
-                        {
+                    if (String.Compare(domain, System.Net.Dns.GetHostName(), true) != 0) {
+                        if (String.IsNullOrEmpty(LookupDomainSid(domain))) {
                             return null;
                         }
                     }
-                    
+
                     builder.AppendFormat("AND Domain='{0}'", domain);
                 }
             }
-            
+
             SelectQuery query = new SelectQuery("Win32_Account", builder.ToString());
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
 
-            try
-            {
-                foreach (ManagementObject target in searcher.Get())
-                {
+            try {
+                foreach (ManagementObject target in searcher.Get()) {
                     // filter on SID type.
-                    byte? sidType =  target["SIDType"] as byte?;
+                    byte? sidType = target["SIDType"] as byte?;
 
-                    if (sidType == null || sidType.Value == 3 || sidType.Value > 5)
-                    {
+                    if (sidType == null || sidType.Value == 3 || sidType.Value > 5) {
                         continue;
                     }
 
@@ -450,21 +387,19 @@ namespace Opc.Ua.Configuration
                     AccountInfo account = new AccountInfo();
 
                     account.Name = target["Name"] as string;
-                    account.SidType = (AccountSidType)sidType.Value;
+                    account.SidType = (AccountSidType) sidType.Value;
                     account.Sid = target["SID"] as string;
                     account.Domain = target["Domain"] as string;
                     account.Description = target["Description"] as string;
                     account.Status = target["Status"] as string;
-                                        
+
                     string caption = target["Caption"] as string;
                     object InstallDate = target["InstallDate"];
                     bool? LocalAccount = target["LocalAccount"] as bool?;
 
                     return account;
                 }
-            }
-            finally
-            {
+            } finally {
                 searcher.Dispose();
             }
 
@@ -473,65 +408,64 @@ namespace Opc.Ua.Configuration
 
         [DllImport("netapi32.dll")]
         private static extern int NetUserAdd(
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string  servername,
-            int     level,
-            IntPtr  buf,
+            [MarshalAs(UnmanagedType.LPWStr)] string servername,
+            int level,
+            IntPtr buf,
             out int parm_err);
 
         [DllImport("netapi32.dll")]
-        private static extern int NetUserSetInfo (
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string servername,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string username,
+        private static extern int NetUserSetInfo(
+            [MarshalAs(UnmanagedType.LPWStr)] string servername,
+            [MarshalAs(UnmanagedType.LPWStr)] string username,
             int level,
-            IntPtr  buf,
+            IntPtr buf,
             out int parm_err);
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct USER_INFO_1 
-        {
+        private struct USER_INFO_1 {
             [MarshalAs(UnmanagedType.LPWStr)]
             public string usri1_name;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string usri1_password;
+
             public int usri1_password_age;
             public int usri1_priv;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string usri1_home_dir;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string usri1_comment;
+
             public int usri1_flags;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string usri1_script_path;
         }
-            
+
         [StructLayout(LayoutKind.Sequential)]
-        private struct USER_INFO_1003 
-        {
+        private struct USER_INFO_1003 {
             [MarshalAs(UnmanagedType.LPWStr)]
             public string usri1003_password;
-        }    
-                    
+        }
+
         [StructLayout(LayoutKind.Sequential)]
-        private struct USER_INFO_1008 
-        {
+        private struct USER_INFO_1008 {
             public int usri1008_flags;
         }
-        
+
         private const int NERR_Success = 0;
         private const int USER_PRIV_USER = 1;
-        
+
         private const int UF_SCRIPT = 0x0001;
         private const int UF_DONT_EXPIRE_PASSWD = 0x10000;
         private const int UF_PASSWD_CANT_CHANGE = 0x0040;
-        
+
         /// <summary>
         /// Creates a new NT user account.
         /// </summary>
-        public static AccountInfo CreateUser(string username, string password)
-        {
+        public static AccountInfo CreateUser(string username, string password) {
             int dwLevel = 1;
             int dwError = 0;
             int nStatus;
@@ -555,23 +489,20 @@ namespace Opc.Ua.Configuration
 
             IntPtr pInfo = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(USER_INFO_1)));
             Marshal.StructureToPtr(ui, pInfo, false);
-            
+
             // try to add the user.
-            try
-            {
-               nStatus = NetUserAdd(
-                   null, 
-                   dwLevel,
-                   pInfo,
-                   out dwError);
-            }
-            finally
-            {
+            try {
+                nStatus = NetUserAdd(
+                    null,
+                    dwLevel,
+                    pInfo,
+                    out dwError);
+            } finally {
                 Marshal.DestroyStructure(pInfo, typeof(USER_INFO_1));
                 Marshal.FreeCoTaskMem(pInfo);
             }
 
-            if (nStatus != NERR_Success)  // maybe account exists, so just set the password
+            if (nStatus != NERR_Success) // maybe account exists, so just set the password
             {
                 // set the password.
                 dwLevel = 1003;
@@ -581,47 +512,40 @@ namespace Opc.Ua.Configuration
                 pInfo = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(USER_INFO_1003)));
                 Marshal.StructureToPtr(ui1003, pInfo, false);
 
-                try
-                {
+                try {
                     nStatus = NetUserSetInfo(
                         null,
                         username,
                         dwLevel,
                         pInfo,
                         out dwError);
-                }
-                finally
-                {
+                } finally {
                     Marshal.DestroyStructure(pInfo, typeof(USER_INFO_1003));
                     Marshal.FreeCoTaskMem(pInfo);
                 }
 
-	            // set the account flags (e.g. enable the account if disabled)
-	            dwLevel = 1008;
-	            USER_INFO_1008 ui1008;
-	            ui1008.usri1008_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD | UF_PASSWD_CANT_CHANGE;
-        	
+                // set the account flags (e.g. enable the account if disabled)
+                dwLevel = 1008;
+                USER_INFO_1008 ui1008;
+                ui1008.usri1008_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD | UF_PASSWD_CANT_CHANGE;
+
                 pInfo = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(USER_INFO_1003)));
                 Marshal.StructureToPtr(ui1003, pInfo, false);
 
-                try
-                {
+                try {
                     nStatus = NetUserSetInfo(
                         null,
                         username,
                         dwLevel,
                         pInfo,
                         out dwError);
-                }
-                finally
-                {
+                } finally {
                     Marshal.DestroyStructure(pInfo, typeof(USER_INFO_1008));
                     Marshal.FreeCoTaskMem(pInfo);
                 }
             }
 
-            if (nStatus != NERR_Success)
-            {
+            if (nStatus != NERR_Success) {
                 return null;
             }
 
@@ -631,43 +555,35 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Queries the account table for the specified accounts.
         /// </summary>
-        public static IList<AccountInfo> Query(AccountFilters filters)
-        {
-            if (filters == null)
-            {
+        public static IList<AccountInfo> Query(AccountFilters filters) {
+            if (filters == null) {
                 filters = new AccountFilters();
             }
 
             List<AccountInfo> accounts = new List<AccountInfo>();
 
             StringBuilder builder = new StringBuilder();
-            
-            if (!String.IsNullOrEmpty(filters.Domain))
-            {
+
+            if (!String.IsNullOrEmpty(filters.Domain)) {
                 // check for non-existent domain.
-                if (String.Compare(filters.Domain, System.Net.Dns.GetHostName(), true) != 0)
-                {
-                    if (String.IsNullOrEmpty(LookupDomainSid(filters.Domain)))
-                    {
+                if (String.Compare(filters.Domain, System.Net.Dns.GetHostName(), true) != 0) {
+                    if (String.IsNullOrEmpty(LookupDomainSid(filters.Domain))) {
                         return accounts;
                     }
                 }
-                
+
                 builder.AppendFormat("Domain='{0}'", filters.Domain);
             }
-            
+
             SelectQuery query = new SelectQuery("Win32_Account", builder.ToString());
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
 
-            try
-            {
-                foreach (ManagementObject target in searcher.Get())
-                {
+            try {
+                foreach (ManagementObject target in searcher.Get()) {
                     // filter on SID type.
-                    byte? sidType =  target["SIDType"] as byte?;
+                    byte? sidType = target["SIDType"] as byte?;
 
-                    if (sidType == null || sidType.Value == 3 || sidType.Value > 5)
-                    {
+                    if (sidType == null || sidType.Value == 3 || sidType.Value > 5) {
                         continue;
                     }
 
@@ -675,21 +591,18 @@ namespace Opc.Ua.Configuration
                     AccountInfo account = new AccountInfo();
 
                     account.Name = target["Name"] as string;
-                    account.SidType = (AccountSidType)sidType.Value;
+                    account.SidType = (AccountSidType) sidType.Value;
                     account.Sid = target["SID"] as string;
                     account.Domain = target["Domain"] as string;
                     account.Description = target["Description"] as string;
                     account.Status = target["Status"] as string;
 
 
-                    if (account.ApplyFilters(filters))
-                    {
+                    if (account.ApplyFilters(filters)) {
                         accounts.Add(account);
                     }
                 }
-            }
-            finally
-            {
+            } finally {
                 searcher.Dispose();
             }
 
@@ -699,89 +612,79 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Applies the filters to the accounts.
         /// </summary>
-        public static IList<AccountInfo> ApplyFilters(AccountFilters filters, IList<AccountInfo> accounts)
-        {
-            if (filters == null || accounts == null)
-            {
+        public static IList<AccountInfo> ApplyFilters(AccountFilters filters, IList<AccountInfo> accounts) {
+            if (filters == null || accounts == null) {
                 return accounts;
             }
 
-            List<AccountInfo> filteredAccounts = new  List<AccountInfo>();
+            List<AccountInfo> filteredAccounts = new List<AccountInfo>();
 
-            for (int ii = 0; ii < accounts.Count; ii++)
-            {                
-                if (accounts[ii].ApplyFilters(filters))
-                {
+            for (int ii = 0; ii < accounts.Count; ii++) {
+                if (accounts[ii].ApplyFilters(filters)) {
                     filteredAccounts.Add(accounts[ii]);
                 }
             }
 
             return filteredAccounts;
         }
-        
+
         /// <summary>
         /// Applies the filters to the account
         /// </summary>
-        public bool ApplyFilters(AccountFilters filters)
-        {
+        public bool ApplyFilters(AccountFilters filters) {
             // filter on name.
-            if (!String.IsNullOrEmpty(filters.Name))
-            {
-                if (!Utils.Match(this.Name, filters.Name, false))
-                {
+            if (!String.IsNullOrEmpty(filters.Name)) {
+                if (!Utils.Match(this.Name, filters.Name, false)) {
                     return false;
                 }
             }
 
             // filter on domain.
-            if (!String.IsNullOrEmpty(filters.Domain))
-            {
-                if (String.Compare(this.Domain, filters.Domain, true) != 0)
-                {
+            if (!String.IsNullOrEmpty(filters.Domain)) {
+                if (String.Compare(this.Domain, filters.Domain, true) != 0) {
                     return false;
                 }
             }
-                
+
             // exclude non-user related accounts.
-            if (this.SidType == AccountSidType.Domain || this.SidType > AccountSidType.BuiltIn)
-            {
+            if (this.SidType == AccountSidType.Domain || this.SidType > AccountSidType.BuiltIn) {
                 return false;
             }
 
             // apply account type filter.
-            if (filters.AccountTypeMask != AccountTypeMask.None)
-            {
-                if ((1<<((int)this.SidType-1) & (int)filters.AccountTypeMask) == 0)
-                {
+            if (filters.AccountTypeMask != AccountTypeMask.None) {
+                if ((1 << ((int) this.SidType - 1) & (int) filters.AccountTypeMask) == 0) {
                     return false;
                 }
             }
 
             return true;
         }
-        #endregion 
+
+        #endregion
 
         #region Private Fields
+
         /// <summary>
         /// The rights necessary for read access to a file.
         /// </summary>
-        private const FileSystemRights ReadOnly  =
-            FileSystemRights.ReadData | 
-            FileSystemRights.ReadAttributes | 
-            FileSystemRights.ReadExtendedAttributes | 
+        private const FileSystemRights ReadOnly =
+            FileSystemRights.ReadData |
+            FileSystemRights.ReadAttributes |
+            FileSystemRights.ReadExtendedAttributes |
             FileSystemRights.ReadPermissions;
-        
+
         /// <summary>
         /// The rights necessary for write access to a file.
         /// </summary>
-        private const FileSystemRights WriteOnly = 
-            FileSystemRights.WriteData | 
-            FileSystemRights.AppendData | 
-            FileSystemRights.WriteAttributes | 
-            FileSystemRights.WriteExtendedAttributes | 
-            FileSystemRights.ChangePermissions | 
+        private const FileSystemRights WriteOnly =
+            FileSystemRights.WriteData |
+            FileSystemRights.AppendData |
+            FileSystemRights.WriteAttributes |
+            FileSystemRights.WriteExtendedAttributes |
+            FileSystemRights.ChangePermissions |
             FileSystemRights.TakeOwnership;
-        
+
         /// <summary>
         /// The rights necessary for read/write access to a file.
         /// </summary>
@@ -793,15 +696,16 @@ namespace Opc.Ua.Configuration
         private AccountSidType m_sidType;
         private string m_description;
         private string m_status;
-        #endregion 
+
+        #endregion
     }
-    
+
     #region AccountSidType Enumeration
+
     /// <summary>
     /// The type of SID used by the account.
     /// </summary>
-    public enum AccountSidType : byte
-    {        
+    public enum AccountSidType : byte {
         /// <summary>
         /// An interactive user account.
         /// </summary>
@@ -827,59 +731,62 @@ namespace Opc.Ua.Configuration
         /// </summary>
         BuiltIn = 0x5
     }
-    #endregion 
-    
+
+    #endregion
+
     #region AccountFilters Class
+
     /// <summary>
     /// Filters that can be used to restrict the set of accounts returned.
     /// </summary>
-    public class AccountFilters
-    {
+    public class AccountFilters {
         #region Public Properties
+
         /// <summary>
         /// The name of the account (supports the '*' wildcard).
         /// </summary>
-        public string Name
-        {
-            get { return m_name;  } 
+        public string Name {
+            get { return m_name; }
             set { m_name = value; }
         }
 
         /// <summary>
         /// The domain that the account belongs to.
         /// </summary>
-        public string Domain
-        {
-            get { return m_domain;  } 
+        public string Domain {
+            get { return m_domain; }
             set { m_domain = value; }
         }
-        
+
 
         /// <summary>
         /// The types of accounts.
         /// </summary>
-        public AccountTypeMask AccountTypeMask
-        {
-            get { return m_accountTypeMask;  } 
+        public AccountTypeMask AccountTypeMask {
+            get { return m_accountTypeMask; }
             set { m_accountTypeMask = value; }
         }
-        #endregion 
+
+        #endregion
 
         #region Private Fields
+
         private string m_name;
         private string m_domain;
         private AccountTypeMask m_accountTypeMask;
-        #endregion 
+
+        #endregion
     }
-    #endregion 
-    
+
+    #endregion
+
     #region AccountTypeMask Enumeration
+
     /// <summary>
     /// The masks that can be use to filter a list of accounts.
     /// </summary>
     [Flags]
-    public enum AccountTypeMask
-    {        
+    public enum AccountTypeMask {
         /// <summary>
         /// Mask not specified.
         /// </summary>
@@ -900,14 +807,15 @@ namespace Opc.Ua.Configuration
         /// </summary>
         WellKnownGroup = 0x10
     }
-    #endregion 
-    
+
+    #endregion
+
     #region WellKnownSids Class
+
     /// <summary>
     /// The well known NT security identifiers.
     /// </summary>
-    public static class WellKnownSids
-    {
+    public static class WellKnownSids {
         /// <summary>
         /// Interactive users.
         /// </summary>
@@ -936,12 +844,12 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// The network service account.
         /// </summary>
-        public const string NetworkService  = "S-1-5-20";   
+        public const string NetworkService = "S-1-5-20";
 
         /// <summary>
         /// The administrators group.
         /// </summary>     
-        public const string Administrators  = "S-1-5-32-544";
+        public const string Administrators = "S-1-5-32-544";
 
         /// <summary>
         /// The users group.
@@ -953,5 +861,6 @@ namespace Opc.Ua.Configuration
         /// </summary>   
         public const string Guests = "S-1-5-32-546";
     }
+
     #endregion
 }

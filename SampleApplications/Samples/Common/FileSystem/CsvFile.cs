@@ -38,8 +38,7 @@ using System.Globalization;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-namespace FileSystem
-{
+namespace FileSystem {
     /// <summary>
     /// Wraps a CSV file which contains a set of named values.
     /// </summary>
@@ -47,38 +46,35 @@ namespace FileSystem
     /// One tag per line with three fields: name, data type and value.
     /// The data type is the name of a BuiltInType (see the BuiltInType enumeration).
     /// </remarks>
-    public class CsvFile
-    {
+    public class CsvFile {
         #region Constructors
+
         /// <summary>
         /// Creates an empty file,
         /// </summary>
-        public CsvFile()
-        {
+        public CsvFile() {
             m_entries = new List<Entry>();
         }
+
         #endregion
-        
+
         #region Public Members
+
         /// <summary>
         /// The timestamp associated with the file.
         /// </summary>
-        public DateTime Timestamp
-        {
+        public DateTime Timestamp {
             get { return m_timestamp; }
         }
 
         /// <summary>
         /// Returns the value with the specified name.
         /// </summary>
-        public object GetValue(string name)
-        {
-            for (int ii = 0; ii < m_entries.Count; ii++)
-            {                    
+        public object GetValue(string name) {
+            for (int ii = 0; ii < m_entries.Count; ii++) {
                 Entry entry = m_entries[ii];
 
-                if (entry.Name == name)
-                {
+                if (entry.Name == name) {
                     return entry.Value;
                 }
             }
@@ -89,18 +85,15 @@ namespace FileSystem
         /// <summary>
         /// Sets the value with the specified name.
         /// </summary>
-        public void SetValue(string name, object value)
-        {
+        public void SetValue(string name, object value) {
             Entry entry;
 
             Opc.Ua.TypeInfo type = Opc.Ua.TypeInfo.Construct(value);
 
-            for (int ii = 0; ii < m_entries.Count; ii++)
-            {                    
+            for (int ii = 0; ii < m_entries.Count; ii++) {
                 entry = m_entries[ii];
 
-                if (entry.Name == name)
-                {
+                if (entry.Name == name) {
                     entry.Value = value;
                     entry.DataType = type.BuiltInType;
                     m_entries[ii] = entry;
@@ -120,47 +113,38 @@ namespace FileSystem
         /// <summary>
         /// Loads the tags from the specified file.
         /// </summary>
-        public void Load(FileInfo source)
-        {
+        public void Load(FileInfo source) {
             m_entries.Clear();
 
-            using (StreamReader reader = new StreamReader(source.OpenRead()))
-            {
-                for (string line = reader.ReadLine(); line != null; line = reader.ReadLine())
-                {
+            using (StreamReader reader = new StreamReader(source.OpenRead())) {
+                for (string line = reader.ReadLine(); line != null; line = reader.ReadLine()) {
                     string[] columns = line.Split(',');
 
-                    if (columns == null || columns.Length < 3)
-                    {
+                    if (columns == null || columns.Length < 3) {
                         continue;
                     }
 
-                    string name  = columns[0].Trim();
-                    string type  = columns[1].Trim(); 
-                    string value = columns[2].Trim(); 
-                    
+                    string name = columns[0].Trim();
+                    string type = columns[1].Trim();
+                    string value = columns[2].Trim();
+
                     Entry entry = new Entry();
 
                     entry.Name = name;
                     entry.DataType = BuiltInType.String;
                     entry.Value = value;
 
-                    try
-                    {
-                        BuiltInType datatype = (BuiltInType)Enum.Parse(typeof(BuiltInType), type);
+                    try {
+                        BuiltInType datatype = (BuiltInType) Enum.Parse(typeof(BuiltInType), type);
 
-                        switch (datatype)
-                        {
-                            case BuiltInType.Double:
-                            {
+                        switch (datatype) {
+                            case BuiltInType.Double: {
                                 entry.DataType = BuiltInType.Double;
                                 entry.Value = Convert.ToDouble(value);
                                 break;
                             }
                         }
-                    }
-                    catch
-                    {
+                    } catch {
                         continue;
                     }
 
@@ -170,16 +154,13 @@ namespace FileSystem
 
             m_timestamp = DateTime.UtcNow;
         }
-        
+
         /// <summary>
         /// Saves the tags to the specified file.
         /// </summary>
-        public void Save(FileInfo source)
-        {
-            using (StreamWriter writer = new StreamWriter(source.OpenWrite()))
-            {
-                for (int ii = 0; ii < m_entries.Count; ii++)
-                {                    
+        public void Save(FileInfo source) {
+            using (StreamWriter writer = new StreamWriter(source.OpenWrite())) {
+                for (int ii = 0; ii < m_entries.Count; ii++) {
                     Entry entry = m_entries[ii];
 
                     writer.Write(entry.Name);
@@ -193,23 +174,27 @@ namespace FileSystem
 
             m_timestamp = DateTime.UtcNow;
         }
+
         #endregion
-        
+
         #region Entry Structure
+
         /// <summary>
         /// An entry in the CSV file.
         /// </summary>
-        private struct Entry
-        {
+        private struct Entry {
             public string Name;
             public BuiltInType DataType;
             public object Value;
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private DateTime m_timestamp;
         private List<Entry> m_entries;
+
         #endregion
     }
 }

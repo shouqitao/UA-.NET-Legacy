@@ -39,13 +39,11 @@ using System.Runtime.Serialization;
 using System.Management;
 using Microsoft.Win32;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Utility functions used by COM applications.
     /// </summary>
-    public static class ConfigUtils
-    {
+    public static class ConfigUtils {
         /// <summary>
         /// Gets or sets a directory which contains files representing users roles.
         /// </summary>
@@ -57,17 +55,14 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Gets the log file directory and ensures it is writeable.
         /// </summary>
-        public static string GetLogFileDirectory()
-        {
+        public static string GetLogFileDirectory() {
             // try the program data directory.
             string logFileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             logFileDirectory += "\\OPC Foundation\\Logs";
 
-            try
-            {
+            try {
                 // create the directory.
-                if (!Directory.Exists(logFileDirectory))
-                {
+                if (!Directory.Exists(logFileDirectory)) {
                     Directory.CreateDirectory(logFileDirectory);
                 }
 
@@ -99,15 +94,12 @@ namespace Opc.Ua.Configuration
                 rules.Add(rule);
 
                 ApplicationAccessRule.SetAccessRules(logFileDirectory, rules, false);
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 // try the MyDocuments directory instead.
                 logFileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 logFileDirectory += "OPC Foundation\\Logs";
 
-                if (!Directory.Exists(logFileDirectory))
-                {
+                if (!Directory.Exists(logFileDirectory)) {
                     Directory.CreateDirectory(logFileDirectory);
                 }
             }
@@ -121,13 +113,12 @@ namespace Opc.Ua.Configuration
         /// <returns>
         /// True if a configuration argument was specified and the arguments were processed. False otherwise.
         /// </returns>
-        public static bool ProcessCommandLine()
-        {
+        public static bool ProcessCommandLine() {
             // check if running in command line mode.
             string[] args = Environment.GetCommandLineArgs();
 
             // need to remove the executable name from the list of args.
-            string[] args2 = new string[args.Length-1];
+            string[] args2 = new string[args.Length - 1];
             Array.Copy(args, 1, args2, 0, args2.Length);
 
             // process the arguments.
@@ -139,82 +130,70 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="args">The arguments passed to the executable.</param>
         /// <returns>True if a configuration argument was specified and the arguments were processed. False otherwise.</returns>
-        public static bool ProcessCommandLine(string[] args)
-        {
+        public static bool ProcessCommandLine(string[] args) {
             // print the arguments provided.
             StringBuilder commandLine = new StringBuilder();
 
-            for (int ii = 1; ii < args.Length; ii++)
-            {
+            for (int ii = 1; ii < args.Length; ii++) {
                 commandLine.Append(args[ii]);
                 commandLine.Append(' ');
             }
 
-            Utils.Trace("Processing Arguments: {0}", commandLine); 
+            Utils.Trace("Processing Arguments: {0}", commandLine);
 
             // check that there are enough arguments left.
-            if (args.Length < 2)
-            {
+            if (args.Length < 2) {
                 return false;
             }
 
             // the first arguement specifies the type of configuration command.
             string configureCommand = args[0];
 
-            if (String.IsNullOrEmpty(configureCommand) || !configureCommand.StartsWith("-"))
-            {
+            if (String.IsNullOrEmpty(configureCommand) || !configureCommand.StartsWith("-")) {
                 return false;
             }
 
-            switch (configureCommand)
-            {
+            switch (configureCommand) {
                 // Install and Configure UA Applications
                 case "-ra":
                 case "-ia":
-                case "-ias":
-                {
+                case "-ias": {
                     break;
                 }
 
                 // Uninstall and UA Applications
                 case "-ur":
                 case "-ua":
-                case "-uas":
-                {
+                case "-uas": {
                     break;
                 }
 
                 // Register UA COM Pseudo-Servers
                 case "-rp":
-                case "-rps":
-                {
+                case "-rps": {
                     break;
                 }
 
                 // Unregister UA COM Pseudo-Servers
                 case "-up":
-                case "-ups":
-                {
+                case "-ups": {
                     break;
                 }
 
                 // Register a COM DLL
                 case "-rc":
-                case "-rcs":
-                {
+                case "-rcs": {
                     break;
                 }
 
                 // Unregister a COM DLL
                 case "-uc":
-                case "-ucs":
-                {
+                case "-ucs": {
                     break;
                 }
 
                 // non-configuration command.
-                default:
-                {
+                default: {
                     return false;
                 }
             }
@@ -229,10 +208,8 @@ namespace Opc.Ua.Configuration
             // check the file path.
             string filePath = Utils.GetAbsoluteFilePath(args[1], true, false, false);
 
-            if (filePath == null)
-            {
-                if (configureCommand.EndsWith("s", StringComparison.Ordinal))
-                {
+            if (filePath == null) {
+                if (configureCommand.EndsWith("s", StringComparison.Ordinal)) {
                     Utils.Trace("File does not exist: {0}", args[1]);
                     return true;
                 }
@@ -243,68 +220,55 @@ namespace Opc.Ua.Configuration
             // check for additional options.
             bool autostart = true;
             bool configureFirewall = true;
-            
-            for (int ii = 2; ii < args.Length; ii++)
-            {
-                if (args[ii] == "-firewall")
-                {
-                    if (ii < args.Length-1 && !args[ii+1].StartsWith("-"))
-                    {
+
+            for (int ii = 2; ii < args.Length; ii++) {
+                if (args[ii] == "-firewall") {
+                    if (ii < args.Length - 1 && !args[ii + 1].StartsWith("-")) {
                         configureFirewall = false;
                         continue;
                     }
                 }
 
-                if (args[ii] == "-autostart")
-                {
-                    if (ii < args.Length-1 && !args[ii+1].StartsWith("-"))
-                    {
+                if (args[ii] == "-autostart") {
+                    if (ii < args.Length - 1 && !args[ii + 1].StartsWith("-")) {
                         autostart = false;
                         continue;
                     }
                 }
             }
 
-            switch (configureCommand)
-            {
+            switch (configureCommand) {
                 // Register a COM DLL
                 case "-rc":
-                case "-rcs":
-                {
+                case "-rcs": {
                     ConfigUtils.RegisterComTypes(filePath);
-                    Utils.Trace("Registered COM DLL '{0}'", filePath); 
+                    Utils.Trace("Registered COM DLL '{0}'", filePath);
                     break;
                 }
-                    
+
                 // Unregister a COM DLL
                 case "-uc":
-                case "-ucs":
-                {
+                case "-ucs": {
                     ConfigUtils.UnregisterComTypes(filePath);
-                    Utils.Trace("Unregistered COM DLL '{0}'", filePath); 
+                    Utils.Trace("Unregistered COM DLL '{0}'", filePath);
                     break;
                 }
 
                 // Install and Configure UA Applications
                 case "-ia":
-                case "-ias":
-                {
+                case "-ias": {
                     // save the current directory so it can be restored.
                     string currentDirectory = Environment.CurrentDirectory;
 
-                    try
-                    {
+                    try {
                         Environment.CurrentDirectory = new FileInfo(filePath).DirectoryName;
 
                         // load the configurations from the file.
                         InstalledApplicationCollection applications = null;
 
-                        try
-                        {
+                        try {
                             applications = InstalledApplication.Load(filePath);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             throw ServiceResultException.Create(
                                 StatusCodes.BadConfigurationError,
                                 e,
@@ -313,96 +277,76 @@ namespace Opc.Ua.Configuration
                         }
 
                         // update the application configuration.
-                        foreach (InstalledApplication application in applications)
-                        {
-                            try
-                            {
+                        foreach (InstalledApplication application in applications) {
+                            try {
                                 ConfigUtils.InstallApplication(application, autostart, configureFirewall);
                                 Utils.Trace("Installed application '{0}'", application.ApplicationName);
-                            }
-                            catch (Exception e)
-                            {
-                                Utils.Trace(e, "Error installing application '{0}': {1}", application.ApplicationName, e.Message);
+                            } catch (Exception e) {
+                                Utils.Trace(e, "Error installing application '{0}': {1}", application.ApplicationName,
+                                    e.Message);
                             }
                         }
-                    }
-                    finally
-                    {
+                    } finally {
                         Environment.CurrentDirectory = currentDirectory;
                     }
-                    
+
                     break;
                 }
 
                 // Uninstall and UA Applications
                 case "-ua":
-                case "-uas":
-                {
+                case "-uas": {
                     // save the current directory so it can be restored.
                     string currentDirectory = Environment.CurrentDirectory;
 
-                    try
-                    {
+                    try {
                         Environment.CurrentDirectory = new FileInfo(filePath).DirectoryName;
 
                         // load the configurations from the file.
                         InstalledApplicationCollection applications = null;
 
-                        try
-                        {
+                        try {
                             applications = InstalledApplication.Load(filePath);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             throw ServiceResultException.Create(
-                                StatusCodes.BadConfigurationError, 
+                                StatusCodes.BadConfigurationError,
                                 e,
-                                "Could not read configuration file. {0}", 
+                                "Could not read configuration file. {0}",
                                 filePath);
                         }
 
                         // update the application configuration.
-                        foreach (InstalledApplication application in applications)
-                        {
-                            try
-                            {
+                        foreach (InstalledApplication application in applications) {
+                            try {
                                 ConfigUtils.UninstallApplication(application);
-                                Utils.Trace("Uninstalled application '{0}'", application.ApplicationName); 
-                            }
-                            catch (Exception e)
-                            {
-                                Utils.Trace("Error uninstalling application '{0}': {1}", application.ApplicationName, e.Message); 
+                                Utils.Trace("Uninstalled application '{0}'", application.ApplicationName);
+                            } catch (Exception e) {
+                                Utils.Trace("Error uninstalling application '{0}': {1}", application.ApplicationName,
+                                    e.Message);
                             }
                         }
-                    }
-                    finally
-                    {
+                    } finally {
                         Environment.CurrentDirectory = currentDirectory;
                     }
-                    
+
                     break;
                 }
-                    
+
                 // Register UA COM Pseudo-Servers
                 case "-rp":
-                case "-rps":
-                {
+                case "-rps": {
                     // save the current directory so it can be restored.
                     string currentDirectory = Environment.CurrentDirectory;
 
-                    try
-                    {
+                    try {
                         Environment.CurrentDirectory = new FileInfo(filePath).DirectoryName;
 
                         // load the endpoints from the file.
                         ConfiguredEndpointCollection endpoints = null;
 
-                        try
-                        {
+                        try {
                             endpoints = ConfiguredEndpointCollection.Load(filePath);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             throw ServiceResultException.Create(
                                 StatusCodes.BadConfigurationError,
                                 e,
@@ -411,52 +355,41 @@ namespace Opc.Ua.Configuration
                         }
 
                         // update the application configuration.
-                        foreach (ConfiguredEndpoint endpoint in endpoints.Endpoints)
-                        {
-                            if (endpoint.ComIdentity == null)
-                            {
+                        foreach (ConfiguredEndpoint endpoint in endpoints.Endpoints) {
+                            if (endpoint.ComIdentity == null) {
                                 continue;
                             }
 
-                            try
-                            {
+                            try {
                                 PseudoComServer.Save(endpoint);
                                 Utils.Trace("Registered COM pseudo-server '{0}'", endpoint.ComIdentity.ProgId);
-                            }
-                            catch (Exception e)
-                            {
-                                Utils.Trace("Error Registering COM pseudo-server '{0}': {1}", endpoint.ComIdentity.ProgId, e.Message);
+                            } catch (Exception e) {
+                                Utils.Trace("Error Registering COM pseudo-server '{0}': {1}",
+                                    endpoint.ComIdentity.ProgId, e.Message);
                             }
                         }
-                    }
-                    finally
-                    {
+                    } finally {
                         Environment.CurrentDirectory = currentDirectory;
                     }
-                    
+
                     break;
                 }
-                    
+
                 // Unregister UA COM Pseudo-Servers
                 case "-up":
-                case "-ups":
-                {
+                case "-ups": {
                     // save the current directory so it can be restored.
                     string currentDirectory = Environment.CurrentDirectory;
 
-                    try
-                    {
+                    try {
                         Environment.CurrentDirectory = new FileInfo(filePath).DirectoryName;
 
                         // load the endpoints from the file.
                         ConfiguredEndpointCollection endpoints = null;
 
-                        try
-                        {
+                        try {
                             endpoints = ConfiguredEndpointCollection.Load(filePath);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             throw ServiceResultException.Create(
                                 StatusCodes.BadConfigurationError,
                                 e,
@@ -465,35 +398,28 @@ namespace Opc.Ua.Configuration
                         }
 
                         // update the application configuration.
-                        foreach (ConfiguredEndpoint endpoint in endpoints.Endpoints)
-                        {
-                            if (endpoint.ComIdentity == null)
-                            {
+                        foreach (ConfiguredEndpoint endpoint in endpoints.Endpoints) {
+                            if (endpoint.ComIdentity == null) {
                                 continue;
                             }
 
-                            try
-                            {
+                            try {
                                 PseudoComServer.Delete(endpoint.ComIdentity.Clsid);
                                 Utils.Trace("Unregistered COM pseudo-server '{0}'", endpoint.ComIdentity.ProgId);
-                            }
-                            catch (Exception e)
-                            {
-                                Utils.Trace("Error unregistered COM pseudo-server '{0}': {1}", endpoint.ComIdentity.ProgId, e.Message);
+                            } catch (Exception e) {
+                                Utils.Trace("Error unregistered COM pseudo-server '{0}': {1}",
+                                    endpoint.ComIdentity.ProgId, e.Message);
                             }
                         }
-                    }
-                    finally
-                    {
+                    } finally {
                         Environment.CurrentDirectory = currentDirectory;
                     }
-                    
+
                     break;
                 }
 
                 // some other command which is ignored.
-                default:
-                {
+                default: {
                     return false;
                 }
             }
@@ -504,21 +430,16 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Finds the first child element with the specified name.
         /// </summary>
-        private static XmlElement FindFirstElement(XmlElement parent, string localName, string namespaceUri)
-        {
-            if (parent == null)
-            {
+        private static XmlElement FindFirstElement(XmlElement parent, string localName, string namespaceUri) {
+            if (parent == null) {
                 return null;
             }
 
-            for (XmlNode child = parent.FirstChild; child != null; child = child.NextSibling)
-            {
+            for (XmlNode child = parent.FirstChild; child != null; child = child.NextSibling) {
                 XmlElement element = child as XmlElement;
 
-                if (element != null)
-                {
-                    if (element.LocalName == localName && element.NamespaceURI == namespaceUri)
-                    {
+                if (element != null) {
+                    if (element.LocalName == localName && element.NamespaceURI == namespaceUri) {
                         return element;
                     }
 
@@ -532,13 +453,11 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Updates the configuration location for the specified 
         /// </summary>
-        public static void UpdateConfigurationLocation(string executablePath, string configurationPath)
-        {
+        public static void UpdateConfigurationLocation(string executablePath, string configurationPath) {
             string configFilePath = Utils.Format("{0}.config", executablePath);
 
             // not all apps have an app.config file.
-            if (!File.Exists(configFilePath))
-            {
+            if (!File.Exists(configFilePath)) {
                 return;
             }
 
@@ -546,121 +465,104 @@ namespace Opc.Ua.Configuration
             XmlDocument document = new XmlDocument();
             document.Load(configFilePath);
 
-            for (XmlNode child = document.DocumentElement.FirstChild; child != null; child = child.NextSibling)
-            {
+            for (XmlNode child = document.DocumentElement.FirstChild; child != null; child = child.NextSibling) {
                 // ignore non-element.
                 XmlElement element = child as XmlElement;
 
-                if (element == null)
-                {
+                if (element == null) {
                     continue;
                 }
 
                 // look for the configuration location.
                 XmlElement location = FindFirstElement(element, "ConfigurationLocation", Namespaces.OpcUaConfig);
 
-                if (location == null)
-                {
+                if (location == null) {
                     continue;
                 }
-                
+
                 // find the file path.
                 XmlElement filePath = FindFirstElement(location, "FilePath", Namespaces.OpcUaConfig);
 
-                if (filePath == null)
-                {
+                if (filePath == null) {
                     filePath = location.OwnerDocument.CreateElement("FilePath", Namespaces.OpcUaConfig);
                     location.InsertBefore(filePath, location.FirstChild);
                 }
-                
+
                 filePath.InnerText = configurationPath;
                 break;
             }
-            
+
             // save configuration file.
             Stream ostrm = File.Open(configFilePath, FileMode.Create, FileAccess.Write);
-			XmlTextWriter writer = new XmlTextWriter(ostrm, System.Text.Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;    
+            XmlTextWriter writer = new XmlTextWriter(ostrm, System.Text.Encoding.UTF8);
+            writer.Formatting = Formatting.Indented;
 
-            try
-            {            
+            try {
                 document.Save(writer);
-            }
-            finally
-            {
+            } finally {
                 writer.Close();
             }
         }
-        
+
         /// <summary>
         /// Sets the defaults for all fields.
         /// </summary>
         /// <param name="application">The application.</param>
-        private static void SetDefaults(InstalledApplication application)
-        { 
+        private static void SetDefaults(InstalledApplication application) {
             // create a default product name.
-            if (String.IsNullOrEmpty(application.ProductName))
-            {
+            if (String.IsNullOrEmpty(application.ProductName)) {
                 application.ProductName = application.ApplicationName;
             }
 
             // create a default uri.
-            if (String.IsNullOrEmpty(application.ApplicationUri))
-            {
-                application.ApplicationUri = Utils.Format("http://localhost/{0}/{1}", application.ApplicationName, Guid.NewGuid());
+            if (String.IsNullOrEmpty(application.ApplicationUri)) {
+                application.ApplicationUri = Utils.Format("http://localhost/{0}/{1}", application.ApplicationName,
+                    Guid.NewGuid());
             }
 
             // make the uri specify the local machine.
             application.ApplicationUri = Utils.ReplaceLocalhost(application.ApplicationUri);
 
             // set a default application store.
-            if (application.ApplicationCertificate == null)
-            {
+            if (application.ApplicationCertificate == null) {
                 application.ApplicationCertificate = new Opc.Ua.Security.CertificateIdentifier();
                 application.ApplicationCertificate.StoreType = Utils.DefaultStoreType;
                 application.ApplicationCertificate.StorePath = Utils.DefaultStorePath;
                 application.ApplicationCertificate.SubjectName = application.ApplicationName;
             }
 
-            if (application.IssuerCertificateStore == null)
-            {
+            if (application.IssuerCertificateStore == null) {
                 application.IssuerCertificateStore = new Opc.Ua.Security.CertificateStoreIdentifier();
                 application.IssuerCertificateStore.StoreType = Utils.DefaultStoreType;
                 application.IssuerCertificateStore.StorePath = Utils.DefaultStorePath;
             }
 
-            if (application.TrustedCertificateStore == null)
-            {
+            if (application.TrustedCertificateStore == null) {
                 application.TrustedCertificateStore = new Opc.Ua.Security.CertificateStoreIdentifier();
                 application.TrustedCertificateStore.StoreType = Utils.DefaultStoreType;
                 application.TrustedCertificateStore.StorePath = Utils.DefaultStorePath;
             }
 
-            try
-            {
+            try {
                 Utils.GetAbsoluteDirectoryPath(application.ApplicationCertificate.StorePath, true, true, true);
-            }
-            catch (Exception e)
-            {
-                Utils.Trace("Could not access the machine directory: {0} '{1}'", application.ApplicationCertificate.StorePath, e);
+            } catch (Exception e) {
+                Utils.Trace("Could not access the machine directory: {0} '{1}'",
+                    application.ApplicationCertificate.StorePath, e);
             }
 
-            if (application.RejectedCertificatesStore == null)
-            {
+            if (application.RejectedCertificatesStore == null) {
                 application.RejectedCertificatesStore = new Opc.Ua.Security.CertificateStoreIdentifier();
                 application.RejectedCertificatesStore.StoreType = CertificateStoreType.Directory;
-                application.RejectedCertificatesStore.StorePath = "%CommonApplicationData%\\OPC Foundation\\CertificateStores\\RejectedCertificates";
+                application.RejectedCertificatesStore.StorePath =
+                    "%CommonApplicationData%\\OPC Foundation\\CertificateStores\\RejectedCertificates";
             }
 
-            if (application.RejectedCertificatesStore.StoreType == CertificateStoreType.Directory)
-            {
-                try
-                {
+            if (application.RejectedCertificatesStore.StoreType == CertificateStoreType.Directory) {
+                try {
                     Utils.GetAbsoluteDirectoryPath(application.RejectedCertificatesStore.StorePath, true, true, true);
-                }
-                catch (Exception e)
-                {
-                    Utils.Trace("Could not access rejected certificates directory: {0} '{1}'", application.RejectedCertificatesStore.StorePath, e);
+                } catch (Exception e) {
+                    Utils.Trace("Could not access rejected certificates directory: {0} '{1}'",
+                        application.RejectedCertificatesStore.StorePath, e);
                 }
             }
         }
@@ -669,47 +571,43 @@ namespace Opc.Ua.Configuration
         /// Installs a UA application.
         /// </summary>
         public static void InstallApplication(
-            InstalledApplication application, 
-            bool autostart, 
-            bool configureFirewall)
-        {
+            InstalledApplication application,
+            bool autostart,
+            bool configureFirewall) {
             // validate the executable file.
             string executableFile = Utils.GetAbsoluteFilePath(application.ExecutableFile, true, true, false);
-            
+
             // get the default application name from the executable file.
             FileInfo executableFileInfo = new FileInfo(executableFile);
 
-            string applicationName = executableFileInfo.Name.Substring(0, executableFileInfo.Name.Length-4);
+            string applicationName = executableFileInfo.Name.Substring(0, executableFileInfo.Name.Length - 4);
 
             // choose a default configuration file.
-            if (String.IsNullOrEmpty(application.ConfigurationFile))
-            {
+            if (String.IsNullOrEmpty(application.ConfigurationFile)) {
                 application.ConfigurationFile = Utils.Format(
-                    "{0}\\{1}.Config.xml", 
-                    executableFileInfo.DirectoryName, 
-                    applicationName);                
+                    "{0}\\{1}.Config.xml",
+                    executableFileInfo.DirectoryName,
+                    applicationName);
             }
 
             // validate the configuration file.
             string configurationFile = Utils.GetAbsoluteFilePath(application.ConfigurationFile, true, false, false);
-            
+
             // create a new file if one does not exist.
             bool useExisting = true;
 
-            if (configurationFile == null)
-            {
+            if (configurationFile == null) {
                 configurationFile = Utils.GetAbsoluteFilePath(application.ConfigurationFile, true, true, true);
                 useExisting = false;
             }
 
             // create the default configuration file.
 
-            if (useExisting)
-            {
-                try
-                {
-                    Opc.Ua.Security.SecuredApplication existingSettings = new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configurationFile);
-                    
+            if (useExisting) {
+                try {
+                    Opc.Ua.Security.SecuredApplication existingSettings =
+                        new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configurationFile);
+
                     // copy current settings
                     application.ApplicationType = existingSettings.ApplicationType;
                     application.BaseAddresses = existingSettings.BaseAddresses;
@@ -722,98 +620,85 @@ namespace Opc.Ua.Configuration
                     application.IssuerCertificateStore = existingSettings.IssuerCertificateStore;
                     application.IssuerCertificates = application.IssuerCertificates;
                     application.UseDefaultCertificateStores = false;
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     useExisting = false;
-                    Utils.Trace("WARNING. Existing configuration file could not be loaded: {0}.\r\nReplacing with default: {1}", e.Message, configurationFile);
+                    Utils.Trace(
+                        "WARNING. Existing configuration file could not be loaded: {0}.\r\nReplacing with default: {1}",
+                        e.Message, configurationFile);
                     File.Copy(configurationFile, configurationFile + ".bak", true);
                 }
             }
-            
+
             // create the configuration file from the default.
-            if (!useExisting)
-            {
-                try
-                {
+            if (!useExisting) {
+                try {
                     string installationFile = Utils.Format(
-                        "{0}\\Install\\{1}.Config.xml", 
-                        executableFileInfo.Directory.Parent.FullName, 
+                        "{0}\\Install\\{1}.Config.xml",
+                        executableFileInfo.Directory.Parent.FullName,
                         applicationName);
-                    
-                    if (!File.Exists(installationFile))
-                    {
+
+                    if (!File.Exists(installationFile)) {
                         Utils.Trace("Could not find default configuation at: {0}", installationFile);
                     }
-                        
+
                     File.Copy(installationFile, configurationFile, true);
                     Utils.Trace("File.Copy({0}, {1})", installationFile, configurationFile);
-                }
-                catch (Exception e)
-                {
-                    Utils.Trace("Could not copy default configuation to: {0}. Error={1}.", configurationFile, e.Message);
+                } catch (Exception e) {
+                    Utils.Trace("Could not copy default configuation to: {0}. Error={1}.", configurationFile,
+                        e.Message);
                 }
             }
 
             // create a default application name.
-            if (String.IsNullOrEmpty(application.ApplicationName))
-            {
+            if (String.IsNullOrEmpty(application.ApplicationName)) {
                 application.ApplicationName = applicationName;
             }
-                        
+
             // create a default product name.
-            if (String.IsNullOrEmpty(application.ProductName))
-            {
+            if (String.IsNullOrEmpty(application.ProductName)) {
                 application.ProductName = application.ApplicationName;
             }
 
             // create a default uri.
-            if (String.IsNullOrEmpty(application.ApplicationUri))
-            {
+            if (String.IsNullOrEmpty(application.ApplicationUri)) {
                 application.ApplicationUri = Utils.Format("http://localhost/{0}/{1}", applicationName, Guid.NewGuid());
             }
-            
+
             // make the uri specify the local machine.
             application.ApplicationUri = Utils.ReplaceLocalhost(application.ApplicationUri);
 
             // set a default application store.
-            if (application.ApplicationCertificate == null)
-            {
+            if (application.ApplicationCertificate == null) {
                 application.ApplicationCertificate = new Opc.Ua.Security.CertificateIdentifier();
                 application.ApplicationCertificate.StoreType = Utils.DefaultStoreType;
                 application.ApplicationCertificate.StorePath = Utils.DefaultStorePath;
             }
-            
-            if (application.UseDefaultCertificateStores)
-            {
-                if (application.IssuerCertificateStore == null)
-                {
+
+            if (application.UseDefaultCertificateStores) {
+                if (application.IssuerCertificateStore == null) {
                     application.IssuerCertificateStore = new Opc.Ua.Security.CertificateStoreIdentifier();
                     application.IssuerCertificateStore.StoreType = Utils.DefaultStoreType;
                     application.IssuerCertificateStore.StorePath = Utils.DefaultStorePath;
                 }
 
-                if (application.TrustedCertificateStore == null)
-                {
+                if (application.TrustedCertificateStore == null) {
                     application.TrustedCertificateStore = new Opc.Ua.Security.CertificateStoreIdentifier();
                     application.TrustedCertificateStore.StoreType = Utils.DefaultStoreType;
                     application.TrustedCertificateStore.StorePath = Utils.DefaultStorePath;
                 }
-                
-                try
-                {
+
+                try {
                     Utils.GetAbsoluteDirectoryPath(application.TrustedCertificateStore.StorePath, true, true, true);
-                }
-                catch (Exception e)
-                {
-                    Utils.Trace("Could not access the machine directory: {0} '{1}'", application.RejectedCertificatesStore.StorePath, e);
+                } catch (Exception e) {
+                    Utils.Trace("Could not access the machine directory: {0} '{1}'",
+                        application.RejectedCertificatesStore.StorePath, e);
                 }
 
-                if (application.RejectedCertificatesStore == null)
-                {
+                if (application.RejectedCertificatesStore == null) {
                     application.RejectedCertificatesStore = new Opc.Ua.Security.CertificateStoreIdentifier();
                     application.RejectedCertificatesStore.StoreType = CertificateStoreType.Directory;
-                    application.RejectedCertificatesStore.StorePath = "%CommonApplicationData%\\OPC Foundation\\CertificateStores\\RejectedCertificates";
+                    application.RejectedCertificatesStore.StorePath =
+                        "%CommonApplicationData%\\OPC Foundation\\CertificateStores\\RejectedCertificates";
 
                     StringBuilder buffer = new StringBuilder();
 
@@ -823,8 +708,7 @@ namespace Opc.Ua.Configuration
 
                     string folderPath = buffer.ToString();
 
-                    if (!Directory.Exists(folderPath))
-                    {
+                    if (!Directory.Exists(folderPath)) {
                         Directory.CreateDirectory(folderPath);
                     }
                 }
@@ -832,71 +716,60 @@ namespace Opc.Ua.Configuration
 
 
             // check for valid certificate (discard invalid certificates).
-            CertificateIdentifier applicationCertificate = Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(application.ApplicationCertificate); 
+            CertificateIdentifier applicationCertificate =
+                Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(application.ApplicationCertificate);
             X509Certificate2 certificate = applicationCertificate.Find(true);
 
-            if (certificate == null)
-            {
+            if (certificate == null) {
                 certificate = applicationCertificate.Find(false);
 
-                if (certificate != null)
-                {
+                if (certificate != null) {
                     Utils.Trace(
-                        "Found existing certificate but it does not have a private key: Store={0}, Certificate={1}", 
+                        "Found existing certificate but it does not have a private key: Store={0}, Certificate={1}",
                         application.ApplicationCertificate.StorePath,
                         application.ApplicationCertificate);
-                }
-                else
-                {            
+                } else {
                     Utils.Trace(
-                        "Existing certificate could not be found: Store={0}, Certificate={1}", 
+                        "Existing certificate could not be found: Store={0}, Certificate={1}",
                         application.ApplicationCertificate.StorePath,
                         application.ApplicationCertificate);
                 }
             }
-            
+
             // check if no certificate exists.
-            if (certificate == null)
-            {
+            if (certificate == null) {
                 certificate = CreateCertificateForApplication(application);
             }
-            
-            // ensure the application certificate is in the trusted peers store.
-            try
-            {
-                CertificateStoreIdentifier certificateStore = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(application.TrustedCertificateStore);
 
-                using (ICertificateStore store = certificateStore.OpenStore())
-                {
+            // ensure the application certificate is in the trusted peers store.
+            try {
+                CertificateStoreIdentifier certificateStore =
+                    Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(application
+                        .TrustedCertificateStore);
+
+                using (ICertificateStore store = certificateStore.OpenStore()) {
                     X509Certificate2 peerCertificate = store.FindByThumbprint(certificate.Thumbprint);
- 
-                    if (peerCertificate == null)
-                    {
+
+                    if (peerCertificate == null) {
                         store.Add(new X509Certificate2(certificate.GetRawCertData()));
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(
-                    "Could not add certificate '{0}' to trusted peer store '{1}'. Error={2}", 
+                    "Could not add certificate '{0}' to trusted peer store '{1}'. Error={2}",
                     certificate.Subject,
-                    application.TrustedCertificateStore, 
+                    application.TrustedCertificateStore,
                     e.Message);
             }
 
             // locally register the certficate OIDs.
-            if (application.LocallyRegisterOIDs)
-            {
-                try
-                {
+            if (application.LocallyRegisterOIDs) {
+                try {
                     LocallyRegisterCertificateOIDs(certificate);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Utils.Trace(
-                        "Could not register OIDs used for certificate '{0}'. Error={1}", 
-                        certificate.Subject, 
+                        "Could not register OIDs used for certificate '{0}'. Error={1}",
+                        certificate.Subject,
                         e.Message);
                 }
             }
@@ -906,103 +779,86 @@ namespace Opc.Ua.Configuration
 
             // update configuration file.
             new Opc.Ua.Security.SecurityConfigurationManager().WriteConfiguration(configurationFile, application);
-            
+
             // configure firewall.
-            if (configureFirewall && application.ConfigureFirewall)
-            {
-                if (application.BaseAddresses != null && application.BaseAddresses.Count > 0)
-                {
-                    try
-                    {
+            if (configureFirewall && application.ConfigureFirewall) {
+                if (application.BaseAddresses != null && application.BaseAddresses.Count > 0) {
+                    try {
                         SetFirewallAccess(application, executableFile);
-                    }
-                    catch (Exception e)
-                    {
-                        Utils.Trace("Could not set firewall access for executable: {0}. Error={1}", executableFile, e.Message);
+                    } catch (Exception e) {
+                        Utils.Trace("Could not set firewall access for executable: {0}. Error={1}", executableFile,
+                            e.Message);
                     }
                 }
             }
 
             ApplicationAccessRuleCollection accessRules = application.AccessRules;
             bool noRulesDefined = application.AccessRules == null || application.AccessRules.Count == 0;
-            
+
             // add the default access rules.
-            if (noRulesDefined)
-            {
+            if (noRulesDefined) {
                 ApplicationAccessRule rule = new ApplicationAccessRule();
-                
+
                 rule.IdentityName = WellKnownSids.Administrators;
-                rule.RuleType     = AccessControlType.Allow;
-                rule.Right        = ApplicationAccessRight.Configure;
+                rule.RuleType = AccessControlType.Allow;
+                rule.Right = ApplicationAccessRight.Configure;
 
                 accessRules.Add(rule);
 
                 rule = new ApplicationAccessRule();
-                
+
                 rule.IdentityName = WellKnownSids.Users;
-                rule.RuleType     = AccessControlType.Allow;
-                rule.Right        = ApplicationAccessRight.Update;
+                rule.RuleType = AccessControlType.Allow;
+                rule.Right = ApplicationAccessRight.Update;
 
                 accessRules.Add(rule);
             }
-             
+
             // ensure the service account has priviledges.
-            if (application.InstallAsService)
-            {
+            if (application.InstallAsService) {
                 // check if a specific account is assigned.
                 AccountInfo accountInfo = null;
 
-                if (!String.IsNullOrEmpty(application.ServiceUserName))
-                {
+                if (!String.IsNullOrEmpty(application.ServiceUserName)) {
                     accountInfo = AccountInfo.Create(application.ServiceUserName);
                 }
 
                 // choose a built-in service account.
-                if (accountInfo == null)
-                {
+                if (accountInfo == null) {
                     accountInfo = AccountInfo.Create(WellKnownSids.NetworkService);
-                    
-                    if (accountInfo == null)
-                    {
+
+                    if (accountInfo == null) {
                         accountInfo = AccountInfo.Create(WellKnownSids.LocalSystem);
                     }
                 }
 
                 ApplicationAccessRule rule = new ApplicationAccessRule();
-                
+
                 rule.IdentityName = accountInfo.ToString();
-                rule.RuleType     = AccessControlType.Allow;
-                rule.Right        = ApplicationAccessRight.Run;
+                rule.RuleType = AccessControlType.Allow;
+                rule.Right = ApplicationAccessRight.Run;
 
                 accessRules.Add(rule);
             }
 
             // set the permissions for the HTTP endpoints used by the application.
-            if (configureFirewall && application.BaseAddresses != null && application.BaseAddresses.Count > 0)
-            {
-                for (int ii = 0; ii < application.BaseAddresses.Count; ii++)
-                {
+            if (configureFirewall && application.BaseAddresses != null && application.BaseAddresses.Count > 0) {
+                for (int ii = 0; ii < application.BaseAddresses.Count; ii++) {
                     Uri url = Utils.ParseUri(application.BaseAddresses[ii]);
 
-                    if (url != null)
-                    {
-                        if (url.Scheme == Uri.UriSchemeHttp || url.Scheme == Uri.UriSchemeHttps)
-                        {
-                            try
-                            {
-                                HttpAccessRule.SetAccessRules(url, accessRules, true);                    
-                                Utils.Trace("Added HTTP access rules for URL: {0}", url);    
-                            }
-                            catch (Exception e)
-                            {
+                    if (url != null) {
+                        if (url.Scheme == Uri.UriSchemeHttp || url.Scheme == Uri.UriSchemeHttps) {
+                            try {
+                                HttpAccessRule.SetAccessRules(url, accessRules, true);
+                                Utils.Trace("Added HTTP access rules for URL: {0}", url);
+                            } catch (Exception e) {
                                 Utils.Trace("Could not set HTTP access rules for URL: {0}. Error={1}", url, e.Message);
 
-                                for (int jj = 0; jj < accessRules.Count; jj++)
-                                {
+                                for (int jj = 0; jj < accessRules.Count; jj++) {
                                     ApplicationAccessRule rule = accessRules[jj];
 
                                     Utils.Trace(
-                                        (int)Utils.TraceMasks.Error,
+                                        (int) Utils.TraceMasks.Error,
                                         "IdentityName={0}, Right={1}, RuleType={2}",
                                         rule.IdentityName,
                                         rule.Right,
@@ -1013,46 +869,41 @@ namespace Opc.Ua.Configuration
                     }
                 }
             }
-            
+
             // set permissions on the local certificate store.
             SetCertificatePermissions(
                 application,
-                applicationCertificate, 
-                accessRules, 
+                applicationCertificate,
+                accessRules,
                 false);
 
-           // set permissions on the local certificate store.
-            if (application.RejectedCertificatesStore != null)
-            {
+            // set permissions on the local certificate store.
+            if (application.RejectedCertificatesStore != null) {
                 // need to grant full control to certificates in the RejectedCertificatesStore.
-                foreach (ApplicationAccessRule rule in accessRules)
-                {
-                    if (rule.RuleType == AccessControlType.Allow)
-                    {
+                foreach (ApplicationAccessRule rule in accessRules) {
+                    if (rule.RuleType == AccessControlType.Allow) {
                         rule.Right = ApplicationAccessRight.Configure;
                     }
                 }
 
-                CertificateStoreIdentifier rejectedCertificates = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(application.RejectedCertificatesStore);
+                CertificateStoreIdentifier rejectedCertificates =
+                    Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(application
+                        .RejectedCertificatesStore);
 
-                using (ICertificateStore store = rejectedCertificates.OpenStore())
-                {
-                    if (store.SupportsAccessControl)
-                    {
+                using (ICertificateStore store = rejectedCertificates.OpenStore()) {
+                    if (store.SupportsAccessControl) {
                         store.SetAccessRules(accessRules, false);
                     }
                 }
             }
 
             // install as a service.
-            if (application.InstallAsService)
-            {
+            if (application.InstallAsService) {
                 ServiceInstaller.UnInstallService(application.ApplicationName);
 
                 StartMode startMode = application.ServiceStartMode;
 
-                if (!autostart)
-                {
+                if (!autostart) {
                     startMode = StartMode.Manual;
                 }
 
@@ -1068,8 +919,7 @@ namespace Opc.Ua.Configuration
                     application.ServicePassword,
                     ref start);
 
-                if (!result)
-                {
+                if (!result) {
                     throw new ApplicationException("Could not install service.");
                 }
             }
@@ -1079,28 +929,22 @@ namespace Opc.Ua.Configuration
         /// Creates a new certificate for application.
         /// </summary>
         /// <param name="application">The application.</param>
-        private static X509Certificate2 CreateCertificateForApplication(InstalledApplication application)
-        {
+        private static X509Certificate2 CreateCertificateForApplication(InstalledApplication application) {
             // build list of domains.
             List<string> domains = new List<string>();
 
-            if (application.BaseAddresses != null)
-            {
-                foreach (string baseAddress in application.BaseAddresses)
-                {
+            if (application.BaseAddresses != null) {
+                foreach (string baseAddress in application.BaseAddresses) {
                     Uri uri = Utils.ParseUri(baseAddress);
 
-                    if (uri != null)
-                    {
+                    if (uri != null) {
                         string domain = uri.DnsSafeHost;
 
-                        if (String.Compare(domain, "localhost", StringComparison.OrdinalIgnoreCase) == 0)
-                        {
+                        if (String.Compare(domain, "localhost", StringComparison.OrdinalIgnoreCase) == 0) {
                             domain = System.Net.Dns.GetHostName();
                         }
 
-                        if (!Utils.FindStringIgnoreCase(domains, domain))
-                        {
+                        if (!Utils.FindStringIgnoreCase(domains, domain)) {
                             domains.Add(domain);
                         }
                     }
@@ -1108,8 +952,7 @@ namespace Opc.Ua.Configuration
             }
 
             // must at least of the localhost.
-            if (domains.Count == 0)
-            {
+            if (domains.Count == 0) {
                 domains.Add(System.Net.Dns.GetHostName());
             }
 
@@ -1124,7 +967,8 @@ namespace Opc.Ua.Configuration
                 2048,
                 300);
 
-            CertificateIdentifier applicationCertificate = Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(application.ApplicationCertificate);
+            CertificateIdentifier applicationCertificate =
+                Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(application.ApplicationCertificate);
             return applicationCertificate.LoadPrivateKey(null);
         }
 
@@ -1135,33 +979,25 @@ namespace Opc.Ua.Configuration
             Opc.Ua.Security.SecuredApplication application,
             CertificateIdentifier id,
             IList<ApplicationAccessRule> accessRules,
-            bool replaceExisting)
-        {
-            if (id == null || accessRules == null || accessRules.Count == 0)
-            {
+            bool replaceExisting) {
+            if (id == null || accessRules == null || accessRules.Count == 0) {
                 return;
             }
 
-            try
-            {
-                using (ICertificateStore store = id.OpenStore())
-                {
-                    if (store.SupportsCertificateAccessControl)
-                    {
+            try {
+                using (ICertificateStore store = id.OpenStore()) {
+                    if (store.SupportsCertificateAccessControl) {
                         store.SetAccessRules(id.Thumbprint, accessRules, replaceExisting);
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace("Could not set permissions for certificate store: {0}. Error={1}", id, e.Message);
 
-                for (int jj = 0; jj < accessRules.Count; jj++)
-                {
+                for (int jj = 0; jj < accessRules.Count; jj++) {
                     ApplicationAccessRule rule = accessRules[jj];
 
                     Utils.Trace(
-                        (int)Utils.TraceMasks.Error,
+                        (int) Utils.TraceMasks.Error,
                         "IdentityName={0}, Right={1}, RuleType={2}",
                         rule.IdentityName,
                         rule.Right,
@@ -1173,130 +1009,106 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Uninstalls a UA application.
         /// </summary>
-        public static void UninstallApplication(InstalledApplication application)
-        {
+        public static void UninstallApplication(InstalledApplication application) {
             // validate the executable file.
-            string executableFile = Utils.GetAbsoluteFilePath(application.ExecutableFile, true, true, false); 
-            
+            string executableFile = Utils.GetAbsoluteFilePath(application.ExecutableFile, true, true, false);
+
             // get the default application name from the executable file.
             FileInfo executableFileInfo = new FileInfo(executableFile);
-            string applicationName = executableFileInfo.Name.Substring(0, executableFileInfo.Name.Length-4);
+            string applicationName = executableFileInfo.Name.Substring(0, executableFileInfo.Name.Length - 4);
 
             // choose a default configuration file.
-            if (String.IsNullOrEmpty(application.ConfigurationFile))
-            {
+            if (String.IsNullOrEmpty(application.ConfigurationFile)) {
                 application.ConfigurationFile = Utils.Format(
-                    "{0}\\{1}.Config.xml", 
-                    executableFileInfo.DirectoryName, 
-                    applicationName);                
+                    "{0}\\{1}.Config.xml",
+                    executableFileInfo.DirectoryName,
+                    applicationName);
             }
-            
+
             // install as a service.
-            if (application.InstallAsService)
-            {
+            if (application.InstallAsService) {
                 ServiceInstaller.UnInstallService(application.ApplicationName);
             }
 
             // validate the configuration file.
-            string configurationFile = Utils.GetAbsoluteFilePath(application.ConfigurationFile, true, false, false); 
-            
-            if (configurationFile != null)
-            {
+            string configurationFile = Utils.GetAbsoluteFilePath(application.ConfigurationFile, true, false, false);
+
+            if (configurationFile != null) {
                 // load the current configuration.
-                Opc.Ua.Security.SecuredApplication security = new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configurationFile);
+                Opc.Ua.Security.SecuredApplication security =
+                    new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configurationFile);
 
                 // delete the application certificates.
-                if (application.DeleteCertificatesOnUninstall)
-                {
-                    CertificateIdentifier id = Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(security.ApplicationCertificate);
-                                        
-                    // delete public key from trusted peers certificate store.
-                    try
-                    {
-                        CertificateStoreIdentifier certificateStore = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(security.TrustedCertificateStore);
+                if (application.DeleteCertificatesOnUninstall) {
+                    CertificateIdentifier id =
+                        Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(security.ApplicationCertificate);
 
-                        using (ICertificateStore store = certificateStore.OpenStore())
-                        {
+                    // delete public key from trusted peers certificate store.
+                    try {
+                        CertificateStoreIdentifier certificateStore =
+                            Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(security
+                                .TrustedCertificateStore);
+
+                        using (ICertificateStore store = certificateStore.OpenStore()) {
                             X509Certificate2 peerCertificate = store.FindByThumbprint(id.Thumbprint);
 
-                            if (peerCertificate != null)
-                            {
+                            if (peerCertificate != null) {
                                 store.Delete(peerCertificate.Thumbprint);
                             }
-                        }                      
-                    }
-                    catch (Exception e)
-                    {
+                        }
+                    } catch (Exception e) {
                         Utils.Trace("Could not delete certificate '{0}' from store. Error={1}", id, e.Message);
-                    }    
+                    }
 
                     // delete private key from application certificate store.
-                    try
-                    {
-                        using (ICertificateStore store = id.OpenStore())
-                        {
+                    try {
+                        using (ICertificateStore store = id.OpenStore()) {
                             store.Delete(id.Thumbprint);
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Utils.Trace("Could not delete certificate '{0}' from store. Error={1}", id, e.Message);
-                    }        
-                    
+                    }
+
                     // permentently delete any UA defined stores if they are now empty.
-                    try
-                    {
+                    try {
                         WindowsCertificateStore store = new WindowsCertificateStore();
                         store.Open("LocalMachine\\UA Applications");
 
-                        if (store.Enumerate().Count == 0)
-                        {
+                        if (store.Enumerate().Count == 0) {
                             store.PermanentlyDeleteStore();
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Utils.Trace("Could not delete certificate '{0}' from store. Error={1}", id, e.Message);
                     }
                 }
 
                 // configure firewall.
-                if (application.ConfigureFirewall)
-                {
-                    if (security.BaseAddresses != null && security.BaseAddresses.Count > 0)
-                    {
-                        try
-                        {
+                if (application.ConfigureFirewall) {
+                    if (security.BaseAddresses != null && security.BaseAddresses.Count > 0) {
+                        try {
                             RemoveFirewallAccess(security, executableFile);
-                        }
-                        catch (Exception e)
-                        {
-                            Utils.Trace("Could not remove firewall access for executable: {0}. Error={1}", executableFile, e.Message);
+                        } catch (Exception e) {
+                            Utils.Trace("Could not remove firewall access for executable: {0}. Error={1}",
+                                executableFile, e.Message);
                         }
                     }
                 }
 
                 // remove the permissions for the HTTP endpoints used by the application.
-                if (application.BaseAddresses != null && application.BaseAddresses.Count > 0)
-                {
+                if (application.BaseAddresses != null && application.BaseAddresses.Count > 0) {
                     List<ApplicationAccessRule> noRules = new List<ApplicationAccessRule>();
 
-                    for (int ii = 0; ii < application.BaseAddresses.Count; ii++)
-                    {
+                    for (int ii = 0; ii < application.BaseAddresses.Count; ii++) {
                         Uri url = Utils.ParseUri(application.BaseAddresses[ii]);
 
-                        if (url != null)
-                        {
-                            if (url.Scheme == Uri.UriSchemeHttp || url.Scheme == Uri.UriSchemeHttps)
-                            {
-                                try
-                                {
-                                    HttpAccessRule.SetAccessRules(url, noRules, true);                                    
-                                    Utils.Trace("Removed HTTP access rules for URL: {0}", url);    
-                                }
-                                catch (Exception e)
-                                {
-                                    Utils.Trace("Could not remove HTTP access rules for URL: {0}. Error={1}", url, e.Message);
+                        if (url != null) {
+                            if (url.Scheme == Uri.UriSchemeHttp || url.Scheme == Uri.UriSchemeHttps) {
+                                try {
+                                    HttpAccessRule.SetAccessRules(url, noRules, true);
+                                    Utils.Trace("Removed HTTP access rules for URL: {0}", url);
+                                } catch (Exception e) {
+                                    Utils.Trace("Could not remove HTTP access rules for URL: {0}. Error={1}", url,
+                                        e.Message);
                                 }
                             }
                         }
@@ -1305,119 +1117,107 @@ namespace Opc.Ua.Configuration
             }
         }
 
-		/// <summary>
-		/// Registers the COM types in the specified assembly.
-		/// </summary>
-		public static List<System.Type> RegisterComTypes(string filePath)
-		{
-			// load assmebly.
-			Assembly assembly = Assembly.LoadFrom(filePath);
+        /// <summary>
+        /// Registers the COM types in the specified assembly.
+        /// </summary>
+        public static List<System.Type> RegisterComTypes(string filePath) {
+            // load assmebly.
+            Assembly assembly = Assembly.LoadFrom(filePath);
 
-			// check that the correct assembly is being registered.
-			VerifyCodebase(assembly, filePath);
+            // check that the correct assembly is being registered.
+            VerifyCodebase(assembly, filePath);
 
-			RegistrationServices services = new RegistrationServices();
+            RegistrationServices services = new RegistrationServices();
 
-			// list types to register/unregister.
-			List<System.Type> types = new List<System.Type>(services.GetRegistrableTypesInAssembly(assembly));
+            // list types to register/unregister.
+            List<System.Type> types = new List<System.Type>(services.GetRegistrableTypesInAssembly(assembly));
 
-			// register types.
-			if (types.Count > 0)
-			{
-				// unregister types first.	
-				if (!services.UnregisterAssembly(assembly))
-				{
-					throw new ApplicationException("Unregister COM Types Failed.");
-				}
+            // register types.
+            if (types.Count > 0) {
+                // unregister types first.	
+                if (!services.UnregisterAssembly(assembly)) {
+                    throw new ApplicationException("Unregister COM Types Failed.");
+                }
 
-				// register types.	
-				if (!services.RegisterAssembly(assembly, AssemblyRegistrationFlags.SetCodeBase))
-				{
-					throw new ApplicationException("Register COM Types Failed.");
-				}
-			}
+                // register types.	
+                if (!services.RegisterAssembly(assembly, AssemblyRegistrationFlags.SetCodeBase)) {
+                    throw new ApplicationException("Register COM Types Failed.");
+                }
+            }
 
-			return types;
-		}
+            return types;
+        }
 
-		/// <summary>
-		/// Checks that the assembly loaded has the expected codebase.
-		/// </summary>
-		private static void VerifyCodebase(Assembly assembly, string filepath)
-		{
-			string codebase = assembly.CodeBase.ToLower();
-			string normalizedPath = filepath.Replace('\\', '/').Replace("//", "/").ToLower();
+        /// <summary>
+        /// Checks that the assembly loaded has the expected codebase.
+        /// </summary>
+        private static void VerifyCodebase(Assembly assembly, string filepath) {
+            string codebase = assembly.CodeBase.ToLower();
+            string normalizedPath = filepath.Replace('\\', '/').Replace("//", "/").ToLower();
 
-			if (!normalizedPath.StartsWith("file:///"))
-			{
-				normalizedPath = "file:///" + normalizedPath;
-			}
+            if (!normalizedPath.StartsWith("file:///")) {
+                normalizedPath = "file:///" + normalizedPath;
+            }
 
-			if (codebase != normalizedPath)
-			{
-				throw new ApplicationException(String.Format("Duplicate assembly loaded. You need to restart the configuration tool.\r\n{0}\r\n{1}", codebase, normalizedPath));
-			}
-		}
+            if (codebase != normalizedPath) {
+                throw new ApplicationException(String.Format(
+                    "Duplicate assembly loaded. You need to restart the configuration tool.\r\n{0}\r\n{1}", codebase,
+                    normalizedPath));
+            }
+        }
 
-		/// <summary>
-		/// Unregisters the COM types in the specified assembly.
-		/// </summary>
-		public static List<System.Type> UnregisterComTypes(string filePath)
-		{
-			// load assmebly.
-			Assembly assembly = Assembly.LoadFrom(filePath);
+        /// <summary>
+        /// Unregisters the COM types in the specified assembly.
+        /// </summary>
+        public static List<System.Type> UnregisterComTypes(string filePath) {
+            // load assmebly.
+            Assembly assembly = Assembly.LoadFrom(filePath);
 
-			// check that the correct assembly is being unregistered.
-			VerifyCodebase(assembly, filePath);
+            // check that the correct assembly is being unregistered.
+            VerifyCodebase(assembly, filePath);
 
-			RegistrationServices services = new RegistrationServices();
+            RegistrationServices services = new RegistrationServices();
 
-			// list types to register/unregister.
-			List<System.Type> types = new List<System.Type>(services.GetRegistrableTypesInAssembly(assembly));
+            // list types to register/unregister.
+            List<System.Type> types = new List<System.Type>(services.GetRegistrableTypesInAssembly(assembly));
 
-			// unregister types.	
-			if (!services.UnregisterAssembly(assembly))
-			{
-				throw new ApplicationException("Unregister COM Types Failed.");
-			}
+            // unregister types.	
+            if (!services.UnregisterAssembly(assembly)) {
+                throw new ApplicationException("Unregister COM Types Failed.");
+            }
 
-			return types;
-		}
+            return types;
+        }
 
         /// <summary>
         /// Creates an instance of the NetFwMgr Class
         /// </summary>
-        public static NetFwTypeLib.INetFwMgr GetNetFwMgr()
-        {
+        public static NetFwTypeLib.INetFwMgr GetNetFwMgr() {
             Type type = Type.GetTypeFromCLSID(new Guid("{304CE942-6E39-40D8-943A-B913C40C9CD4}"));
-            return (NetFwTypeLib.INetFwMgr)Activator.CreateInstance(type);
+            return (NetFwTypeLib.INetFwMgr) Activator.CreateInstance(type);
         }
-        
+
         /// <summary>
         /// Creates an instance of the NetFwAuthorizedApplication Class
         /// </summary>
-        public static NetFwTypeLib.INetFwAuthorizedApplication GetNetFwAuthorizedApplication()
-        {
+        public static NetFwTypeLib.INetFwAuthorizedApplication GetNetFwAuthorizedApplication() {
             Type type = Type.GetTypeFromCLSID(new Guid("{EC9846B3-2762-4A6B-A214-6ACB603462D2}"));
-            return (NetFwTypeLib.INetFwAuthorizedApplication)Activator.CreateInstance(type);
+            return (NetFwTypeLib.INetFwAuthorizedApplication) Activator.CreateInstance(type);
         }
-        
+
         /// <summary>
         /// Creates an instance of the NetFwOpenPort Class
         /// </summary>
-        public static NetFwTypeLib.INetFwOpenPort GetNetFwOpenPort()
-        {
+        public static NetFwTypeLib.INetFwOpenPort GetNetFwOpenPort() {
             Type type = Type.GetTypeFromCLSID(new Guid("{0CA545C6-37AD-4A6C-BF92-9F7610067EF5}"));
-            return (NetFwTypeLib.INetFwOpenPort)Activator.CreateInstance(type);
+            return (NetFwTypeLib.INetFwOpenPort) Activator.CreateInstance(type);
         }
-        
+
         /// <summary>
         /// Configures the firewall to allow access to the specified application.
         /// </summary>
-        public static void SetFirewallAccess(Opc.Ua.Security.SecuredApplication application, string executablePath)
-        {
-            if (application != null)
-            {
+        public static void SetFirewallAccess(Opc.Ua.Security.SecuredApplication application, string executablePath) {
+            if (application != null) {
                 SetFirewallAccess(application.ApplicationName, executablePath, application.BaseAddresses);
             }
         }
@@ -1425,29 +1225,26 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Configures the firewall to allow access to the specified application.
         /// </summary>
-        public static void SetFirewallAccess(string applicationName, string executablePath, IList<string> baseAddresses)
-        {
+        public static void SetFirewallAccess(string applicationName, string executablePath,
+            IList<string> baseAddresses) {
             NetFwTypeLib.INetFwMgr fwm = GetNetFwMgr();
 
             NetFwTypeLib.INetFwAuthorizedApplication app = GetNetFwAuthorizedApplication();
 
             app.ProcessImageFileName = executablePath;
-            app.IpVersion            = NetFwTypeLib.NET_FW_IP_VERSION_.NET_FW_IP_VERSION_ANY;
-            app.Name                 = applicationName;
-            app.Scope                = NetFwTypeLib.NET_FW_SCOPE_.NET_FW_SCOPE_ALL;
-            app.Enabled              = true;
+            app.IpVersion = NetFwTypeLib.NET_FW_IP_VERSION_.NET_FW_IP_VERSION_ANY;
+            app.Name = applicationName;
+            app.Scope = NetFwTypeLib.NET_FW_SCOPE_.NET_FW_SCOPE_ALL;
+            app.Enabled = true;
 
             fwm.LocalPolicy.CurrentProfile.AuthorizedApplications.Add(app);
 
-            if (baseAddresses != null)
-            {
-                for (int ii = 0; ii < baseAddresses.Count; ii++)
-                {
+            if (baseAddresses != null) {
+                for (int ii = 0; ii < baseAddresses.Count; ii++) {
                     Uri url = Utils.ParseUri(baseAddresses[ii]);
 
                     // ignore invalid urls.
-                    if (url == null || url.Port == -1)
-                    {
+                    if (url == null || url.Port == -1) {
                         continue;
                     }
 
@@ -1468,49 +1265,40 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Checks if the firewall has been configured.
         /// </summary>
-        public static bool CheckFirewallAccess(string executablePath, StringCollection baseAddresses)
-        {
+        public static bool CheckFirewallAccess(string executablePath, StringCollection baseAddresses) {
             NetFwTypeLib.INetFwMgr fwm = GetNetFwMgr();
 
             bool found = false;
 
-            foreach (NetFwTypeLib.INetFwAuthorizedApplication app in fwm.LocalPolicy.CurrentProfile.AuthorizedApplications)
-            {
-                if (app.ProcessImageFileName == executablePath)
-                {
+            foreach (NetFwTypeLib.INetFwAuthorizedApplication app in fwm.LocalPolicy.CurrentProfile
+                .AuthorizedApplications) {
+                if (app.ProcessImageFileName == executablePath) {
                     found = true;
                     break;
                 }
             }
 
-            if (!found)
-            {
+            if (!found) {
                 return false;
             }
 
-            if (baseAddresses != null)
-            {
-                for (int ii = 0; ii < baseAddresses.Count; ii++)
-                {
+            if (baseAddresses != null) {
+                for (int ii = 0; ii < baseAddresses.Count; ii++) {
                     Uri url = Utils.ParseUri(baseAddresses[ii]);
 
                     // ignore invalid urls.
-                    if (url == null || url.Port == -1)
-                    {
+                    if (url == null || url.Port == -1) {
                         continue;
                     }
 
-                    foreach (NetFwTypeLib.INetFwOpenPort port in fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts)
-                    {
-                        if (port.Port == url.Port)
-                        {
+                    foreach (NetFwTypeLib.INetFwOpenPort port in fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts) {
+                        if (port.Port == url.Port) {
                             found = true;
                             break;
                         }
                     }
 
-                    if (!found)
-                    {
+                    if (!found) {
                         return false;
                     }
                 }
@@ -1522,32 +1310,27 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Returns the firewall access granted to an application.
         /// </summary>
-        public static int[] GetFirewallAccess(string executablePath)
-        {
+        public static int[] GetFirewallAccess(string executablePath) {
             NetFwTypeLib.INetFwMgr fwm = GetNetFwMgr();
 
             string applicationName = null;
 
-            foreach (NetFwTypeLib.INetFwAuthorizedApplication app in fwm.LocalPolicy.CurrentProfile.AuthorizedApplications)
-            {
-                if (app.Enabled && app.ProcessImageFileName == executablePath)
-                {
+            foreach (NetFwTypeLib.INetFwAuthorizedApplication app in fwm.LocalPolicy.CurrentProfile
+                .AuthorizedApplications) {
+                if (app.Enabled && app.ProcessImageFileName == executablePath) {
                     applicationName = app.Name;
                     break;
                 }
             }
 
-            if (applicationName == null)
-            {
+            if (applicationName == null) {
                 return null;
             }
 
             List<int> ports = new List<int>();
 
-            foreach (NetFwTypeLib.INetFwOpenPort port in fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts)
-            {
-                if (!port.Enabled || port.Protocol != NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP)
-                {
+            foreach (NetFwTypeLib.INetFwOpenPort port in fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts) {
+                if (!port.Enabled || port.Protocol != NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP) {
                     continue;
                 }
 
@@ -1560,20 +1343,17 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Returns the firewall access granted to an application.
         /// </summary>
-        public static void SetFirewallAccess(string executablePath, params int[] ports)
-        {
+        public static void SetFirewallAccess(string executablePath, params int[] ports) {
             NetFwTypeLib.INetFwMgr fwm = GetNetFwMgr();
 
             string applicationName = null;
 
-            foreach (NetFwTypeLib.INetFwAuthorizedApplication app in fwm.LocalPolicy.CurrentProfile.AuthorizedApplications)
-            {
-                if (app.ProcessImageFileName == executablePath)
-                {
+            foreach (NetFwTypeLib.INetFwAuthorizedApplication app in fwm.LocalPolicy.CurrentProfile
+                .AuthorizedApplications) {
+                if (app.ProcessImageFileName == executablePath) {
                     applicationName = app.Name;
 
-                    if (!app.Enabled)
-                    {
+                    if (!app.Enabled) {
                         app.Enabled = true;
                     }
 
@@ -1581,11 +1361,10 @@ namespace Opc.Ua.Configuration
                 }
             }
 
-            if (applicationName == null)
-            {
+            if (applicationName == null) {
                 FileInfo fileInfo = new FileInfo(executablePath);
                 applicationName = fileInfo.Name.Substring(0, fileInfo.Name.Length - fileInfo.Extension.Length);
-                
+
                 NetFwTypeLib.INetFwAuthorizedApplication app = GetNetFwAuthorizedApplication();
 
                 app.ProcessImageFileName = executablePath;
@@ -1597,23 +1376,19 @@ namespace Opc.Ua.Configuration
                 fwm.LocalPolicy.CurrentProfile.AuthorizedApplications.Add(app);
             }
 
-            if (ports != null)
-            {
-                for (int ii = 0; ii < ports.Length; ii++)
-                {
+            if (ports != null) {
+                for (int ii = 0; ii < ports.Length; ii++) {
                     NetFwTypeLib.INetFwOpenPort port = null;
 
-                    foreach (NetFwTypeLib.INetFwOpenPort entry in fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts)
-                    {
-                        if (entry.Port == ports[ii] && entry.Protocol == NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP)
-                        {
+                    foreach (NetFwTypeLib.INetFwOpenPort entry in fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts) {
+                        if (entry.Port == ports[ii] &&
+                            entry.Protocol == NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP) {
                             port = entry;
                             break;
                         }
                     }
 
-                    if (port == null)
-                    {
+                    if (port == null) {
                         port = GetNetFwOpenPort();
 
                         port.Name = String.Format("OPC UA {0}", ports[ii]);
@@ -1626,8 +1401,7 @@ namespace Opc.Ua.Configuration
                         fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts.Add(port);
                     }
 
-                    if (!port.Enabled)
-                    {
+                    if (!port.Enabled) {
                         port.Enabled = true;
                     }
                 }
@@ -1637,28 +1411,23 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Removes the firewall access granted to the specified ports.
         /// </summary>
-        public static void RemoveFirewallAccess(params int[] ports)
-        {
+        public static void RemoveFirewallAccess(params int[] ports) {
             NetFwTypeLib.INetFwMgr fwm = GetNetFwMgr();
 
-            if (ports != null)
-            {
-                for (int ii = 0; ii < ports.Length; ii++)
-                {
+            if (ports != null) {
+                for (int ii = 0; ii < ports.Length; ii++) {
                     fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts.Remove(
-                       ports[ii],
-                       NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP);
+                        ports[ii],
+                        NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP);
                 }
             }
-        }      
+        }
 
         /// <summary>
         /// Configures the firewall to remove access to the specified application.
         /// </summary>
-        public static void RemoveFirewallAccess(Opc.Ua.Security.SecuredApplication application, string executablePath)
-        {
-            if (application != null)
-            {
+        public static void RemoveFirewallAccess(Opc.Ua.Security.SecuredApplication application, string executablePath) {
+            if (application != null) {
                 RemoveFirewallAccess(executablePath, application.BaseAddresses);
             }
         }
@@ -1666,221 +1435,178 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Configures the firewall to remove access to the specified application.
         /// </summary>
-        public static void RemoveFirewallAccess(string executablePath, IList<string> baseAddresses)
-        {
+        public static void RemoveFirewallAccess(string executablePath, IList<string> baseAddresses) {
             NetFwTypeLib.INetFwMgr fwm = GetNetFwMgr();
 
             // remove access to the application.
-            try
-            {
+            try {
                 fwm.LocalPolicy.CurrentProfile.AuthorizedApplications.Remove(executablePath);
-            }
-            catch (Exception e)
-            {
-                Utils.Trace("Could not remove firewall access for application: {0}. Error={1}", executablePath, e.Message);
+            } catch (Exception e) {
+                Utils.Trace("Could not remove firewall access for application: {0}. Error={1}", executablePath,
+                    e.Message);
             }
 
             // remove any ports.
-            if (baseAddresses != null)
-            {
-                for (int ii = 0; ii < baseAddresses.Count; ii++)
-                {
+            if (baseAddresses != null) {
+                for (int ii = 0; ii < baseAddresses.Count; ii++) {
                     Uri url = Utils.ParseUri(baseAddresses[ii]);
 
                     // ignore invalid urls.
-                    if (url == null || url.Port == -1)
-                    {
+                    if (url == null || url.Port == -1) {
                         continue;
                     }
 
-                    try
-                    {
+                    try {
                         fwm.LocalPolicy.CurrentProfile.GloballyOpenPorts.Remove(
-                           url.Port,
-                           NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP);
-                    }
-                    catch (Exception e)
-                    {
+                            url.Port,
+                            NetFwTypeLib.NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP);
+                    } catch (Exception e) {
                         Utils.Trace("Could not remove firewall access for port: {0}. Error={1}", url.Port, e.Message);
                     }
                 }
             }
         }
-        
+
         /// <summary>
         /// Returns the name of the workgroup or domain that the computer belongs to.
         /// </summary>
-        public static string GetComputerWorkgroupOrDomain() 
-        {
+        public static string GetComputerWorkgroupOrDomain() {
             SelectQuery query = new SelectQuery("Win32_ComputerSystem");
 
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
 
-            foreach (ManagementObject item in searcher.Get()) 
-            {
+            foreach (ManagementObject item in searcher.Get()) {
                 return item["Domain"] as string;
             }
 
             return null;
         }
-        
-		/// <summary>
-		/// Returns the prog id from the clsid.
-		/// </summary>
-		public static string ProgIDFromCLSID(Guid clsid)
-		{
-			RegistryKey key = Registry.ClassesRoot.OpenSubKey(String.Format(@"CLSID\{{{0}}}\ProgId", clsid));
-					
-			if (key != null)
-			{
-				try
-				{
-					return key.GetValue("") as string;
-				}
-				finally
-				{
-					key.Close();
-				}
-			}
 
-			return null;
-		}
+        /// <summary>
+        /// Returns the prog id from the clsid.
+        /// </summary>
+        public static string ProgIDFromCLSID(Guid clsid) {
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(String.Format(@"CLSID\{{{0}}}\ProgId", clsid));
 
-		/// <summary>
-		/// Returns the prog id from the clsid.
-		/// </summary>
-		public static Guid CLSIDFromProgID(string progID)
-		{
-			if (String.IsNullOrEmpty(progID))
-			{
-				return Guid.Empty;
-			}
+            if (key != null) {
+                try {
+                    return key.GetValue("") as string;
+                } finally {
+                    key.Close();
+                }
+            }
 
-			RegistryKey key = Registry.ClassesRoot.OpenSubKey(String.Format(@"{0}\CLSID", progID));
-					
-			if (key != null)
-			{
-				try
-				{
-					string clsid = key.GetValue(null) as string;
+            return null;
+        }
 
-					if (clsid != null)
-					{
-						return new Guid(clsid.Substring(1, clsid.Length-2));
-					}
-				}
-				finally
-				{
-					key.Close();
-				}
-			}
+        /// <summary>
+        /// Returns the prog id from the clsid.
+        /// </summary>
+        public static Guid CLSIDFromProgID(string progID) {
+            if (String.IsNullOrEmpty(progID)) {
+                return Guid.Empty;
+            }
 
-			return Guid.Empty;
-		}
-        
-        
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(String.Format(@"{0}\CLSID", progID));
+
+            if (key != null) {
+                try {
+                    string clsid = key.GetValue(null) as string;
+
+                    if (clsid != null) {
+                        return new Guid(clsid.Substring(1, clsid.Length - 2));
+                    }
+                } finally {
+                    key.Close();
+                }
+            }
+
+            return Guid.Empty;
+        }
+
+
         /// <summary>
         /// Returns the implemented categories for the class.
         /// </summary>
-        public static List<Guid> GetImplementedCategories(Guid clsid)
-        {
+        public static List<Guid> GetImplementedCategories(Guid clsid) {
             List<Guid> categories = new List<Guid>();
 
-			string categoriesKey = String.Format(@"CLSID\{{{0}}}\Implemented Categories", clsid);
-			
-			RegistryKey key = Registry.ClassesRoot.OpenSubKey(categoriesKey);
+            string categoriesKey = String.Format(@"CLSID\{{{0}}}\Implemented Categories", clsid);
 
-			if (key != null)
-			{
-                try
-                {
-				    foreach (string catid in key.GetSubKeyNames())
-				    {
-                        try
-                        {
-                            Guid guid = new Guid(catid.Substring(1, catid.Length-2));
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(categoriesKey);
+
+            if (key != null) {
+                try {
+                    foreach (string catid in key.GetSubKeyNames()) {
+                        try {
+                            Guid guid = new Guid(catid.Substring(1, catid.Length - 2));
                             categories.Add(guid);
-                        }
-                        catch (Exception)
-                        {
+                        } catch (Exception) {
                             // ignore invalid keys.
                         }
-				    }
-                }
-                finally
-                {
+                    }
+                } finally {
                     key.Close();
                 }
-			}
+            }
 
             return categories;
         }
 
-		/// <summary>
-		/// Fetches the classes in the specified category.
-		/// </summary>
-		public static List<Guid> EnumClassesInCategory(Guid category)
-		{
-			ICatInformation manager = (ICatInformation)CreateServer(CLSID_StdComponentCategoriesMgr);
-	
-			object unknown = null;
+        /// <summary>
+        /// Fetches the classes in the specified category.
+        /// </summary>
+        public static List<Guid> EnumClassesInCategory(Guid category) {
+            ICatInformation manager = (ICatInformation) CreateServer(CLSID_StdComponentCategoriesMgr);
 
-			try
-			{
-				manager.EnumClassesOfCategories(
-					1, 
-					new Guid[] { category }, 
-					0, 
-					null,
-					out unknown);
-                
-				IEnumGUID enumerator = (IEnumGUID)unknown;
+            object unknown = null;
 
-				List<Guid> classes = new List<Guid>();
+            try {
+                manager.EnumClassesOfCategories(
+                    1,
+                    new Guid[] {category},
+                    0,
+                    null,
+                    out unknown);
 
-				Guid[] buffer = new Guid[10];
+                IEnumGUID enumerator = (IEnumGUID) unknown;
 
-				while (true)
-				{
-					int fetched = 0;
+                List<Guid> classes = new List<Guid>();
 
-                    IntPtr pGuids = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(Guid))*buffer.Length);
-                    
-                    try
-                    {
-					    enumerator.Next(buffer.Length, pGuids, out fetched);
+                Guid[] buffer = new Guid[10];
 
-					    if (fetched == 0)
-					    {
-						    break;
-					    }
-                        
-			            IntPtr pos = pGuids;
+                while (true) {
+                    int fetched = 0;
 
-			            for (int ii = 0; ii < fetched; ii++)
-			            {
-				            buffer[ii] = (Guid)Marshal.PtrToStructure(pos, typeof(Guid));
-				            pos = (IntPtr)(pos.ToInt64() + Marshal.SizeOf(typeof(Guid)));
-			            }
-                    }
-                    finally
-                    {
+                    IntPtr pGuids = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(Guid)) * buffer.Length);
+
+                    try {
+                        enumerator.Next(buffer.Length, pGuids, out fetched);
+
+                        if (fetched == 0) {
+                            break;
+                        }
+
+                        IntPtr pos = pGuids;
+
+                        for (int ii = 0; ii < fetched; ii++) {
+                            buffer[ii] = (Guid) Marshal.PtrToStructure(pos, typeof(Guid));
+                            pos = (IntPtr) (pos.ToInt64() + Marshal.SizeOf(typeof(Guid)));
+                        }
+                    } finally {
                         Marshal.FreeCoTaskMem(pGuids);
                     }
 
-					for (int ii = 0; ii < fetched; ii++)
-					{
-						classes.Add(buffer[ii]);
-					}
-				}
-			
-				return classes;
-			}
-			finally
-			{
-				ReleaseServer(unknown);
-				ReleaseServer(manager);
-			}
+                    for (int ii = 0; ii < fetched; ii++) {
+                        classes.Add(buffer[ii]);
+                    }
+                }
+
+                return classes;
+            } finally {
+                ReleaseServer(unknown);
+                ReleaseServer(manager);
+            }
         }
 
         /// <summary>
@@ -1902,445 +1628,377 @@ namespace Opc.Ua.Configuration
         /// The CLSID for the UA COM HDA server host process (note: will be eventually replaced the proxy server).
         /// </summary>
         public static readonly Guid CLSID_UaComHdaProxyServer = new Guid("2DA58B69-2D85-4de0-A934-7751322132E2");
-        
+
         /// <summary>
         /// COM servers that support the DA 2.0 specification.
         /// </summary>
-        public static readonly Guid CATID_OPCDAServer20  = new Guid("63D5F432-CFE4-11d1-B2C8-0060083BA1FB");
+        public static readonly Guid CATID_OPCDAServer20 = new Guid("63D5F432-CFE4-11d1-B2C8-0060083BA1FB");
 
         /// <summary>
         /// COM servers that support the DA 3.0 specification.
         /// </summary>
-        public static readonly Guid CATID_OPCDAServer30  = new Guid("CC603642-66D7-48f1-B69A-B625E73652D7");
+        public static readonly Guid CATID_OPCDAServer30 = new Guid("CC603642-66D7-48f1-B69A-B625E73652D7");
 
         /// <summary>
         /// COM servers that support the AE 1.0 specification.
         /// </summary>
-        public static readonly Guid CATID_OPCAEServer10  = new Guid("58E13251-AC87-11d1-84D5-00608CB8A7E9");
+        public static readonly Guid CATID_OPCAEServer10 = new Guid("58E13251-AC87-11d1-84D5-00608CB8A7E9");
 
         /// <summary>
         /// COM servers that support the HDA 1.0 specification.
         /// </summary>
         public static readonly Guid CATID_OPCHDAServer10 = new Guid("7DE5B060-E089-11d2-A5E6-000086339399");
 
-		/// <summary>
-		/// Returns the location of the COM server executable.
-		/// </summary>
-		public static string GetExecutablePath(Guid clsid)
-		{
-			RegistryKey key = Registry.ClassesRoot.OpenSubKey(String.Format(@"CLSID\{{{0}}}\LocalServer32", clsid));
+        /// <summary>
+        /// Returns the location of the COM server executable.
+        /// </summary>
+        public static string GetExecutablePath(Guid clsid) {
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(String.Format(@"CLSID\{{{0}}}\LocalServer32", clsid));
 
-			if (key == null)
-			{
-				key	= Registry.ClassesRoot.OpenSubKey(String.Format(@"CLSID\{{{0}}}\InprocServer32", clsid));
-			}
+            if (key == null) {
+                key = Registry.ClassesRoot.OpenSubKey(String.Format(@"CLSID\{{{0}}}\InprocServer32", clsid));
+            }
 
-			if (key != null)
-			{
-				try
-				{
-					string codebase = key.GetValue("Codebase") as string;
+            if (key != null) {
+                try {
+                    string codebase = key.GetValue("Codebase") as string;
 
-					if (codebase == null)
-					{
-						return key.GetValue(null) as string;
-					}
+                    if (codebase == null) {
+                        return key.GetValue(null) as string;
+                    }
 
-					return codebase;
-				}
-				finally
-				{
-					key.Close();
-				}
-			}
+                    return codebase;
+                } finally {
+                    key.Close();
+                }
+            }
 
-			return null;
-		}
-
-		/// <summary>
-		/// Creates an instance of a COM server.
-		/// </summary>
-		public static object CreateServer(Guid clsid)
-		{
-			COSERVERINFO coserverInfo = new COSERVERINFO();
-
-			coserverInfo.pwszName     = null;
-			coserverInfo.pAuthInfo    = IntPtr.Zero;
-			coserverInfo.dwReserved1  = 0;
-			coserverInfo.dwReserved2  = 0;
-
-			GCHandle hIID = GCHandle.Alloc(IID_IUnknown, GCHandleType.Pinned);
-
-			MULTI_QI[] results = new MULTI_QI[1];
-
-			results[0].iid  = hIID.AddrOfPinnedObject();
-			results[0].pItf = null;
-			results[0].hr   = 0;
-
-			try
-			{
-				// create an instance.
-				CoCreateInstanceEx(
-					ref clsid,
-					null,
-					CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER,
-					ref coserverInfo,
-					1,
-					results);
-			}
-			finally
-			{
-				hIID.Free();
-			}
-
-			if (results[0].hr != 0)
-			{
-				throw new ExternalException("CoCreateInstanceEx: 0x{0:X8}" + results[0].hr);
-			}
-
-			return results[0].pItf;
-		}
+            return null;
+        }
 
         /// <summary>
-		/// Releases the server if it is a true COM server.
-		/// </summary>
-		public static void ReleaseServer(object server)
-		{
-			if (server != null && server.GetType().IsCOMObject)
-			{
-				Marshal.ReleaseComObject(server);
-			}
-		}
-        
-		/// <summary>
-		/// Registers the classes in the specified category.
-		/// </summary>
-		public static void RegisterClassInCategory(Guid clsid, Guid catid)
-		{
-			RegisterClassInCategory(clsid, catid, null);
-		}
+        /// Creates an instance of a COM server.
+        /// </summary>
+        public static object CreateServer(Guid clsid) {
+            COSERVERINFO coserverInfo = new COSERVERINFO();
 
-		/// <summary>
-		/// Registers the classes in the specified category.
-		/// </summary>
-		public static void RegisterClassInCategory(Guid clsid, Guid catid, string description)
-		{
-			ICatRegister manager = (ICatRegister)CreateServer(CLSID_StdComponentCategoriesMgr);
-	
-			try
-			{
-				string existingDescription = null;
+            coserverInfo.pwszName = null;
+            coserverInfo.pAuthInfo = IntPtr.Zero;
+            coserverInfo.dwReserved1 = 0;
+            coserverInfo.dwReserved2 = 0;
 
-				try
-				{
-					((ICatInformation)manager).GetCategoryDesc(catid, 0, out existingDescription);
-				}
-				catch (Exception e)
-				{
-					existingDescription = description;
+            GCHandle hIID = GCHandle.Alloc(IID_IUnknown, GCHandleType.Pinned);
 
-					if (String.IsNullOrEmpty(existingDescription))
-					{
-						if (catid == CATID_OPCDAServer20)
-						{
-							existingDescription = CATID_OPCDAServer20_Description;
-						}
-						else if (catid == CATID_OPCDAServer30)
-						{
-							existingDescription = CATID_OPCDAServer30_Description;
-						}
-						else if (catid == CATID_OPCAEServer10)
-						{
-							existingDescription = CATID_OPCAEServer10_Description;
-						}
-						else if (catid == CATID_OPCHDAServer10)
-						{
-							existingDescription = CATID_OPCHDAServer10_Description;
-						}
-						else
-						{
-							throw new ApplicationException("No description for category available", e);
-						}
-					}
+            MULTI_QI[] results = new MULTI_QI[1];
 
-					CATEGORYINFO info;
+            results[0].iid = hIID.AddrOfPinnedObject();
+            results[0].pItf = null;
+            results[0].hr = 0;
 
-					info.catid         = catid;
-					info.lcid          = 0;
-					info.szDescription = existingDescription;
+            try {
+                // create an instance.
+                CoCreateInstanceEx(
+                    ref clsid,
+                    null,
+                    CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER,
+                    ref coserverInfo,
+                    1,
+                    results);
+            } finally {
+                hIID.Free();
+            }
 
-					// register category.
-					manager.RegisterCategories(1, new CATEGORYINFO[] { info });
-				}
+            if (results[0].hr != 0) {
+                throw new ExternalException("CoCreateInstanceEx: 0x{0:X8}" + results[0].hr);
+            }
 
-				// register class in category.
-				manager.RegisterClassImplCategories(clsid, 1, new Guid[] { catid });
-			}
-			finally
-			{
-				ReleaseServer(manager);
-			}
-		}
+            return results[0].pItf;
+        }
+
+        /// <summary>
+        /// Releases the server if it is a true COM server.
+        /// </summary>
+        public static void ReleaseServer(object server) {
+            if (server != null && server.GetType().IsCOMObject) {
+                Marshal.ReleaseComObject(server);
+            }
+        }
+
+        /// <summary>
+        /// Registers the classes in the specified category.
+        /// </summary>
+        public static void RegisterClassInCategory(Guid clsid, Guid catid) {
+            RegisterClassInCategory(clsid, catid, null);
+        }
+
+        /// <summary>
+        /// Registers the classes in the specified category.
+        /// </summary>
+        public static void RegisterClassInCategory(Guid clsid, Guid catid, string description) {
+            ICatRegister manager = (ICatRegister) CreateServer(CLSID_StdComponentCategoriesMgr);
+
+            try {
+                string existingDescription = null;
+
+                try {
+                    ((ICatInformation) manager).GetCategoryDesc(catid, 0, out existingDescription);
+                } catch (Exception e) {
+                    existingDescription = description;
+
+                    if (String.IsNullOrEmpty(existingDescription)) {
+                        if (catid == CATID_OPCDAServer20) {
+                            existingDescription = CATID_OPCDAServer20_Description;
+                        } else if (catid == CATID_OPCDAServer30) {
+                            existingDescription = CATID_OPCDAServer30_Description;
+                        } else if (catid == CATID_OPCAEServer10) {
+                            existingDescription = CATID_OPCAEServer10_Description;
+                        } else if (catid == CATID_OPCHDAServer10) {
+                            existingDescription = CATID_OPCHDAServer10_Description;
+                        } else {
+                            throw new ApplicationException("No description for category available", e);
+                        }
+                    }
+
+                    CATEGORYINFO info;
+
+                    info.catid = catid;
+                    info.lcid = 0;
+                    info.szDescription = existingDescription;
+
+                    // register category.
+                    manager.RegisterCategories(1, new CATEGORYINFO[] {info});
+                }
+
+                // register class in category.
+                manager.RegisterClassImplCategories(clsid, 1, new Guid[] {catid});
+            } finally {
+                ReleaseServer(manager);
+            }
+        }
 
         /// <summary>
         /// Removes the registration for a COM server from the registry.
         /// </summary>
-        public static void UnregisterComServer(Guid clsid)
-        {
-			// unregister class in categories.
-			string categoriesKey = String.Format(@"CLSID\{{{0}}}\Implemented Categories", clsid);
-			
-			RegistryKey key = Registry.ClassesRoot.OpenSubKey(categoriesKey);
+        public static void UnregisterComServer(Guid clsid) {
+            // unregister class in categories.
+            string categoriesKey = String.Format(@"CLSID\{{{0}}}\Implemented Categories", clsid);
 
-			if (key != null)
-			{
-				try	  
-				{ 
-					foreach (string catid in key.GetSubKeyNames())
-					{
-						try	  
-						{ 
-							ConfigUtils.UnregisterClassInCategory(clsid, new Guid(catid.Substring(1, catid.Length-2)));
-						}
-						catch (Exception)
-						{
-							// ignore errors.
-						}
-					}
-				}
-				finally
-				{
-					key.Close();
-				}
-			}
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(categoriesKey);
 
-			string progidKey = String.Format(@"CLSID\{{{0}}}\ProgId", clsid);
+            if (key != null) {
+                try {
+                    foreach (string catid in key.GetSubKeyNames()) {
+                        try {
+                            ConfigUtils.UnregisterClassInCategory(clsid,
+                                new Guid(catid.Substring(1, catid.Length - 2)));
+                        } catch (Exception) {
+                            // ignore errors.
+                        }
+                    }
+                } finally {
+                    key.Close();
+                }
+            }
 
-			// delete prog id.
-			key = Registry.ClassesRoot.OpenSubKey(progidKey);
-					
-			if (key != null)
-			{
-				string progId = key.GetValue(null) as string;
-				key.Close();
+            string progidKey = String.Format(@"CLSID\{{{0}}}\ProgId", clsid);
 
-				if (!String.IsNullOrEmpty(progId))
-				{
-					try	  
-					{ 
-						Registry.ClassesRoot.DeleteSubKeyTree(progId); 
-					}
-					catch (Exception)
-					{
-						// ignore errors.
-					}
-				}
-			}
+            // delete prog id.
+            key = Registry.ClassesRoot.OpenSubKey(progidKey);
 
-			// delete clsid.
-			try	  
-			{ 
-				Registry.ClassesRoot.DeleteSubKeyTree(String.Format(@"CLSID\{{{0}}}", clsid)); 
-			}
-			catch (Exception)
-			{
-				// ignore errors.
-			}
+            if (key != null) {
+                string progId = key.GetValue(null) as string;
+                key.Close();
+
+                if (!String.IsNullOrEmpty(progId)) {
+                    try {
+                        Registry.ClassesRoot.DeleteSubKeyTree(progId);
+                    } catch (Exception) {
+                        // ignore errors.
+                    }
+                }
+            }
+
+            // delete clsid.
+            try {
+                Registry.ClassesRoot.DeleteSubKeyTree(String.Format(@"CLSID\{{{0}}}", clsid));
+            } catch (Exception) {
+                // ignore errors.
+            }
         }
 
-		/// <summary>
-		/// Unregisters the classes in the specified category.
-		/// </summary>
-		public static void UnregisterClassInCategory(Guid clsid, Guid catid)
-		{
-			ICatRegister manager = (ICatRegister)CreateServer(CLSID_StdComponentCategoriesMgr);
-	
-			try
-			{
-				manager.UnRegisterClassImplCategories(clsid, 1, new Guid[] { catid });
-			}
-			finally
-			{
-				ReleaseServer(manager);
-			}
-		}
+        /// <summary>
+        /// Unregisters the classes in the specified category.
+        /// </summary>
+        public static void UnregisterClassInCategory(Guid clsid, Guid catid) {
+            ICatRegister manager = (ICatRegister) CreateServer(CLSID_StdComponentCategoriesMgr);
+
+            try {
+                manager.UnRegisterClassImplCategories(clsid, 1, new Guid[] {catid});
+            } finally {
+                ReleaseServer(manager);
+            }
+        }
 
         #region COM Interop Declarations
-		[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
-		private struct COSERVERINFO
-		{
-			public uint         dwReserved1;
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string       pwszName;
-			public IntPtr       pAuthInfo;
-			public uint         dwReserved2;
-		};
 
-		[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
-		private struct MULTI_QI
-		{
-			public IntPtr iid;
-			[MarshalAs(UnmanagedType.IUnknown)]
-			public object pItf;
-			public uint   hr;
-		}
-		
-		private const uint CLSCTX_INPROC_SERVER	 = 0x1;
-		private const uint CLSCTX_INPROC_HANDLER = 0x2;
-		private const uint CLSCTX_LOCAL_SERVER	 = 0x4;
-		private const uint CLSCTX_REMOTE_SERVER	 = 0x10;
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct COSERVERINFO {
+            public uint dwReserved1;
 
-		private static readonly Guid IID_IUnknown = new Guid("00000000-0000-0000-C000-000000000046");
-		
-		[DllImport("ole32.dll")]
-		private static extern void CoCreateInstanceEx(
-			ref Guid         clsid,
-			[MarshalAs(UnmanagedType.IUnknown)]
-			object           punkOuter,
-			uint             dwClsCtx,
-			[In]
-			ref COSERVERINFO pServerInfo,
-			uint             dwCount,
-			[In, Out]
-			MULTI_QI[]       pResults);
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string pwszName;
 
-	    [ComImport]
-	    [GuidAttribute("0002E000-0000-0000-C000-000000000046")]
-	    [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)] 
-        private interface IEnumGUID 
-        {
+            public IntPtr pAuthInfo;
+            public uint dwReserved2;
+        };
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct MULTI_QI {
+            public IntPtr iid;
+
+            [MarshalAs(UnmanagedType.IUnknown)]
+            public object pItf;
+
+            public uint hr;
+        }
+
+        private const uint CLSCTX_INPROC_SERVER = 0x1;
+        private const uint CLSCTX_INPROC_HANDLER = 0x2;
+        private const uint CLSCTX_LOCAL_SERVER = 0x4;
+        private const uint CLSCTX_REMOTE_SERVER = 0x10;
+
+        private static readonly Guid IID_IUnknown = new Guid("00000000-0000-0000-C000-000000000046");
+
+        [DllImport("ole32.dll")]
+        private static extern void CoCreateInstanceEx(
+            ref Guid clsid,
+            [MarshalAs(UnmanagedType.IUnknown)] object punkOuter,
+            uint dwClsCtx,
+            [In] ref COSERVERINFO pServerInfo,
+            uint dwCount,
+            [In, Out] MULTI_QI[] pResults);
+
+        [ComImport]
+        [GuidAttribute("0002E000-0000-0000-C000-000000000046")]
+        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IEnumGUID {
             void Next(
-		        [MarshalAs(UnmanagedType.I4)]
-                int celt,
-                [Out]
-                IntPtr rgelt,
-                [Out][MarshalAs(UnmanagedType.I4)]
-                out int pceltFetched);
+                [MarshalAs(UnmanagedType.I4)] int celt,
+                [Out] IntPtr rgelt,
+                [Out] [MarshalAs(UnmanagedType.I4)] out int pceltFetched);
 
             void Skip(
-		        [MarshalAs(UnmanagedType.I4)]
-                int celt);
+                [MarshalAs(UnmanagedType.I4)] int celt);
 
             void Reset();
 
             void Clone(
-                [Out]
-                out IEnumGUID ppenum);
+                [Out] out IEnumGUID ppenum);
         }
 
         [ComImport]
-		[GuidAttribute("0002E013-0000-0000-C000-000000000046")]
-		[InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)] 
-		private interface ICatInformation
-		{
-			void EnumCategories( 
-				int lcid,				
-				[MarshalAs(UnmanagedType.Interface)]
-				[Out] out object ppenumCategoryInfo);
-        
-			void GetCategoryDesc( 
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rcatid,
-				int lcid,
-				[MarshalAs(UnmanagedType.LPWStr)]
-				[Out] out string pszDesc);
-        
-			void EnumClassesOfCategories( 
-				int cImplemented,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=0)] 
-				Guid[] rgcatidImpl,
-				int cRequired,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=2)] 
-				Guid[] rgcatidReq,
-				[MarshalAs(UnmanagedType.Interface)]
-				[Out] out object ppenumClsid);
-        
-			void IsClassOfCategories( 
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rclsid,
-				int cImplemented,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=1)] 
-				Guid[] rgcatidImpl,
-				int cRequired,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=3)] 
-				Guid[] rgcatidReq);
-        
-			void EnumImplCategoriesOfClass( 
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rclsid,
-				[MarshalAs(UnmanagedType.Interface)]
-				[Out] out object ppenumCatid);
-        
-			void EnumReqCategoriesOfClass(
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rclsid,
-				[MarshalAs(UnmanagedType.Interface)]
-				[Out] out object ppenumCatid);
-		}
+        [GuidAttribute("0002E013-0000-0000-C000-000000000046")]
+        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface ICatInformation {
+            void EnumCategories(
+                int lcid,
+                [MarshalAs(UnmanagedType.Interface)] [Out]
+                out object ppenumCategoryInfo);
 
-		[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
-		struct CATEGORYINFO 
-		{
-			public Guid catid;
-			public int lcid;
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst=127)] 
-			public string szDescription;
-		}
+            void GetCategoryDesc(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rcatid,
+                int lcid,
+                [MarshalAs(UnmanagedType.LPWStr)] [Out]
+                out string pszDesc);
 
-		[ComImport]
-		[GuidAttribute("0002E012-0000-0000-C000-000000000046")]
-		[InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)] 
-		private interface ICatRegister
-		{
-			void RegisterCategories(
-				int cCategories,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=0)] 
-				CATEGORYINFO[] rgCategoryInfo);
+            void EnumClassesOfCategories(
+                int cImplemented,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 0)]
+                Guid[] rgcatidImpl,
+                int cRequired,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 2)]
+                Guid[] rgcatidReq,
+                [MarshalAs(UnmanagedType.Interface)] [Out]
+                out object ppenumClsid);
 
-			void UnRegisterCategories(
-				int cCategories,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=0)] 
-				Guid[] rgcatid);
+            void IsClassOfCategories(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+                int cImplemented,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 1)]
+                Guid[] rgcatidImpl,
+                int cRequired,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 3)]
+                Guid[] rgcatidReq);
 
-			void RegisterClassImplCategories(
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rclsid,
-				int cCategories,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=1)] 
-				Guid[] rgcatid);
+            void EnumImplCategoriesOfClass(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+                [MarshalAs(UnmanagedType.Interface)] [Out]
+                out object ppenumCatid);
 
-			void UnRegisterClassImplCategories(
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rclsid,
-				int cCategories,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=1)] 
-				Guid[] rgcatid);
+            void EnumReqCategoriesOfClass(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+                [MarshalAs(UnmanagedType.Interface)] [Out]
+                out object ppenumCatid);
+        }
 
-			void RegisterClassReqCategories(
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rclsid,
-				int cCategories,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=1)] 
-				Guid[] rgcatid);
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        struct CATEGORYINFO {
+            public Guid catid;
+            public int lcid;
 
-			void UnRegisterClassReqCategories(
-				[MarshalAs(UnmanagedType.LPStruct)] 
-				Guid rclsid,
-				int cCategories,
-				[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPStruct, SizeParamIndex=1)] 
-				Guid[] rgcatid);
-		}
-        
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 127)]
+            public string szDescription;
+        }
+
+        [ComImport]
+        [GuidAttribute("0002E012-0000-0000-C000-000000000046")]
+        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface ICatRegister {
+            void RegisterCategories(
+                int cCategories,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 0)]
+                CATEGORYINFO[] rgCategoryInfo);
+
+            void UnRegisterCategories(
+                int cCategories,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 0)]
+                Guid[] rgcatid);
+
+            void RegisterClassImplCategories(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+                int cCategories,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 1)]
+                Guid[] rgcatid);
+
+            void UnRegisterClassImplCategories(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+                int cCategories,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 1)]
+                Guid[] rgcatid);
+
+            void RegisterClassReqCategories(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+                int cCategories,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 1)]
+                Guid[] rgcatid);
+
+            void UnRegisterClassReqCategories(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
+                int cCategories,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct, SizeParamIndex = 1)]
+                Guid[] rgcatid);
+        }
+
         private static readonly Guid CLSID_StdComponentCategoriesMgr = new Guid("0002E005-0000-0000-C000-000000000046");
 
-        private const string CATID_OPCDAServer20_Description  = "OPC Data Access Servers Version 2.0";
-        private const string CATID_OPCDAServer30_Description  = "OPC Data Access Servers Version 3.0";
-        private const string CATID_OPCAEServer10_Description  = "OPC Alarm & Event Server Version 1.0";
+        private const string CATID_OPCDAServer20_Description = "OPC Data Access Servers Version 2.0";
+        private const string CATID_OPCDAServer30_Description = "OPC Data Access Servers Version 3.0";
+        private const string CATID_OPCAEServer10_Description = "OPC Alarm & Event Server Version 1.0";
         private const string CATID_OPCHDAServer10_Description = "OPC History Data Access Servers Version 1.0";
+
         #endregion
 
-        private static class NativeMethods
-        {
+        private static class NativeMethods {
             [DllImport("user32.dll", CharSet = CharSet.Unicode)]
             static extern internal IntPtr LoadIcon(IntPtr hInstance, string lpIconName);
 
@@ -2351,17 +2009,14 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Gets the application icon.
         /// </summary>
-        public static System.Drawing.Icon GetAppIcon()
-        {
+        public static System.Drawing.Icon GetAppIcon() {
             string fileName = Assembly.GetEntryAssembly().Location;
             IntPtr hLibrary = NativeMethods.LoadLibrary(fileName);
 
-            if (hLibrary != IntPtr.Zero)
-            {
+            if (hLibrary != IntPtr.Zero) {
                 IntPtr hIcon = NativeMethods.LoadIcon(hLibrary, "#32512");
 
-                if (hIcon != IntPtr.Zero)
-                {
+                if (hIcon != IntPtr.Zero) {
                     return System.Drawing.Icon.FromHandle(hIcon);
                 }
             }
@@ -2372,8 +2027,7 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Registers the object ids required to access the certificate.
         /// </summary>
-        public static void LocallyRegisterCertificateOIDs(X509Certificate2 certificate)
-        {
+        public static void LocallyRegisterCertificateOIDs(X509Certificate2 certificate) {
             List<string> oids = new List<string>();
             oids.Add(certificate.PublicKey.Oid.Value);
             oids.Add(certificate.SignatureAlgorithm.Value);
@@ -2402,38 +2056,34 @@ namespace Opc.Ua.Configuration
         /// 
         /// This code needs to be run once for each public key type.
         /// </remarks>
-        public static void LocallyRegisterCertificateOIDs(string[] OIDs)
-        {
+        public static void LocallyRegisterCertificateOIDs(string[] OIDs) {
             IntPtr pInfo;
             IntPtr pOID;
 
             RegistryKey key = null;
             CRYPT_OID_INFO oidInfo = new CRYPT_OID_INFO();
 
-            for (int ii = 0; ii < OIDs.Length; ii++)
-            {
+            for (int ii = 0; ii < OIDs.Length; ii++) {
                 pOID = Marshal.StringToHGlobalAnsi(OIDs[ii]);
                 pInfo = CryptFindOIDInfo(CRYPT_OID_INFO_OID_KEY, pOID, 0);
                 Marshal.FreeHGlobal(pOID);
 
-                if (pInfo != IntPtr.Zero)
-                {
+                if (pInfo != IntPtr.Zero) {
                     Marshal.PtrToStructure(pInfo, oidInfo);
-                    
-                    if (CryptRegisterOIDInfo(pInfo, CRYPT_INSTALL_OID_INFO_BEFORE_FLAG))
-                    {
-                        string strRegKey = 
-                            "Software\\Microsoft\\Cryptography\\OID\\EncodingType 0\\CryptDllFindOIDInfo\\" 
-                            + oidInfo.pszOID 
-                            + "!" 
-                            + oidInfo.dwGroupId.ToString();                        
-                        
+
+                    if (CryptRegisterOIDInfo(pInfo, CRYPT_INSTALL_OID_INFO_BEFORE_FLAG)) {
+                        string strRegKey =
+                            "Software\\Microsoft\\Cryptography\\OID\\EncodingType 0\\CryptDllFindOIDInfo\\"
+                            + oidInfo.pszOID
+                            + "!"
+                            + oidInfo.dwGroupId.ToString();
+
                         key = Registry.LocalMachine.CreateSubKey(strRegKey);
                         key.SetValue("Name", oidInfo.pszOID);
-                        key.Close();            
+                        key.Close();
                     }
                 }
-            }            
+            }
         }
 
         [DllImport("Crypt32.dll", EntryPoint = "CryptRegisterOIDInfo", CharSet = CharSet.Auto, SetLastError = true)]
@@ -2443,28 +2093,31 @@ namespace Opc.Ua.Configuration
         static extern IntPtr CryptFindOIDInfo(Int32 dwKeyType, IntPtr pvKey, Int32 dwGroupId);
 
         private const Int32 CRYPT_OID_INFO_OID_KEY = 1;
-        private const Int32  CRYPT_INSTALL_OID_INFO_BEFORE_FLAG  = 1;
+        private const Int32 CRYPT_INSTALL_OID_INFO_BEFORE_FLAG = 1;
 
         [StructLayout(LayoutKind.Sequential)]
-        private class CRYPT_DATA_BLOB
-        {
+        private class CRYPT_DATA_BLOB {
             public uint cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        private class CRYPT_OID_INFO
-        {
+        private class CRYPT_OID_INFO {
             public UInt32 cbSize;
+
             [MarshalAs(UnmanagedType.LPStr)]
             public String pszOID;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public String pwszName;
+
             public UInt32 dwGroupId;
+
             public Int32 dwValue; // Use either dwValue or Algid or dwLen - they are a union
+
             // public UInt32 Algid;
             // public Int32 dwLength;
-            public CRYPT_DATA_BLOB ExtraInfo;            
+            public CRYPT_DATA_BLOB ExtraInfo;
         };
     }
 }

@@ -35,51 +35,50 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class MonitoredItemStatusCtrl : Opc.Ua.Client.Controls.BaseListCtrl
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class MonitoredItemStatusCtrl : Opc.Ua.Client.Controls.BaseListCtrl {
         #region Constructors
+
         /// <summary>
         /// Initializes the object with default values.
         /// </summary>
-        public MonitoredItemStatusCtrl()
-        {
+        public MonitoredItemStatusCtrl() {
             InitializeComponent();
             SetColumns(m_ColumnNames);
         }
-		#endregion
+
+        #endregion
 
         #region Private Fields
+
         private Subscription m_subscription;
         private MonitoredItem m_monitoredItem;
-        
+
         /// <summary>
-		/// The columns to display in the control.
-		/// </summary>
-		private readonly object[][] m_ColumnNames = new object[][]
-		{
-			new object[] { "ID",             HorizontalAlignment.Center, null       },
-			new object[] { "Name",           HorizontalAlignment.Left,   null       },
-			new object[] { "Class",          HorizontalAlignment.Left,   "Variable" },
-			new object[] { "Sampling Rate",  HorizontalAlignment.Center, null       }, 
-			new object[] { "Queue Size",     HorizontalAlignment.Center, "0"        }, 
-			new object[] { "Value",          HorizontalAlignment.Left,   "",        200 }, 
-			new object[] { "Status",         HorizontalAlignment.Left,   "",        }, 
-			new object[] { "Timestamp",      HorizontalAlignment.Center, ""         },
-		};
-		#endregion
+        /// The columns to display in the control.
+        /// </summary>
+        private readonly object[][] m_ColumnNames = new object[][] {
+            new object[] {"ID", HorizontalAlignment.Center, null},
+            new object[] {"Name", HorizontalAlignment.Left, null},
+            new object[] {"Class", HorizontalAlignment.Left, "Variable"},
+            new object[] {"Sampling Rate", HorizontalAlignment.Center, null},
+            new object[] {"Queue Size", HorizontalAlignment.Center, "0"},
+            new object[] {"Value", HorizontalAlignment.Left, "", 200},
+            new object[] {"Status", HorizontalAlignment.Left, "",},
+            new object[] {"Timestamp", HorizontalAlignment.Center, ""},
+        };
+
+        #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Clears the contents of the control,
         /// </summary>
-        public void Clear()
-        {
+        public void Clear() {
             ItemsLV.Items.Clear();
             AdjustColumns();
         }
@@ -87,22 +86,19 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Displays the items for the specified subscription in the control.
         /// </summary>
-        public void Initialize(MonitoredItem monitoredItem)
-        {
+        public void Initialize(MonitoredItem monitoredItem) {
             // do nothing if same subscription provided.
-            if (Object.ReferenceEquals(m_monitoredItem, monitoredItem))
-            {
+            if (Object.ReferenceEquals(m_monitoredItem, monitoredItem)) {
                 return;
             }
 
             m_monitoredItem = monitoredItem;
-            m_subscription  = null;
+            m_subscription = null;
 
             Clear();
-            
-            if (m_monitoredItem != null)
-            {
-                m_subscription  = monitoredItem.Subscription;
+
+            if (m_monitoredItem != null) {
+                m_subscription = monitoredItem.Subscription;
                 UpdateItems();
             }
         }
@@ -110,46 +106,38 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Displays the items for the specified subscription in the control.
         /// </summary>
-        public void Initialize(Subscription subscription)
-        {
+        public void Initialize(Subscription subscription) {
             // do nothing if same subscription provided.
-            if (Object.ReferenceEquals(m_subscription, subscription))
-            {
+            if (Object.ReferenceEquals(m_subscription, subscription)) {
                 return;
             }
 
             m_monitoredItem = null;
-            m_subscription  = subscription;
+            m_subscription = subscription;
 
             Clear();
-            
-            if (m_subscription != null)
-            {
+
+            if (m_subscription != null) {
                 UpdateItems();
             }
         }
-        
+
         /// <summary>
         /// Called when the subscription changes.
         /// </summary>
-        public void SubscriptionChanged(SubscriptionStateChangedEventArgs e)
-        {
+        public void SubscriptionChanged(SubscriptionStateChangedEventArgs e) {
             UpdateItems();
         }
 
         /// <summary>
         /// Refreshes the state of all items displayed in the control.
         /// </summary>
-        public void UpdateItems()
-        {
-            if (m_subscription != null)
-            {
+        public void UpdateItems() {
+            if (m_subscription != null) {
                 BeginUpdate();
 
-                foreach (MonitoredItem monitoredItem in m_subscription.MonitoredItems)
-                {
-                    if (m_monitoredItem == null || monitoredItem.ClientHandle == m_monitoredItem.ClientHandle)
-                    {
+                foreach (MonitoredItem monitoredItem in m_subscription.MonitoredItems) {
+                    if (m_monitoredItem == null || monitoredItem.ClientHandle == m_monitoredItem.ClientHandle) {
                         AddItem(monitoredItem);
                     }
                 }
@@ -159,80 +147,75 @@ namespace Opc.Ua.Sample.Controls
                 AdjustColumns();
             }
         }
-        
+
         /// <summary>
         /// Apply any changes to the set of items.
         /// </summary>
-        public void ApplyChanges()
-        {
-            if (m_subscription != null)
-            {
+        public void ApplyChanges() {
+            if (m_subscription != null) {
                 m_subscription.ApplyChanges();
 
-                foreach (ListViewItem listItem in ItemsLV.Items)
-                {
+                foreach (ListViewItem listItem in ItemsLV.Items) {
                     UpdateItem(listItem, listItem.Tag);
                 }
 
                 AdjustColumns();
             }
         }
+
         #endregion
-        
+
         #region Overridden Methods
+
         /// <see cref="BaseListCtrl.EnableMenuItems" />
-		protected override void EnableMenuItems(ListViewItem clickedItem)
-		{
+        protected override void EnableMenuItems(ListViewItem clickedItem) {
             // no menu defined at this time.
-		}
-        
+        }
+
         /// <see cref="BaseListCtrl.UpdateItem" />
-        protected override void UpdateItem(ListViewItem listItem, object item)
-        {
-			MonitoredItem monitoredItem = item as MonitoredItem;
+        protected override void UpdateItem(ListViewItem listItem, object item) {
+            MonitoredItem monitoredItem = item as MonitoredItem;
 
-			if (monitoredItem == null)
-			{
-				base.UpdateItem(listItem, item);
-				return;
-			}
+            if (monitoredItem == null) {
+                base.UpdateItem(listItem, item);
+                return;
+            }
 
-		    listItem.SubItems[0].Text = String.Format("{0}", monitoredItem.Status.Id);
-		    listItem.SubItems[1].Text = String.Format("{0}", monitoredItem.DisplayName);
-		    listItem.SubItems[2].Text = String.Format("{0}", monitoredItem.NodeClass);
+            listItem.SubItems[0].Text = String.Format("{0}", monitoredItem.Status.Id);
+            listItem.SubItems[1].Text = String.Format("{0}", monitoredItem.DisplayName);
+            listItem.SubItems[2].Text = String.Format("{0}", monitoredItem.NodeClass);
             listItem.SubItems[3].Text = String.Format("{0}", monitoredItem.Status.SamplingInterval);
-		    listItem.SubItems[4].Text = String.Format("{0}", monitoredItem.Status.QueueSize);
+            listItem.SubItems[4].Text = String.Format("{0}", monitoredItem.Status.QueueSize);
             listItem.SubItems[5].Text = String.Empty;
             listItem.SubItems[6].Text = String.Format("{0}", monitoredItem.Status.Error);
             listItem.SubItems[7].Text = String.Empty;
 
             IEncodeable value = monitoredItem.LastValue;
 
-            if (value != null)
-            {
+            if (value != null) {
                 MonitoredItemNotification datachange = value as MonitoredItemNotification;
 
-                if (datachange != null)
-                {
+                if (datachange != null) {
                     listItem.SubItems[5].Text = String.Format("{0}", datachange.Value);
 
-                    if (datachange.Value.SourceTimestamp != DateTime.MinValue)
-                    {
-                        listItem.SubItems[7].Text = String.Format("{0:HH:mm:ss.fff}", datachange.Value.SourceTimestamp.ToLocalTime());
+                    if (datachange.Value.SourceTimestamp != DateTime.MinValue) {
+                        listItem.SubItems[7].Text = String.Format("{0:HH:mm:ss.fff}",
+                            datachange.Value.SourceTimestamp.ToLocalTime());
                     }
                 }
 
                 EventFieldList eventFields = value as EventFieldList;
 
-                if (eventFields != null)
-                {
+                if (eventFields != null) {
                     listItem.SubItems[5].Text = String.Format("{0}", monitoredItem.GetEventType(eventFields));
-                    listItem.SubItems[7].Text = String.Format("{0:HH:mm:ss.fff}", monitoredItem.GetEventTime(eventFields).ToLocalTime());                
+                    listItem.SubItems[7].Text = String.Format("{0:HH:mm:ss.fff}",
+                        monitoredItem.GetEventTime(eventFields).ToLocalTime());
                 }
             }
- 
-			listItem.Tag = item;
+
+            listItem.Tag = item;
         }
-		#endregion
+
+        #endregion
     }
 }

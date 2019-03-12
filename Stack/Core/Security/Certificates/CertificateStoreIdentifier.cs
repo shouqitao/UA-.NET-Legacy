@@ -17,27 +17,27 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Describes a certificate store.
     /// </summary>
-    public partial class CertificateStoreIdentifier : ICloneable, IFormattable
-    {
+    public partial class CertificateStoreIdentifier : ICloneable, IFormattable {
         #region ICloneable Members
+
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
         /// </summary>
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
-        {
+        public object Clone() {
             return MemberwiseClone();
         }
+
         #endregion
 
         #region IFormattable Members
+
         /// <summary>
         /// Formats the value of the current instance using the specified format.
         /// </summary>
@@ -50,74 +50,69 @@ namespace Opc.Ua
         /// <returns>
         /// A <see cref="T:System.String"/> containing the value of the current instance in the specified format.
         /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            if (!String.IsNullOrEmpty(format))
-            {
+        public string ToString(string format, IFormatProvider formatProvider) {
+            if (!String.IsNullOrEmpty(format)) {
                 throw new FormatException();
             }
 
             return ToString();
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </summary>
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            if (String.IsNullOrEmpty(this.StoreType))
-            {
+        public override string ToString() {
+            if (String.IsNullOrEmpty(this.StoreType)) {
                 return Utils.Format("{0}", this.StorePath);
             }
 
             return Utils.Format("[{0}]{1}", this.StoreType, this.StorePath);
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Options that can be used to suppress certificate validation errors.
         /// </summary>
-        public CertificateValidationOptions ValidationOptions
-        {
+        public CertificateValidationOptions ValidationOptions {
             get { return m_validationOptions; }
             set { m_validationOptions = value; }
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Detects the type of store represented by the path.
         /// </summary>
-        public static string DetermineStoreType(string storePath)
-        {
-            if (String.IsNullOrEmpty(storePath))
-            {
+        public static string DetermineStoreType(string storePath) {
+            if (String.IsNullOrEmpty(storePath)) {
                 return CertificateStoreType.Directory;
             }
 
-            if (storePath.StartsWith("LocalMachine\\", StringComparison.OrdinalIgnoreCase))
-            {
+            if (storePath.StartsWith("LocalMachine\\", StringComparison.OrdinalIgnoreCase)) {
                 return CertificateStoreType.Windows;
             }
 
-            if (storePath.StartsWith("CurrentUser\\", StringComparison.OrdinalIgnoreCase))
-            {
+            if (storePath.StartsWith("CurrentUser\\", StringComparison.OrdinalIgnoreCase)) {
                 return CertificateStoreType.Windows;
             }
 
-            if (storePath.StartsWith("User\\", StringComparison.OrdinalIgnoreCase))
-            {
+            if (storePath.StartsWith("User\\", StringComparison.OrdinalIgnoreCase)) {
                 return CertificateStoreType.Windows;
             }
 
-            if (storePath.StartsWith("Service\\", StringComparison.OrdinalIgnoreCase))
-            {
+            if (storePath.StartsWith("Service\\", StringComparison.OrdinalIgnoreCase)) {
                 return CertificateStoreType.Windows;
             }
 
@@ -127,31 +122,26 @@ namespace Opc.Ua
         /// <summary>
         /// Returns an object that can be used to access the store.
         /// </summary>
-        public static ICertificateStore CreateStore(string storeType)
-        {
+        public static ICertificateStore CreateStore(string storeType) {
             ICertificateStore store = null;
 
-            if (String.IsNullOrEmpty(storeType))
-            {
+            if (String.IsNullOrEmpty(storeType)) {
                 return new CertificateIdentifierCollection();
             }
 
-            #if !SILVERLIGHT
-            switch (storeType)
-            {
-                case CertificateStoreType.Windows:
-                {
+#if !SILVERLIGHT
+            switch (storeType) {
+                case CertificateStoreType.Windows: {
                     store = new WindowsCertificateStore();
                     break;
                 }
 
-                case CertificateStoreType.Directory:
-                {
+                case CertificateStoreType.Directory: {
                     store = new DirectoryCertificateStore();
                     break;
                 }
             }
-            #endif
+#endif
 
             return store;
         }
@@ -159,21 +149,21 @@ namespace Opc.Ua
         /// <summary>
         /// Returns an object that can be used to access the store.
         /// </summary>
-        public ICertificateStore OpenStore()
-        {
+        public ICertificateStore OpenStore() {
             ICertificateStore store = CreateStore(this.StoreType);
             store.Open(this.StorePath);
             return store;
         }
+
         #endregion
     }
 
     #region CertificateStoreType Class
+
     /// <summary>
     /// The type of certificate store.
     /// </summary>
-    public static class CertificateStoreType
-    {
+    public static class CertificateStoreType {
         /// <summary>
         /// A windows certificate store.
         /// </summary>
@@ -184,5 +174,6 @@ namespace Opc.Ua
         /// </summary>
         public const string Directory = "Directory";
     }
+
     #endregion
 }

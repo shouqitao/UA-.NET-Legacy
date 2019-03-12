@@ -16,33 +16,28 @@
 
 using System.ServiceModel;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     #region MessageContextExtension Class
+
     /// <summary>
     /// Uses to add the service message context to the WCF operation context.
     /// </summary>
-    public class MessageContextExtension : IExtension<OperationContext>
-    {
+    public class MessageContextExtension : IExtension<OperationContext> {
         /// <summary>
         /// Initializes the object with the message context to use.
         /// </summary>
-        public MessageContextExtension(ServiceMessageContext messageContext)
-        {
+        public MessageContextExtension(ServiceMessageContext messageContext) {
             m_messageContext = messageContext;
         }
 
         /// <summary>
         /// Returns the message context associated with the current WCF operation context.
         /// </summary>
-        public static MessageContextExtension Current
-        {
-            get 
-            {
+        public static MessageContextExtension Current {
+            get {
                 OperationContext context = OperationContext.Current;
 
-                if (context != null)
-                {
+                if (context != null) {
                     return OperationContext.Current.Extensions.Find<MessageContextExtension>();
                 }
 
@@ -53,45 +48,37 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the message context associated with the current WCF operation context.
         /// </summary>
-        public static ServiceMessageContext CurrentContext
-        {
-            get 
-            {
+        public static ServiceMessageContext CurrentContext {
+            get {
                 MessageContextExtension extension = MessageContextExtension.Current;
 
-                if (extension != null)
-                {
+                if (extension != null) {
                     return extension.MessageContext;
                 }
 
                 return ServiceMessageContext.ThreadContext;
             }
         }
-            
+
         /// <summary>
         /// The message context to use.
         /// </summary>
-        public ServiceMessageContext MessageContext
-        {
-            get 
-            { 
-                return m_messageContext;
-            }
+        public ServiceMessageContext MessageContext {
+            get { return m_messageContext; }
         }
 
         #region IExtension<OperationContext> Members
+
         /// <summary cref="IExtension{T}.Attach" />
-        public void Attach(OperationContext owner)
-        {
-        }
-        
+        public void Attach(OperationContext owner) { }
+
         /// <summary cref="IExtension{T}.Detach" />
-        public void Detach(OperationContext owner)
-        {
-        }
+        public void Detach(OperationContext owner) { }
+
         #endregion
-    
+
         private ServiceMessageContext m_messageContext;
     }
+
     #endregion
 }

@@ -35,16 +35,12 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class SetMonitoringModeDlg : Form
-    {
-        public SetMonitoringModeDlg()
-        {
+namespace Opc.Ua.Sample.Controls {
+    public partial class SetMonitoringModeDlg : Form {
+        public SetMonitoringModeDlg() {
             InitializeComponent();
 
-            foreach (MonitoringMode value in Enum.GetValues(typeof(MonitoringMode)))
-            {
+            foreach (MonitoringMode value in Enum.GetValues(typeof(MonitoringMode))) {
                 MonitoringModeCB.Items.Add(value);
             }
         }
@@ -52,16 +48,14 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(ref MonitoringMode monitoringMode)
-        {
+        public bool ShowDialog(ref MonitoringMode monitoringMode) {
             MonitoringModeCB.SelectedItem = monitoringMode;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
-            monitoringMode = (MonitoringMode)MonitoringModeCB.SelectedItem;
+            monitoringMode = (MonitoringMode) MonitoringModeCB.SelectedItem;
 
             return true;
         }

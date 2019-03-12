@@ -20,75 +20,65 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     #region ReadValueId Class
-	/// <summary>
-	/// The description of a value to read.
-	/// </summary>
-    public partial class ReadValueId
-    {
+
+    /// <summary>
+    /// The description of a value to read.
+    /// </summary>
+    public partial class ReadValueId {
         #region Supporting Properties and Methods
+
         /// <summary>
         /// A handle assigned to the item during processing.
         /// </summary>
-        public object Handle
-        {
-            get { return m_handle;  }
+        public object Handle {
+            get { return m_handle; }
             set { m_handle = value; }
         }
-        
+
         /// <summary>
         /// Whether the value has been processed.
         /// </summary>
-        public bool Processed
-        {
-            get { return m_processed;  }
+        public bool Processed {
+            get { return m_processed; }
             set { m_processed = value; }
         }
 
         /// <summary>
         /// Stores the parsed form of the index range parameter.
         /// </summary>
-        public NumericRange ParsedIndexRange
-        {
-            get { return m_parsedIndexRange;  }
+        public NumericRange ParsedIndexRange {
+            get { return m_parsedIndexRange; }
             set { m_parsedIndexRange = value; }
         }
-                
+
         /// <summary>
         /// Validates a read value id parameter.
         /// </summary>
-        public static ServiceResult Validate(ReadValueId valueId)
-        {
+        public static ServiceResult Validate(ReadValueId valueId) {
             // check for null structure.
-            if (valueId == null)
-            {
+            if (valueId == null) {
                 return StatusCodes.BadStructureMissing;
             }
 
             // null node ids are always invalid.
-            if (valueId.NodeId == null)
-            {
+            if (valueId.NodeId == null) {
                 return StatusCodes.BadNodeIdInvalid;
             }
-            
+
             // must be a legimate attribute value.
-            if (!Attributes.IsValid(valueId.AttributeId))
-            {
+            if (!Attributes.IsValid(valueId.AttributeId)) {
                 return StatusCodes.BadAttributeIdInvalid;
             }
-            
+
             // data encoding and index range is only valid for value attributes. 
-            if (valueId.AttributeId != Attributes.Value)
-            {
-                if (!String.IsNullOrEmpty(valueId.IndexRange))
-                {
+            if (valueId.AttributeId != Attributes.Value) {
+                if (!String.IsNullOrEmpty(valueId.IndexRange)) {
                     return StatusCodes.BadIndexRangeNoData;
                 }
 
-                if (!QualifiedName.IsNull(valueId.DataEncoding))
-                {
+                if (!QualifiedName.IsNull(valueId.DataEncoding)) {
                     return StatusCodes.BadDataEncodingInvalid;
                 }
             }
@@ -97,32 +87,30 @@ namespace Opc.Ua
             valueId.ParsedIndexRange = NumericRange.Empty;
 
             // parse the index range if specified.
-            if (!String.IsNullOrEmpty(valueId.IndexRange))
-            {
-                try
-                {
+            if (!String.IsNullOrEmpty(valueId.IndexRange)) {
+                try {
                     valueId.ParsedIndexRange = NumericRange.Parse(valueId.IndexRange);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     return ServiceResult.Create(e, StatusCodes.BadIndexRangeInvalid, String.Empty);
                 }
-            }
-            else
-            {
+            } else {
                 valueId.ParsedIndexRange = NumericRange.Empty;
             }
 
             // passed basic validation.
             return null;
         }
+
         #endregion
-                            
+
         #region Private Fields
+
         private object m_handle;
         private bool m_processed;
         private NumericRange m_parsedIndexRange = NumericRange.Empty;
+
         #endregion
     }
+
     #endregion
 }

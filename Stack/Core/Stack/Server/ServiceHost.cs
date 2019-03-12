@@ -23,45 +23,46 @@ using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using Opc.Ua.Bindings;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// A host for a UA service.
     /// </summary>
-    public class ServiceHost : System.ServiceModel.ServiceHost, IServiceHostBase
-    {
+    public class ServiceHost : System.ServiceModel.ServiceHost, IServiceHostBase {
         #region Constructors
+
         /// <summary>
         /// Initializes the service host.
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="endpointType">Type of the endpoint.</param>
         /// <param name="addresses">The addresses.</param>
-		public ServiceHost(ServerBase server, Type endpointType, params Uri[] addresses) : base(endpointType, addresses)
-        {
+        public ServiceHost(ServerBase server, Type endpointType, params Uri[] addresses) :
+            base(endpointType, addresses) {
             m_server = server;
             m_stopServerOnClose = false;
-		}
+        }
+
         #endregion
 
         #region IServerHostBase Members
+
         /// <summary>
         /// The UA server instance associated with the service host.
         /// </summary>
         /// <value>The server.</value>
-        public IServerBase Server
-        {
+        public IServerBase Server {
             get { return m_server; }
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Whether the host should stop its contained server when it is closed.
         /// </summary>
         /// <value><c>true</c> if server is to be stoped on close, otherwise <c>false</c>.</value>
-        public bool StopServerOnClose
-        {
+        public bool StopServerOnClose {
             get { return m_stopServerOnClose; }
             set { m_stopServerOnClose = value; }
         }
@@ -76,45 +77,45 @@ namespace Opc.Ua
         /// <param name="endpoints">The endpoints.</param>
         /// <param name="securityMode">The security mode.</param>
         /// <param name="securityPolicyUri">The security policy URI.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability",
+            "CA1506:AvoidExcessiveClassCoupling")]
         public void InitializeSinglePolicy(
-            Type                      contractType,
-            ApplicationConfiguration  configuration, 
-            BindingFactory            bindingFactory,
-            EndpointConfiguration     endpointConfiguration,
+            Type contractType,
+            ApplicationConfiguration configuration,
+            BindingFactory bindingFactory,
+            EndpointConfiguration endpointConfiguration,
             List<EndpointDescription> endpoints,
-            MessageSecurityMode       securityMode, 
-            string                    securityPolicyUri)
-        {
+            MessageSecurityMode securityMode,
+            string securityPolicyUri) {
             // allow any url to match.
-            System.ServiceModel.ServiceBehaviorAttribute behavoir = this.Description.Behaviors.Find<System.ServiceModel.ServiceBehaviorAttribute>();
+            System.ServiceModel.ServiceBehaviorAttribute behavoir =
+                this.Description.Behaviors.Find<System.ServiceModel.ServiceBehaviorAttribute>();
             behavoir.AddressFilterMode = System.ServiceModel.AddressFilterMode.Any;
 
             // specify service credentials          
             ServiceCredentials credentials = new ServiceCredentials();
-        
-            credentials.ClientCertificate.Authentication.CertificateValidationMode  = X509CertificateValidationMode.Custom;
-            credentials.ClientCertificate.Authentication.TrustedStoreLocation       = StoreLocation.LocalMachine;
-            credentials.ClientCertificate.Authentication.RevocationMode             = X509RevocationMode.NoCheck;
-            credentials.ClientCertificate.Authentication.CustomCertificateValidator = configuration.CertificateValidator.GetChannelValidator();
-            
-            if (configuration.SecurityConfiguration.ApplicationCertificate != null)
-            {
+
+            credentials.ClientCertificate.Authentication.CertificateValidationMode =
+                X509CertificateValidationMode.Custom;
+            credentials.ClientCertificate.Authentication.TrustedStoreLocation = StoreLocation.LocalMachine;
+            credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            credentials.ClientCertificate.Authentication.CustomCertificateValidator =
+                configuration.CertificateValidator.GetChannelValidator();
+
+            if (configuration.SecurityConfiguration.ApplicationCertificate != null) {
                 X509Certificate2 certificate = configuration.SecurityConfiguration.ApplicationCertificate.Find(true);
- 
-                if (certificate != null)
-                {
+
+                if (certificate != null) {
                     credentials.ServiceCertificate.Certificate = CertificateFactory.Load(certificate, true);
                 }
             }
-            
+
             this.Description.Behaviors.Add(credentials);
-            
+
             // check if explicitly specified.
             ServiceThrottlingBehavior throttle = this.Description.Behaviors.Find<ServiceThrottlingBehavior>();
 
-            if (throttle == null)
-            {
+            if (throttle == null) {
                 throttle = new ServiceThrottlingBehavior();
 
                 throttle.MaxConcurrentCalls = 1000;
@@ -123,49 +124,44 @@ namespace Opc.Ua
 
                 this.Description.Behaviors.Add(throttle);
             }
-                        
+
             // add the endpoints for each base address.                          
-            foreach (Uri baseAddress in this.BaseAddresses)
-            {   
+            foreach (Uri baseAddress in this.BaseAddresses) {
                 ServiceEndpoint endpoint = null;
-               
+
                 // find endpoint configuration.
                 EndpointDescription description = null;
 
-                foreach (EndpointDescription current in endpoints)
-                {
-                    if (new Uri(current.EndpointUrl) == baseAddress)
-                    {
+                foreach (EndpointDescription current in endpoints) {
+                    if (new Uri(current.EndpointUrl) == baseAddress) {
                         description = current;
                         break;
                     }
                 }
 
                 // skip endpoints without a matching base address.
-                if (description == null)
-                {
+                if (description == null) {
                     continue;
                 }
 
                 // set the supported profiles.
                 description.TransportProfileUri = Profiles.WsHttpXmlOrBinaryTransport;
-                
+
                 // create the SOAP XML binding
                 Binding binding = bindingFactory.Create(baseAddress.Scheme, description, endpointConfiguration);
-                
+
                 // add the session endpoint.
                 endpoint = this.AddServiceEndpoint(contractType, binding, baseAddress, baseAddress);
-                
+
                 // set the protection level
-                if (securityMode == MessageSecurityMode.Sign)
-                {
+                if (securityMode == MessageSecurityMode.Sign) {
                     endpoint.Contract.ProtectionLevel = System.Net.Security.ProtectionLevel.Sign;
                 }
 
                 // update the max items in graph (set to an low value by default).
-                foreach (OperationDescription operation in endpoint.Contract.Operations)            
-                {
-                    operation.Behaviors.Find<DataContractSerializerOperationBehavior>().MaxItemsInObjectGraph = Int32.MaxValue;
+                foreach (OperationDescription operation in endpoint.Contract.Operations) {
+                    operation.Behaviors.Find<DataContractSerializerOperationBehavior>().MaxItemsInObjectGraph =
+                        Int32.MaxValue;
                 }
             }
         }
@@ -177,60 +173,58 @@ namespace Opc.Ua
         /// <param name="discoveryUrls">The discovery urls.</param>
         public virtual void InitializeDiscovery(
             ApplicationConfiguration configuration,
-            StringCollection         discoveryUrls)
-        {
+            StringCollection discoveryUrls) {
             // create the binding factory.
             BindingFactory bindingFactory = BindingFactory.Create(configuration, configuration.CreateMessageContext());
             EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(configuration);
-                        
-            foreach (string discoveryUrl in discoveryUrls)
-            {                  
+
+            foreach (string discoveryUrl in discoveryUrls) {
                 // parse discovery url.
                 Uri url = Utils.ParseUri(discoveryUrl);
 
-                if (url == null)
-                {
+                if (url == null) {
                     continue;
                 }
 
                 // create endpoint.
-                if (url.PathAndQuery.EndsWith("/discovery"))
-                {
+                if (url.PathAndQuery.EndsWith("/discovery")) {
                     Binding binding = bindingFactory.Create(url.Scheme, endpointConfiguration);
                     this.AddServiceEndpoint(typeof(IDiscoveryEndpoint), binding, url, url);
                 }
             }
         }
-        #endregion        
-        
+
+        #endregion
+
         #region Overridden Methods
+
         /// <summary>
         /// Shutdowns the server gracefully.
         /// </summary>
-        protected override void OnClosing()
-        {            
+        protected override void OnClosing() {
             // stop the server.
-            if (m_stopServerOnClose && m_server != null)
-            {
+            if (m_stopServerOnClose && m_server != null) {
                 m_server.Stop();
                 m_server = null;
             }
-            
+
             base.OnClosing();
         }
 
         /// <summary>
         /// Starts the UA TCP listener if configured as part of the host.
         /// </summary>
-        protected override void OnOpening()
-        {
+        protected override void OnOpening() {
             base.OnOpening();
         }
+
         #endregion
 
         #region Private Fields
+
         private ServerBase m_server;
         private bool m_stopServerOnClose;
+
         #endregion
     }
 }

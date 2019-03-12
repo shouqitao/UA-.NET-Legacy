@@ -23,22 +23,18 @@ using System.Reflection;
 using System.Threading;
 using Opc.Ua;
 
-namespace Opc.Ua
-{
-    public partial class AlarmConditionState
-    {
+namespace Opc.Ua {
+    public partial class AlarmConditionState {
         #region Initialization
+
         /// <summary>
         /// Called after a node is created.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
 
-            if (this.ShelvingState != null)
-            {
-                if (this.ShelvingState.UnshelveTime != null)
-                {
+            if (this.ShelvingState != null) {
+                if (this.ShelvingState.UnshelveTime != null) {
                     this.ShelvingState.UnshelveTime.OnSimpleReadValue = OnReadUnshelveTime;
                     this.ShelvingState.UnshelveTime.MinimumSamplingInterval = 1000;
                 }
@@ -56,18 +52,17 @@ namespace Opc.Ua
                 this.ShelvingState.Unshelve.OnReadUserExecutable = IsTimedShelveExecutable;
             }
         }
+
         #endregion
 
         #region IDisposable Members
+
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (m_unshelveTimer != null)
-                {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
+                if (m_unshelveTimer != null) {
                     m_unshelveTimer.Dispose();
                     m_unshelveTimer = null;
                 }
@@ -75,30 +70,27 @@ namespace Opc.Ua
 
             base.Dispose(disposing);
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Called when one or more sub-states change state.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="displayName">The display name for the effective state.</param>
         /// <param name="transitionTime">The transition time.</param>
-        public virtual void SetActiveEffectiveSubState(ISystemContext context, LocalizedText displayName, DateTime transitionTime)
-        {
-            if (this.ActiveState.EffectiveDisplayName != null)
-            {
+        public virtual void SetActiveEffectiveSubState(ISystemContext context, LocalizedText displayName,
+            DateTime transitionTime) {
+            if (this.ActiveState.EffectiveDisplayName != null) {
                 this.ActiveState.EffectiveDisplayName.Value = displayName;
             }
 
-            if (this.ActiveState.EffectiveTransitionTime != null)
-            {
-                if (transitionTime != DateTime.MinValue)
-                {
+            if (this.ActiveState.EffectiveTransitionTime != null) {
+                if (transitionTime != DateTime.MinValue) {
                     this.ActiveState.EffectiveTransitionTime.Value = transitionTime;
-                }
-                else
-                {
+                } else {
                     this.ActiveState.EffectiveTransitionTime.Value = DateTime.UtcNow;
                 }
             }
@@ -108,8 +100,7 @@ namespace Opc.Ua
         /// Gets when the alarm is scheduled to be unshelved.
         /// </summary>
         /// <value>The unshelve time.</value>
-        public DateTime UnshelveTime
-        {
+        public DateTime UnshelveTime {
             get { return m_unshelveTime; }
         }
 
@@ -120,45 +111,38 @@ namespace Opc.Ua
         /// <param name="active">if set to <c>true</c> the condition is active.</param>
         public virtual void SetActiveState(
             ISystemContext context,
-            bool active)
-        {
+            bool active) {
             TranslationInfo state = null;
 
-            if (active)
-            {
+            if (active) {
                 state = new TranslationInfo(
-                     "ConditionStateActive",
-                     "en-US",
-                     ConditionStateNames.Active);
-            }
-            else
-            {
+                    "ConditionStateActive",
+                    "en-US",
+                    ConditionStateNames.Active);
+            } else {
                 // update shelving state if one shot mode.
-                if (this.ShelvingState != null)
-                {
-                    if (m_oneShot)
-                    {
+                if (this.ShelvingState != null) {
+                    if (m_oneShot) {
                         SetShelvingState(context, false, false, 0);
                     }
                 }
 
                 state = new TranslationInfo(
-                     "ConditionStateInactive",
-                     "en-US",
-                     ConditionStateNames.Inactive);
+                    "ConditionStateInactive",
+                    "en-US",
+                    ConditionStateNames.Inactive);
             }
 
             this.ActiveState.Value = new LocalizedText(state);
             this.ActiveState.Id.Value = active;
 
-            if (this.ActiveState.TransitionTime != null)
-            {
+            if (this.ActiveState.TransitionTime != null) {
                 this.ActiveState.TransitionTime.Value = DateTime.UtcNow;
             }
 
             UpdateEffectiveState(context);
         }
-        
+
         /// <summary>
         /// Sets the suppressed state of the condition.
         /// </summary>
@@ -166,42 +150,36 @@ namespace Opc.Ua
         /// <param name="suppressed">if set to <c>true</c> the condition is suppressed.</param>
         public virtual void SetSuppressedState(
             ISystemContext context,
-            bool suppressed)
-        {
-            if (this.SuppressedState == null)
-            {
+            bool suppressed) {
+            if (this.SuppressedState == null) {
                 return;
             }
 
             TranslationInfo state = null;
 
-            if (suppressed)
-            {
+            if (suppressed) {
                 SuppressedOrShelved.Value = true;
 
                 state = new TranslationInfo(
-                     "ConditionStateSuppressed",
-                     "en-US",
-                     ConditionStateNames.Suppressed);
-            }
-            else
-            {
-                if (this.ShelvingState == null || this.ShelvingState.CurrentState.Id.Value == ObjectIds.ShelvedStateMachineType_Unshelved)
-                {
+                    "ConditionStateSuppressed",
+                    "en-US",
+                    ConditionStateNames.Suppressed);
+            } else {
+                if (this.ShelvingState == null || this.ShelvingState.CurrentState.Id.Value ==
+                    ObjectIds.ShelvedStateMachineType_Unshelved) {
                     SuppressedOrShelved.Value = false;
                 }
 
                 state = new TranslationInfo(
-                     "ConditionStateUnsuppressed",
-                     "en-US",
-                     ConditionStateNames.Unsuppressed);
+                    "ConditionStateUnsuppressed",
+                    "en-US",
+                    ConditionStateNames.Unsuppressed);
             }
 
             this.SuppressedState.Value = new LocalizedText(state);
             this.SuppressedState.Id.Value = suppressed;
 
-            if (this.SuppressedState.TransitionTime != null)
-            {
+            if (this.SuppressedState.TransitionTime != null) {
                 this.SuppressedState.TransitionTime.Value = DateTime.UtcNow;
             }
 
@@ -219,44 +197,33 @@ namespace Opc.Ua
             ISystemContext context,
             bool shelved,
             bool oneShot,
-            double shelvingTime)
-        {
-            if (this.ShelvingState == null)
-            {
+            double shelvingTime) {
+            if (this.ShelvingState == null) {
                 return;
             }
 
-            if (m_unshelveTimer != null)
-            {
+            if (m_unshelveTimer != null) {
                 m_unshelveTimer.Dispose();
                 m_unshelveTimer = null;
             }
 
-            if (!shelved)
-            {
-                if (this.SuppressedState == null || !this.SuppressedState.Id.Value)
-                {
+            if (!shelved) {
+                if (this.SuppressedState == null || !this.SuppressedState.Id.Value) {
                     SuppressedOrShelved.Value = false;
                 }
 
                 this.ShelvingState.CauseProcessingCompleted(context, Methods.ShelvedStateMachineType_Unshelve);
-            }
-            else
-            {
+            } else {
                 SuppressedOrShelved.Value = true;
                 m_oneShot = oneShot;
                 m_unshelveTime = DateTime.MinValue;
 
-                if (oneShot)
-                {                    
+                if (oneShot) {
                     this.ShelvingState.CauseProcessingCompleted(context, Methods.ShelvedStateMachineType_OneShotShelve);
-                }
-                else
-                {
-                    if (shelvingTime > 0)
-                    {
+                } else {
+                    if (shelvingTime > 0) {
                         m_unshelveTime = DateTime.UtcNow.AddMilliseconds(shelvingTime);
-                        m_unshelveTimer = new Timer(OnTimerExpired, context, (int)shelvingTime, Timeout.Infinite);
+                        m_unshelveTimer = new Timer(OnTimerExpired, context, (int) shelvingTime, Timeout.Infinite);
                     }
 
                     this.ShelvingState.CauseProcessingCompleted(context, Methods.ShelvedStateMachineType_TimedShelve);
@@ -265,9 +232,11 @@ namespace Opc.Ua
 
             UpdateEffectiveState(context);
         }
+
         #endregion
 
         #region Event Handlers
+
         /// <summary>
         /// Raised when the alarm is shelved.
         /// </summary>
@@ -280,17 +249,17 @@ namespace Opc.Ua
         /// Raised when the timed shelving period expires.
         /// </summary>
         public AlarmConditionTimedUnshelveEventHandler OnTimedUnshelve;
+
         #endregion
 
         #region Protected Method
+
         /// <summary>
         /// Updates the effective state for the condition.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void UpdateEffectiveState(ISystemContext context)
-        {
-            if (!this.EnabledState.Id.Value)
-            {
+        protected override void UpdateEffectiveState(ISystemContext context) {
+            if (!this.EnabledState.Id.Value) {
                 base.UpdateEffectiveState(context);
                 return;
             }
@@ -299,71 +268,55 @@ namespace Opc.Ua
 
             string locale = null;
 
-            if (this.ActiveState.Value != null)
-            {
+            if (this.ActiveState.Value != null) {
                 locale = this.ActiveState.Value.Locale;
 
-                if (this.ActiveState.Id.Value)
-                {
-                    if (this.ActiveState.EffectiveDisplayName != null && !LocalizedText.IsNullOrEmpty(this.ActiveState.EffectiveDisplayName.Value))
-                    {
+                if (this.ActiveState.Id.Value) {
+                    if (this.ActiveState.EffectiveDisplayName != null &&
+                        !LocalizedText.IsNullOrEmpty(this.ActiveState.EffectiveDisplayName.Value)) {
                         builder.Append(this.ActiveState.EffectiveDisplayName.Value);
-                    }
-                    else
-                    {
+                    } else {
                         builder.Append(this.ActiveState.Value);
                     }
-                }
-                else
-                {
+                } else {
                     builder.Append(this.ActiveState.Value);
                 }
             }
 
             LocalizedText suppressedState = null;
 
-            if (this.SuppressedState != null)
-            {
-                if (this.SuppressedState.Id.Value)
-                {
+            if (this.SuppressedState != null) {
+                if (this.SuppressedState.Id.Value) {
                     suppressedState = this.SuppressedState.Value;
                 }
             }
 
-            if (this.ShelvingState != null)
-            {
-                if (this.ShelvingState.CurrentState.Id.Value != ObjectIds.ShelvedStateMachineType_Unshelved)
-                {
+            if (this.ShelvingState != null) {
+                if (this.ShelvingState.CurrentState.Id.Value != ObjectIds.ShelvedStateMachineType_Unshelved) {
                     suppressedState = this.ShelvingState.CurrentState.Value;
                 }
             }
 
-            if (suppressedState != null)
-            {
+            if (suppressedState != null) {
                 builder.Append(" | ");
                 builder.Append(suppressedState);
             }
 
             LocalizedText ackState = null;
 
-            if (!this.ConfirmedState.Id.Value)
-            {
-                if (!this.ConfirmedState.Id.Value)
-                {
+            if (!this.ConfirmedState.Id.Value) {
+                if (!this.ConfirmedState.Id.Value) {
                     ackState = this.ConfirmedState.Value;
                 }
             }
 
-            if (!this.AckedState.Id.Value)
-            {
-                if (!this.AckedState.Id.Value)
-                {
+            if (!this.AckedState.Id.Value) {
+                if (!this.AckedState.Id.Value) {
                     ackState = this.AckedState.Value;
                 }
             }
 
-            if (ackState != null)
-            {
+            if (ackState != null) {
                 builder.Append(" | ");
                 builder.Append(ackState);
             }
@@ -379,12 +332,10 @@ namespace Opc.Ua
         protected ServiceResult OnReadUnshelveTime(
             ISystemContext context,
             NodeState node,
-            ref object value)
-        {
+            ref object value) {
             double delta = 0;
 
-            if (m_unshelveTime != DateTime.MinValue)
-            {
+            if (m_unshelveTime != DateTime.MinValue) {
                 delta = (m_unshelveTime - DateTime.UtcNow).TotalMilliseconds;
             }
 
@@ -399,8 +350,7 @@ namespace Opc.Ua
         protected ServiceResult IsOneShotShelveExecutable(
             ISystemContext context,
             NodeState node,
-            ref bool value)
-        {
+            ref bool value) {
             value = this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_OneShotShelve, false);
             return ServiceResult.Good;
         }
@@ -412,39 +362,31 @@ namespace Opc.Ua
             ISystemContext context,
             MethodState method,
             IList<object> inputArguments,
-            IList<object> outputArguments)
-        {
+            IList<object> outputArguments) {
             ServiceResult error = null;
 
-            try
-            {
-                if (!this.EnabledState.Id.Value)
-                {
+            try {
+                if (!this.EnabledState.Id.Value) {
                     return error = StatusCodes.BadConditionDisabled;
                 }
 
-                if (!this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_OneShotShelve, false))
-                {
+                if (!this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_OneShotShelve, false)
+                ) {
                     return error = StatusCodes.BadConditionAlreadyShelved;
                 }
 
-                if (OnShelve == null)
-                {
+                if (OnShelve == null) {
                     return error = StatusCodes.BadNotSupported;
                 }
 
                 error = OnShelve(context, this, true, true, 0);
 
                 // report a state change event.
-                if (ServiceResult.IsGood(error))
-                {
+                if (ServiceResult.IsGood(error)) {
                     ReportStateChange(context, false);
                 }
-            }
-            finally
-            {
-                if (this.AreEventsMonitored)
-                {
+            } finally {
+                if (this.AreEventsMonitored) {
                     AuditConditionShelvingEventState e = new AuditConditionShelvingEventState(null);
 
                     TranslationInfo info = new TranslationInfo(
@@ -478,8 +420,7 @@ namespace Opc.Ua
         protected ServiceResult IsTimedShelveExecutable(
             ISystemContext context,
             NodeState node,
-            ref bool value)
-        {
+            ref bool value) {
             value = this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_TimedShelve, false);
             return ServiceResult.Good;
         }
@@ -491,44 +432,34 @@ namespace Opc.Ua
             ISystemContext context,
             MethodState method,
             NodeId objectId,
-            double shelvingTime)
-        {
+            double shelvingTime) {
             ServiceResult error = null;
 
-            try
-            {
-                if (!this.EnabledState.Id.Value)
-                {
+            try {
+                if (!this.EnabledState.Id.Value) {
                     return error = StatusCodes.BadConditionDisabled;
                 }
 
-                if (shelvingTime <= 0 || (this.MaxTimeShelved != null && shelvingTime > this.MaxTimeShelved.Value))
-                {
+                if (shelvingTime <= 0 || (this.MaxTimeShelved != null && shelvingTime > this.MaxTimeShelved.Value)) {
                     return error = StatusCodes.BadShelvingTimeOutOfRange;
                 }
 
-                if (!this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_TimedShelve, false))
-                {
+                if (!this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_TimedShelve, false)) {
                     return error = StatusCodes.BadConditionAlreadyShelved;
                 }
 
-                if (OnShelve == null)
-                {
+                if (OnShelve == null) {
                     return error = StatusCodes.BadNotSupported;
                 }
 
                 error = OnShelve(context, this, true, false, shelvingTime);
 
                 // report a state change event.
-                if (ServiceResult.IsGood(error))
-                {
+                if (ServiceResult.IsGood(error)) {
                     ReportStateChange(context, false);
                 }
-            }
-            finally
-            {
-                if (this.AreEventsMonitored)
-                {
+            } finally {
+                if (this.AreEventsMonitored) {
                     AuditConditionShelvingEventState e = new AuditConditionShelvingEventState(null);
 
                     TranslationInfo info = new TranslationInfo(
@@ -550,7 +481,7 @@ namespace Opc.Ua
                     e.MethodId.Value = method.NodeId;
 
                     e.InputArguments = new PropertyState<object[]>(e);
-                    e.InputArguments.Value = new object[] { shelvingTime };
+                    e.InputArguments.Value = new object[] {shelvingTime};
 
                     ReportEvent(context, e);
                 }
@@ -565,8 +496,7 @@ namespace Opc.Ua
         protected ServiceResult IsUnshelveExecutable(
             ISystemContext context,
             NodeState node,
-            ref bool value)
-        {
+            ref bool value) {
             value = this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_Unshelve, false);
             return ServiceResult.Good;
         }
@@ -578,40 +508,31 @@ namespace Opc.Ua
             ISystemContext context,
             MethodState method,
             IList<object> inputArguments,
-            IList<object> outputArguments)
-        {
+            IList<object> outputArguments) {
             ServiceResult error = null;
 
-            try
-            {
-                if (!this.EnabledState.Id.Value)
-                {
+            try {
+                if (!this.EnabledState.Id.Value) {
                     return error = StatusCodes.BadConditionDisabled;
                 }
 
-                if (!this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_Unshelve, false))
-                {
+                if (!this.ShelvingState.IsCausePermitted(context, Methods.ShelvedStateMachineType_Unshelve, false)) {
                     return error = StatusCodes.BadConditionNotShelved;
                 }
 
-                if (OnShelve == null)
-                {
+                if (OnShelve == null) {
                     return error = StatusCodes.BadNotSupported;
                 }
 
                 error = OnShelve(context, this, false, false, 0);
 
                 // report a state change event.
-                if (ServiceResult.IsGood(error))
-                {
+                if (ServiceResult.IsGood(error)) {
                     ReportStateChange(context, false);
                 }
-            }
-            finally
-            {
+            } finally {
                 // raise the audit event.
-                if (this.AreEventsMonitored)
-                {
+                if (this.AreEventsMonitored) {
                     AuditConditionShelvingEventState e = new AuditConditionShelvingEventState(null);
 
                     TranslationInfo info = new TranslationInfo(
@@ -638,32 +559,32 @@ namespace Opc.Ua
 
             return error;
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Called when timed shelve period expires.
         /// </summary>
-        private void OnTimerExpired(object state)
-        {
-            try
-            {
-                if (OnTimedUnshelve != null)
-                {
-                    OnTimedUnshelve((ISystemContext)state, this);
+        private void OnTimerExpired(object state) {
+            try {
+                if (OnTimedUnshelve != null) {
+                    OnTimedUnshelve((ISystemContext) state, this);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error unshelving alarm.");
             }
         }
+
         #endregion
 
         #region Private Fields
+
         private DateTime m_unshelveTime;
         private bool m_oneShot;
         private Timer m_unshelveTimer;
+
         #endregion
     }
 

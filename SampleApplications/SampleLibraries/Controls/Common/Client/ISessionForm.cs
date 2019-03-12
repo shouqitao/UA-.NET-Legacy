@@ -32,13 +32,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// An interface for forms that use a session.
     /// </summary>
-    public interface ISessionForm
-    {
+    public interface ISessionForm {
         /// <summary>
         /// Changes the session being used by the form.
         /// </summary>

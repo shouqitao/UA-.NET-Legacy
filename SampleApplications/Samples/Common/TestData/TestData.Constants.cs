@@ -35,16 +35,15 @@ using System.Xml;
 using System.Runtime.Serialization;
 using Opc.Ua;
 
-namespace TestData
-{
+namespace TestData {
     #region DataType Identifiers
+
     /// <summary>
     /// A class that declares constants for all DataTypes in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class DataTypes
-    {
+    public static partial class DataTypes {
         /// <summary>
         /// The identifier for the ScalarValueDataType DataType.
         /// </summary>
@@ -175,16 +174,17 @@ namespace TestData
         /// </summary>
         public const uint UserArrayValueDataType = 10006;
     }
+
     #endregion
 
     #region Method Identifiers
+
     /// <summary>
     /// A class that declares constants for all Methods in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class Methods
-    {
+    public static partial class Methods {
         /// <summary>
         /// The identifier for the GenerateValuesMethodType Method.
         /// </summary>
@@ -665,16 +665,17 @@ namespace TestData
         /// </summary>
         public const uint Data_Conditions_SystemStatus_AddComment = 11413;
     }
+
     #endregion
 
     #region Object Identifiers
+
     /// <summary>
     /// A class that declares constants for all Objects in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class Objects
-    {
+    public static partial class Objects {
         /// <summary>
         /// The identifier for the TestDataObjectType_CycleComplete Object.
         /// </summary>
@@ -870,16 +871,17 @@ namespace TestData
         /// </summary>
         public const uint UserArrayValueDataType_Encoding_DefaultBinary = 11440;
     }
+
     #endregion
 
     #region ObjectType Identifiers
+
     /// <summary>
     /// A class that declares constants for all ObjectTypes in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class ObjectTypes
-    {
+    public static partial class ObjectTypes {
         /// <summary>
         /// The identifier for the GenerateValuesEventType ObjectType.
         /// </summary>
@@ -930,16 +932,17 @@ namespace TestData
         /// </summary>
         public const uint TestSystemConditionType = 10123;
     }
+
     #endregion
 
     #region Variable Identifiers
+
     /// <summary>
     /// A class that declares constants for all Variables in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class Variables
-    {
+    public static partial class Variables {
         /// <summary>
         /// The identifier for the GenerateValuesMethodType_InputArguments Variable.
         /// </summary>
@@ -5580,5559 +5583,7073 @@ namespace TestData
         /// </summary>
         public const uint TestData_BinarySchema_UserArrayValueDataType = 11434;
     }
+
     #endregion
 
     #region DataType Node Identifiers
+
     /// <summary>
     /// A class that declares constants for all DataTypes in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class DataTypeIds
-    {
+    public static partial class DataTypeIds {
         /// <summary>
         /// The identifier for the ScalarValueDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueDataType = new ExpandedNodeId(TestData.DataTypes.ScalarValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueDataType =
+            new ExpandedNodeId(TestData.DataTypes.ScalarValueDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueDataType = new ExpandedNodeId(TestData.DataTypes.ArrayValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueDataType =
+            new ExpandedNodeId(TestData.DataTypes.ArrayValueDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the BooleanDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId BooleanDataType = new ExpandedNodeId(TestData.DataTypes.BooleanDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId BooleanDataType =
+            new ExpandedNodeId(TestData.DataTypes.BooleanDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the SByteDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId SByteDataType = new ExpandedNodeId(TestData.DataTypes.SByteDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId SByteDataType =
+            new ExpandedNodeId(TestData.DataTypes.SByteDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ByteDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId ByteDataType = new ExpandedNodeId(TestData.DataTypes.ByteDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ByteDataType =
+            new ExpandedNodeId(TestData.DataTypes.ByteDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Int16DataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId Int16DataType = new ExpandedNodeId(TestData.DataTypes.Int16DataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Int16DataType =
+            new ExpandedNodeId(TestData.DataTypes.Int16DataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UInt16DataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId UInt16DataType = new ExpandedNodeId(TestData.DataTypes.UInt16DataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UInt16DataType =
+            new ExpandedNodeId(TestData.DataTypes.UInt16DataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Int32DataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId Int32DataType = new ExpandedNodeId(TestData.DataTypes.Int32DataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Int32DataType =
+            new ExpandedNodeId(TestData.DataTypes.Int32DataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UInt32DataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId UInt32DataType = new ExpandedNodeId(TestData.DataTypes.UInt32DataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UInt32DataType =
+            new ExpandedNodeId(TestData.DataTypes.UInt32DataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Int64DataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId Int64DataType = new ExpandedNodeId(TestData.DataTypes.Int64DataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Int64DataType =
+            new ExpandedNodeId(TestData.DataTypes.Int64DataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UInt64DataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId UInt64DataType = new ExpandedNodeId(TestData.DataTypes.UInt64DataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UInt64DataType =
+            new ExpandedNodeId(TestData.DataTypes.UInt64DataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the FloatDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId FloatDataType = new ExpandedNodeId(TestData.DataTypes.FloatDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId FloatDataType =
+            new ExpandedNodeId(TestData.DataTypes.FloatDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the DoubleDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId DoubleDataType = new ExpandedNodeId(TestData.DataTypes.DoubleDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId DoubleDataType =
+            new ExpandedNodeId(TestData.DataTypes.DoubleDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the StringDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId StringDataType = new ExpandedNodeId(TestData.DataTypes.StringDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId StringDataType =
+            new ExpandedNodeId(TestData.DataTypes.StringDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the DateTimeDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId DateTimeDataType = new ExpandedNodeId(TestData.DataTypes.DateTimeDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId DateTimeDataType =
+            new ExpandedNodeId(TestData.DataTypes.DateTimeDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the GuidDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId GuidDataType = new ExpandedNodeId(TestData.DataTypes.GuidDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId GuidDataType =
+            new ExpandedNodeId(TestData.DataTypes.GuidDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ByteStringDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId ByteStringDataType = new ExpandedNodeId(TestData.DataTypes.ByteStringDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ByteStringDataType =
+            new ExpandedNodeId(TestData.DataTypes.ByteStringDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the XmlElementDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId XmlElementDataType = new ExpandedNodeId(TestData.DataTypes.XmlElementDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId XmlElementDataType =
+            new ExpandedNodeId(TestData.DataTypes.XmlElementDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the NodeIdDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId NodeIdDataType = new ExpandedNodeId(TestData.DataTypes.NodeIdDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId NodeIdDataType =
+            new ExpandedNodeId(TestData.DataTypes.NodeIdDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ExpandedNodeIdDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId ExpandedNodeIdDataType = new ExpandedNodeId(TestData.DataTypes.ExpandedNodeIdDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ExpandedNodeIdDataType =
+            new ExpandedNodeId(TestData.DataTypes.ExpandedNodeIdDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the QualifiedNameDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId QualifiedNameDataType = new ExpandedNodeId(TestData.DataTypes.QualifiedNameDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId QualifiedNameDataType =
+            new ExpandedNodeId(TestData.DataTypes.QualifiedNameDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the LocalizedTextDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId LocalizedTextDataType = new ExpandedNodeId(TestData.DataTypes.LocalizedTextDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId LocalizedTextDataType =
+            new ExpandedNodeId(TestData.DataTypes.LocalizedTextDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the StatusCodeDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId StatusCodeDataType = new ExpandedNodeId(TestData.DataTypes.StatusCodeDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId StatusCodeDataType =
+            new ExpandedNodeId(TestData.DataTypes.StatusCodeDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the VariantDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId VariantDataType = new ExpandedNodeId(TestData.DataTypes.VariantDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId VariantDataType =
+            new ExpandedNodeId(TestData.DataTypes.VariantDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueDataType = new ExpandedNodeId(TestData.DataTypes.UserScalarValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueDataType =
+            new ExpandedNodeId(TestData.DataTypes.UserScalarValueDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueDataType DataType.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueDataType = new ExpandedNodeId(TestData.DataTypes.UserArrayValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueDataType =
+            new ExpandedNodeId(TestData.DataTypes.UserArrayValueDataType, TestData.Namespaces.TestData);
     }
+
     #endregion
 
     #region Method Node Identifiers
+
     /// <summary>
     /// A class that declares constants for all Methods in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class MethodIds
-    {
+    public static partial class MethodIds {
         /// <summary>
         /// The identifier for the GenerateValuesMethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId GenerateValuesMethodType = new ExpandedNodeId(TestData.Methods.GenerateValuesMethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId GenerateValuesMethodType =
+            new ExpandedNodeId(TestData.Methods.GenerateValuesMethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_GenerateValues = new ExpandedNodeId(TestData.Methods.TestDataObjectType_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.TestDataObjectType_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.TestDataObjectType_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.TestDataObjectType_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue1MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue1MethodType = new ExpandedNodeId(TestData.Methods.ScalarValue1MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue1MethodType =
+            new ExpandedNodeId(TestData.Methods.ScalarValue1MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue2MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue2MethodType = new ExpandedNodeId(TestData.Methods.ScalarValue2MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue2MethodType =
+            new ExpandedNodeId(TestData.Methods.ScalarValue2MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue3MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue3MethodType = new ExpandedNodeId(TestData.Methods.ScalarValue3MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue3MethodType =
+            new ExpandedNodeId(TestData.Methods.ScalarValue3MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue1MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue1MethodType = new ExpandedNodeId(TestData.Methods.ArrayValue1MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue1MethodType =
+            new ExpandedNodeId(TestData.Methods.ArrayValue1MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue2MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue2MethodType = new ExpandedNodeId(TestData.Methods.ArrayValue2MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue2MethodType =
+            new ExpandedNodeId(TestData.Methods.ArrayValue2MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue3MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue3MethodType = new ExpandedNodeId(TestData.Methods.ArrayValue3MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue3MethodType =
+            new ExpandedNodeId(TestData.Methods.ArrayValue3MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValue1MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValue1MethodType = new ExpandedNodeId(TestData.Methods.UserScalarValue1MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValue1MethodType =
+            new ExpandedNodeId(TestData.Methods.UserScalarValue1MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValue2MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValue2MethodType = new ExpandedNodeId(TestData.Methods.UserScalarValue2MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValue2MethodType =
+            new ExpandedNodeId(TestData.Methods.UserScalarValue2MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValue1MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValue1MethodType = new ExpandedNodeId(TestData.Methods.UserArrayValue1MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValue1MethodType =
+            new ExpandedNodeId(TestData.Methods.UserArrayValue1MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValue2MethodType Method.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValue2MethodType = new ExpandedNodeId(TestData.Methods.UserArrayValue2MethodType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValue2MethodType =
+            new ExpandedNodeId(TestData.Methods.UserArrayValue2MethodType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod1 = new ExpandedNodeId(TestData.Methods.MethodTestType_ScalarMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod1 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_ScalarMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod2 = new ExpandedNodeId(TestData.Methods.MethodTestType_ScalarMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod2 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_ScalarMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod3 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod3 = new ExpandedNodeId(TestData.Methods.MethodTestType_ScalarMethod3, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod3 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_ScalarMethod3, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod1 = new ExpandedNodeId(TestData.Methods.MethodTestType_ArrayMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod1 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_ArrayMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod2 = new ExpandedNodeId(TestData.Methods.MethodTestType_ArrayMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod2 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_ArrayMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod3 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod3 = new ExpandedNodeId(TestData.Methods.MethodTestType_ArrayMethod3, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod3 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_ArrayMethod3, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserScalarMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod1 = new ExpandedNodeId(TestData.Methods.MethodTestType_UserScalarMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod1 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_UserScalarMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserScalarMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod2 = new ExpandedNodeId(TestData.Methods.MethodTestType_UserScalarMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod2 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_UserScalarMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserArrayMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod1 = new ExpandedNodeId(TestData.Methods.MethodTestType_UserArrayMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod1 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_UserArrayMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserArrayMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod2 = new ExpandedNodeId(TestData.Methods.MethodTestType_UserArrayMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod2 =
+            new ExpandedNodeId(TestData.Methods.MethodTestType_UserArrayMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_Disable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_Enable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Scalar_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Static_Array_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Array_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_Disable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_Enable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.Data_Static_Array_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserScalar_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.Data_Static_UserArray_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AddComment = new ExpandedNodeId(
+            TestData.Methods.Data_Static_AnalogScalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogScalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Acknowledge = new ExpandedNodeId(
+            TestData.Methods.Data_Static_AnalogScalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Static_AnalogArray_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Acknowledge = new ExpandedNodeId(
+            TestData.Methods.Data_Static_AnalogArray_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod1 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ScalarMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod1 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ScalarMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod2 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ScalarMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod2 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ScalarMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod3 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod3 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ScalarMethod3, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod3 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ScalarMethod3, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod1 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ArrayMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod1 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ArrayMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod2 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ArrayMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod2 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ArrayMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod3 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod3 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ArrayMethod3, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod3 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_ArrayMethod3, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserScalarMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod1 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserScalarMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod1 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserScalarMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserScalarMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod2 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserScalarMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod2 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserScalarMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserArrayMethod1 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod1 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserArrayMethod1, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod1 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserArrayMethod1, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserArrayMethod2 Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod2 = new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserArrayMethod2, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod2 =
+            new ExpandedNodeId(TestData.Methods.Data_Static_MethodTest_UserArrayMethod2, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_Enable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Scalar_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_Disable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_Enable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_Array_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Acknowledge = new ExpandedNodeId(
+            TestData.Methods.Data_Dynamic_UserScalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_AddComment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Acknowledge =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_UserArray_CycleComplete_Acknowledge,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AddComment = new ExpandedNodeId(
+            TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_AddComment, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge = new ExpandedNodeId(
+            TestData.Methods.Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_GenerateValues Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_GenerateValues = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_GenerateValues, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_GenerateValues =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_GenerateValues, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Disable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_Disable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Enable = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_Enable,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AddComment = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AddComment = new ExpandedNodeId(
+            TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_AddComment, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Acknowledge Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Acknowledge = new ExpandedNodeId(TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Acknowledge = new ExpandedNodeId(
+            TestData.Methods.Data_Dynamic_AnalogArray_CycleComplete_Acknowledge, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Disable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Disable = new ExpandedNodeId(TestData.Methods.Data_Conditions_SystemStatus_Disable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Disable =
+            new ExpandedNodeId(TestData.Methods.Data_Conditions_SystemStatus_Disable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Enable Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Enable = new ExpandedNodeId(TestData.Methods.Data_Conditions_SystemStatus_Enable, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Enable =
+            new ExpandedNodeId(TestData.Methods.Data_Conditions_SystemStatus_Enable, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_AddComment Method.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_AddComment = new ExpandedNodeId(TestData.Methods.Data_Conditions_SystemStatus_AddComment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_AddComment =
+            new ExpandedNodeId(TestData.Methods.Data_Conditions_SystemStatus_AddComment, TestData.Namespaces.TestData);
     }
+
     #endregion
 
     #region Object Node Identifiers
+
     /// <summary>
     /// A class that declares constants for all Objects in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class ObjectIds
-    {
+    public static partial class ObjectIds {
         /// <summary>
         /// The identifier for the TestDataObjectType_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete = new ExpandedNodeId(TestData.Objects.TestDataObjectType_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.TestDataObjectType_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data = new ExpandedNodeId(TestData.Objects.Data, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data =
+            new ExpandedNodeId(TestData.Objects.Data, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static = new ExpandedNodeId(TestData.Objects.Data_Static, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static =
+            new ExpandedNodeId(TestData.Objects.Data_Static, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar = new ExpandedNodeId(TestData.Objects.Data_Static_Scalar, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar =
+            new ExpandedNodeId(TestData.Objects.Data_Static_Scalar, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Static_Scalar_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Static_Scalar_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array = new ExpandedNodeId(TestData.Objects.Data_Static_Array, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array =
+            new ExpandedNodeId(TestData.Objects.Data_Static_Array, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Static_Array_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Static_Array_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar = new ExpandedNodeId(TestData.Objects.Data_Static_UserScalar, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar =
+            new ExpandedNodeId(TestData.Objects.Data_Static_UserScalar, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Static_UserScalar_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Static_UserScalar_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray = new ExpandedNodeId(TestData.Objects.Data_Static_UserArray, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray =
+            new ExpandedNodeId(TestData.Objects.Data_Static_UserArray, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Static_UserArray_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Static_UserArray_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar = new ExpandedNodeId(TestData.Objects.Data_Static_AnalogScalar, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar =
+            new ExpandedNodeId(TestData.Objects.Data_Static_AnalogScalar, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Static_AnalogScalar_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Static_AnalogScalar_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray = new ExpandedNodeId(TestData.Objects.Data_Static_AnalogArray, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray =
+            new ExpandedNodeId(TestData.Objects.Data_Static_AnalogArray, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Static_AnalogArray_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Static_AnalogArray_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest = new ExpandedNodeId(TestData.Objects.Data_Static_MethodTest, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest =
+            new ExpandedNodeId(TestData.Objects.Data_Static_MethodTest, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic = new ExpandedNodeId(TestData.Objects.Data_Dynamic, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar = new ExpandedNodeId(TestData.Objects.Data_Dynamic_Scalar, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_Scalar, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Dynamic_Scalar_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_Scalar_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array = new ExpandedNodeId(TestData.Objects.Data_Dynamic_Array, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_Array, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Dynamic_Array_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_Array_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar = new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserScalar, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserScalar, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserScalar_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserScalar_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray = new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserArray, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserArray, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserArray_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_UserArray_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar = new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogScalar, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogScalar, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogScalar_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogScalar_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray = new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogArray, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogArray, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete = new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogArray_CycleComplete, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete =
+            new ExpandedNodeId(TestData.Objects.Data_Dynamic_AnalogArray_CycleComplete, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions = new ExpandedNodeId(TestData.Objects.Data_Conditions, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions =
+            new ExpandedNodeId(TestData.Objects.Data_Conditions, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus Object.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus = new ExpandedNodeId(TestData.Objects.Data_Conditions_SystemStatus, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus =
+            new ExpandedNodeId(TestData.Objects.Data_Conditions_SystemStatus, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueDataType_Encoding_DefaultXml Object.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueDataType_Encoding_DefaultXml = new ExpandedNodeId(TestData.Objects.ScalarValueDataType_Encoding_DefaultXml, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueDataType_Encoding_DefaultXml =
+            new ExpandedNodeId(TestData.Objects.ScalarValueDataType_Encoding_DefaultXml, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueDataType_Encoding_DefaultXml Object.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueDataType_Encoding_DefaultXml = new ExpandedNodeId(TestData.Objects.ArrayValueDataType_Encoding_DefaultXml, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueDataType_Encoding_DefaultXml =
+            new ExpandedNodeId(TestData.Objects.ArrayValueDataType_Encoding_DefaultXml, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueDataType_Encoding_DefaultXml Object.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueDataType_Encoding_DefaultXml = new ExpandedNodeId(TestData.Objects.UserScalarValueDataType_Encoding_DefaultXml, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueDataType_Encoding_DefaultXml =
+            new ExpandedNodeId(TestData.Objects.UserScalarValueDataType_Encoding_DefaultXml,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueDataType_Encoding_DefaultXml Object.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueDataType_Encoding_DefaultXml = new ExpandedNodeId(TestData.Objects.UserArrayValueDataType_Encoding_DefaultXml, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueDataType_Encoding_DefaultXml =
+            new ExpandedNodeId(TestData.Objects.UserArrayValueDataType_Encoding_DefaultXml,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueDataType_Encoding_DefaultBinary Object.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueDataType_Encoding_DefaultBinary = new ExpandedNodeId(TestData.Objects.ScalarValueDataType_Encoding_DefaultBinary, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueDataType_Encoding_DefaultBinary =
+            new ExpandedNodeId(TestData.Objects.ScalarValueDataType_Encoding_DefaultBinary,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueDataType_Encoding_DefaultBinary Object.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueDataType_Encoding_DefaultBinary = new ExpandedNodeId(TestData.Objects.ArrayValueDataType_Encoding_DefaultBinary, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueDataType_Encoding_DefaultBinary =
+            new ExpandedNodeId(TestData.Objects.ArrayValueDataType_Encoding_DefaultBinary,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueDataType_Encoding_DefaultBinary Object.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueDataType_Encoding_DefaultBinary = new ExpandedNodeId(TestData.Objects.UserScalarValueDataType_Encoding_DefaultBinary, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueDataType_Encoding_DefaultBinary =
+            new ExpandedNodeId(TestData.Objects.UserScalarValueDataType_Encoding_DefaultBinary,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueDataType_Encoding_DefaultBinary Object.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueDataType_Encoding_DefaultBinary = new ExpandedNodeId(TestData.Objects.UserArrayValueDataType_Encoding_DefaultBinary, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueDataType_Encoding_DefaultBinary =
+            new ExpandedNodeId(TestData.Objects.UserArrayValueDataType_Encoding_DefaultBinary,
+                TestData.Namespaces.TestData);
     }
+
     #endregion
 
     #region ObjectType Node Identifiers
+
     /// <summary>
     /// A class that declares constants for all ObjectTypes in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class ObjectTypeIds
-    {
+    public static partial class ObjectTypeIds {
         /// <summary>
         /// The identifier for the GenerateValuesEventType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId GenerateValuesEventType = new ExpandedNodeId(TestData.ObjectTypes.GenerateValuesEventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId GenerateValuesEventType =
+            new ExpandedNodeId(TestData.ObjectTypes.GenerateValuesEventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType = new ExpandedNodeId(TestData.ObjectTypes.TestDataObjectType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType =
+            new ExpandedNodeId(TestData.ObjectTypes.TestDataObjectType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType = new ExpandedNodeId(TestData.ObjectTypes.ScalarValueObjectType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType =
+            new ExpandedNodeId(TestData.ObjectTypes.ScalarValueObjectType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType = new ExpandedNodeId(TestData.ObjectTypes.AnalogScalarValueObjectType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType =
+            new ExpandedNodeId(TestData.ObjectTypes.AnalogScalarValueObjectType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType = new ExpandedNodeId(TestData.ObjectTypes.ArrayValueObjectType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType =
+            new ExpandedNodeId(TestData.ObjectTypes.ArrayValueObjectType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType = new ExpandedNodeId(TestData.ObjectTypes.AnalogArrayValueObjectType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType =
+            new ExpandedNodeId(TestData.ObjectTypes.AnalogArrayValueObjectType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType = new ExpandedNodeId(TestData.ObjectTypes.UserScalarValueObjectType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType =
+            new ExpandedNodeId(TestData.ObjectTypes.UserScalarValueObjectType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType = new ExpandedNodeId(TestData.ObjectTypes.UserArrayValueObjectType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType =
+            new ExpandedNodeId(TestData.ObjectTypes.UserArrayValueObjectType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType = new ExpandedNodeId(TestData.ObjectTypes.MethodTestType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType =
+            new ExpandedNodeId(TestData.ObjectTypes.MethodTestType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestSystemConditionType ObjectType.
         /// </summary>
-        public static readonly ExpandedNodeId TestSystemConditionType = new ExpandedNodeId(TestData.ObjectTypes.TestSystemConditionType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestSystemConditionType =
+            new ExpandedNodeId(TestData.ObjectTypes.TestSystemConditionType, TestData.Namespaces.TestData);
     }
+
     #endregion
 
     #region Variable Node Identifiers
+
     /// <summary>
     /// A class that declares constants for all Variables in the Model Design.
     /// </summary>
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
-    public static partial class VariableIds
-    {
+    public static partial class VariableIds {
         /// <summary>
         /// The identifier for the GenerateValuesMethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId GenerateValuesMethodType_InputArguments = new ExpandedNodeId(TestData.Variables.GenerateValuesMethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId GenerateValuesMethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.GenerateValuesMethodType_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the GenerateValuesEventType_Iterations Variable.
         /// </summary>
-        public static readonly ExpandedNodeId GenerateValuesEventType_Iterations = new ExpandedNodeId(TestData.Variables.GenerateValuesEventType_Iterations, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId GenerateValuesEventType_Iterations =
+            new ExpandedNodeId(TestData.Variables.GenerateValuesEventType_Iterations, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the GenerateValuesEventType_NewValueCount Variable.
         /// </summary>
-        public static readonly ExpandedNodeId GenerateValuesEventType_NewValueCount = new ExpandedNodeId(TestData.Variables.GenerateValuesEventType_NewValueCount, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId GenerateValuesEventType_NewValueCount =
+            new ExpandedNodeId(TestData.Variables.GenerateValuesEventType_NewValueCount, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_SimulationActive = new ExpandedNodeId(TestData.Variables.TestDataObjectType_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.TestDataObjectType_SimulationActive, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.TestDataObjectType_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.TestDataObjectType_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.TestDataObjectType_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_AckedState =
+            new ExpandedNodeId(TestData.Variables.TestDataObjectType_CycleComplete_AckedState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.TestDataObjectType_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.TestDataObjectType_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestDataObjectType_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.TestDataObjectType_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestDataObjectType_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.TestDataObjectType_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue1MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue1MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.ScalarValue1MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue1MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.ScalarValue1MethodType_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue1MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue1MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.ScalarValue1MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue1MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.ScalarValue1MethodType_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue2MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue2MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.ScalarValue2MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue2MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.ScalarValue2MethodType_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue2MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue2MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.ScalarValue2MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue2MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.ScalarValue2MethodType_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue3MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue3MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.ScalarValue3MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue3MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.ScalarValue3MethodType_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValue3MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValue3MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.ScalarValue3MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValue3MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.ScalarValue3MethodType_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_BooleanValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_SByteValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_SByteValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_ByteValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_ByteValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_Int16Value = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_Int16Value =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_UInt16Value = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_Int32Value = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_Int32Value =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_UInt32Value = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_Int64Value = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_Int64Value =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_UInt64Value = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_FloatValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_FloatValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_DoubleValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_StringValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_StringValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_DateTimeValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_GuidValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_GuidValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_ByteStringValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_XmlElementValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_NodeIdValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_StatusCodeValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_VariantValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_VariantValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_EnumerationValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_EnumerationValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_EnumerationValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_EnumerationValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_EnumerationValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_StructureValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_StructureValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_StructureValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_StructureValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_StructureValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_NumberValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_NumberValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_IntegerValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ScalarValueObjectType_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ScalarValueObjectType_UIntegerValue = new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ScalarValueObjectType_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.ScalarValueObjectType_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_SByteValue = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_SByteValue =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_SByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_SByteValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_SByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_SByteValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_SByteValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_ByteValue = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_ByteValue =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_ByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_ByteValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_ByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_ByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_ByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int16Value = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int16Value =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_Int16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int16Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int16Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_Int16Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt16Value = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt16Value,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UInt16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt16Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt16Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_UInt16Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int32Value = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int32Value =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_Int32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int32Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int32Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_Int32Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt32Value = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt32Value,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UInt32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt32Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt32Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_UInt32Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int64Value = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int64Value =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_Int64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int64Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_Int64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_Int64Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_Int64Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt64Value = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt64Value,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UInt64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt64Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UInt64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UInt64Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_UInt64Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_FloatValue = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_FloatValue =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_FloatValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_FloatValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_FloatValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_FloatValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_FloatValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_DoubleValue = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_DoubleValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_DoubleValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_DoubleValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_DoubleValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_DoubleValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_DoubleValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_NumberValue = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_NumberValue =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_NumberValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_NumberValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_NumberValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_NumberValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_NumberValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_NumberValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_IntegerValue = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_IntegerValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_IntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_IntegerValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_IntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_IntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_IntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UIntegerValue = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UIntegerValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogScalarValueObjectType_UIntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UIntegerValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogScalarValueObjectType_UIntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogScalarValueObjectType_UIntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogScalarValueObjectType_UIntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue1MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue1MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.ArrayValue1MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue1MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.ArrayValue1MethodType_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue1MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue1MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.ArrayValue1MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue1MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.ArrayValue1MethodType_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue2MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue2MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.ArrayValue2MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue2MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.ArrayValue2MethodType_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue2MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue2MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.ArrayValue2MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue2MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.ArrayValue2MethodType_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue3MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue3MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.ArrayValue3MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue3MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.ArrayValue3MethodType_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValue3MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValue3MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.ArrayValue3MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValue3MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.ArrayValue3MethodType_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_BooleanValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_SByteValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_SByteValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_ByteValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_ByteValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_Int16Value = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_Int16Value =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_UInt16Value = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_Int32Value = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_Int32Value =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_UInt32Value = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_Int64Value = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_Int64Value =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_UInt64Value = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_FloatValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_FloatValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_DoubleValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_StringValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_StringValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_DateTimeValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_GuidValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_GuidValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_ByteStringValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_XmlElementValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_NodeIdValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_StatusCodeValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_VariantValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_VariantValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_EnumerationValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_EnumerationValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_EnumerationValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_EnumerationValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_EnumerationValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_StructureValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_StructureValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_StructureValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_StructureValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_StructureValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_NumberValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_NumberValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_IntegerValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the ArrayValueObjectType_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId ArrayValueObjectType_UIntegerValue = new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId ArrayValueObjectType_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.ArrayValueObjectType_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_SByteValue = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_SByteValue =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_SByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_SByteValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_SByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_SByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_SByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_ByteValue = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_ByteValue =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_ByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_ByteValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_ByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_ByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_ByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int16Value = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int16Value =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_Int16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int16Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt16Value = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UInt16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt16Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt16Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogArrayValueObjectType_UInt16Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int32Value = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int32Value =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_Int32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int32Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt32Value = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UInt32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt32Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt32Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogArrayValueObjectType_UInt32Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int64Value = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int64Value =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_Int64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int64Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_Int64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_Int64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt64Value = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UInt64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt64Value_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UInt64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UInt64Value_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogArrayValueObjectType_UInt64Value_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_FloatValue = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_FloatValue =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_FloatValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_FloatValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_FloatValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_FloatValue_EURange =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_FloatValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_DoubleValue = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_DoubleValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_DoubleValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_DoubleValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_DoubleValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogArrayValueObjectType_DoubleValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_NumberValue = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_NumberValue =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_NumberValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_NumberValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_NumberValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_NumberValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogArrayValueObjectType_NumberValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_IntegerValue = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_IntegerValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_IntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_IntegerValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_IntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_IntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogArrayValueObjectType_IntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UIntegerValue = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UIntegerValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the AnalogArrayValueObjectType_UIntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UIntegerValue_EURange = new ExpandedNodeId(TestData.Variables.AnalogArrayValueObjectType_UIntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId AnalogArrayValueObjectType_UIntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.AnalogArrayValueObjectType_UIntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_BooleanValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_SByteValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_SByteValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_ByteValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_ByteValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_Int16Value = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_Int16Value =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_UInt16Value = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_Int32Value = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_Int32Value =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_UInt32Value = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_Int64Value = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_Int64Value =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_UInt64Value = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_FloatValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_FloatValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_DoubleValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_StringValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_StringValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_DateTimeValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_DateTimeValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_GuidValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_GuidValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_ByteStringValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_ByteStringValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_XmlElementValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_XmlElementValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_NodeIdValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_StatusCodeValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_StatusCodeValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValueObjectType_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValueObjectType_VariantValue = new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValueObjectType_VariantValue =
+            new ExpandedNodeId(TestData.Variables.UserScalarValueObjectType_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValue1MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValue1MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.UserScalarValue1MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValue1MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.UserScalarValue1MethodType_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValue1MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValue1MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.UserScalarValue1MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValue1MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.UserScalarValue1MethodType_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValue2MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValue2MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.UserScalarValue2MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValue2MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.UserScalarValue2MethodType_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserScalarValue2MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserScalarValue2MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.UserScalarValue2MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserScalarValue2MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.UserScalarValue2MethodType_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_BooleanValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_SByteValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_SByteValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_ByteValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_ByteValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_Int16Value = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_Int16Value =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_UInt16Value = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_Int32Value = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_Int32Value =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_UInt32Value = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_Int64Value = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_Int64Value =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_UInt64Value = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_FloatValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_FloatValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_DoubleValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_StringValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_StringValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_DateTimeValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_GuidValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_GuidValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_ByteStringValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_ByteStringValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_XmlElementValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_XmlElementValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_NodeIdValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_StatusCodeValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_StatusCodeValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValueObjectType_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValueObjectType_VariantValue = new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValueObjectType_VariantValue =
+            new ExpandedNodeId(TestData.Variables.UserArrayValueObjectType_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValue1MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValue1MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.UserArrayValue1MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValue1MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.UserArrayValue1MethodType_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValue1MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValue1MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.UserArrayValue1MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValue1MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.UserArrayValue1MethodType_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValue2MethodType_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValue2MethodType_InputArguments = new ExpandedNodeId(TestData.Variables.UserArrayValue2MethodType_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValue2MethodType_InputArguments =
+            new ExpandedNodeId(TestData.Variables.UserArrayValue2MethodType_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the UserArrayValue2MethodType_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId UserArrayValue2MethodType_OutputArguments = new ExpandedNodeId(TestData.Variables.UserArrayValue2MethodType_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId UserArrayValue2MethodType_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.UserArrayValue2MethodType_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod1_InputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod1_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod1_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod1_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod2_InputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod2_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod2_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod2_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod3_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod3_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod3_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod3_InputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod3_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ScalarMethod3_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ScalarMethod3_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod3_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ScalarMethod3_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ScalarMethod3_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod1_InputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod1_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod1_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod1_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod2_InputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod2_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod2_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod2_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod3_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod3_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod3_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod3_InputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod3_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_ArrayMethod3_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_ArrayMethod3_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod3_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_ArrayMethod3_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.MethodTestType_ArrayMethod3_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserScalarMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserScalarMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod1_InputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserScalarMethod1_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserScalarMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserScalarMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod1_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserScalarMethod1_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserScalarMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserScalarMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod2_InputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserScalarMethod2_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserScalarMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserScalarMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserScalarMethod2_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserScalarMethod2_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserArrayMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserArrayMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod1_InputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserArrayMethod1_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserArrayMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserArrayMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod1_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserArrayMethod1_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserArrayMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserArrayMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod2_InputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserArrayMethod2_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the MethodTestType_UserArrayMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.MethodTestType_UserArrayMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId MethodTestType_UserArrayMethod2_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.MethodTestType_UserArrayMethod2_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestSystemConditionType_MonitoredNodeCount Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestSystemConditionType_MonitoredNodeCount = new ExpandedNodeId(TestData.Variables.TestSystemConditionType_MonitoredNodeCount, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestSystemConditionType_MonitoredNodeCount =
+            new ExpandedNodeId(TestData.Variables.TestSystemConditionType_MonitoredNodeCount,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_SimulationActive, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Scalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EventType =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_EventType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_SourceNode =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_SourceNode,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_SourceName =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_SourceName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Time, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ReceiveTime =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ReceiveTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_LocalTime =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_LocalTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Severity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConditionClassId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Scalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConditionClassName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Scalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Scalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_BranchId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EnabledState =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_EnabledState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Scalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_LastSeverity =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_LastSeverity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ClientUserId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ClientUserId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AckedState =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_AckedState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Scalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Scalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_StringValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_ExpandedNodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_QualifiedNameValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_LocalizedTextValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_EnumerationValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_EnumerationValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_EnumerationValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_EnumerationValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_EnumerationValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_StructureValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_StructureValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_StructureValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_StructureValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_StructureValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Scalar_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Scalar_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Scalar_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Scalar_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Static_Array_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_SimulationActive, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Array_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Array_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EventType =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_EventType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_SourceNode =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_SourceNode,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_SourceName =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_SourceName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Time, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ReceiveTime =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ReceiveTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_LocalTime =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_LocalTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Severity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConditionClassId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Array_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConditionClassName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Array_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConditionName =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ConditionName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_BranchId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Retain, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EnabledState =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_EnabledState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_EnabledState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Array_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_LastSeverity =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_LastSeverity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ClientUserId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ClientUserId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AckedState =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_AckedState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_AckedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_AckedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_Array_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Static_Array_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Static_Array_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Static_Array_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Static_Array_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Static_Array_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Static_Array_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_StringValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_ExpandedNodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_QualifiedNameValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_LocalizedTextValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_EnumerationValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_EnumerationValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_EnumerationValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_EnumerationValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_EnumerationValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_StructureValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_StructureValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_StructureValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_StructureValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_StructureValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_Array_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_Array_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_Array_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_Array_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_Array_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_SimulationActive,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EventType = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_LocalTime = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Severity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_BranchId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserScalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_StringValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserScalar_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserScalar_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserScalar_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserScalar_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_SimulationActive, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EventType =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_EventType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_LocalTime =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_LocalTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Severity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConditionClassId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_BranchId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_EnabledState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_UserArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_StringValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_UserArray_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_UserArray_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_UserArray_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_UserArray_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_SimulationActive,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_GenerateValues_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_GenerateValues_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EventId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EventId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EventType = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_LocalTime = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Message = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Message, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Severity = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Severity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_BranchId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_EnabledState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_EnabledState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Quality = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Quality, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Comment = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Comment, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_SByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_SByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_SByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_SByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_SByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_ByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_ByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_ByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_ByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_ByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_Int16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UInt16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_Int32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UInt32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_Int64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_Int64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_Int64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UInt64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UInt64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UInt64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_FloatValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_FloatValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_FloatValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_FloatValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_FloatValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_DoubleValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_DoubleValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_DoubleValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_DoubleValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_DoubleValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_NumberValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_NumberValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_NumberValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_NumberValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_NumberValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_IntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_IntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_IntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_IntegerValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_IntegerValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogScalar_UIntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UIntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogScalar_UIntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogScalar_UIntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogScalar_UIntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_SimulationActive,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_GenerateValues_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_GenerateValues_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EventType = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_LocalTime = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Severity = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_Severity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_BranchId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_BranchId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_EnabledState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_EnabledState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Static_AnalogArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_SByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_SByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_SByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_SByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_SByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_ByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_ByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_ByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_ByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_ByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_Int16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UInt16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_Int32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UInt32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_Int64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_Int64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_Int64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UInt64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UInt64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UInt64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_FloatValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_FloatValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_FloatValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_FloatValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_FloatValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_DoubleValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_DoubleValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_DoubleValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_DoubleValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_DoubleValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_NumberValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_NumberValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_NumberValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_NumberValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_NumberValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_IntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_IntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_IntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_IntegerValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_IntegerValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_AnalogArray_UIntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_AnalogArray_UIntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UIntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_AnalogArray_UIntegerValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Static_AnalogArray_UIntegerValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ScalarMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod1_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ScalarMethod1_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ScalarMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod1_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ScalarMethod1_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ScalarMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod2_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ScalarMethod2_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ScalarMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod2_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ScalarMethod2_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod3_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod3_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ScalarMethod3_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod3_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ScalarMethod3_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ScalarMethod3_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod3_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ScalarMethod3_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ScalarMethod3_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ScalarMethod3_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ArrayMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod1_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ArrayMethod1_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ArrayMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod1_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ArrayMethod1_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ArrayMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod2_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ArrayMethod2_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ArrayMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod2_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ArrayMethod2_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod3_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod3_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ArrayMethod3_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod3_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ArrayMethod3_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_ArrayMethod3_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod3_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_ArrayMethod3_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_ArrayMethod3_OutputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Static_MethodTest_ArrayMethod3_OutputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserScalarMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod1_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod1_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserScalarMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod1_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod1_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserScalarMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod2_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod2_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserScalarMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserScalarMethod2_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserScalarMethod2_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserArrayMethod1_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod1_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod1_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod1_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod1_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserArrayMethod1_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod1_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod1_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod1_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod1_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserArrayMethod2_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod2_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod2_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod2_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod2_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Static_MethodTest_UserArrayMethod2_OutputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod2_OutputArguments = new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod2_OutputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Static_MethodTest_UserArrayMethod2_OutputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Static_MethodTest_UserArrayMethod2_OutputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_SimulationActive, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EventType =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EventType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_SourceNode =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_SourceNode,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_SourceName =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_SourceName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Time, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ReceiveTime =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ReceiveTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_LocalTime =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_LocalTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Severity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConditionClassId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConditionClassName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_BranchId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AckedState =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_AckedState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Scalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_StringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_QualifiedNameValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_LocalizedTextValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_EnumerationValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_EnumerationValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_EnumerationValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_EnumerationValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_EnumerationValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_StructureValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_StructureValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_StructureValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_StructureValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_StructureValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Scalar_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Scalar_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Scalar_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_SimulationActive, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Array_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EventType =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_EventType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_SourceNode =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_SourceNode,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_SourceName =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_SourceName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Time, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ReceiveTime =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ReceiveTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_LocalTime =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_LocalTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Severity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConditionClassId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Array_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConditionClassName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Array_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Array_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_BranchId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EnabledState =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_EnabledState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_EnabledState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Array_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_LastSeverity =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_LastSeverity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ClientUserId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ClientUserId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AckedState =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_AckedState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Array_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_Array_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_StringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_ExpandedNodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_QualifiedNameValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_LocalizedTextValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_EnumerationValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_EnumerationValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_EnumerationValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_EnumerationValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_EnumerationValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_StructureValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_StructureValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_StructureValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_StructureValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_StructureValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_Array_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_Array_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_Array_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_Array_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_SimulationActive,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_GenerateValues_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_GenerateValues_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EventType = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_LocalTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Severity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Severity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_BranchId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_EnabledState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_EnabledState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_StringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_ByteStringValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_XmlElementValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_StatusCodeValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserScalar_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserScalar_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserScalar_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_SimulationActive,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_GenerateValues_InputArguments = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_GenerateValues_InputArguments, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EventId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EventType = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_LocalTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Message,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Severity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_BranchId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_EnabledState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Quality,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Comment,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_UserArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_BooleanValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_BooleanValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_BooleanValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_BooleanValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_BooleanValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_StringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_StringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_StringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_StringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_StringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_DateTimeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_DateTimeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_DateTimeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_DateTimeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_DateTimeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_GuidValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_GuidValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_GuidValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_GuidValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_GuidValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_ByteStringValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_ByteStringValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_ByteStringValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_ByteStringValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_ByteStringValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_XmlElementValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_XmlElementValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_XmlElementValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_XmlElementValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_XmlElementValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_NodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_NodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_NodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_NodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_NodeIdValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_ExpandedNodeIdValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_ExpandedNodeIdValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_ExpandedNodeIdValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_ExpandedNodeIdValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_ExpandedNodeIdValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_QualifiedNameValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_QualifiedNameValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_QualifiedNameValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_QualifiedNameValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_QualifiedNameValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_LocalizedTextValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_LocalizedTextValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_LocalizedTextValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_LocalizedTextValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_LocalizedTextValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_StatusCodeValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_StatusCodeValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_StatusCodeValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_StatusCodeValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_StatusCodeValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_UserArray_VariantValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_UserArray_VariantValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_VariantValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_UserArray_VariantValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_UserArray_VariantValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_SimulationActive,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_GenerateValues_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_GenerateValues_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EventId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EventId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EventType = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_LocalTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Message = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Message, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Severity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Severity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConditionName =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConditionName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_BranchId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_BranchId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Retain = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Retain, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_EnabledState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_EnabledState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Quality = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Quality, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Comment = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Comment, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_AckedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_AckedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_SByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_SByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_SByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_SByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_SByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_ByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_ByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_ByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_ByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_ByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_Int16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UInt16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_Int32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UInt32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_Int64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_Int64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_Int64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UInt64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UInt64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UInt64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_FloatValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_FloatValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_FloatValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_FloatValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_FloatValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_DoubleValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_DoubleValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_DoubleValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_DoubleValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_DoubleValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_NumberValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_NumberValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_NumberValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_NumberValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_NumberValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_IntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_IntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_IntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_IntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_IntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UIntegerValue,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogScalar_UIntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UIntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogScalar_UIntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogScalar_UIntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogScalar_UIntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_SimulationActive Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_SimulationActive = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_SimulationActive, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_SimulationActive =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_SimulationActive,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_GenerateValues_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_GenerateValues_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_GenerateValues_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_GenerateValues_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_GenerateValues_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EventId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EventId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EventId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EventType = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EventType = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_SourceNode = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_SourceNode, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_SourceName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_SourceName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_SourceName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Time = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Time,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ReceiveTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ReceiveTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_LocalTime = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Message = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Message = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Message, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Severity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Severity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Severity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConditionClassName =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConditionClassName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConditionName = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConditionName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_BranchId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_BranchId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_BranchId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Retain = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Retain,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EnabledState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EnabledState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_EnabledState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_EnabledState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Quality = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Quality = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Quality, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Quality_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Quality_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_LastSeverity = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_LastSeverity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Comment = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Comment = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Comment, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Comment_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Comment_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ClientUserId = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ClientUserId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_AckedState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AckedState = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AckedState = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_AckedState, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_AckedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AckedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_AckedState_Id = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_AckedState_Id, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_ConfirmedState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConfirmedState_Id = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConfirmedState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_ConfirmedState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_ConfirmedState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Acknowledge_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Acknowledge_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Acknowledge_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Acknowledge_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Acknowledge_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_CycleComplete_Confirm_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Confirm_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Confirm_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_CycleComplete_Confirm_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_CycleComplete_Confirm_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_SByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_SByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_SByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_SByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_SByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_SByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_SByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_SByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_SByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_SByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_ByteValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_ByteValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_ByteValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_ByteValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_ByteValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_ByteValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_ByteValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_ByteValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_ByteValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_ByteValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_Int16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_Int16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UInt16Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt16Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt16Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt16Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt16Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UInt16Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt16Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt16Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt16Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt16Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_Int32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_Int32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UInt32Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt32Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt32Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt32Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt32Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UInt32Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt32Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt32Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt32Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt32Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_Int64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_Int64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_Int64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_Int64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UInt64Value Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt64Value = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt64Value, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt64Value =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt64Value, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UInt64Value_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt64Value_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt64Value_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UInt64Value_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UInt64Value_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_FloatValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_FloatValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_FloatValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_FloatValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_FloatValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_FloatValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_FloatValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_FloatValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_FloatValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_FloatValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_DoubleValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_DoubleValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_DoubleValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_DoubleValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_DoubleValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_DoubleValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_DoubleValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_DoubleValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_DoubleValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_DoubleValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_NumberValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_NumberValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_NumberValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_NumberValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_NumberValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_NumberValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_NumberValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_NumberValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_NumberValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_NumberValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_IntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_IntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_IntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_IntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_IntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_IntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_IntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_IntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_IntegerValue_EURange =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_IntegerValue_EURange,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UIntegerValue Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UIntegerValue = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UIntegerValue, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UIntegerValue =
+            new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UIntegerValue, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Dynamic_AnalogArray_UIntegerValue_EURange Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UIntegerValue_EURange = new ExpandedNodeId(TestData.Variables.Data_Dynamic_AnalogArray_UIntegerValue_EURange, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Dynamic_AnalogArray_UIntegerValue_EURange = new ExpandedNodeId(
+            TestData.Variables.Data_Dynamic_AnalogArray_UIntegerValue_EURange, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_EventId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EventId = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EventId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EventId =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EventId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_EventType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EventType = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EventType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EventType =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EventType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_SourceNode Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_SourceNode = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_SourceNode, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_SourceNode =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_SourceNode,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_SourceName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_SourceName = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_SourceName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_SourceName =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_SourceName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Time Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Time = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Time, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Time =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Time, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_ReceiveTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ReceiveTime = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ReceiveTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ReceiveTime =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ReceiveTime,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_LocalTime Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_LocalTime = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_LocalTime, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_LocalTime =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_LocalTime, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Message Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Message = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Message, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Message =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Message, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Severity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Severity = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Severity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Severity =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Severity, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_ConditionClassId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ConditionClassId = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ConditionClassId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ConditionClassId =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ConditionClassId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_ConditionClassName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ConditionClassName = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ConditionClassName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ConditionClassName = new ExpandedNodeId(
+            TestData.Variables.Data_Conditions_SystemStatus_ConditionClassName, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_ConditionName Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ConditionName = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ConditionName, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ConditionName =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ConditionName,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_BranchId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_BranchId = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_BranchId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_BranchId =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_BranchId, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Retain Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Retain = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Retain, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Retain =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Retain, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_EnabledState Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EnabledState = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EnabledState, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EnabledState =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EnabledState,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_EnabledState_Id Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EnabledState_Id = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EnabledState_Id, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_EnabledState_Id =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_EnabledState_Id,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Quality Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Quality = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Quality, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Quality =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Quality, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Quality_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Quality_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Quality_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Quality_SourceTimestamp = new ExpandedNodeId(
+            TestData.Variables.Data_Conditions_SystemStatus_Quality_SourceTimestamp, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_LastSeverity Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_LastSeverity = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_LastSeverity, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_LastSeverity =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_LastSeverity,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_LastSeverity_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_LastSeverity_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_LastSeverity_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_LastSeverity_SourceTimestamp =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_LastSeverity_SourceTimestamp,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Comment Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Comment = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Comment, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Comment =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Comment, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_Comment_SourceTimestamp Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Comment_SourceTimestamp = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_Comment_SourceTimestamp, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_Comment_SourceTimestamp = new ExpandedNodeId(
+            TestData.Variables.Data_Conditions_SystemStatus_Comment_SourceTimestamp, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_ClientUserId Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ClientUserId = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ClientUserId, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_ClientUserId =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_ClientUserId,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_AddComment_InputArguments Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_AddComment_InputArguments = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_AddComment_InputArguments, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_AddComment_InputArguments =
+            new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_AddComment_InputArguments,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the Data_Conditions_SystemStatus_MonitoredNodeCount Variable.
         /// </summary>
-        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_MonitoredNodeCount = new ExpandedNodeId(TestData.Variables.Data_Conditions_SystemStatus_MonitoredNodeCount, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId Data_Conditions_SystemStatus_MonitoredNodeCount = new ExpandedNodeId(
+            TestData.Variables.Data_Conditions_SystemStatus_MonitoredNodeCount, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_XmlSchema Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_XmlSchema = new ExpandedNodeId(TestData.Variables.TestData_XmlSchema, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_XmlSchema =
+            new ExpandedNodeId(TestData.Variables.TestData_XmlSchema, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_XmlSchema_NamespaceUri Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_XmlSchema_NamespaceUri = new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_NamespaceUri, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_XmlSchema_NamespaceUri =
+            new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_NamespaceUri, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_XmlSchema_ScalarValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_XmlSchema_ScalarValueDataType = new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_ScalarValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_XmlSchema_ScalarValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_ScalarValueDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_XmlSchema_ArrayValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_XmlSchema_ArrayValueDataType = new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_ArrayValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_XmlSchema_ArrayValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_ArrayValueDataType, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_XmlSchema_UserScalarValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_XmlSchema_UserScalarValueDataType = new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_UserScalarValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_XmlSchema_UserScalarValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_UserScalarValueDataType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_XmlSchema_UserArrayValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_XmlSchema_UserArrayValueDataType = new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_UserArrayValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_XmlSchema_UserArrayValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_XmlSchema_UserArrayValueDataType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_BinarySchema Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_BinarySchema = new ExpandedNodeId(TestData.Variables.TestData_BinarySchema, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_BinarySchema =
+            new ExpandedNodeId(TestData.Variables.TestData_BinarySchema, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_BinarySchema_NamespaceUri Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_BinarySchema_NamespaceUri = new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_NamespaceUri, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_BinarySchema_NamespaceUri =
+            new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_NamespaceUri, TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_BinarySchema_ScalarValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_BinarySchema_ScalarValueDataType = new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_ScalarValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_BinarySchema_ScalarValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_ScalarValueDataType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_BinarySchema_ArrayValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_BinarySchema_ArrayValueDataType = new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_ArrayValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_BinarySchema_ArrayValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_ArrayValueDataType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_BinarySchema_UserScalarValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_BinarySchema_UserScalarValueDataType = new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_UserScalarValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_BinarySchema_UserScalarValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_UserScalarValueDataType,
+                TestData.Namespaces.TestData);
 
         /// <summary>
         /// The identifier for the TestData_BinarySchema_UserArrayValueDataType Variable.
         /// </summary>
-        public static readonly ExpandedNodeId TestData_BinarySchema_UserArrayValueDataType = new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_UserArrayValueDataType, TestData.Namespaces.TestData);
+        public static readonly ExpandedNodeId TestData_BinarySchema_UserArrayValueDataType =
+            new ExpandedNodeId(TestData.Variables.TestData_BinarySchema_UserArrayValueDataType,
+                TestData.Namespaces.TestData);
     }
+
     #endregion
 
     #region BrowseName Declarations
+
     /// <summary>
     /// Declares all of the BrowseNames used in the Model Design.
     /// </summary>
-    public static partial class BrowseNames
-    {
+    public static partial class BrowseNames {
         /// <summary>
         /// The BrowseName for the AnalogArrayValueObjectType component.
         /// </summary>
@@ -11613,14 +13130,15 @@ namespace TestData
         /// </summary>
         public const string XmlElementValue = "XmlElementValue";
     }
+
     #endregion
 
     #region Namespace Declarations
+
     /// <summary>
     /// Defines constants for all namespaces referenced by the model design.
     /// </summary>
-    public static partial class Namespaces
-    {
+    public static partial class Namespaces {
         /// <summary>
         /// The URI for the OpcUa namespace (.NET code namespace is 'Opc.Ua').
         /// </summary>
@@ -11636,5 +13154,6 @@ namespace TestData
         /// </summary>
         public const string TestData = "http://test.org/UA/Data/";
     }
+
     #endregion
 }

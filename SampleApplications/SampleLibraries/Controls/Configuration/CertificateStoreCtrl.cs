@@ -40,37 +40,38 @@ using System.IO;
 using System.Runtime.Serialization;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Allows a user to specify a certificate store.
     /// </summary>
-    public partial class CertificateStoreCtrl : UserControl
-    {
+    public partial class CertificateStoreCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs the object.
         /// </summary>
-        public CertificateStoreCtrl()
-        {
+        public CertificateStoreCtrl() {
             InitializeComponent();
 
             StoreTypeCB.Items.Add(CertificateStoreType.Directory);
             StoreTypeCB.Items.Add(CertificateStoreType.Windows);
             StoreTypeCB.SelectedIndex = 0;
         }
+
         #endregion
-       
+
         #region Private Fields
+
         private event EventHandler m_StoreChanged;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Raised when the certificate store is changed in the control.
         /// </summary>
-        public event EventHandler StoreChanged
-        {
+        public event EventHandler StoreChanged {
             add { m_StoreChanged += value; }
             remove { m_StoreChanged -= value; }
         }
@@ -79,32 +80,20 @@ namespace Opc.Ua.Client.Controls
         /// The width of the label in the control.
         /// </summary>
         [DefaultValue(75)]
-        public int LabelWidth
-        {
-            get
-            {
-                return LeftPN.Width;
-            }
+        public int LabelWidth {
+            get { return LeftPN.Width; }
 
-            set
-            {
-                LeftPN.Width = value;
-            }
+            set { LeftPN.Width = value; }
         }
 
         /// <summary>
         /// Whether the control is read-only.
         /// </summary>
         [DefaultValue(false)]
-        public bool ReadOnly
-        {
-            get
-            {
-                return !StoreTypeCB.Enabled;
-            }
+        public bool ReadOnly {
+            get { return !StoreTypeCB.Enabled; }
 
-            set
-            {
+            set {
                 StoreTypeCB.Enabled = !value;
                 StorePathCB.Enabled = !value;
                 BrowseBTN.Enabled = !value;
@@ -115,17 +104,11 @@ namespace Opc.Ua.Client.Controls
         /// The type of certificate store.
         /// </summary>
         [DefaultValue(Utils.DefaultStoreType)]
-        public string StoreType
-        {
-            get 
-            { 
-                return StoreTypeCB.SelectedItem as string; 
-            }
+        public string StoreType {
+            get { return StoreTypeCB.SelectedItem as string; }
 
-            set
-            {
-                if (value == null || StoreTypeCB.FindStringExact(value) == -1)
-                {
+            set {
+                if (value == null || StoreTypeCB.FindStringExact(value) == -1) {
                     StoreTypeCB.SelectedIndex = 0;
                     return;
                 }
@@ -138,41 +121,36 @@ namespace Opc.Ua.Client.Controls
         /// The path to the certificate store.
         /// </summary>
         [DefaultValue(Utils.DefaultStorePath)]
-        public string StorePath
-        {
-            get
-            {
-                if (StorePathCB.SelectedItem == null)
-                {
+        public string StorePath {
+            get {
+                if (StorePathCB.SelectedItem == null) {
                     return StorePathCB.Text;
                 }
 
                 return StorePathCB.SelectedItem as string;
             }
 
-            set
-            {
+            set {
                 StorePathCB.SelectedIndex = -1;
                 StorePathCB.Text = value;
             }
         }
+
         #endregion
 
         #region Private Methods
-        private List<string> GetListOfStores(string storeType)
-        {
+
+        private List<string> GetListOfStores(string storeType) {
             List<string> stores = Utils.GetRecentFileList("CertificateStores:" + storeType);
 
-            if (CertificateStoreType.Directory == storeType)
-            {
+            if (CertificateStoreType.Directory == storeType) {
                 stores.Add("%CommonApplicationData%\\OPC Foundation\\CertificateStores\\MachineDefault");
                 stores.Add("%CommonApplicationData%\\OPC Foundation\\CertificateStores\\UA Applications");
                 stores.Add("%CommonApplicationData%\\OPC Foundation\\CertificateStores\\UA Certificate Authorities");
                 stores.Add("%CommonApplicationData%\\OPC Foundation\\CertificateStores\\RejectedCertificates");
             }
 
-            if (CertificateStoreType.Windows == storeType)
-            {
+            if (CertificateStoreType.Windows == storeType) {
                 stores.Add("LocalMachine\\My");
                 stores.Add("LocalMachine\\UA Applications");
                 stores.Add("LocalMachine\\UA Certificate Authorities");
@@ -180,41 +158,35 @@ namespace Opc.Ua.Client.Controls
 
             return stores;
         }
+
         #endregion
 
         #region Event Handlers
+
         /// <summary>
         /// Populates the drop down with the recent file list.
         /// </summary>
-        private void StorePathCB_DropDown(object sender, EventArgs e)
-        {
-            try
-            {
+        private void StorePathCB_DropDown(object sender, EventArgs e) {
+            try {
                 StorePathCB.Items.Clear();
 
-                foreach (string storePath in GetListOfStores(StoreTypeCB.SelectedItem as string))
-                {
+                foreach (string storePath in GetListOfStores(StoreTypeCB.SelectedItem as string)) {
                     // ignore duplicates.
                     bool found = false;
 
-                    foreach (string item in StorePathCB.Items)
-                    {
-                        if (String.Compare(storePath, item, StringComparison.OrdinalIgnoreCase) == 0)
-                        {
+                    foreach (string item in StorePathCB.Items) {
+                        if (String.Compare(storePath, item, StringComparison.OrdinalIgnoreCase) == 0) {
                             found = true;
                             break;
                         }
                     }
 
                     // add list.
-                    if (!found)
-                    {
+                    if (!found) {
                         StorePathCB.Items.Add(storePath);
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
@@ -222,127 +194,100 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Browses for new stores to manage.
         /// </summary>
-        private void BrowseStoreBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BrowseStoreBTN_Click(object sender, EventArgs e) {
+            try {
                 string storeType = StoreTypeCB.SelectedItem as string;
                 string storePath = null;
 
-                if (storeType == CertificateStoreType.Directory)
-                {
+                if (storeType == CertificateStoreType.Directory) {
                     FolderBrowserDialog dialog = new FolderBrowserDialog();
 
                     dialog.Description = "Select Certificate Store Directory";
                     dialog.RootFolder = Environment.SpecialFolder.MyComputer;
                     dialog.ShowNewFolderButton = true;
 
-                    if (dialog.ShowDialog() != DialogResult.OK)
-                    {
+                    if (dialog.ShowDialog() != DialogResult.OK) {
                         return;
                     }
 
                     storePath = dialog.SelectedPath;
                 }
 
-                if (storeType == CertificateStoreType.Windows)
-                {
+                if (storeType == CertificateStoreType.Windows) {
                     CertificateStoreIdentifier store = new CertificateStoreTreeDlg().ShowDialog(null);
 
-                    if (store == null)
-                    {
+                    if (store == null) {
                         return;
                     }
 
                     storePath = store.StorePath;
                 }
 
-                if (String.IsNullOrEmpty(storePath))
-                {
+                if (String.IsNullOrEmpty(storePath)) {
                     return;
                 }
 
                 bool found = false;
 
-                for (int ii = 0; ii < StorePathCB.Items.Count; ii++)
-                {
-                    if (String.Compare(storePath, StorePathCB.Items[ii] as string, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
+                for (int ii = 0; ii < StorePathCB.Items.Count; ii++) {
+                    if (String.Compare(storePath, StorePathCB.Items[ii] as string,
+                            StringComparison.OrdinalIgnoreCase) == 0) {
                         StorePathCB.SelectedIndex = ii;
                         found = true;
                         break;
                     }
                 }
 
-                if (!found)
-                {
+                if (!found) {
                     StorePathCB.SelectedIndex = StorePathCB.Items.Add(storePath);
                 }
 
                 Utils.UpdateRecentFileList("CertificateStores:" + storeType, storePath, 16);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void StoreTypeCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void StoreTypeCB_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
                 StorePathCB_DropDown(sender, e);
 
-                if (StorePathCB.Items.Count > 0)
-                {
+                if (StorePathCB.Items.Count > 0) {
                     StorePathCB.SelectedIndex = 0;
                 }
 
-                if (m_StoreChanged != null)
-                {
+                if (m_StoreChanged != null) {
                     m_StoreChanged(null, e);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void StorePathCB_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_StoreChanged != null)
-                {
+        private void StorePathCB_TextChanged(object sender, EventArgs e) {
+            try {
+                if (m_StoreChanged != null) {
                     m_StoreChanged(null, e);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
-
         }
 
-        private void StorePathCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void StorePathCB_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
                 CertificateStoreIdentifier store = new CertificateStoreIdentifier();
                 store.StoreType = StoreTypeCB.SelectedItem as string;
                 store.StorePath = StorePathCB.Text;
 
-                if (StorePathCB.SelectedIndex != -1)
-                {
+                if (StorePathCB.SelectedIndex != -1) {
                     store.StorePath = StorePathCB.SelectedItem as string;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

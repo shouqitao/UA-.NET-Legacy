@@ -17,13 +17,11 @@
 using System;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Security
-{
+namespace Opc.Ua.Security {
     /// <summary>
     /// Implemented by types that have knownledge of an application configuration.
     /// </summary>
-    public interface ISecurityConfigurationManager
-    {
+    public interface ISecurityConfigurationManager {
         /// <summary>
         /// Exports the security configuration for an application identified by a file or url.
         /// </summary>
@@ -40,37 +38,34 @@ namespace Opc.Ua.Security
     }
 
     #region SecurityConfigurationManagerFactory Class
+
     /// <summary>
     /// A class used to create instances of ISecurityConfigurationManager.
     /// </summary>
-    public static class SecurityConfigurationManagerFactory
-    {
+    public static class SecurityConfigurationManagerFactory {
         /// <summary>
         /// Returns an instance of the type identified by the assembly qualified name.
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
         /// <returns>The new instance.</returns>
-        public static ISecurityConfigurationManager CreateInstance(string typeName)
-        {
-            if (String.IsNullOrEmpty(typeName))
-            {
+        public static ISecurityConfigurationManager CreateInstance(string typeName) {
+            if (String.IsNullOrEmpty(typeName)) {
                 return new SecurityConfigurationManager();
             }
 
             Type type = Type.GetType(typeName);
 
-            if (type == null)
-            {
+            if (type == null) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadNotSupported,
                     "Cannot load type: {0}",
                     typeName);
             }
 
-            ISecurityConfigurationManager configuration = Activator.CreateInstance(type) as ISecurityConfigurationManager;
+            ISecurityConfigurationManager configuration =
+                Activator.CreateInstance(type) as ISecurityConfigurationManager;
 
-            if (configuration == null)
-            {
+            if (configuration == null) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadNotSupported,
                     "Type does not support the ISecurityConfigurationManager interface: {0}",
@@ -80,5 +75,6 @@ namespace Opc.Ua.Security
             return configuration;
         }
     }
+
     #endregion
 }

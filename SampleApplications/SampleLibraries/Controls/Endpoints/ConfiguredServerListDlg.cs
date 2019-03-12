@@ -36,96 +36,88 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Allows the user to browse a list of servers.
     /// </summary>
-    public partial class ConfiguredServerListDlg : Form
-    {
+    public partial class ConfiguredServerListDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Initializes the dialog.
         /// </summary>
-        public ConfiguredServerListDlg()
-        {
+        public ConfiguredServerListDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private ConfiguredEndpoint m_endpoint;
         private ApplicationConfiguration m_configuration;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public ConfiguredEndpoint ShowDialog(ApplicationConfiguration configuration, bool createNew)
-        {
+        public ConfiguredEndpoint ShowDialog(ApplicationConfiguration configuration, bool createNew) {
             m_configuration = configuration;
             m_endpoint = null;
 
             // create a default collection if none provided.
-            if (createNew)
-            {
+            if (createNew) {
                 ApplicationDescription server = new DiscoveredServerListDlg().ShowDialog(null, m_configuration);
 
-                if (server != null)
-                {
+                if (server != null) {
                     return new ConfiguredEndpoint(server, EndpointConfiguration.Create(configuration));
                 }
 
                 return null;
             }
-            
+
             ServersCTRL.Initialize(null, configuration);
-            
+
             OkBTN.Enabled = false;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
-  
+
             return m_endpoint;
         }
+
         #endregion
-        
+
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void ServersCTRL_ItemsSelected(object sender, ListItemActionEventArgs e)
-        {
-            try
-            {
+        private void ServersCTRL_ItemsSelected(object sender, ListItemActionEventArgs e) {
+            try {
                 m_endpoint = null;
 
-                foreach (ConfiguredEndpoint server in e.Items)
-                {
+                foreach (ConfiguredEndpoint server in e.Items) {
                     m_endpoint = server;
                     break;
                 }
 
                 OkBTN.Enabled = m_endpoint != null;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <access-policy>
   <cross-domain-access>
     <policy>
@@ -7,7 +8,7 @@
         <domain uri="https://*" />
       </allow-from>
       <grant-to>
-        <resource path="/" include-subpaths="true"/>
+        <resource path="/" include-subpaths="true" />
       </grant-to>
     </policy>
   </cross-domain-access>

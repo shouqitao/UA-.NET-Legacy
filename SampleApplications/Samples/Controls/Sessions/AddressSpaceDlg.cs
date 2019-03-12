@@ -34,64 +34,60 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class AddressSpaceDlg : Form
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class AddressSpaceDlg : Form {
         #region Constructors
-        public AddressSpaceDlg()
-        {
+
+        public AddressSpaceDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
             m_SessionClosing = new EventHandler(Session_Closing);
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private Session m_session;
         private EventHandler m_SessionClosing;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Displays the address space with the specified view
         /// </summary>
-        public void Show(Session session, BrowseViewType viewType, NodeId viewId)
-        {   
+        public void Show(Session session, BrowseViewType viewType, NodeId viewId) {
             if (session == null) throw new ArgumentNullException("session");
-            
-            if (m_session != null)
-            {
+
+            if (m_session != null) {
                 m_session.SessionClosing -= m_SessionClosing;
             }
 
-            m_session = session;            
+            m_session = session;
             m_session.SessionClosing += m_SessionClosing;
-            
+
             BrowseCTRL.SetView(session, viewType, viewId);
             Show();
             BringToFront();
         }
+
         #endregion
-        
-        private void Session_Closing(object sender, EventArgs e)
-        {
-            if (Object.ReferenceEquals(sender, m_session))
-            {
+
+        private void Session_Closing(object sender, EventArgs e) {
+            if (Object.ReferenceEquals(sender, m_session)) {
                 m_session.SessionClosing -= m_SessionClosing;
                 m_session = null;
                 Close();
             }
         }
 
-        private void AddressSpaceDlg_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (m_session != null)
-            {
+        private void AddressSpaceDlg_FormClosing(object sender, FormClosingEventArgs e) {
+            if (m_session != null) {
                 m_session.SessionClosing -= m_SessionClosing;
                 m_session = null;
             }

@@ -34,33 +34,33 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class EditSubscriptionDlg : Form
-    {
+    public partial class EditSubscriptionDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public EditSubscriptionDlg()
-        {
+        public EditSubscriptionDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-      
+
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to edit the monitored item.
         /// </summary>
-        public bool ShowDialog(Subscription subscription)
-        {
+        public bool ShowDialog(Subscription subscription) {
             PublishingIntervalUP.Value = subscription.PublishingInterval;
             KeepAliveCountUP.Value = subscription.KeepAliveCount;
             LifetimeCountUP.Value = subscription.LifetimeCount;
@@ -68,34 +68,32 @@ namespace Opc.Ua.Client.Controls
             PriorityTB.Value = subscription.Priority;
             PublishingEnabledCK.Checked = subscription.PublishingEnabled;
 
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
-            subscription.PublishingInterval = (int)PublishingIntervalUP.Value;
-            subscription.KeepAliveCount = (uint)KeepAliveCountUP.Value;
-            subscription.LifetimeCount = (uint)LifetimeCountUP.Value;
-            subscription.MaxNotificationsPerPublish = (uint)MaxNotificationsPerPublishUP.Value;
-            subscription.Priority = (byte)PriorityTB.Value;
-            subscription.PublishingEnabled  = PublishingEnabledCK.Checked;
+            subscription.PublishingInterval = (int) PublishingIntervalUP.Value;
+            subscription.KeepAliveCount = (uint) KeepAliveCountUP.Value;
+            subscription.LifetimeCount = (uint) LifetimeCountUP.Value;
+            subscription.MaxNotificationsPerPublish = (uint) MaxNotificationsPerPublishUP.Value;
+            subscription.Priority = (byte) PriorityTB.Value;
+            subscription.PublishingEnabled = PublishingEnabledCK.Checked;
 
             return true;
         }
+
         #endregion
-        
+
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

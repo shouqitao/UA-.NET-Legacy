@@ -1,0 +1,427 @@
+  Opc.Ua.Configuration.ExceptionDlg.resources - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly Opc.Ua.Configuration, Version=1.3.342.0, Culture=neutral, PublicKeyToken=78aea80f6827b5ab: 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly Opc.Ua.Core, Version=1.3.342.0, Culture=neutral, PublicKeyToken=78aea80f6827b5ab: 
+	hash=None, flags=None
+Assembly System.Management, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.ServiceProcess, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly Interop.NetFwTypeLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=22186a540fc0b044: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class Opc.Ua.Configuration.AccountInfo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IComparable
+  Properties:
+    System.String Name 'get set' : 
+    System.String Domain 'get set' : 
+    System.String Sid 'get set' : 
+    Opc.Ua.Configuration.AccountSidType SidType 'get set' : 
+    System.String Description 'get set' : 
+    System.String Status 'get set' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    set_Name(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Domain(): PrivateScope, Public, HideBySig, SpecialName
+    set_Domain(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Sid(): PrivateScope, Public, HideBySig, SpecialName
+    set_Sid(String): PrivateScope, Public, HideBySig, SpecialName
+    get_SidType(): PrivateScope, Public, HideBySig, SpecialName
+    set_SidType(AccountSidType): PrivateScope, Public, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, HideBySig, SpecialName
+    set_Description(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Status(): PrivateScope, Public, HideBySig, SpecialName
+    set_Status(String): PrivateScope, Public, HideBySig, SpecialName
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    CompareTo(Object): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    GetIdentityReference(): PrivateScope, Public, HideBySig
+    GetApplicationRights(AccessControlType, FileSystemRights): PrivateScope, Public, Static, HideBySig
+    GetAccessRuleSource(FileInfo, FileSystemAccessRule): PrivateScope, Public, Static, HideBySig
+    LookupDomainSid(String): PrivateScope, Public, Static, HideBySig
+    LookupAccountSid(String): PrivateScope, Public, Static, HideBySig
+    Create(String): PrivateScope, Public, Static, HideBySig
+    CreateUser(String, String): PrivateScope, Public, Static, HideBySig
+    Query(AccountFilters): PrivateScope, Public, Static, HideBySig
+    ApplyFilters(AccountFilters, IList`1): PrivateScope, Public, Static, HideBySig
+    ApplyFilters(AccountFilters): PrivateScope, Public, HideBySig
+Struct Opc.Ua.Configuration.AccountSidType: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Byte value__ : Public, SpecialName, RTSpecialName
+    Opc.Ua.Configuration.AccountSidType User = 1 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.AccountSidType Group = 2 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.AccountSidType Domain = 3 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.AccountSidType Alias = 4 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.AccountSidType BuiltIn = 5 : Public, Static, Literal, HasDefault
+Class Opc.Ua.Configuration.AccountFilters: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Name 'get set' : 
+    System.String Domain 'get set' : 
+    Opc.Ua.Configuration.AccountTypeMask AccountTypeMask 'get set' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    set_Name(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Domain(): PrivateScope, Public, HideBySig, SpecialName
+    set_Domain(String): PrivateScope, Public, HideBySig, SpecialName
+    get_AccountTypeMask(): PrivateScope, Public, HideBySig, SpecialName
+    set_AccountTypeMask(AccountTypeMask): PrivateScope, Public, HideBySig, SpecialName
+Struct Opc.Ua.Configuration.AccountTypeMask: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    Opc.Ua.Configuration.AccountTypeMask None = 0 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.AccountTypeMask User = 1 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.AccountTypeMask Group = 10 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.AccountTypeMask WellKnownGroup = 16 : Public, Static, Literal, HasDefault
+Class Opc.Ua.Configuration.WellKnownSids: AutoLayout, AnsiClass, Class, Public, Abstract, Sealed, BeforeFieldInit
+  Fields:
+    System.String Interactive = S-1-5-4 : Public, Static, Literal, HasDefault
+    System.String AuthenticatedUser = S-1-5-11 : Public, Static, Literal, HasDefault
+    System.String AnonymousLogon = S-1-5-7 : Public, Static, Literal, HasDefault
+    System.String LocalSystem = S-1-5-18 : Public, Static, Literal, HasDefault
+    System.String LocalService = S-1-5-19 : Public, Static, Literal, HasDefault
+    System.String NetworkService = S-1-5-20 : Public, Static, Literal, HasDefault
+    System.String Administrators = S-1-5-32-544 : Public, Static, Literal, HasDefault
+    System.String Users = S-1-5-32-545 : Public, Static, Literal, HasDefault
+    System.String Guests = S-1-5-32-546 : Public, Static, Literal, HasDefault
+Class Opc.Ua.Configuration.ApplicationInstance: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(Opc.Ua.ApplicationConfiguration): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String ApplicationName 'get set' : 
+    Opc.Ua.ApplicationType ApplicationType 'get set' : 
+    System.String ConfigSectionName 'get set' : 
+    System.Type ConfigurationType 'get set' : 
+    Opc.Ua.Configuration.InstalledApplication InstallConfig 'get set' : 
+    Opc.Ua.ServerBase Server 'get ' : 
+    Opc.Ua.ApplicationConfiguration ApplicationConfiguration 'get set' : 
+    Boolean NoGdsAgentAdmin 'get set' : 
+  Methods:
+    get_ApplicationName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ApplicationName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ApplicationType(): PrivateScope, Public, HideBySig, SpecialName
+    set_ApplicationType(ApplicationType): PrivateScope, Public, HideBySig, SpecialName
+    get_ConfigSectionName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ConfigSectionName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ConfigurationType(): PrivateScope, Public, HideBySig, SpecialName
+    set_ConfigurationType(Type): PrivateScope, Public, HideBySig, SpecialName
+    get_InstallConfig(): PrivateScope, Public, HideBySig, SpecialName
+    set_InstallConfig(InstalledApplication): PrivateScope, Public, HideBySig, SpecialName
+    get_Server(): PrivateScope, Public, HideBySig, SpecialName
+    get_ApplicationConfiguration(): PrivateScope, Public, HideBySig, SpecialName
+    set_ApplicationConfiguration(ApplicationConfiguration): PrivateScope, Public, HideBySig, SpecialName
+    get_NoGdsAgentAdmin(): PrivateScope, Public, HideBySig, SpecialName
+    set_NoGdsAgentAdmin(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    LoadInstallConfigFromFile(String): PrivateScope, Public, HideBySig
+    LoadInstallConfigFromResource(String, Assembly): PrivateScope, Public, HideBySig
+    LoadInstallConfigFromStream(Stream): PrivateScope, Public, HideBySig
+    LoadInstallConfig(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    ProcessCommandLine(): PrivateScope, Public, HideBySig
+    ProcessCommandLine(Boolean): PrivateScope, Public, HideBySig
+    ProcessCommandLine(Boolean, String[]): PrivateScope, Public, HideBySig
+    StartAsService(ServerBase): PrivateScope, Public, HideBySig
+    Start(ServerBase): PrivateScope, Public, HideBySig
+    Stop(): PrivateScope, Public, HideBySig
+    LoadAppConfig(Boolean, String, ApplicationType, Type, Boolean): PrivateScope, Public, Static, HideBySig
+    LoadApplicationConfiguration(String, Boolean): PrivateScope, Public, HideBySig
+    LoadApplicationConfiguration(Boolean): PrivateScope, Public, HideBySig
+    CheckApplicationInstanceCertificate(Boolean, UInt16): PrivateScope, Public, HideBySig
+    SetUaValidationForHttps(CertificateValidator): PrivateScope, Public, Static, HideBySig
+    AddToDiscoveryServerTrustList(X509Certificate2, String, IList`1, CertificateStoreIdentifier): PrivateScope, Public, Static, HideBySig
+    GetHttpUrlForAccessRule(String): PrivateScope, Public, Static, HideBySig
+Class Opc.Ua.Configuration.ConfigUtils: AutoLayout, AnsiClass, Class, Public, Abstract, Sealed, BeforeFieldInit
+  Fields:
+    System.Guid CATID_PseudoComServers : Public, Static, InitOnly
+    System.Guid CLSID_UaComDaProxyServer : Public, Static, InitOnly
+    System.Guid CLSID_UaComAeProxyServer : Public, Static, InitOnly
+    System.Guid CLSID_UaComHdaProxyServer : Public, Static, InitOnly
+    System.Guid CATID_OPCDAServer20 : Public, Static, InitOnly
+    System.Guid CATID_OPCDAServer30 : Public, Static, InitOnly
+    System.Guid CATID_OPCAEServer10 : Public, Static, InitOnly
+    System.Guid CATID_OPCHDAServer10 : Public, Static, InitOnly
+  Properties:
+    System.String UserRoleDirectory 'get set' : 
+  Methods:
+    get_UserRoleDirectory(): PrivateScope, Public, Static, HideBySig, SpecialName
+    set_UserRoleDirectory(String): PrivateScope, Public, Static, HideBySig, SpecialName
+    GetLogFileDirectory(): PrivateScope, Public, Static, HideBySig
+    ProcessCommandLine(): PrivateScope, Public, Static, HideBySig
+    ProcessCommandLine(String[]): PrivateScope, Public, Static, HideBySig
+    UpdateConfigurationLocation(String, String): PrivateScope, Public, Static, HideBySig
+    InstallApplication(InstalledApplication, Boolean, Boolean): PrivateScope, Public, Static, HideBySig
+    UninstallApplication(InstalledApplication): PrivateScope, Public, Static, HideBySig
+    RegisterComTypes(String): PrivateScope, Public, Static, HideBySig
+    UnregisterComTypes(String): PrivateScope, Public, Static, HideBySig
+    GetNetFwMgr(): PrivateScope, Public, Static, HideBySig
+    GetNetFwAuthorizedApplication(): PrivateScope, Public, Static, HideBySig
+    GetNetFwOpenPort(): PrivateScope, Public, Static, HideBySig
+    SetFirewallAccess(SecuredApplication, String): PrivateScope, Public, Static, HideBySig
+    SetFirewallAccess(String, String, IList`1): PrivateScope, Public, Static, HideBySig
+    CheckFirewallAccess(String, StringCollection): PrivateScope, Public, Static, HideBySig
+    GetFirewallAccess(String): PrivateScope, Public, Static, HideBySig
+    SetFirewallAccess(String, Int32[]): PrivateScope, Public, Static, HideBySig
+    RemoveFirewallAccess(Int32[]): PrivateScope, Public, Static, HideBySig
+    RemoveFirewallAccess(SecuredApplication, String): PrivateScope, Public, Static, HideBySig
+    RemoveFirewallAccess(String, IList`1): PrivateScope, Public, Static, HideBySig
+    GetComputerWorkgroupOrDomain(): PrivateScope, Public, Static, HideBySig
+    ProgIDFromCLSID(Guid): PrivateScope, Public, Static, HideBySig
+    CLSIDFromProgID(String): PrivateScope, Public, Static, HideBySig
+    GetImplementedCategories(Guid): PrivateScope, Public, Static, HideBySig
+    EnumClassesInCategory(Guid): PrivateScope, Public, Static, HideBySig
+    GetExecutablePath(Guid): PrivateScope, Public, Static, HideBySig
+    CreateServer(Guid): PrivateScope, Public, Static, HideBySig
+    ReleaseServer(Object): PrivateScope, Public, Static, HideBySig
+    RegisterClassInCategory(Guid, Guid): PrivateScope, Public, Static, HideBySig
+    RegisterClassInCategory(Guid, Guid, String): PrivateScope, Public, Static, HideBySig
+    UnregisterComServer(Guid): PrivateScope, Public, Static, HideBySig
+    UnregisterClassInCategory(Guid, Guid): PrivateScope, Public, Static, HideBySig
+    GetAppIcon(): PrivateScope, Public, Static, HideBySig
+    LocallyRegisterCertificateOIDs(X509Certificate2): PrivateScope, Public, Static, HideBySig
+    LocallyRegisterCertificateOIDs(String[]): PrivateScope, Public, Static, HideBySig
+Class Opc.Ua.Configuration.ExceptionDlg: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Show(String, Exception): PrivateScope, Public, Static, HideBySig
+    ShowDialog(String, Exception): PrivateScope, Public, HideBySig
+Class Opc.Ua.Configuration.HostEnumerator: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Events:
+    System.EventHandler`1[Opc.Ua.Configuration.HostEnumeratorEventArgs] HostsDiscovered: 
+  Methods:
+    add_HostsDiscovered(EventHandler`1): PrivateScope, Public, HideBySig, SpecialName
+    remove_HostsDiscovered(EventHandler`1): PrivateScope, Public, HideBySig, SpecialName
+    Start(String): PrivateScope, Public, HideBySig
+    Stop(): PrivateScope, Public, HideBySig
+Class Opc.Ua.Configuration.HostEnumeratorEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.EventArgs
+    Void .ctor(System.Collections.Generic.IList`1[System.String]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Collections.Generic.IList`1[System.String] Hostnames 'get ' : 
+  Methods:
+    get_Hostnames(): PrivateScope, Public, HideBySig, SpecialName
+Struct Opc.Ua.Configuration.ServiceStatus: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    Opc.Ua.Configuration.ServiceStatus Stopped = 0 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.ServiceStatus StartPending = 1 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.ServiceStatus StopPending = 2 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.ServiceStatus Running = 3 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.ServiceStatus ContinuePending = 4 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.ServiceStatus PausePending = 5 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.ServiceStatus Paused = 6 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.ServiceStatus Unknown = 7 : Public, Static, Literal, HasDefault
+Class Opc.Ua.Configuration.LocalSecurityPolicy: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    AddPrivilege(String, String): PrivateScope, Public, HideBySig
+    AddLogonAsServicePrivilege(String): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Class Opc.Ua.Configuration.ManagedApplication: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.IO.FileInfo SourceFile 'get ' : 
+    Boolean IsSdkCompatible 'get ' : 
+    Opc.Ua.Security.SecuredApplication Application 'get ' : 
+    System.String DisplayName 'get set' : 
+    System.String ExecutablePath 'get set' : 
+    System.String ConfigurationPath 'get set' : 
+    Opc.Ua.CertificateIdentifier Certificate 'get set' : 
+    Opc.Ua.CertificateStoreIdentifier TrustList 'get set' : 
+    Opc.Ua.StringCollection BaseAddresses 'get set' : 
+  Methods:
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    get_SourceFile(): PrivateScope, Public, HideBySig, SpecialName
+    get_IsSdkCompatible(): PrivateScope, Public, HideBySig, SpecialName
+    get_Application(): PrivateScope, Public, HideBySig, SpecialName
+    get_DisplayName(): PrivateScope, Public, HideBySig, SpecialName
+    set_DisplayName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ExecutablePath(): PrivateScope, Public, HideBySig, SpecialName
+    set_ExecutablePath(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ConfigurationPath(): PrivateScope, Public, HideBySig, SpecialName
+    set_ConfigurationPath(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Certificate(): PrivateScope, Public, HideBySig, SpecialName
+    set_Certificate(CertificateIdentifier): PrivateScope, Public, HideBySig, SpecialName
+    get_TrustList(): PrivateScope, Public, HideBySig, SpecialName
+    set_TrustList(CertificateStoreIdentifier): PrivateScope, Public, HideBySig, SpecialName
+    get_BaseAddresses(): PrivateScope, Public, HideBySig, SpecialName
+    set_BaseAddresses(StringCollection): PrivateScope, Public, HideBySig, SpecialName
+    Load(String): PrivateScope, Public, Static, HideBySig
+    Save(String): PrivateScope, Public, HideBySig
+    SetExecutableFile(String): PrivateScope, Public, HideBySig
+    SetConfigurationFile(String): PrivateScope, Public, HideBySig
+    Reload(): PrivateScope, Public, HideBySig
+Class Opc.Ua.Configuration.PseudoComServer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Load(Guid): PrivateScope, Public, Static, HideBySig
+    GetServerHostClsid(ComSpecification): PrivateScope, Public, Static, HideBySig
+    Import(String): PrivateScope, Public, Static, HideBySig
+    Delete(String): PrivateScope, Public, Static, HideBySig
+    Export(String, String[]): PrivateScope, Public, Static, HideBySig
+    Save(ConfiguredEndpoint): PrivateScope, Public, Static, HideBySig
+    Delete(Guid): PrivateScope, Public, Static, HideBySig
+    Enumerate(): PrivateScope, Public, Static, HideBySig
+    CreateProgIdFromUrl(ComSpecification, String): PrivateScope, Public, Static, HideBySig
+Class Opc.Ua.Configuration.InstalledApplication: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :Opc.Ua.Security.SecuredApplication
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean UseDefaultCertificateStores 'get set' : 
+    Boolean DeleteCertificatesOnUninstall 'get set' : 
+    Boolean ConfigureFirewall 'get set' : 
+    Boolean SetConfigurationFilePermisions 'get set' : 
+    Boolean SetExecutableFilePermissions 'get set' : 
+    Boolean InstallAsService 'get set' : 
+    Opc.Ua.Configuration.StartMode ServiceStartMode 'get set' : 
+    System.String ServiceUserName 'get set' : 
+    System.String ServicePassword 'get set' : 
+    System.String ServiceDescription 'get set' : 
+    Boolean LocallyRegisterOIDs 'get set' : 
+    UInt16 MinimumKeySize 'get set' : 
+    UInt16 LifeTimeInMonths 'get set' : 
+    Opc.Ua.ApplicationAccessRuleCollection AccessRules 'get set' : 
+    Opc.Ua.TraceConfiguration TraceConfiguration 'get set' : 
+  Methods:
+    get_UseDefaultCertificateStores(): PrivateScope, Public, HideBySig, SpecialName
+    set_UseDefaultCertificateStores(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_DeleteCertificatesOnUninstall(): PrivateScope, Public, HideBySig, SpecialName
+    set_DeleteCertificatesOnUninstall(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_ConfigureFirewall(): PrivateScope, Public, HideBySig, SpecialName
+    set_ConfigureFirewall(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_SetConfigurationFilePermisions(): PrivateScope, Public, HideBySig, SpecialName
+    set_SetConfigurationFilePermisions(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_SetExecutableFilePermissions(): PrivateScope, Public, HideBySig, SpecialName
+    set_SetExecutableFilePermissions(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_InstallAsService(): PrivateScope, Public, HideBySig, SpecialName
+    set_InstallAsService(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceStartMode(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServiceStartMode(StartMode): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceUserName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServiceUserName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ServicePassword(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServicePassword(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceDescription(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServiceDescription(String): PrivateScope, Public, HideBySig, SpecialName
+    get_LocallyRegisterOIDs(): PrivateScope, Public, HideBySig, SpecialName
+    set_LocallyRegisterOIDs(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_MinimumKeySize(): PrivateScope, Public, HideBySig, SpecialName
+    set_MinimumKeySize(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_LifeTimeInMonths(): PrivateScope, Public, HideBySig, SpecialName
+    set_LifeTimeInMonths(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_AccessRules(): PrivateScope, Public, HideBySig, SpecialName
+    set_AccessRules(ApplicationAccessRuleCollection): PrivateScope, Public, HideBySig, SpecialName
+    get_TraceConfiguration(): PrivateScope, Public, HideBySig, SpecialName
+    set_TraceConfiguration(TraceConfiguration): PrivateScope, Public, HideBySig, SpecialName
+    Load(String): PrivateScope, Public, Static, HideBySig
+    Load(FileInfo): PrivateScope, Public, Static, HideBySig
+Class Opc.Ua.Configuration.InstalledApplicationCollection: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.List`1[Opc.Ua.Configuration.InstalledApplication]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Collections.Generic.IEnumerable`1[Opc.Ua.Configuration.InstalledApplication]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Struct Opc.Ua.Configuration.StartMode: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    Opc.Ua.Configuration.StartMode Boot = 0 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.StartMode System = 1 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.StartMode Auto = 2 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.StartMode Manual = 3 : Public, Static, Literal, HasDefault
+    Opc.Ua.Configuration.StartMode Disabled = 4 : Public, Static, Literal, HasDefault
+Class Opc.Ua.Configuration.Service: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Name 'get set' : 
+    System.String DisplayName 'get set' : 
+    System.String Caption 'get set' : 
+    System.String Path 'get set' : 
+    Opc.Ua.Configuration.StartMode StartMode 'get set' : 
+    System.String Account 'get set' : 
+    System.String Description 'get set' : 
+    Boolean[] ProcessorAffinity 'get set' : 
+    Boolean AcceptPause 'get set' : 
+    Boolean AcceptStop 'get set' : 
+    Int32 ProcessId 'get set' : 
+    Opc.Ua.Configuration.ServiceStatus Status 'get set' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    set_Name(String): PrivateScope, Public, HideBySig, SpecialName
+    get_DisplayName(): PrivateScope, Public, HideBySig, SpecialName
+    set_DisplayName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Caption(): PrivateScope, Public, HideBySig, SpecialName
+    set_Caption(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Path(): PrivateScope, Public, HideBySig, SpecialName
+    set_Path(String): PrivateScope, Public, HideBySig, SpecialName
+    get_StartMode(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartMode(StartMode): PrivateScope, Public, HideBySig, SpecialName
+    get_Account(): PrivateScope, Public, HideBySig, SpecialName
+    set_Account(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, HideBySig, SpecialName
+    set_Description(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ProcessorAffinity(): PrivateScope, Public, HideBySig, SpecialName
+    set_ProcessorAffinity(Boolean[]): PrivateScope, Public, HideBySig, SpecialName
+    get_AcceptPause(): PrivateScope, Public, HideBySig, SpecialName
+    set_AcceptPause(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_AcceptStop(): PrivateScope, Public, HideBySig, SpecialName
+    set_AcceptStop(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_ProcessId(): PrivateScope, Public, HideBySig, SpecialName
+    set_ProcessId(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_Status(): PrivateScope, Public, HideBySig, SpecialName
+    set_Status(ServiceStatus): PrivateScope, Public, HideBySig, SpecialName
+Class Opc.Ua.Configuration.ServiceInstaller: AutoLayout, AnsiClass, Class, Public, Abstract, Sealed, BeforeFieldInit
+  Methods:
+    StartService(String): PrivateScope, Public, Static, HideBySig
+    StopService(String): PrivateScope, Public, Static, HideBySig
+    SetLogonAsServicePrivilege(String): PrivateScope, Public, Static, HideBySig
+    InstallService(String, String, String, String, StartMode, Boolean&): PrivateScope, Public, Static, HideBySig
+    InstallService(String, String, String, String, StartMode, String, String, Boolean&): PrivateScope, Public, Static, HideBySig
+    InstallService(String, String, String, String, StartMode, String, String, Boolean&, String[]): PrivateScope, Public, Static, HideBySig
+    UnInstallService(String): PrivateScope, Public, Static, HideBySig
+Class Opc.Ua.Configuration.ServiceManager: AutoLayout, AnsiClass, Class, Public, Abstract, Sealed, BeforeFieldInit
+  Methods:
+    StartService(String): PrivateScope, Public, Static, HideBySig
+    StartService(String, TimeSpan): PrivateScope, Public, Static, HideBySig
+    StopService(String, TimeSpan): PrivateScope, Public, Static, HideBySig
+    StopService(String): PrivateScope, Public, Static, HideBySig
+    PauseService(String, TimeSpan): PrivateScope, Public, Static, HideBySig
+    PauseService(String): PrivateScope, Public, Static, HideBySig
+    GetServiceStatus(String): PrivateScope, Public, Static, HideBySig
+    IsServiceRunning(String): PrivateScope, Public, Static, HideBySig
+    IsServiceStopped(String): PrivateScope, Public, Static, HideBySig
+    IsServicePaused(String): PrivateScope, Public, Static, HideBySig
+    SetServiceStartMode(String, StartMode, UInt32&(Out)): PrivateScope, Public, Static, HideBySig
+    GetServiceStartMode(String): PrivateScope, Public, Static, HideBySig
+    GetAllServices(): PrivateScope, Public, Static, HideBySig
+    GetService(String): PrivateScope, Public, Static, HideBySig
+    ServiceExists(String): PrivateScope, Public, Static, HideBySig
+    SetServiceProcessorAffinity(String, Boolean[]): PrivateScope, Public, Static, HideBySig
+    GetServiceProcessorAffinity(String): PrivateScope, Public, Static, HideBySig
+    GetNumberOfProcessors(): PrivateScope, Public, Static, HideBySig
+    GetNumberOfLogicalProcessors(): PrivateScope, Public, Static, HideBySig
+Class Opc.Ua.Configuration.UserNameCreator: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Add(String, String, String): PrivateScope, Public, HideBySig
+    Delete(String, String): PrivateScope, Public, HideBySig
+    LoadUserName(String): PrivateScope, Public, Static, HideBySig

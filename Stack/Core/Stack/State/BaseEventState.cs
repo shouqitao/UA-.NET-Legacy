@@ -21,11 +21,10 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace Opc.Ua
-{
-    public partial class BaseEventState
-    {
+namespace Opc.Ua {
+    public partial class BaseEventState {
         #region Initialization
+
         /// <summary>
         /// Initializes a new event.
         /// </summary>
@@ -34,11 +33,10 @@ namespace Opc.Ua
         /// <param name="severity">The severity for the event.</param>
         /// <param name="message">The default message.</param>
         public virtual void Initialize(
-            ISystemContext context, 
-            NodeState source, 
+            ISystemContext context,
+            NodeState source,
             EventSeverity severity,
-            LocalizedText message)
-        {
+            LocalizedText message) {
             m_eventId = new PropertyState<byte[]>(this);
             m_eventId.Value = Guid.NewGuid().ToByteArray();
 
@@ -47,16 +45,13 @@ namespace Opc.Ua
 
             TypeDefinitionId = m_eventType.Value;
 
-            if (source != null)
-            {
-                if (!NodeId.IsNull(source.NodeId))
-                {
+            if (source != null) {
+                if (!NodeId.IsNull(source.NodeId)) {
                     m_sourceNode = new PropertyState<NodeId>(this);
                     m_sourceNode.Value = source.NodeId;
                 }
 
-                if (!QualifiedName.IsNull(source.BrowseName))
-                {
+                if (!QualifiedName.IsNull(source.BrowseName)) {
                     m_sourceName = new PropertyState<string>(this);
                     m_sourceName.Value = source.BrowseName.Name;
                 }
@@ -69,11 +64,12 @@ namespace Opc.Ua
             m_receiveTime.Value = DateTime.UtcNow;
 
             m_severity = new PropertyState<ushort>(this);
-            m_severity.Value = (ushort)severity;
+            m_severity.Value = (ushort) severity;
 
             m_message = new PropertyState<LocalizedText>(this);
             m_message.Value = message;
         }
+
         #endregion
     }
 
@@ -83,8 +79,7 @@ namespace Opc.Ua
     /// <remarks>
     /// Event severities can have any value between 1 and 1000. This enumeration provides default values.
     /// </remarks>
-    public enum EventSeverity : int
-    {
+    public enum EventSeverity : int {
         /// <summary>
         /// The highest possible severity.
         /// </summary>

@@ -31,8 +31,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace Opc.Ua.Server
-{    
+namespace Opc.Ua.Server {
 #if LEGACY_CORENODEMANAGER
     /// <summary>
     /// An interface to a source that stores the event history associated many Objects or Views.

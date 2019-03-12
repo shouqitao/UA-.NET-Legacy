@@ -35,34 +35,34 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class WriteDlg : Form
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class WriteDlg : Form {
         #region Constructors
-        public WriteDlg()
-        {
+
+        public WriteDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public void Show(Session session, WriteValueCollection values)
-        {
+        public void Show(Session session, WriteValueCollection values) {
             if (session == null) throw new ArgumentNullException("session");
-            
+
             m_session = session;
 
             BrowseCTRL.SetView(m_session, BrowseViewType.Objects, null);
@@ -77,29 +77,24 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Writes the valus to the server.
         /// </summary>
-        private void Write()
-        {
+        private void Write() {
             WriteValueCollection nodesToWrite = Utils.Clone(WriteValuesCTRL.GetValues()) as WriteValueCollection;
 
-            if (nodesToWrite == null || nodesToWrite.Count == 0)
-            {
+            if (nodesToWrite == null || nodesToWrite.Count == 0) {
                 return;
             }
 
-            foreach (WriteValue nodeToWrite in nodesToWrite)
-            {
+            foreach (WriteValue nodeToWrite in nodesToWrite) {
                 NumericRange indexRange;
                 ServiceResult result = NumericRange.Validate(nodeToWrite.IndexRange, out indexRange);
 
-                if (ServiceResult.IsGood(result) && indexRange != NumericRange.Empty)
-                {
+                if (ServiceResult.IsGood(result) && indexRange != NumericRange.Empty) {
                     // apply the index range.
                     object valueToWrite = nodeToWrite.Value.Value;
 
                     result = indexRange.ApplyRange(ref valueToWrite);
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         nodeToWrite.Value.Value = valueToWrite;
                     }
                 }
@@ -119,86 +114,67 @@ namespace Opc.Ua.Sample.Controls
 
             WriteResultsCTRL.ShowValue(results, true);
         }
+
         #endregion
-        
+
         #region Event Handlers
-        private void BrowseCTRL_ItemsSelected(object sender, NodesSelectedEventArgs e)
-        {
-            try
-            {
-                foreach (ReferenceDescription reference in e.References)
-                {
-                    if (reference.ReferenceTypeId == ReferenceTypeIds.HasProperty || reference.IsForward)
-                    {
+
+        private void BrowseCTRL_ItemsSelected(object sender, NodesSelectedEventArgs e) {
+            try {
+                foreach (ReferenceDescription reference in e.References) {
+                    if (reference.ReferenceTypeId == ReferenceTypeIds.HasProperty || reference.IsForward) {
                         WriteValuesCTRL.AddValue(reference);
                     }
                 }
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void MoveBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (sender == NextBTN)
-                {
+        private void MoveBTN_Click(object sender, EventArgs e) {
+            try {
+                if (sender == NextBTN) {
                     Write();
 
-                    WriteValuesCTRL.Parent  = SplitterPN.Panel1;
+                    WriteValuesCTRL.Parent = SplitterPN.Panel1;
 
-                    BackBTN.Visible         = true;
-                    NextBTN.Visible         = false;
-                    WriteBTN.Visible         = true;
-                    WriteValuesCTRL.Visible  = true;
+                    BackBTN.Visible = true;
+                    NextBTN.Visible = false;
+                    WriteBTN.Visible = true;
+                    WriteValuesCTRL.Visible = true;
                     WriteResultsCTRL.Visible = true;
-                    BrowseCTRL.Visible      = false;
-                }
+                    BrowseCTRL.Visible = false;
+                } else if (sender == BackBTN) {
+                    WriteValuesCTRL.Parent = SplitterPN.Panel2;
 
-                else if (sender == BackBTN)
-                {
-                    WriteValuesCTRL.Parent  = SplitterPN.Panel2;
-
-                    BackBTN.Visible          = false;
-                    NextBTN.Visible          = true;
-                    WriteBTN.Visible          = false;
-                    WriteResultsCTRL.Visible  = false;
-                    BrowseCTRL.Visible       = true;
-                    WriteValuesCTRL.Visible   = true;
+                    BackBTN.Visible = false;
+                    NextBTN.Visible = true;
+                    WriteBTN.Visible = false;
+                    WriteResultsCTRL.Visible = false;
+                    BrowseCTRL.Visible = true;
+                    WriteValuesCTRL.Visible = true;
                 }
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void WriteMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void WriteMI_Click(object sender, EventArgs e) {
+            try {
                 Write();
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void CancelBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void CancelBTN_Click(object sender, EventArgs e) {
+            try {
                 Close();
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

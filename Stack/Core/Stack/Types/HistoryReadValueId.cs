@@ -20,55 +20,48 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
-	/// <summary>
-	/// The description of a value to read.
-	/// </summary>
-    public partial class HistoryReadValueId
-    {
+namespace Opc.Ua {
+    /// <summary>
+    /// The description of a value to read.
+    /// </summary>
+    public partial class HistoryReadValueId {
         #region Supporting Properties and Methods
+
         /// <summary>
         /// A handle assigned to the item during processing.
         /// </summary>
-        public object Handle
-        {
-            get { return m_handle;  }
+        public object Handle {
+            get { return m_handle; }
             set { m_handle = value; }
         }
-        
+
         /// <summary>
         /// Whether the value has been processed.
         /// </summary>
-        public bool Processed
-        {
-            get { return m_processed;  }
+        public bool Processed {
+            get { return m_processed; }
             set { m_processed = value; }
         }
 
         /// <summary>
         /// Stores the parsed form of the index range parameter.
         /// </summary>
-        public NumericRange ParsedIndexRange
-        {
-            get { return m_parsedIndexRange;  }
+        public NumericRange ParsedIndexRange {
+            get { return m_parsedIndexRange; }
             set { m_parsedIndexRange = value; }
         }
-                
+
         /// <summary>
         /// Validates a read value id parameter.
         /// </summary>
-        public static ServiceResult Validate(HistoryReadValueId valueId)
-        {
+        public static ServiceResult Validate(HistoryReadValueId valueId) {
             // check for null structure.
-            if (valueId == null)
-            {
+            if (valueId == null) {
                 return StatusCodes.BadStructureMissing;
             }
 
             // null node ids are always invalid.
-            if (NodeId.IsNull(valueId.NodeId))
-            {
+            if (NodeId.IsNull(valueId.NodeId)) {
                 return StatusCodes.BadNodeIdInvalid;
             }
 
@@ -76,31 +69,28 @@ namespace Opc.Ua
             valueId.ParsedIndexRange = NumericRange.Empty;
 
             // parse the index range if specified.
-            if (!String.IsNullOrEmpty(valueId.IndexRange))
-            {
-                try
-                {
+            if (!String.IsNullOrEmpty(valueId.IndexRange)) {
+                try {
                     valueId.ParsedIndexRange = NumericRange.Parse(valueId.IndexRange);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     return ServiceResult.Create(e, StatusCodes.BadIndexRangeInvalid, String.Empty);
                 }
-            }
-            else
-            {
+            } else {
                 valueId.ParsedIndexRange = NumericRange.Empty;
             }
-            
+
             // passed basic validation.
             return null;
         }
+
         #endregion
-                            
+
         #region Private Fields
+
         private object m_handle;
         private bool m_processed;
         private NumericRange m_parsedIndexRange;
+
         #endregion
     }
 }

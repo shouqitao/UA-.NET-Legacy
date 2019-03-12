@@ -33,15 +33,12 @@ using System.Text;
 //using System.Reflection;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
-
 using Opc.Ua;
 using Opc.Ua.Client;
 using Workshop;
 
-namespace Opc.Ua.Sample
-{
-    partial class Program
-    {
+namespace Opc.Ua.Sample {
+    partial class Program {
         public const double PublishingInterval = 1;
         public const double SamplingInterval = 1;
         public const uint QueueSize = 3;
@@ -56,22 +53,20 @@ namespace Opc.Ua.Sample
         // public const string DefaultServerUrl = "opc.tcp://localhost:21381/UA/MatrikonOpcUaWrapper";
         // public const string DefaultServerUrl = "opc.tcp://localhost:51210/UA/SampleServer";
         // public const string DefaultServerUrl = "http://localhost:5000/UA/SampleServer";
-        
+
         /// <summary>
         /// The variables to read.
         /// </summary>
         static List<string> VariableBrowsePaths;
-        
-        static void Main(string[] args)
-        {
+
+        static void Main(string[] args) {
             VariableBrowsePaths = new List<string>();
             VariableBrowsePaths.Add("/6:Data/6:Dynamic/6:Scalar/6:Int32Value");
             // VariableBrowsePaths.Add("/7:MatrikonOpc Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int1");
             // VariableBrowsePaths.Add("/7:MatrikonOPC Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int2");
 
 
-            try
-            { 
+            try {
                 // create the configuration.     
                 ApplicationConfiguration configuration = Helpers.CreateClientConfiguration();
 
@@ -95,8 +90,7 @@ namespace Opc.Ua.Sample
                 BindingFactory bindingFactory = BindingFactory.Create(configuration, messageContext);
 
                 // update endpoint description using the discovery endpoint.
-                if (endpoint.UpdateBeforeConnect)
-                {
+                if (endpoint.UpdateBeforeConnect) {
                     endpoint.UpdateFromServer(bindingFactory);
 
                     Console.WriteLine("Updated endpoint description for url: {0}", endpointDescription.EndpointUrl);
@@ -108,7 +102,8 @@ namespace Opc.Ua.Sample
                 X509Certificate2 clientCertificate = configuration.SecurityConfiguration.ApplicationCertificate.Find();
 
                 // set up a callback to handle certificate validation errors.
-                configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+                configuration.CertificateValidator.CertificateValidation +=
+                    new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
 
                 // Initialize the channel which will be created with the server.
                 ITransportChannel channel = SessionChannel.Create(
@@ -121,7 +116,7 @@ namespace Opc.Ua.Sample
                 // Wrap the channel with the session object.
                 // This call will fail if the server does not trust the client certificate.
                 Session session = new Session(channel, configuration, endpoint, null);
-                
+
                 session.ReturnDiagnostics = DiagnosticsMasks.All;
 
                 // register keep alive callback.
@@ -135,8 +130,7 @@ namespace Opc.Ua.Sample
 
                 //Read some history values:
                 string str = "";
-                do
-                {
+                do {
                     Console.WriteLine("Select action from the menu:\n");
                     Console.WriteLine("\t 0 - Browse");
                     Console.WriteLine("\t 1 - Update");
@@ -153,13 +147,10 @@ namespace Opc.Ua.Sample
                     str = Console.ReadLine();
                     Console.WriteLine("\n");
 
-                    try
-                    {
-                        if (str == "0")
-                        {
+                    try {
+                        if (str == "0") {
                             Browse(session);
-                        }
-                        else if (str == "1")
+                        } else if (str == "1")
                             HistoryUpdate(session);
                         else if (str == "2")
                             HistoryReadRaw(session);
@@ -173,35 +164,30 @@ namespace Opc.Ua.Sample
                             HistoryDeleteAtTime(session);
                         else if (str == "7")
                             HistoryDeleteRaw(session);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Console.WriteLine("Exception occured: " + e.Message);
                     }
-
                 } while (str != "Q" && str != "q");
 
 
                 // Display some friendly info to the console and then wait for the ENTER key to be pressed.
-                Console.WriteLine( "Connected to {0}.\nPress ENTER to disconnect to end.", DefaultServerUrl);
+                Console.WriteLine("Connected to {0}.\nPress ENTER to disconnect to end.", DefaultServerUrl);
                 Console.ReadLine();
 
                 // Close and Dispose of our session, effectively disconnecting us from the UA Server.
                 session.Close();
                 session.Dispose();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine( "Unexpected exception: {0}.\nPress ENTER to disconnect to end.", e.Message);
+            } catch (Exception e) {
+                Console.WriteLine("Unexpected exception: {0}.\nPress ENTER to disconnect to end.", e.Message);
                 Console.ReadLine();
                 Console.WriteLine();
-                Console.WriteLine("========================================================================================");
+                Console.WriteLine(
+                    "========================================================================================");
                 Console.WriteLine();
             }
         }
 
-        private class NodeOfInterest
-        {
+        private class NodeOfInterest {
             public NodeId NodeId;
             public DataValue Value;
         }
@@ -216,15 +202,12 @@ namespace Opc.Ua.Sample
         static List<NodeOfInterest> GetNodeIds(
             Session session,
             NodeId startNodeId,
-            params string[] relativePaths)
-        {
+            params string[] relativePaths) {
             // build the list of browse paths to follow by parsing the relative paths.
             BrowsePathCollection browsePaths = new BrowsePathCollection();
 
-            if (relativePaths != null)
-            {
-                for (int ii = 0; ii < relativePaths.Length; ii++)
-                {
+            if (relativePaths != null) {
+                for (int ii = 0; ii < relativePaths.Length; ii++) {
                     BrowsePath browsePath = new BrowsePath();
 
                     // The relative paths used indexes in the namespacesUris table. These must be 
@@ -265,11 +248,9 @@ namespace Opc.Ua.Sample
             // collect the list of node ids found.
             List<NodeOfInterest> nodes = new List<NodeOfInterest>();
 
-            for (int ii = 0; ii < results.Count; ii++)
-            {
+            for (int ii = 0; ii < results.Count; ii++) {
                 // check if the start node actually exists.
-                if (StatusCode.IsBad(results[ii].StatusCode))
-                {
+                if (StatusCode.IsBad(results[ii].StatusCode)) {
                     ServiceResult error = new ServiceResult(
                         results[ii].StatusCode,
                         diagnosticInfos[ii],
@@ -280,8 +261,7 @@ namespace Opc.Ua.Sample
                 }
 
                 // an empty list is returned if no node was found.
-                if (results[ii].Targets.Count == 0)
-                {
+                if (results[ii].Targets.Count == 0) {
                     Console.WriteLine("Path '{0}' does not exist.", relativePaths[ii]);
                     continue;
                 }
@@ -290,8 +270,7 @@ namespace Opc.Ua.Sample
                 // one we are interested in here. The rest can be ignored.
                 BrowsePathTarget target = results[ii].Targets[0];
 
-                if (target.RemainingPathIndex != UInt32.MaxValue)
-                {
+                if (target.RemainingPathIndex != UInt32.MaxValue) {
                     Console.WriteLine("Path '{0}' refers to a node in another server.", relativePaths[ii]);
                     continue;
                 }
@@ -323,8 +302,8 @@ namespace Opc.Ua.Sample
         /// that will come back to haunt the vendor in the future. Compliance tests by the OPC Foundation will
         /// fail products that silently accept untrusted certificates.
         /// </remarks>
-        static void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
+        static void CertificateValidator_CertificateValidation(CertificateValidator validator,
+            CertificateValidationEventArgs e) {
             e.Accept = true;
             Console.WriteLine("WARNING: Accepting Untrusted Certificate: {0}", e.Certificate.Subject);
         }
@@ -332,9 +311,9 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Raised when a keep alive response is returned from the server.
         /// </summary>
-        static void Session_KeepAlive(Session session, KeepAliveEventArgs e)
-        {
-            Console.WriteLine("===>>> Session KeepAlive: {0} ServerTime: {1:HH:MM:ss}", e.CurrentState, e.CurrentTime.ToLocalTime());
+        static void Session_KeepAlive(Session session, KeepAliveEventArgs e) {
+            Console.WriteLine("===>>> Session KeepAlive: {0} ServerTime: {1:HH:MM:ss}", e.CurrentState,
+                e.CurrentTime.ToLocalTime());
         }
 
         private static Queue<DataValue> m_publishes = new Queue<DataValue>();
@@ -345,10 +324,8 @@ namespace Opc.Ua.Sample
         private static uint m_dumpCount;
         private static uint m_notifications;
 
-        private static void Save(uint id, DataValue value)
-        {
-            lock (m_publishes)
-            {
+        private static void Save(uint id, DataValue value) {
+            lock (m_publishes) {
                 m_publishes.Enqueue(value);
             }
         }
@@ -356,13 +333,11 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Raised when a publish response arrives from the server.
         /// </summary>
-        static void Session_Notification(Session session, NotificationEventArgs e)
-        {
+        static void Session_Notification(Session session, NotificationEventArgs e) {
             NotificationMessage message = e.NotificationMessage;
 
             // check for keep alive.
-            if (message.NotificationData.Count == 0)
-            {
+            if (message.NotificationData.Count == 0) {
                 Console.WriteLine(
                     "===>>> Subscription KeepAlive: SubscriptionId={0} MessageId={1} Time={2:HH:mm:ss.fff}",
                     e.Subscription.Id,
@@ -372,26 +347,24 @@ namespace Opc.Ua.Sample
                 return;
             }
 
-            DataChangeNotification dcn = (DataChangeNotification)ExtensionObject.ToEncodeable(message.NotificationData[0]);
+            DataChangeNotification dcn =
+                (DataChangeNotification) ExtensionObject.ToEncodeable(message.NotificationData[0]);
             // Console.WriteLine("{0:mm:ss.fff} - SeqNo={1}, Items={2}", message.PublishTime, message.SequenceNumber, dcn.MonitoredItems.Count);
 
             int count = 0;
 
             // get the data changes (oldest to newest).
-            foreach (MonitoredItemNotification datachange in message.GetDataChanges(false))
-            {
+            foreach (MonitoredItemNotification datachange in message.GetDataChanges(false)) {
                 // lookup the monitored item.
                 MonitoredItem monitoredItem = e.Subscription.FindItemByClientHandle(datachange.ClientHandle);
 
-                if (monitoredItem == null)
-                {
+                if (monitoredItem == null) {
                     Console.WriteLine("MonitoredItem ClientHandle not known: {0}", datachange.ClientHandle);
                     continue;
                 }
 
                 // this is called on another thread so we need to synchronize before accessing the node.
-                lock (m_lock)
-                {
+                lock (m_lock) {
                     NodeOfInterest node = monitoredItem.Handle as NodeOfInterest;
 
                     //Console.WriteLine(
@@ -407,17 +380,14 @@ namespace Opc.Ua.Sample
                 }
             }
 
-            if (count > NotificationsPerPublish)
-            {
+            if (count > NotificationsPerPublish) {
                 Console.WriteLine("Too many notifications in Publish: {0}/{1}", count, NotificationsPerPublish);
             }
 
-            lock (m_publishes)
-            {
+            lock (m_publishes) {
                 m_notifications++;
 
-                if (m_lastDump.AddSeconds(1) > DateTime.UtcNow)
-                {
+                if (m_lastDump.AddSeconds(1) > DateTime.UtcNow) {
                     return;
                 }
 
@@ -426,14 +396,11 @@ namespace Opc.Ua.Sample
 
                 DateTime timestamp = DateTime.MinValue;
 
-                while (m_publishes.Count > 0)
-                {
+                while (m_publishes.Count > 0) {
                     DataValue value1 = m_publishes.Dequeue();
 
-                    if (timestamp < value1.SourceTimestamp)
-                    {
-                        if (timestamp != DateTime.MinValue)
-                        {
+                    if (timestamp < value1.SourceTimestamp) {
+                        if (timestamp != DateTime.MinValue) {
                             //Console.WriteLine(
                             //    "Items = {1}, Timestamp = {0:mm:ss.fff}", 
                             //    timestamp,
@@ -464,18 +431,17 @@ namespace Opc.Ua.Sample
                     expectedNotifications,
                     sampleCount,
                     expectedSamples,
-                    (int)m_expectedSamples - (int)m_actualSamples);
+                    (int) m_expectedSamples - (int) m_actualSamples);
 
                 m_lastDump = m_lastDump.AddSeconds(1);
                 m_lastMessage = message.SequenceNumber;
                 m_dumpCount++;
                 m_notifications = 0;
 
-                m_actualSamples += (uint)sampleCount;
+                m_actualSamples += (uint) sampleCount;
                 m_expectedSamples += expectedSamples;
 
-                if (m_dumpCount == 10)
-                {
+                if (m_dumpCount == 10) {
                     m_actualSamples = 0;
                     m_expectedSamples = 0;
                 }
@@ -486,20 +452,18 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Reads the values for a set of variables.
         /// </summary>
-        static void Read(Session session)
-        {
+        static void Read(Session session) {
             IList<NodeOfInterest> results = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder,
                 VariableBrowsePaths.ToArray());
             // build list of nodes to read.
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            for (int ii = 0; ii < results.Count; ii++)
-            {
+            for (int ii = 0; ii < results.Count; ii++) {
                 ReadValueId nodeToRead = new ReadValueId();
 
                 nodeToRead.NodeId = results[ii].NodeId;
                 nodeToRead.AttributeId = Attributes.Value;
-                
+
                 nodesToRead.Add(nodeToRead);
             }
 
@@ -518,21 +482,20 @@ namespace Opc.Ua.Sample
             // verify that the server returned the correct number of results.
             Session.ValidateResponse(values, nodesToRead);
             Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
-                          
-            // process results.
-            for (int ii = 0; ii < values.Count; ii++)
-            {
 
+            // process results.
+            for (int ii = 0; ii < values.Count; ii++) {
                 // check for error.
-                if (StatusCode.IsBad(values[ii].StatusCode))
-                {
-                    ServiceResult result = Session.GetResult(values[ii].StatusCode, ii, diagnosticInfos, responseHeader);
+                if (StatusCode.IsBad(values[ii].StatusCode)) {
+                    ServiceResult result =
+                        Session.GetResult(values[ii].StatusCode, ii, diagnosticInfos, responseHeader);
                     Console.WriteLine("Read result for {0}: {1}", VariableBrowsePaths[ii], result.ToLongString());
                     continue;
                 }
-                
+
                 // write value.
-                Console.WriteLine( "{0}: V={1}, Q={2}, SrvT={3}, SrcT={4}",nodesToRead[ii].NodeId, values[ii].Value.ToString(),
+                Console.WriteLine("{0}: V={1}, Q={2}, SrvT={3}, SrcT={4}", nodesToRead[ii].NodeId,
+                    values[ii].Value.ToString(),
                     values[ii].StatusCode.ToString(), values[ii].ServerTimestamp, values[ii].SourceTimestamp);
             }
         }
@@ -541,10 +504,9 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Reads the history of values for a set of variables.
         /// </summary>
-        static void HistoryReadRaw(Session session)
-        {
+        static void HistoryReadRaw(Session session) {
             // translate browse paths.
-            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder, 
+            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder,
                 VariableBrowsePaths.ToArray());
 
 
@@ -560,8 +522,7 @@ namespace Opc.Ua.Sample
             ExtensionObject eo = new ExtensionObject(readDetails.TypeId, readDetails);
 
             HistoryReadValueIdCollection idCollection = new HistoryReadValueIdCollection();
-            for (int ii = 0; ii < nodeIds.Count; ii++)
-            {
+            for (int ii = 0; ii < nodeIds.Count; ii++) {
                 HistoryReadValueId readValueId = new HistoryReadValueId();
                 readValueId.NodeId = nodeIds[ii].NodeId;
                 readValueId.Processed = false;
@@ -570,46 +531,42 @@ namespace Opc.Ua.Sample
 
             HistoryReadResultCollection historyReadResults;
 
-            ResponseHeader responseHeader = 
+            ResponseHeader responseHeader =
                 session.HistoryRead(null, eo, TimestampsToReturn.Both, true,
-                idCollection, out historyReadResults, out diagnosticInfos);
+                    idCollection, out historyReadResults, out diagnosticInfos);
 
             // process results.
 
-            for (int ii = 0; ii < historyReadResults.Count; ii++)
-            {
+            for (int ii = 0; ii < historyReadResults.Count; ii++) {
                 HistoryReadResult historyReadResult = historyReadResults[ii];
                 HistoryData historyData = null;
                 DataValueCollection dataValues = null;
-                if (historyReadResult.HistoryData != null)
-                {
+                if (historyReadResult.HistoryData != null) {
                     historyData = ExtensionObject.ToEncodeable(historyReadResult.HistoryData) as HistoryData;
                     dataValues = historyData.DataValues;
                 }
 
-                ServiceResult result = Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
-                Console.WriteLine("HistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii], result.StatusCode.ToString());
+                ServiceResult result =
+                    Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
+                Console.WriteLine("HistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii],
+                    result.StatusCode.ToString());
 
-                if (StatusCode.IsBad(historyReadResult.StatusCode))
-                {
+                if (StatusCode.IsBad(historyReadResult.StatusCode)) {
                     continue;
                 }
 
-                if (dataValues == null)
-                {
+                if (dataValues == null) {
                     Console.WriteLine("dataValues == null");
                     continue;
                 }
 
-                for (int jj = 0; jj < dataValues.Count; jj++)
-                {
-
+                for (int jj = 0; jj < dataValues.Count; jj++) {
                     DataValue dataValue = dataValues[jj];
 
                     // write value.
-                    Console.WriteLine("{0}: V={1}, Q={2}, SrvT={3}, SrcT={4}", jj, 
-                        dataValue.Value == null ? "null" : dataValue.Value.ToString(), 
-                        dataValue.StatusCode.ToString(), 
+                    Console.WriteLine("{0}: V={1}, Q={2}, SrvT={3}, SrcT={4}", jj,
+                        dataValue.Value == null ? "null" : dataValue.Value.ToString(),
+                        dataValue.StatusCode.ToString(),
                         dataValue.ServerTimestamp, dataValue.SourceTimestamp);
                 }
             }
@@ -619,16 +576,15 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Reads the history of attributes for Bucket Brigade.Int1.
         /// </summary>
-        static void HistoryReadAttributes(Session session)
-        {
-
+        static void HistoryReadAttributes(Session session) {
             List<string> VariableBrowsePaths = new List<string>();
-                VariableBrowsePaths.Add("/7:MatrikonOpc Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int1/7:Description");
-                VariableBrowsePaths.Add("/7:MatrikonOpc Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int1/7:DataType");
-                VariableBrowsePaths.Add("/7:MatrikonOpc Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int1/7:ITEMID");
+            VariableBrowsePaths.Add(
+                "/7:MatrikonOpc Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int1/7:Description");
+            VariableBrowsePaths.Add("/7:MatrikonOpc Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int1/7:DataType");
+            VariableBrowsePaths.Add("/7:MatrikonOpc Sim Server/7:Simulation Items/7:Bucket Brigade/7:Int1/7:ITEMID");
 
             // translate browse paths.
-            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder, 
+            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder,
                 VariableBrowsePaths.ToArray());
 
 
@@ -644,8 +600,7 @@ namespace Opc.Ua.Sample
             ExtensionObject eo = new ExtensionObject(readDetails.TypeId, readDetails);
 
             HistoryReadValueIdCollection idCollection = new HistoryReadValueIdCollection();
-            for (int ii = 0; ii < nodeIds.Count; ii++)
-            {
+            for (int ii = 0; ii < nodeIds.Count; ii++) {
                 HistoryReadValueId readValueId = new HistoryReadValueId();
                 readValueId.NodeId = nodeIds[ii].NodeId;
                 readValueId.Processed = false;
@@ -656,43 +611,40 @@ namespace Opc.Ua.Sample
 
             ResponseHeader responseHeader =
                 session.HistoryRead(null, eo, TimestampsToReturn.Both, true,
-                idCollection, out historyReadResults, out diagnosticInfos);
+                    idCollection, out historyReadResults, out diagnosticInfos);
 
             // process results.
 
-            for (int ii = 0; ii < historyReadResults.Count; ii++)
-            {
+            for (int ii = 0; ii < historyReadResults.Count; ii++) {
                 HistoryReadResult historyReadResult = historyReadResults[ii];
                 HistoryData historyData = null;
                 DataValueCollection dataValues = null;
-                if (historyReadResult.HistoryData != null)
-                {
+                if (historyReadResult.HistoryData != null) {
                     historyData = ExtensionObject.ToEncodeable(historyReadResult.HistoryData) as HistoryData;
                     dataValues = historyData.DataValues;
                 }
 
-                ServiceResult result = Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
-                
-                Console.WriteLine("\nHistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii], result.StatusCode.ToString());
+                ServiceResult result =
+                    Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
 
-                if (StatusCode.IsBad(historyReadResult.StatusCode))
-                {
+                Console.WriteLine("\nHistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii],
+                    result.StatusCode.ToString());
+
+                if (StatusCode.IsBad(historyReadResult.StatusCode)) {
                     continue;
                 }
 
-                if (dataValues == null)
-                {
+                if (dataValues == null) {
                     Console.WriteLine("dataValues == null");
                     continue;
                 }
 
-                for (int jj = 0; jj < dataValues.Count; jj++)
-                {
-
+                for (int jj = 0; jj < dataValues.Count; jj++) {
                     DataValue dataValue = dataValues[jj];
 
                     // write value.
-                    Console.WriteLine("\t{0}: V={1}",jj, dataValue.Value == null ? "null" : dataValue.Value.ToString());
+                    Console.WriteLine("\t{0}: V={1}", jj,
+                        dataValue.Value == null ? "null" : dataValue.Value.ToString());
                     Console.WriteLine("\t Q={0}, SrvT={1}, SrcT={2}\n",
                         dataValue.StatusCode.ToString(), dataValue.ServerTimestamp, dataValue.SourceTimestamp);
                 }
@@ -702,10 +654,9 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Reads the history of values for a set of variables at given time.
         /// </summary>
-        static void HistoryReadAtTime(Session session)
-        {
+        static void HistoryReadAtTime(Session session) {
             // translate browse paths.
-            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder, 
+            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder,
                 VariableBrowsePaths.ToArray());
 
 
@@ -715,8 +666,7 @@ namespace Opc.Ua.Sample
 
             readDetails.ReqTimes = new DateTimeCollection();
 
-            for (int jj = 0; jj < 10; jj++)
-            {
+            for (int jj = 0; jj < 10; jj++) {
                 readDetails.ReqTimes.Add(new DateTime(2008, 01, 01, 12, 0, jj));
                 readDetails.ReqTimes.Add(new DateTime(2008, 01, 01, 12, 0, jj, (int) 500));
             }
@@ -724,8 +674,7 @@ namespace Opc.Ua.Sample
             ExtensionObject eo = new ExtensionObject(readDetails.TypeId, readDetails);
 
             HistoryReadValueIdCollection idCollection = new HistoryReadValueIdCollection();
-            for (int ii = 0; ii < nodeIds.Count; ii++)
-            {
+            for (int ii = 0; ii < nodeIds.Count; ii++) {
                 HistoryReadValueId readValueId = new HistoryReadValueId();
                 readValueId.NodeId = nodeIds[ii].NodeId;
                 readValueId.Processed = false;
@@ -736,38 +685,34 @@ namespace Opc.Ua.Sample
 
             ResponseHeader responseHeader =
                 session.HistoryRead(null, eo, TimestampsToReturn.Both, true,
-                idCollection, out historyReadResults, out diagnosticInfos);
+                    idCollection, out historyReadResults, out diagnosticInfos);
 
             // process results.
 
-            for (int ii = 0; ii < historyReadResults.Count; ii++)
-            {
+            for (int ii = 0; ii < historyReadResults.Count; ii++) {
                 HistoryReadResult historyReadResult = historyReadResults[ii];
                 HistoryData historyData = null;
                 DataValueCollection dataValues = null;
-                if (historyReadResult.HistoryData != null)
-                {
+                if (historyReadResult.HistoryData != null) {
                     historyData = ExtensionObject.ToEncodeable(historyReadResult.HistoryData) as HistoryData;
                     dataValues = historyData.DataValues;
                 }
 
-                ServiceResult result = Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
-                Console.WriteLine("HistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii], result.StatusCode.ToString());
+                ServiceResult result =
+                    Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
+                Console.WriteLine("HistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii],
+                    result.StatusCode.ToString());
 
-                if (StatusCode.IsBad(historyReadResult.StatusCode))
-                {
+                if (StatusCode.IsBad(historyReadResult.StatusCode)) {
                     continue;
                 }
 
-                if (dataValues == null)
-                {
+                if (dataValues == null) {
                     Console.WriteLine("dataValues == null");
                     continue;
                 }
 
-                for (int jj = 0; jj < dataValues.Count; jj++)
-                {
-
+                for (int jj = 0; jj < dataValues.Count; jj++) {
                     DataValue dataValue = dataValues[jj];
 
                     // write value.
@@ -782,22 +727,19 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Deletes the history of values for a set of variables at given time.
         /// </summary>
-        static void HistoryDeleteAtTime(Session session)
-        {
+        static void HistoryDeleteAtTime(Session session) {
             // translate browse paths.
-            IList<NodeOfInterest> results = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder, 
+            IList<NodeOfInterest> results = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder,
                 VariableBrowsePaths.ToArray());
 
 
             DiagnosticInfoCollection diagnosticInfos;
 
             ExtensionObjectCollection eoc = new ExtensionObjectCollection();
-            for (int ii = 0; ii < results.Count; ii++)
-            {
+            for (int ii = 0; ii < results.Count; ii++) {
                 DeleteAtTimeDetails deleteDetails = new DeleteAtTimeDetails();
                 deleteDetails.ReqTimes = new DateTimeCollection();
-                for (int jj = 0; jj < 5; jj++)
-                {
+                for (int jj = 0; jj < 5; jj++) {
                     deleteDetails.ReqTimes.Add(new DateTime(2008, 01, 01, 12, 0, jj * 2));
                 }
 
@@ -815,18 +757,17 @@ namespace Opc.Ua.Sample
 
             // process results.
 
-            for (int ii = 0; ii < historyUpdateResults.Count; ii++)
-            {
+            for (int ii = 0; ii < historyUpdateResults.Count; ii++) {
                 HistoryUpdateResult historyUpdateResult = historyUpdateResults[ii];
 
-                Console.WriteLine("HistoryUpdate result code for {0}:  {1}", VariableBrowsePaths[ii], historyUpdateResult.StatusCode.ToString());
+                Console.WriteLine("HistoryUpdate result code for {0}:  {1}", VariableBrowsePaths[ii],
+                    historyUpdateResult.StatusCode.ToString());
 
-                if (StatusCode.IsGood(historyUpdateResult.StatusCode))
-                {
-                    for (int jj = 0; jj < historyUpdateResult.OperationResults.Count; jj++)
-                    {
+                if (StatusCode.IsGood(historyUpdateResult.StatusCode)) {
+                    for (int jj = 0; jj < historyUpdateResult.OperationResults.Count; jj++) {
                         Console.WriteLine("    {0}: {1}", jj, historyUpdateResult.OperationResults[jj]);
                     }
+
                     Console.WriteLine("");
                 }
             }
@@ -836,18 +777,16 @@ namespace Opc.Ua.Sample
         /// <summary>
         /// Deletes the history of values for a set of variables at given time interval.
         /// </summary>
-        static void HistoryDeleteRaw(Session session)
-        {
+        static void HistoryDeleteRaw(Session session) {
             // translate browse paths.
-            IList<NodeOfInterest> results = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder, 
+            IList<NodeOfInterest> results = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder,
                 VariableBrowsePaths.ToArray());
 
 
             DiagnosticInfoCollection diagnosticInfos;
 
             ExtensionObjectCollection eoc = new ExtensionObjectCollection();
-            for (int ii = 0; ii < results.Count; ii++)
-            {
+            for (int ii = 0; ii < results.Count; ii++) {
                 DeleteRawModifiedDetails deleteDetails = new DeleteRawModifiedDetails();
                 deleteDetails.StartTime = new DateTime(2008, 1, 1, 12, 0, 0);
                 deleteDetails.EndTime = new DateTime(2008, 1, 1, 12, 0, 10);
@@ -866,28 +805,26 @@ namespace Opc.Ua.Sample
 
             // process results.
 
-            for (int ii = 0; ii < historyUpdateResults.Count; ii++)
-            {
+            for (int ii = 0; ii < historyUpdateResults.Count; ii++) {
                 HistoryUpdateResult historyUpdateResult = historyUpdateResults[ii];
 
-                Console.WriteLine("HistoryUpdate result code for {0}:  {1}", VariableBrowsePaths[ii], historyUpdateResult.StatusCode.ToString());
+                Console.WriteLine("HistoryUpdate result code for {0}:  {1}", VariableBrowsePaths[ii],
+                    historyUpdateResult.StatusCode.ToString());
 
-                if (StatusCode.IsGood(historyUpdateResult.StatusCode))
-                {
-                    for (int jj = 0; jj < historyUpdateResult.OperationResults.Count; jj++)
-                    {
+                if (StatusCode.IsGood(historyUpdateResult.StatusCode)) {
+                    for (int jj = 0; jj < historyUpdateResult.OperationResults.Count; jj++) {
                         Console.WriteLine("    {0}: {1}", jj, historyUpdateResult.OperationResults[jj]);
                     }
+
                     Console.WriteLine("");
                 }
             }
         }
-        
 
-        static void HistoryReadProcessed(Session session)
-        {
+
+        static void HistoryReadProcessed(Session session) {
             // translate browse paths.
-            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder, 
+            IList<NodeOfInterest> nodeIds = GetNodeIds(session, Opc.Ua.Objects.ObjectsFolder,
                 VariableBrowsePaths.ToArray());
 
             DiagnosticInfoCollection diagnosticInfos;
@@ -901,23 +838,22 @@ namespace Opc.Ua.Sample
 
             //Get the list of avalilable aggregate functions:
             session.Browse(
-                rh, 
-                vd, 
+                rh,
+                vd,
                 Opc.Ua.ObjectIds.Server_ServerCapabilities_AggregateFunctions,
                 1000,
-                BrowseDirection.Forward, 
-                ReferenceTypeIds.Aggregates, 
-                false, 
-                0, 
-                out cp, 
+                BrowseDirection.Forward,
+                ReferenceTypeIds.Aggregates,
+                false,
+                0,
+                out cp,
                 out references);
 
             Console.WriteLine("{0} aggregates are detected:", references.Count);
 
             //Print the list of avalible aggregates:
             int i = 0;
-            foreach (ReferenceDescription rd in references)
-            {
+            foreach (ReferenceDescription rd in references) {
                 i++;
                 Console.WriteLine("{0}. {1} {2}", i, rd.BrowseName, rd.NodeId.Identifier.ToString());
             }
@@ -928,8 +864,7 @@ namespace Opc.Ua.Sample
 
             i = System.Int16.Parse(str);
 
-            if (i > 0 && i <= references.Count)
-            {
+            if (i > 0 && i <= references.Count) {
                 aggregateNodeId = ExpandedNodeId.ToNodeId(references[i - 1].NodeId, session.NamespaceUris);
             }
 
@@ -940,9 +875,8 @@ namespace Opc.Ua.Sample
             readDetails.EndTime = new DateTime(2008, 1, 1, 12, 0, 12);
 
             readDetails.AggregateType = new NodeIdCollection(nodeIds.Count);
-            for (int x = 0; x < nodeIds.Count; x++)
-            {
-                readDetails.AggregateType.Add (aggregateNodeId);
+            for (int x = 0; x < nodeIds.Count; x++) {
+                readDetails.AggregateType.Add(aggregateNodeId);
             }
 
             readDetails.ProcessingInterval = 500; //500 milliseconds
@@ -950,8 +884,7 @@ namespace Opc.Ua.Sample
             ExtensionObject eo = new ExtensionObject(readDetails.TypeId, readDetails);
 
             HistoryReadValueIdCollection idCollection = new HistoryReadValueIdCollection();
-            for (int ii = 0; ii < nodeIds.Count; ii++)
-            {
+            for (int ii = 0; ii < nodeIds.Count; ii++) {
                 HistoryReadValueId readValueId = new HistoryReadValueId();
                 readValueId.NodeId = nodeIds[ii].NodeId;
                 readValueId.Processed = true;
@@ -963,18 +896,17 @@ namespace Opc.Ua.Sample
             //Read processed history:
             ResponseHeader responseHeader =
                 session.HistoryRead(null, eo, TimestampsToReturn.Both, true,
-                idCollection, out historyReadResults, out diagnosticInfos);
+                    idCollection, out historyReadResults, out diagnosticInfos);
 
             //Print results:
-            for (int ii = 0; ii < historyReadResults.Count; ii++)
-            {
+            for (int ii = 0; ii < historyReadResults.Count; ii++) {
                 HistoryReadResult historyReadResult = historyReadResults[ii];
-                ServiceResult result = Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
-                
+                ServiceResult result =
+                    Session.GetResult(historyReadResult.StatusCode, ii, diagnosticInfos, responseHeader);
+
                 HistoryData historyData = null;
                 DataValueCollection dataValues = null;
-                if ( !(historyReadResult.HistoryData == null) )
-                {
+                if (!(historyReadResult.HistoryData == null)) {
                     historyData = ExtensionObject.ToEncodeable(historyReadResult.HistoryData) as HistoryData;
                     if (historyData == null)
                         dataValues = null;
@@ -982,16 +914,15 @@ namespace Opc.Ua.Sample
                         dataValues = historyData.DataValues;
                 }
 
-                Console.WriteLine("\nHistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii], result.StatusCode.ToString());
+                Console.WriteLine("\nHistoryRead result code for {0}:  {1}", VariableBrowsePaths[ii],
+                    result.StatusCode.ToString());
 
-                if (dataValues == null)
-                {
+                if (dataValues == null) {
                     Console.WriteLine("dataValues == null");
                     continue;
                 }
 
-                for (int jj = 0; jj < dataValues.Count; jj++)
-                {
+                for (int jj = 0; jj < dataValues.Count; jj++) {
                     DataValue dataValue = dataValues[jj];
                     if (dataValue == null)
                         continue;
@@ -1005,8 +936,7 @@ namespace Opc.Ua.Sample
             }
         }
 
-        static void Browse(Session session)
-        {
+        static void Browse(Session session) {
             DiagnosticInfoCollection diagnosticInfos;
 
             BrowseDescriptionCollection bc = new BrowseDescriptionCollection();
@@ -1014,18 +944,16 @@ namespace Opc.Ua.Sample
             bd.BrowseDirection = BrowseDirection.Forward;
             NodeId nodeId = Opc.Ua.Objects.ObjectsFolder;
 
-            do
-            {
+            do {
                 Console.WriteLine("\n Enter nodeId to Browse (or q to exit)");
                 string s = Console.ReadLine();
                 if (s == "q")
                     break;
-                if (s.Length == 0)
-                {
+                if (s.Length == 0) {
                     nodeId = Opc.Ua.Objects.ObjectsFolder;
-                }
-                else
+                } else
                     nodeId = new NodeId(s);
+
                 bc.Clear();
 
                 bd.NodeId = nodeId;
@@ -1036,20 +964,17 @@ namespace Opc.Ua.Sample
 
                 ResponseHeader rh =
                     session.Browse(null, null, 100, bc, out results, out diagnosticInfos);
-                
-                foreach ( BrowseResult res in results)
-                {
-                    foreach (ReferenceDescription rdc in res.References)
-                    {
-                        Console.WriteLine(String.Format(" Node = {0} (namespace {1}) {2}", rdc.NodeId.ToString(),rdc.NodeId.NamespaceIndex, Environment.NewLine));
+
+                foreach (BrowseResult res in results) {
+                    foreach (ReferenceDescription rdc in res.References) {
+                        Console.WriteLine(String.Format(" Node = {0} (namespace {1}) {2}", rdc.NodeId.ToString(),
+                            rdc.NodeId.NamespaceIndex, Environment.NewLine));
                     }
                 }
             } while (true);
-
         }
 
-        static void HistoryUpdate(Session session)
-        {
+        static void HistoryUpdate(Session session) {
             DiagnosticInfoCollection diagnosticInfos;
 
             // translate browse paths.
@@ -1059,19 +984,19 @@ namespace Opc.Ua.Sample
                 VariableBrowsePaths.ToArray());
 
             ExtensionObjectCollection eoc = new ExtensionObjectCollection();
-            for (int ii = 0; ii < nodeIds.Count; ii++)
-            {
+            for (int ii = 0; ii < nodeIds.Count; ii++) {
                 UpdateDataDetails updateDetails = new UpdateDataDetails();
 
                 updateDetails.NodeId = nodeIds[ii].NodeId;
                 updateDetails.PerformInsertReplace = PerformUpdateType.Update;
                 updateDetails.UpdateValues = new DataValueCollection();
 
-                for (int jj = 0; jj <= 5; jj++)
-                {
-                    DataValue dv = new DataValue(new Variant(jj*10), StatusCodes.Good, new DateTime(2008, 01, 01, 12, 0, jj*2));
+                for (int jj = 0; jj <= 5; jj++) {
+                    DataValue dv = new DataValue(new Variant(jj * 10), StatusCodes.Good,
+                        new DateTime(2008, 01, 01, 12, 0, jj * 2));
                     updateDetails.UpdateValues.Add(dv);
                 }
+
                 ExtensionObject eo = new ExtensionObject(updateDetails.TypeId, updateDetails);
                 eoc.Add(eo);
             }
@@ -1081,21 +1006,20 @@ namespace Opc.Ua.Sample
             ResponseHeader responseHeader =
                 session.HistoryUpdate(null, eoc, out historyUpdateResults, out diagnosticInfos);
 
-            
+
             // process results.
 
-            for (int ii = 0; ii < historyUpdateResults.Count; ii++)
-            {
+            for (int ii = 0; ii < historyUpdateResults.Count; ii++) {
                 HistoryUpdateResult historyUpdateResult = historyUpdateResults[ii];
 
-                Console.WriteLine("HistoryUpdate result code for {0}:  {1}", VariableBrowsePaths[ii], historyUpdateResult.StatusCode.ToString());
+                Console.WriteLine("HistoryUpdate result code for {0}:  {1}", VariableBrowsePaths[ii],
+                    historyUpdateResult.StatusCode.ToString());
 
-                if (StatusCode.IsGood(historyUpdateResult.StatusCode))
-                {
-                    for (int jj = 0; jj < historyUpdateResult.OperationResults.Count; jj++)
-                    {
+                if (StatusCode.IsGood(historyUpdateResult.StatusCode)) {
+                    for (int jj = 0; jj < historyUpdateResult.OperationResults.Count; jj++) {
                         Console.WriteLine("    {0}: {1}", jj, historyUpdateResult.OperationResults[jj]);
                     }
+
                     Console.WriteLine("");
                 }
             }

@@ -31,14 +31,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Calculates the value of an aggregate. 
     /// </summary>
-    public class AverageAggregateCalculator : AggregateCalculator
-    {
+    public class AverageAggregateCalculator : AggregateCalculator {
         #region Constructors
+
         /// <summary>
         /// Initializes the aggregate calculator.
         /// </summary>
@@ -55,47 +54,40 @@ namespace Opc.Ua.Server
             double processingInterval,
             bool stepped,
             AggregateConfiguration configuration)
-        : 
-            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration)
-        {
+            :
+            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration) {
             SetPartialBit = aggregateId != Opc.Ua.ObjectIds.AggregateFunction_Average;
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Computes the value for the timeslice.
         /// </summary>
-        protected override DataValue ComputeValue(TimeSlice slice)
-        {
+        protected override DataValue ComputeValue(TimeSlice slice) {
             uint? id = AggregateId.Identifier as uint?;
 
-            if (id != null)
-            {
-                switch (id.Value)
-                {
-                    case Objects.AggregateFunction_Average:
-                    {
+            if (id != null) {
+                switch (id.Value) {
+                    case Objects.AggregateFunction_Average: {
                         return ComputeAverage(slice);
                     }
 
-                    case Objects.AggregateFunction_TimeAverage:
-                    {
+                    case Objects.AggregateFunction_TimeAverage: {
                         return ComputeTimeAverage(slice, false, 1);
                     }
 
-                    case Objects.AggregateFunction_Total:
-                    {
+                    case Objects.AggregateFunction_Total: {
                         return ComputeTimeAverage(slice, false, 2);
                     }
 
-                    case Objects.AggregateFunction_TimeAverage2:
-                    {
+                    case Objects.AggregateFunction_TimeAverage2: {
                         return ComputeTimeAverage(slice, true, 1);
                     }
 
-                    case Objects.AggregateFunction_Total2:
-                    {
+                    case Objects.AggregateFunction_Total2: {
                         return ComputeTimeAverage(slice, true, 2);
                     }
                 }
@@ -103,20 +95,20 @@ namespace Opc.Ua.Server
 
             return base.ComputeValue(slice);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Calculates the RegSlope, RegConst and RegStdDev aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeAverage(TimeSlice slice)
-        {
+        protected DataValue ComputeAverage(TimeSlice slice) {
             // get the values in the slice.
             List<DataValue> values = GetValues(slice);
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -124,31 +116,25 @@ namespace Opc.Ua.Server
             int count = 0;
             double total = 0;
 
-            for (int ii = 0; ii < values.Count; ii++)
-            {
-                if (StatusCode.IsGood(values[ii].StatusCode))
-                {
-                    try
-                    {
+            for (int ii = 0; ii < values.Count; ii++) {
+                if (StatusCode.IsGood(values[ii].StatusCode)) {
+                    try {
                         double sample = CastToDouble(values[ii]);
                         total += sample;
                         count++;
-                    }
-                    catch
-                    {
+                    } catch {
                         // ignore conversion errors.
                     }
                 }
             }
 
             // check for empty slice.
-            if (count == 0)
-            {
+            if (count == 0) {
                 return GetNoDataValue(slice);
             }
 
             // select the result.
-            double result = total/count;
+            double result = total / count;
 
             // set the timestamp and status.
             DataValue value = new DataValue();
@@ -165,23 +151,18 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the StdDev, Variance, StdDev2 and Variance2 aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeTimeAverage(TimeSlice slice, bool useSimpleBounds, int valueType)
-        {
+        protected DataValue ComputeTimeAverage(TimeSlice slice, bool useSimpleBounds, int valueType) {
             // get the values in the slice.
             List<DataValue> values = null;
 
-            if (useSimpleBounds)
-            {
+            if (useSimpleBounds) {
                 values = GetValuesWithSimpleBounds(slice);
-            }
-            else
-            {
+            } else {
                 values = GetValuesWithInterpolatedBounds(slice);
             }
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -192,35 +173,36 @@ namespace Opc.Ua.Server
             double totalDuration = 0;
             bool nonGoodRegionsExists = false;
 
-            for (int ii = 0; ii < regions.Count; ii++)
-            {
-                double duration = regions[ii].Duration/1000.0;
+            for (int ii = 0; ii < regions.Count; ii++) {
+                double duration = regions[ii].Duration / 1000.0;
 
-                if (StatusCode.IsNotBad(regions[ii].StatusCode))
-                {
+                if (StatusCode.IsNotBad(regions[ii].StatusCode)) {
                     total += (regions[ii].StartValue + regions[ii].EndValue) * duration / 2;
                     totalDuration += duration;
                 }
 
-                if (StatusCode.IsNotGood(regions[ii].StatusCode))
-                {
+                if (StatusCode.IsNotGood(regions[ii].StatusCode)) {
                     nonGoodRegionsExists = true;
                 }
             }
 
             // check if no good data.
-            if (totalDuration == 0)
-            {
+            if (totalDuration == 0) {
                 return GetNoDataValue(slice);
             }
 
             // select the result.
             double result = 0;
 
-            switch (valueType)
-            {
-                case 1: { result = total/totalDuration; break; }
-                case 2: { result = total; break; }
+            switch (valueType) {
+                case 1: {
+                    result = total / totalDuration;
+                    break;
+                }
+                case 2: {
+                    result = total;
+                    break;
+                }
             }
 
             // set the timestamp and status.
@@ -229,16 +211,12 @@ namespace Opc.Ua.Server
             value.SourceTimestamp = GetTimestamp(slice);
             value.ServerTimestamp = GetTimestamp(slice);
 
-            if (useSimpleBounds)
-            {
+            if (useSimpleBounds) {
                 value.StatusCode = GetTimeBasedStatusCode(regions, value.StatusCode);
-            }
-            else
-            {
+            } else {
                 value.StatusCode = StatusCodes.Good;
 
-                if (nonGoodRegionsExists)
-                {
+                if (nonGoodRegionsExists) {
                     value.StatusCode = StatusCodes.UncertainDataSubNormal;
                 }
             }
@@ -248,6 +226,7 @@ namespace Opc.Ua.Server
             // return result.
             return value;
         }
+
         #endregion
     }
 }

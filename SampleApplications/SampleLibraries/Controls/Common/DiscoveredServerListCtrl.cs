@@ -35,52 +35,50 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays a list of servers.
     /// </summary>
-    public partial class DiscoveredServerListCtrl : Opc.Ua.Client.Controls.BaseListCtrl
-    {
+    public partial class DiscoveredServerListCtrl : Opc.Ua.Client.Controls.BaseListCtrl {
         #region Constructors
+
         /// <summary>
         /// Initalize the control.
         /// </summary>
-        public DiscoveredServerListCtrl()
-        {
+        public DiscoveredServerListCtrl() {
             InitializeComponent();
             SetColumns(m_ColumnNames);
             ItemsLV.Sorting = SortOrder.Descending;
             ItemsLV.MultiSelect = false;
         }
+
         #endregion
-        
+
         #region Private Fields
+
         // The columns to display in the control.		
-		private readonly object[][] m_ColumnNames = new object[][]
-		{ 
-			new object[] { "Name", HorizontalAlignment.Left, null },  
-			new object[] { "Type", HorizontalAlignment.Left, null },
-			new object[] { "Host", HorizontalAlignment.Left, null },
-			new object[] { "URI",  HorizontalAlignment.Left, null }
-		};
-        
+        private readonly object[][] m_ColumnNames = new object[][] {
+            new object[] {"Name", HorizontalAlignment.Left, null},
+            new object[] {"Type", HorizontalAlignment.Left, null},
+            new object[] {"Host", HorizontalAlignment.Left, null}, new object[] {"URI", HorizontalAlignment.Left, null}
+        };
+
         private ApplicationConfiguration m_configuration;
         private int m_discoveryTimeout;
         private int m_discoverCount;
         private string m_discoveryUrl;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// The timeout in milliseconds to use when discovering servers.
         /// </summary>
         [System.ComponentModel.DefaultValue(5000)]
-        public int DiscoveryTimeout
-        {
+        public int DiscoveryTimeout {
             get { return m_discoveryTimeout; }
             set { m_discoveryTimeout = value; }
         }
@@ -89,8 +87,7 @@ namespace Opc.Ua.Client.Controls
         /// Gets or sets the discovery URL used to find the servers displayed in the control.
         /// </summary>
         /// <value>The discovery URL.</value>
-        public string DiscoveryUrl
-        {
+        public string DiscoveryUrl {
             get { return m_discoveryUrl; }
             set { m_discoveryUrl = value; }
         }
@@ -98,14 +95,12 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays a list of servers in the control.
         /// </summary>
-        public void Initialize(ConfiguredEndpointCollection endpoints, ApplicationConfiguration configuration)
-        {
+        public void Initialize(ConfiguredEndpointCollection endpoints, ApplicationConfiguration configuration) {
             Interlocked.Exchange(ref m_configuration, configuration);
 
             ItemsLV.Items.Clear();
 
-            foreach (ApplicationDescription server in endpoints.GetServers())
-            {
+            foreach (ApplicationDescription server in endpoints.GetServers()) {
                 AddItem(server);
             }
 
@@ -115,38 +110,33 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays a list of servers in the control.
         /// </summary>
-        public void Initialize(string hostname, ApplicationConfiguration configuration)
-        {
+        public void Initialize(string hostname, ApplicationConfiguration configuration) {
             Interlocked.Exchange(ref m_configuration, configuration);
 
             ItemsLV.Items.Clear();
 
-            if (String.IsNullOrEmpty(hostname))
-            {
+            if (String.IsNullOrEmpty(hostname)) {
                 hostname = System.Net.Dns.GetHostName();
             }
-            
+
             this.Instructions = Utils.Format("Discovering servers on host '{0}'.", hostname);
             AdjustColumns();
 
             // get a list of well known discovery urls to use.
             StringCollection discoveryUrls = null;
 
-            if (configuration != null && configuration.ClientConfiguration != null)
-            {
+            if (configuration != null && configuration.ClientConfiguration != null) {
                 discoveryUrls = configuration.ClientConfiguration.WellKnownDiscoveryUrls;
             }
 
-            if (discoveryUrls == null || discoveryUrls.Count == 0)
-            {
+            if (discoveryUrls == null || discoveryUrls.Count == 0) {
                 discoveryUrls = new StringCollection(Utils.DiscoveryUrls);
             }
-            
+
             // update the urls with the hostname.
             StringCollection urlsToUse = new StringCollection();
 
-            foreach (string discoveryUrl in discoveryUrls)
-            {
+            foreach (string discoveryUrl in discoveryUrls) {
                 urlsToUse.Add(Utils.Format(discoveryUrl, hostname));
             }
 
@@ -157,24 +147,19 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the list of servers displayed in the control.
         /// </summary>
-        private void OnUpdateServers(object state)
-        {
-            if (this.InvokeRequired)
-            {
+        private void OnUpdateServers(object state) {
+            if (this.InvokeRequired) {
                 this.BeginInvoke(new WaitCallback(OnUpdateServers), state);
                 return;
             }
-            
+
             ItemsLV.Items.Clear();
 
             ApplicationDescriptionCollection servers = state as ApplicationDescriptionCollection;
 
-            if (servers != null)
-            {
-                foreach (ApplicationDescription server in servers)
-                {
-                    if (server.ApplicationType == ApplicationType.DiscoveryServer)
-                    {
+            if (servers != null) {
+                foreach (ApplicationDescription server in servers) {
+                    if (server.ApplicationType == ApplicationType.DiscoveryServer) {
                         continue;
                     }
 
@@ -182,8 +167,7 @@ namespace Opc.Ua.Client.Controls
                 }
             }
 
-            if (ItemsLV.Items.Count == 0)
-            {
+            if (ItemsLV.Items.Count == 0) {
                 this.Instructions = Utils.Format("No servers to display.");
             }
 
@@ -193,35 +177,28 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Attempts fetch the list of servers from the discovery server.
         /// </summary>
-        private void OnDiscoverServers(object state)
-        {
-            try
-            {
+        private void OnDiscoverServers(object state) {
+            try {
                 int discoverCount = m_discoverCount;
 
                 // do nothing if a valid list is not provided.
                 IList<string> discoveryUrls = state as IList<string>;
 
-                if (discoveryUrls == null)
-                {
+                if (discoveryUrls == null) {
                     return;
                 }
 
                 // process each url.
-                foreach (string discoveryUrl in discoveryUrls)
-                {
+                foreach (string discoveryUrl in discoveryUrls) {
                     Uri url = Utils.ParseUri(discoveryUrl);
 
-                    if (url != null)
-                    {
-                        if (DiscoverServers(url))
-                        {
+                    if (url != null) {
+                        if (DiscoverServers(url)) {
                             return;
                         }
 
                         // check if another discover operation has started.
-                        if (discoverCount != m_discoverCount)
-                        {
+                        if (discoverCount != m_discoverCount) {
                             return;
                         }
                     }
@@ -229,9 +206,7 @@ namespace Opc.Ua.Client.Controls
 
                 // display empty list.
                 OnUpdateServers(null);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error discovering servers.");
             }
         }
@@ -239,16 +214,14 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Fetches the servers from the discovery server.
         /// </summary>
-        private bool DiscoverServers(Uri discoveryUrl)
-        {
+        private bool DiscoverServers(Uri discoveryUrl) {
             // use a short timeout.
             EndpointConfiguration configuration = EndpointConfiguration.Create(m_configuration);
             configuration.OperationTimeout = m_discoveryTimeout;
 
             DiscoveryClient client = null;
 
-            try
-            {
+            try {
                 client = DiscoveryClient.Create(
                     discoveryUrl,
                     BindingFactory.Create(m_configuration, m_configuration.CreateMessageContext()),
@@ -258,32 +231,28 @@ namespace Opc.Ua.Client.Controls
                 m_discoveryUrl = discoveryUrl.ToString();
                 OnUpdateServers(servers);
                 return true;
-            }
-            catch (Exception e)
-            {
-                Utils.Trace("DISCOVERY ERROR - Could not fetch servers from url: {0}. Error=({2}){1}", discoveryUrl, e.Message, e.GetType());
+            } catch (Exception e) {
+                Utils.Trace("DISCOVERY ERROR - Could not fetch servers from url: {0}. Error=({2}){1}", discoveryUrl,
+                    e.Message, e.GetType());
                 return false;
-            }
-            finally
-            {
-                if (client != null)
-                {
+            } finally {
+                if (client != null) {
                     client.Close();
                 }
             }
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Updates an item in the control.
         /// </summary>
-        protected override void UpdateItem(ListViewItem listItem, object item)
-        {
+        protected override void UpdateItem(ListViewItem listItem, object item) {
             ApplicationDescription server = listItem.Tag as ApplicationDescription;
 
-            if (server == null)
-            {
+            if (server == null) {
                 base.UpdateItem(listItem, server);
                 return;
             }
@@ -292,34 +261,31 @@ namespace Opc.Ua.Client.Controls
 
             // extract host from application uri.
             Uri uri = Utils.ParseUri(server.ApplicationUri);
-            
-            if (uri != null)
-            {
-                hostname = uri.DnsSafeHost; 
+
+            if (uri != null) {
+                hostname = uri.DnsSafeHost;
             }
 
             // get the host name from the discovery urls.
-            if (String.IsNullOrEmpty(hostname))
-            {
-                foreach (string discoveryUrl in server.DiscoveryUrls)
-                {
+            if (String.IsNullOrEmpty(hostname)) {
+                foreach (string discoveryUrl in server.DiscoveryUrls) {
                     Uri url = Utils.ParseUri(discoveryUrl);
 
-                    if (url != null)
-                    {
+                    if (url != null) {
                         hostname = url.DnsSafeHost;
                         break;
                     }
                 }
             }
 
-			listItem.SubItems[0].Text = String.Format("{0}", server.ApplicationName);
-			listItem.SubItems[1].Text = String.Format("{0}", server.ApplicationType);
-			listItem.SubItems[2].Text = String.Format("{0}", hostname);
-			listItem.SubItems[3].Text = String.Format("{0}", server.ApplicationUri); 
+            listItem.SubItems[0].Text = String.Format("{0}", server.ApplicationName);
+            listItem.SubItems[1].Text = String.Format("{0}", server.ApplicationType);
+            listItem.SubItems[2].Text = String.Format("{0}", hostname);
+            listItem.SubItems[3].Text = String.Format("{0}", server.ApplicationUri);
 
             listItem.ImageKey = GuiUtils.Icons.Service;
         }
+
         #endregion
     }
 }

@@ -34,14 +34,13 @@ using System.ServiceProcess;
 using System.Management;
 using System.Collections.Specialized;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Provides functionalities to manage Windows services such as Start/Stop service. 
     /// </summary>
-    public static class ServiceManager
-    {
+    public static class ServiceManager {
         #region Start/Stop/Pause Service
+
         /// <summary>
         /// Start the service with the given name.
         /// This method returns as soon as the Start method on the service 
@@ -50,8 +49,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The name of the service</param>
         /// <returns>True for success. Otherwise, false.</returns>
-        public static bool StartService(string serviceName)
-        {
+        public static bool StartService(string serviceName) {
             return StartService(serviceName, TimeSpan.Zero);
         }
 
@@ -63,30 +61,29 @@ namespace Opc.Ua.Configuration
         /// <param name="serviceName">The name of the service</param>
         /// <param name="timeout">The timeout.</param>
         /// <returns>True if the service has been started. Otherwise, false.</returns>
-        public static bool StartService(string serviceName, TimeSpan timeout)
-        {
-            try
-            {
+        public static bool StartService(string serviceName, TimeSpan timeout) {
+            try {
                 bool timeoutEnabled = (timeout.CompareTo(TimeSpan.Zero) > 0);
-                using (ServiceController c = new ServiceController(serviceName))
-                {
+                using (ServiceController c = new ServiceController(serviceName)) {
                     c.Refresh();
                     if (timeoutEnabled && c.Status == ServiceControllerStatus.Running)
                         return true;
-                    if (!timeoutEnabled && (c.Status == ServiceControllerStatus.Running || c.Status == ServiceControllerStatus.StartPending || c.Status == ServiceControllerStatus.ContinuePending))
+                    if (!timeoutEnabled && (c.Status == ServiceControllerStatus.Running ||
+                                            c.Status == ServiceControllerStatus.StartPending ||
+                                            c.Status == ServiceControllerStatus.ContinuePending))
                         return true;
 
-                    if (c.Status == ServiceControllerStatus.Paused || c.Status == ServiceControllerStatus.ContinuePending)
+                    if (c.Status == ServiceControllerStatus.Paused ||
+                        c.Status == ServiceControllerStatus.ContinuePending)
                         c.Continue();
-                    else if (c.Status == ServiceControllerStatus.Stopped || c.Status == ServiceControllerStatus.StartPending)
+                    else if (c.Status == ServiceControllerStatus.Stopped ||
+                             c.Status == ServiceControllerStatus.StartPending)
                         c.Start();
                     if (timeoutEnabled)
                         c.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     return true;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error starting service {0}.", serviceName);
                 return false;
             }
@@ -99,24 +96,21 @@ namespace Opc.Ua.Configuration
         /// <param name="serviceName">The name of the service</param>
         /// <param name="timeout">The timeout.</param>
         /// <returns>True if the service has been stopped. Otherwise, false.</returns>
-        public static bool StopService(string serviceName, TimeSpan timeout)
-        {
-            try
-            {
+        public static bool StopService(string serviceName, TimeSpan timeout) {
+            try {
                 bool timeoutEnabled = (timeout.CompareTo(TimeSpan.Zero) > 0);
 
-                using (ServiceController c = new ServiceController(serviceName))
-                {
+                using (ServiceController c = new ServiceController(serviceName)) {
                     c.Refresh();
-                    
+
                     if (timeoutEnabled && c.Status == ServiceControllerStatus.Stopped)
                         return true;
-                    
-                    if (!timeoutEnabled && (c.Status == ServiceControllerStatus.Stopped || c.Status == ServiceControllerStatus.StopPending))
+
+                    if (!timeoutEnabled && (c.Status == ServiceControllerStatus.Stopped ||
+                                            c.Status == ServiceControllerStatus.StopPending))
                         return true;
 
-                    if (c.CanStop)
-                    {
+                    if (c.CanStop) {
                         c.Stop();
 
                         if (timeoutEnabled)
@@ -125,9 +119,7 @@ namespace Opc.Ua.Configuration
 
                     return true;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error stopping service {0}.", serviceName);
                 return false;
             }
@@ -139,8 +131,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The name of the service</param>
         /// <returns>True for success. Otherwise, false.</returns>
-        public static bool StopService(string serviceName)
-        {
+        public static bool StopService(string serviceName) {
             return StopService(serviceName, TimeSpan.Zero);
         }
 
@@ -151,29 +142,25 @@ namespace Opc.Ua.Configuration
         /// <param name="serviceName">The name of the service</param>
         /// <param name="timeout">The timeout.</param>
         /// <returns>True if the service has been paused. Otherwise, false.</returns>
-        public static bool PauseService(string serviceName, TimeSpan timeout)
-        {
-            try
-            {
+        public static bool PauseService(string serviceName, TimeSpan timeout) {
+            try {
                 bool timeoutEnabled = (timeout.CompareTo(TimeSpan.Zero) > 0);
 
-                using (ServiceController c = new ServiceController(serviceName))
-                {
+                using (ServiceController c = new ServiceController(serviceName)) {
                     c.Refresh();
                     if (timeoutEnabled && c.Status == ServiceControllerStatus.Paused)
                         return true;
-                    if (!timeoutEnabled && (c.Status == ServiceControllerStatus.Paused || c.Status == ServiceControllerStatus.PausePending))
+                    if (!timeoutEnabled && (c.Status == ServiceControllerStatus.Paused ||
+                                            c.Status == ServiceControllerStatus.PausePending))
                         return true;
-            
+
                     c.Pause();
                     if (timeoutEnabled)
                         c.WaitForStatus(ServiceControllerStatus.Paused, timeout);
 
                     return true;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error pausing service {0}.", serviceName);
                 return false;
             }
@@ -185,40 +172,34 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The name of the service</param>
         /// <returns>True for success. Otherwise, false.</returns>
-        public static bool PauseService(string serviceName)
-        {
+        public static bool PauseService(string serviceName) {
             return PauseService(serviceName, TimeSpan.Zero);
         }
+
         #endregion
 
         #region Service Status
+
         /// <summary>
         /// Gets the status of the service with the given name.
         /// </summary>
         /// <param name="serviceName">The name of the service.</param>
         /// <returns>The <see cref="ServiceStatus"/>.</returns>
-        public static ServiceStatus GetServiceStatus(string serviceName)
-        {
-            try
-            {
-                using (ServiceController c = new ServiceController(serviceName))
-                {
+        public static ServiceStatus GetServiceStatus(string serviceName) {
+            try {
+                using (ServiceController c = new ServiceController(serviceName)) {
                     c.Refresh();
                     return ConvertServiceControllerStatusToServiceStatus(c.Status);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error getting status for service {0}.", serviceName);
                 return ServiceStatus.Unknown;
             }
         }
 
-        private static ServiceStatus ConvertServiceControllerStatusToServiceStatus(ServiceControllerStatus status)
-        {
+        private static ServiceStatus ConvertServiceControllerStatusToServiceStatus(ServiceControllerStatus status) {
             ServiceStatus s = ServiceStatus.Unknown;
-            switch (status)
-            {
+            switch (status) {
                 case ServiceControllerStatus.ContinuePending:
                     s = ServiceStatus.ContinuePending;
                     break;
@@ -243,6 +224,7 @@ namespace Opc.Ua.Configuration
                 default:
                     break;
             }
+
             return s;
         }
 
@@ -251,8 +233,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The name of the service.</param>
         /// <returns>True if the service is running.</returns>
-        public static bool IsServiceRunning(string serviceName)
-        {
+        public static bool IsServiceRunning(string serviceName) {
             return (GetServiceStatus(serviceName) == ServiceStatus.Running);
         }
 
@@ -261,8 +242,7 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The name of the service.</param>
         /// <returns>True if the service is stopped.</returns>
-        public static bool IsServiceStopped(string serviceName)
-        {
+        public static bool IsServiceStopped(string serviceName) {
             return (GetServiceStatus(serviceName) == ServiceStatus.Stopped);
         }
 
@@ -271,13 +251,14 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The name of the service.</param>
         /// <returns>True if the service is paused..</returns>
-        public static bool IsServicePaused(string serviceName)
-        {
+        public static bool IsServicePaused(string serviceName) {
             return (GetServiceStatus(serviceName) == ServiceStatus.Paused);
         }
+
         #endregion
 
         #region Service Start Mode
+
         /// <summary>
         /// Modifies the start mode of a Windows service. 
         /// </summary>
@@ -312,28 +293,23 @@ namespace Opc.Ua.Configuration
         /// 24 Service Already Paused
         /// </param>
         /// <returns>True if succeded; othrwise, false.</returns>
-        public static bool SetServiceStartMode(string serviceName, StartMode startMode, out uint retValue)
-        {
+        public static bool SetServiceStartMode(string serviceName, StartMode startMode, out uint retValue) {
             if (string.IsNullOrEmpty(serviceName)) throw new ArgumentNullException("serviceName");
-            
-            try
-            {
+
+            try {
                 ManagementPath myPath = new ManagementPath();
                 myPath.Server = System.Environment.MachineName;
                 myPath.NamespacePath = @"root\CIMV2";
                 myPath.RelativePath = "Win32_Service.Name='" + serviceName + "'";
-     
-                using (ManagementObject service = new ManagementObject(myPath))
-                {
+
+                using (ManagementObject service = new ManagementObject(myPath)) {
                     string mode = ConvertStartModeToString(startMode);
-                    object[] inputArgs = new object[] { mode };
-                   
-                    retValue = (uint)service.InvokeMethod("ChangeStartMode", inputArgs);
+                    object[] inputArgs = new object[] {mode};
+
+                    retValue = (uint) service.InvokeMethod("ChangeStartMode", inputArgs);
                     return retValue == 0;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 retValue = 8;
                 Utils.Trace(e, "Unexpected error setting start mode for service {0}.", serviceName);
                 return false;
@@ -345,49 +321,40 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The service name.</param>
         /// <returns>The service start mode.</returns>
-        public static StartMode GetServiceStartMode(string serviceName)
-        {
+        public static StartMode GetServiceStartMode(string serviceName) {
             if (string.IsNullOrEmpty(serviceName)) throw new ArgumentNullException("serviceName");
-            
-            try
-            {
+
+            try {
                 // construct the management path.
                 string path = "Win32_Service.Name='" + serviceName + "'";
                 ManagementPath p = new ManagementPath(path);
 
                 // construct the management object
-                using (ManagementObject ManagementObj = new ManagementObject(p))
-                {
+                using (ManagementObject ManagementObj = new ManagementObject(p)) {
                     string startMode = ManagementObj["StartMode"].ToString();
                     return ConvertStringToStartMode(startMode);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error getring start mode for service {0}.", serviceName);
             }
 
             return StartMode.Disabled;
         }
 
-        private static string ConvertStartModeToString(StartMode startMode)
-        {
-            switch (startMode)
-            {
+        private static string ConvertStartModeToString(StartMode startMode) {
+            switch (startMode) {
                 case StartMode.Auto: return "Automatic";
                 case StartMode.Boot: return "Boot";
                 case StartMode.System: return "System";
                 case StartMode.Manual: return "Manual";
                 case StartMode.Disabled: return "Disabled";
             }
-            
+
             return String.Empty;
         }
 
-        private static StartMode ConvertStringToStartMode(string startMode)
-        {
-            switch (startMode)
-            {
+        private static StartMode ConvertStringToStartMode(string startMode) {
+            switch (startMode) {
                 case "Auto": return StartMode.Auto;
                 case "Boot": return StartMode.Boot;
                 case "System": return StartMode.System;
@@ -397,33 +364,29 @@ namespace Opc.Ua.Configuration
 
             return StartMode.Disabled;
         }
+
         #endregion
 
         #region GetAllServices, ServiceExists
+
         /// <summary>
         /// Gets all installed Windows services.
         /// </summary>
         /// <returns>The list of intalled <see cref="Service"/>.</returns>
-        public static Service[] GetAllServices()
-        {
+        public static Service[] GetAllServices() {
             List<Service> list = new List<Service>();
 
-            try
-            {
-                using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_Service"))
-                {
-                    using (ManagementObjectCollection winServices = objSearcher.Get())
-                    {
-                        foreach (ManagementObject service in winServices)
-                        {
+            try {
+                using (ManagementObjectSearcher objSearcher =
+                    new ManagementObjectSearcher("Select * from Win32_Service")) {
+                    using (ManagementObjectCollection winServices = objSearcher.Get()) {
+                        foreach (ManagementObject service in winServices) {
                             Service s = ServiceFromManagementObject(service);
                             list.Add(s);
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error searching for all services.");
             }
 
@@ -437,24 +400,19 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The service name.</param>
         /// <returns>The <see cref="Service"/> identified by the given name.</returns>
-        public static Service GetService(string serviceName)
-        {
-            try
-            {
-                using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Service WHERE Name = '" + serviceName.Trim() + "'"))
-                {
-                    using (ManagementObjectCollection winServices = objSearcher.Get())
-                    {
-                        foreach (ManagementObject service in winServices)
-                        {
+        public static Service GetService(string serviceName) {
+            try {
+                using (ManagementObjectSearcher objSearcher =
+                    new ManagementObjectSearcher(
+                        "SELECT * FROM Win32_Service WHERE Name = '" + serviceName.Trim() + "'")) {
+                    using (ManagementObjectCollection winServices = objSearcher.Get()) {
+                        foreach (ManagementObject service in winServices) {
                             Service s = ServiceFromManagementObject(service);
                             return s;
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error searching for service {0}.", serviceName);
             }
 
@@ -466,51 +424,42 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="serviceName">The service name.</param>
         /// <returns>True if the service with the given bname exists; otherwise, false.</returns>
-        public static bool ServiceExists(string serviceName)
-        {
+        public static bool ServiceExists(string serviceName) {
             return GetService(serviceName) != null;
         }
-        
-        private static Service ServiceFromManagementObject(ManagementBaseObject service)
-        {
-            try
-            {
+
+        private static Service ServiceFromManagementObject(ManagementBaseObject service) {
+            try {
                 string name = service.Properties["Name"].Value as string;
                 Service s = new Service(name);
-                
+
                 s.Description = service.Properties["Description"].Value as string;
                 s.Caption = service.Properties["Caption"].Value as string;
                 s.DisplayName = service.Properties["DisplayName"].Value as string;
                 s.Path = service.Properties["PathName"].Value as string;
-                s.AcceptPause = (bool)service.Properties["AcceptPause"].Value;
-                s.AcceptStop = (bool)service.Properties["AcceptStop"].Value;
-                
+                s.AcceptPause = (bool) service.Properties["AcceptPause"].Value;
+                s.AcceptStop = (bool) service.Properties["AcceptStop"].Value;
+
                 object pId = service.Properties["ProcessId"].Value;
-                
-                if (pId != null)
-                {
-                    try
-                    {
+
+                if (pId != null) {
+                    try {
                         s.ProcessId = Convert.ToInt32(pId);
                         s.ProcessorAffinity = GetProcessorAffinity(s.ProcessId);
-                    }
-                    catch { }
+                    } catch { }
                 }
-                
+
                 s.StartMode = ConvertStringToStartMode(service.Properties["StartMode"].Value as string);
                 s.Account = service.Properties["StartName"].Value as string;
                 s.Status = ConvertStringToServiceStatus(service.Properties["State"].Value as string);
                 return s;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error service from managerment object}.");
                 return null;
             }
         }
 
-        private static ServiceStatus ConvertStringToServiceStatus(string status)
-        {
+        private static ServiceStatus ConvertStringToServiceStatus(string status) {
             if (string.IsNullOrEmpty(status))
                 return ServiceStatus.Unknown;
             if (status == "Stopped")
@@ -529,7 +478,8 @@ namespace Opc.Ua.Configuration
                 return ServiceStatus.Paused;
 
             return ServiceStatus.Unknown;
-        }        
+        }
+
         #endregion
 
         #region Processor Affinity
@@ -544,28 +494,24 @@ namespace Opc.Ua.Configuration
         /// If the system has 2 processor and the service is running on processor 2 the affinity bit mask will be : [true][false]
         /// If the system has 2 processor and the service is running on both processors the affinity bit mask will be : [true][true]
         /// </remarks>
-        public static bool SetServiceProcessorAffinity(string serviceName, bool[] affinity)
-        {
+        public static bool SetServiceProcessorAffinity(string serviceName, bool[] affinity) {
             Service service = GetService(serviceName);
-            if (service != null && service.ProcessId > 0 && affinity != null && affinity.Length > 0)
-            {
-                try
-                {
+            if (service != null && service.ProcessId > 0 && affinity != null && affinity.Length > 0) {
+                try {
                     System.Diagnostics.Process process = System.Diagnostics.Process.GetProcessById(service.ProcessId);
                     int affinityInt = affinity[affinity.Length - 1] ? 1 : 0;
-                    for (int i = affinity.Length - 2; i >= 0; i--)
-                    {
-                        if (affinity[i])
-                        {
+                    for (int i = affinity.Length - 2; i >= 0; i--) {
+                        if (affinity[i]) {
                             affinityInt = affinityInt + 2 * (affinity.Length - 1 - i);
                         }
                     }
+
                     IntPtr affinityPtr = new IntPtr(affinityInt);
                     process.ProcessorAffinity = affinityPtr;
                     return true;
-                }
-                catch { }
+                } catch { }
             }
+
             return false;
         }
 
@@ -574,27 +520,25 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="processId"></param>
         /// <returns></returns>
-        private static bool[] GetProcessorAffinity(int processId)
-        {
+        private static bool[] GetProcessorAffinity(int processId) {
             bool[] affinity = new bool[GetNumberOfLogicalProcessors()];
-            if (processId > 0)
-            {
-                try
-                {
-                    using (System.Diagnostics.Process process = System.Diagnostics.Process.GetProcessById(processId))
-                    {
+            if (processId > 0) {
+                try {
+                    using (System.Diagnostics.Process process = System.Diagnostics.Process.GetProcessById(processId)) {
                         IntPtr affinityPtr = process.ProcessorAffinity;
                         int affinityInt = affinityPtr.ToInt32();
                         string affinityStr = Convert.ToString(affinityInt, 2);
-                        for (int i = affinityStr.Length - 1; i >= 0; i--)
-                        {
-                            if (affinityStr[i] == '1')
-                            { try { affinity[affinityStr.Length - 1 - i] = true; } catch { } }
+                        for (int i = affinityStr.Length - 1; i >= 0; i--) {
+                            if (affinityStr[i] == '1') {
+                                try {
+                                    affinity[affinityStr.Length - 1 - i] = true;
+                                } catch { }
+                            }
                         }
                     }
-                }
-                catch { }
+                } catch { }
             }
+
             return affinity;
         }
 
@@ -607,26 +551,23 @@ namespace Opc.Ua.Configuration
         /// If the system has 2 processor and the service is running on processor 2 the affinity bit mask will be : [true][false]
         /// If the system has 2 processor and the service is running on both processors the affinity bit mask will be : [true][true]
         /// </remarks>
-        public static bool[] GetServiceProcessorAffinity(string serviceName)
-        {
+        public static bool[] GetServiceProcessorAffinity(string serviceName) {
             Service service = GetService(serviceName);
             int processId = service != null ? service.ProcessId : 0;
             return GetProcessorAffinity(processId);
         }
 
-       
-        private static ManagementObject GetComputerSystem()
-        {
-            using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem"))
-            {
-                using (ManagementObjectCollection system = objSearcher.Get())
-                {
-                    foreach (ManagementObject pc in system)
-                    {
+
+        private static ManagementObject GetComputerSystem() {
+            using (ManagementObjectSearcher objSearcher =
+                new ManagementObjectSearcher("Select * from Win32_ComputerSystem")) {
+                using (ManagementObjectCollection system = objSearcher.Get()) {
+                    foreach (ManagementObject pc in system) {
                         return pc;
                     }
                 }
             }
+
             return null;
         }
 
@@ -634,15 +575,14 @@ namespace Opc.Ua.Configuration
         /// Gets the number of physical processors on the system. 
         /// </summary>
         /// <returns>The number of physical processors</returns>
-        public static int GetNumberOfProcessors()
-        {
+        public static int GetNumberOfProcessors() {
             ManagementObject system = GetComputerSystem();
-            if (system != null)
-            {
+            if (system != null) {
                 object num = system.Properties["NumberOfProcessors"].Value;
                 if (num != null)
                     return Convert.ToInt32(num);
             }
+
             return 1;
         }
 
@@ -650,15 +590,14 @@ namespace Opc.Ua.Configuration
         /// Gets the number of logical processors on the system. 
         /// </summary>
         /// <returns>The number of logical processors</returns>
-        public static int GetNumberOfLogicalProcessors()
-        {
+        public static int GetNumberOfLogicalProcessors() {
             ManagementObject system = GetComputerSystem();
-            if (system != null)
-            {
+            if (system != null) {
                 object num = system.Properties["NumberOfLogicalProcessors"].Value;
                 if (num != null)
                     return Convert.ToInt32(num);
             }
+
             return 1;
         }
 

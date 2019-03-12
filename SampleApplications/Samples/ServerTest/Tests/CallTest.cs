@@ -30,17 +30,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using Opc.Ua.Client;
 
-namespace Opc.Ua.ServerTest
-{    
+namespace Opc.Ua.ServerTest {
     /// <summary>
     /// Browses all of the nodes in the hierarchies.
     /// </summary>
-    internal class CallTest : TestBase
-    {
+    internal class CallTest : TestBase {
         #region Constructors
+
         /// <summary>
         /// Creates the test object.
         /// </summary>
@@ -50,9 +48,8 @@ namespace Opc.Ua.ServerTest
             ReportMessageEventHandler reportMessage,
             ReportProgressEventHandler reportProgress,
             TestBase template)
-        : 
-            base("Call", session, configuration, reportMessage, reportProgress, template)
-        {
+            :
+            base("Call", session, configuration, reportMessage, reportProgress, template) {
             m_generator = new Opc.Ua.Test.DataGenerator(new Opc.Ua.Test.RandomSource(configuration.Seed));
             m_generator.NamespaceUris = Session.NamespaceUris;
             m_generator.ServerUris = Session.ServerUris;
@@ -61,45 +58,41 @@ namespace Opc.Ua.ServerTest
             m_generator.MaxXmlElementCount = 3;
             m_generator.MaxXmlAttributeCount = 3;
         }
+
         #endregion
-        
+
         private Opc.Ua.Test.DataGenerator m_generator;
 
         #region Public Methods
+
         /// <summary>
         /// Runs the test for all of the browse roots.
         /// </summary>
-        public override bool Run(ServerTestCase testcase, int iteration)
-        {
+        public override bool Run(ServerTestCase testcase, int iteration) {
             Iteration = iteration;
 
             // need fetch nodes used for the test if not already available.
-            if (AvailableNodes.Count == 0)
-            {
-                if (!GetNodesInHierarchy())
-                {
+            if (AvailableNodes.Count == 0) {
+                if (!GetNodesInHierarchy()) {
                     return false;
                 }
             }
 
             // do secondary test.
-            switch (testcase.Name)
-            {
-                case "Errors":
-                {
+            switch (testcase.Name) {
+                case "Errors": {
                     return DoCallTest(true);
                 }
 
-                default:
-                {
+                default: {
                     return DoCallTest(false);
                 }
             }
-        }        
+        }
+
         #endregion
-        
-        private class TestMethod
-        {
+
+        private class TestMethod {
             public Node Parent;
             public MethodNode Method;
             public IList<Argument> InputArguments;
@@ -110,13 +103,11 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Collects the child methods of a Node.
         /// </summary>
-        private bool CollectMethods(Node node, bool testErrors, List<TestMethod> methods)
-        {
-            if (node == null || node.NodeClass != NodeClass.Method)
-            {
+        private bool CollectMethods(Node node, bool testErrors, List<TestMethod> methods) {
+            if (node == null || node.NodeClass != NodeClass.Method) {
                 return true;
             }
-            
+
             MethodNode method = node as MethodNode;
 
             IList<INode> parents = Session.NodeCache.Find(
@@ -125,33 +116,27 @@ namespace Opc.Ua.ServerTest
                 true,
                 true);
 
-            for (int ii = 0; ii < parents.Count; ii++)
-            {
+            for (int ii = 0; ii < parents.Count; ii++) {
                 ObjectNode parent = parents[ii] as ObjectNode;
 
-                if (parent != null && method != null)
-                {
-                    if (!testErrors && parent.BrowseName.Name != "MethodTest")
-                    {
+                if (parent != null && method != null) {
+                    if (!testErrors && parent.BrowseName.Name != "MethodTest") {
                         continue;
                     }
 
                     bool found = false;
 
-                    for (int jj = 0; jj < methods.Count; jj++)
-                    {
-                        if (Object.ReferenceEquals(method, methods[jj].Method))
-                        {
+                    for (int jj = 0; jj < methods.Count; jj++) {
+                        if (Object.ReferenceEquals(method, methods[jj].Method)) {
                             found = true;
                             break;
                         }
                     }
 
-                    if (found)
-                    {
+                    if (found) {
                         continue;
                     }
-                     
+
                     TestMethod test = new TestMethod();
 
                     test.Parent = parent;
@@ -162,8 +147,7 @@ namespace Opc.Ua.ServerTest
 
                     methods.Add(test);
 
-                    if (methods.Count%25 == 0)
-                    {
+                    if (methods.Count % 25 == 0) {
                         Log("Found for {0} Methods to Call", methods.Count);
                     }
 
@@ -173,24 +157,21 @@ namespace Opc.Ua.ServerTest
                         false,
                         true);
 
-                    for (int jj = 0; jj < properties.Count; jj++)
-                    {
+                    for (int jj = 0; jj < properties.Count; jj++) {
                         VariableNode property = properties[jj] as VariableNode;
-                        
-                        if (property != null)
-                        {
-                            if (property.BrowseName == BrowseNames.InputArguments)
-                            {
-                                if (property.Value.Value == null)
-                                {
+
+                        if (property != null) {
+                            if (property.BrowseName == BrowseNames.InputArguments) {
+                                if (property.Value.Value == null) {
                                     DataValue value = Session.ReadValue(property.NodeId);
                                     property.Value = value.WrappedValue;
                                 }
 
-                                test.InputArguments = (Argument[])ExtensionObject.ToArray(property.Value.Value as Array, typeof(Argument));
+                                test.InputArguments =
+                                    (Argument[]) ExtensionObject.ToArray(property.Value.Value as Array,
+                                        typeof(Argument));
 
-                                if (test.InputArguments == null)
-                                {
+                                if (test.InputArguments == null) {
                                     Log(
                                         "Could not read input arguments for method '{0}'. NodeId = {1}, Method = {2}",
                                         test.Parent,
@@ -203,18 +184,17 @@ namespace Opc.Ua.ServerTest
                                 continue;
                             }
 
-                            if (property.BrowseName == BrowseNames.OutputArguments)
-                            {
-                                if (property.Value.Value == null)
-                                {
+                            if (property.BrowseName == BrowseNames.OutputArguments) {
+                                if (property.Value.Value == null) {
                                     DataValue value = Session.ReadValue(property.NodeId);
                                     property.Value = value.WrappedValue;
                                 }
 
-                                test.OutputArguments = (Argument[])ExtensionObject.ToArray(property.Value.Value as Array, typeof(Argument));
-                                
-                                if (test.OutputArguments == null)
-                                {
+                                test.OutputArguments =
+                                    (Argument[]) ExtensionObject.ToArray(property.Value.Value as Array,
+                                        typeof(Argument));
+
+                                if (test.OutputArguments == null) {
                                     Log(
                                         "Could not read output arguments for method '{0}'. NodeId = {1}, Method = {2}",
                                         test.Parent,
@@ -235,56 +215,49 @@ namespace Opc.Ua.ServerTest
         }
 
         #region Test Methods
+
         /// <summary>
         /// Reads an verifies all of the nodes.
         /// </summary>
-        private bool DoCallTest(bool testErrors)
-        {
+        private bool DoCallTest(bool testErrors) {
             // follow tree from each starting node.
             bool success = true;
-                                 
+
             // collection writeable variables that don't change during the test.
             List<TestMethod> methods = new List<TestMethod>();
 
-            foreach (Node node in AvailableNodes.Values)
-            {
-                if (!CollectMethods(node, testErrors, methods))
-                {
+            foreach (Node node in AvailableNodes.Values) {
+                if (!CollectMethods(node, testErrors, methods)) {
                     return false;
                 }
             }
 
             Log("Starting CallTest for {0} Methods", methods.Count);
-            
-            double increment = MaxProgress/(10*methods.Count);
-            double position  = 0;
+
+            double increment = MaxProgress / (10 * methods.Count);
+            double position = 0;
 
             CallMethodRequestCollection methodsToCall = new CallMethodRequestCollection();
-            
-            for (int ii = 0; success && ii < 10; ii++)
-            {
+
+            for (int ii = 0; success && ii < 10; ii++) {
                 int nodes = 0;
                 int operations = 0;
 
-                foreach (TestMethod method in methods)
-                {               
+                foreach (TestMethod method in methods) {
                     nodes++;
 
                     AddMethodCall(method, methodsToCall, testErrors);
 
                     // process batch.
-                    if (methodsToCall.Count > 100)
-                    {
+                    if (methodsToCall.Count > 100) {
                         operations += methodsToCall.Count;
 
-                        if (!Call(methodsToCall))
-                        {
+                        if (!Call(methodsToCall)) {
                             success = false;
                             break;
                         }
 
-                        if (nodes > (10*methods.Count)/5)
-                        {
+                        if (nodes > (10 * methods.Count) / 5) {
                             Log("Called {1} methods {0} times.", operations, nodes);
                             nodes = 0;
                             operations = 0;
@@ -295,21 +268,16 @@ namespace Opc.Ua.ServerTest
 
                     position += increment;
                     ReportProgress(position);
-                }   
-             
+                }
+
                 // process final batch.
-                if (success)
-                {
-                    if (methodsToCall.Count > 0)
-                    {
+                if (success) {
+                    if (methodsToCall.Count > 0) {
                         operations += methodsToCall.Count;
 
-                        if (!Call(methodsToCall))
-                        {
+                        if (!Call(methodsToCall)) {
                             success = false;
-                        }
-                        else
-                        {
+                        } else {
                             Log("Called {1} methods {0} times.", operations, nodes);
                         }
 
@@ -317,54 +285,49 @@ namespace Opc.Ua.ServerTest
                     }
                 }
 
-                if (testErrors)
-                {
+                if (testErrors) {
                     break;
                 }
             }
 
             return success;
         }
+
         #endregion
 
         /// <summary>
         /// Reads the attributes, verifies the results and updates the nodes.
         /// </summary>
-        private bool Call(CallMethodRequestCollection methodsToCall)
-        {
-           Opc.Ua.Test.DataComparer comparer = new Opc.Ua.Test.DataComparer(Session.MessageContext);
+        private bool Call(CallMethodRequestCollection methodsToCall) {
+            Opc.Ua.Test.DataComparer comparer = new Opc.Ua.Test.DataComparer(Session.MessageContext);
 
             bool success = true;
 
             CallMethodResultCollection results = null;
             DiagnosticInfoCollection diagnosticInfos = null;
-            
+
             RequestHeader requestHeader = new RequestHeader();
             requestHeader.ReturnDiagnostics = 0;
 
-            try
-            {
+            try {
                 Session.Call(
                     requestHeader,
                     methodsToCall,
                     out results,
                     out diagnosticInfos);
-            }
-            catch (System.ServiceModel.CommunicationException e)
-            {
-                Log("WARNING: Communication error (random data may have resulted in a message that is too large). {0}", e.Message);
+            } catch (System.ServiceModel.CommunicationException e) {
+                Log("WARNING: Communication error (random data may have resulted in a message that is too large). {0}",
+                    e.Message);
                 return true;
-            }   
-            catch (System.Xml.XmlException e)
-            {
-                Log("WARNING: XML parsing error (random data may have resulted in a message that is too large). {0}", e.Message);
+            } catch (System.Xml.XmlException e) {
+                Log("WARNING: XML parsing error (random data may have resulted in a message that is too large). {0}",
+                    e.Message);
                 return true;
-            } 
-            catch (ServiceResultException e)
-            {
-                if (e.StatusCode == StatusCodes.BadEncodingLimitsExceeded)
-                {
-                    Log("WARNING: Communication error (random data may have resulted in a message that is too large). {0}", e.Message);
+            } catch (ServiceResultException e) {
+                if (e.StatusCode == StatusCodes.BadEncodingLimitsExceeded) {
+                    Log(
+                        "WARNING: Communication error (random data may have resulted in a message that is too large). {0}",
+                        e.Message);
                     return true;
                 }
 
@@ -373,24 +336,20 @@ namespace Opc.Ua.ServerTest
 
             ClientBase.ValidateResponse(results, methodsToCall);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, methodsToCall);
-            
+
             // check diagnostics.
-            if (diagnosticInfos != null && diagnosticInfos.Count > 0)
-            {
+            if (diagnosticInfos != null && diagnosticInfos.Count > 0) {
                 Log("Returned non-empty DiagnosticInfos array during Call.");
                 return false;
             }
-            
-            // check results.
-            for (int ii = 0; ii < methodsToCall.Count; ii++)
-            {
-                CallMethodRequest request = methodsToCall[ii];
-                TestMethod method = (TestMethod)request.Handle;
 
-                if (request.ObjectId != method.Parent.NodeId)
-                {
-                    if (results[ii].StatusCode != StatusCodes.BadMethodInvalid)
-                    {
+            // check results.
+            for (int ii = 0; ii < methodsToCall.Count; ii++) {
+                CallMethodRequest request = methodsToCall[ii];
+                TestMethod method = (TestMethod) request.Handle;
+
+                if (request.ObjectId != method.Parent.NodeId) {
+                    if (results[ii].StatusCode != StatusCodes.BadMethodInvalid) {
                         Log(
                             "Invalid result when method called on wrong object '{0}'. NodeId = {1}, Method = {2}, StatusCode = {3}",
                             method.Parent,
@@ -404,11 +363,9 @@ namespace Opc.Ua.ServerTest
 
                     continue;
                 }
-     
-                if (results[ii].StatusCode == StatusCodes.BadUserAccessDenied)
-                {
-                    if (method.Method.UserExecutable)
-                    {
+
+                if (results[ii].StatusCode == StatusCodes.BadUserAccessDenied) {
+                    if (method.Method.UserExecutable) {
                         Log(
                             "Call failed when calling an executable method '{0}'. NodeId = {1}, Method = {2}, StatusCode = {3}",
                             method.Parent,
@@ -423,15 +380,12 @@ namespace Opc.Ua.ServerTest
                     continue;
                 }
 
-                if (results[ii].StatusCode == StatusCodes.BadNotImplemented)
-                {
+                if (results[ii].StatusCode == StatusCodes.BadNotImplemented) {
                     continue;
-                }                           
-                    
-                if (request.InputArguments.Count != method.InputArguments.Count)
-                {                
-                    if (results[ii].StatusCode != StatusCodes.BadArgumentsMissing)
-                    {
+                }
+
+                if (request.InputArguments.Count != method.InputArguments.Count) {
+                    if (results[ii].StatusCode != StatusCodes.BadArgumentsMissing) {
                         Log(
                             "Incorrect error returned when passing method wrong number of arguments '{0}'. NodeId = {1}, Method = {2}, StatusCode = {3}",
                             method.Parent,
@@ -445,11 +399,10 @@ namespace Opc.Ua.ServerTest
 
                     continue;
                 }
-                
-                if (results[ii].StatusCode == StatusCodes.BadInvalidArgument || results[ii].StatusCode == StatusCodes.BadOutOfRange)
-                {
-                    if (results[ii].InputArgumentResults.Count != request.InputArguments.Count)
-                    {
+
+                if (results[ii].StatusCode == StatusCodes.BadInvalidArgument ||
+                    results[ii].StatusCode == StatusCodes.BadOutOfRange) {
+                    if (results[ii].InputArgumentResults.Count != request.InputArguments.Count) {
                         Log(
                             "Incorrect number of result returned when reporting argument error '{0}'. NodeId = {1}, Method = {2}, Expected = {3}, Actual = {4}",
                             method.Parent,
@@ -464,10 +417,8 @@ namespace Opc.Ua.ServerTest
 
                     bool errorFound = false;
 
-                    for (int jj = 0; jj < method.InputArguments.Count; jj++)
-                    {
-                        if (results[ii].InputArgumentResults[jj] != results[ii].StatusCode)
-                        {
+                    for (int jj = 0; jj < method.InputArguments.Count; jj++) {
+                        if (results[ii].InputArgumentResults[jj] != results[ii].StatusCode) {
                             errorFound = true;
                         }
 
@@ -481,10 +432,8 @@ namespace Opc.Ua.ServerTest
                             Session.NamespaceUris,
                             Session.TypeTree);
 
-                        if (typeInfo == null)
-                        {
-                            if (results[ii].InputArgumentResults[jj] != StatusCodes.BadTypeMismatch)
-                            {
+                        if (typeInfo == null) {
+                            if (results[ii].InputArgumentResults[jj] != StatusCodes.BadTypeMismatch) {
                                 Log(
                                     "Incorrect error returned for invalid argument '{0}'. NodeId = {1}, Method = {2}, Argument = {3}, StatusCode = {4}",
                                     method.Parent,
@@ -495,12 +444,12 @@ namespace Opc.Ua.ServerTest
 
                                 success = false;
                             }
-                                
+
                             continue;
                         }
-                        
-                        if (results[ii].InputArgumentResults[jj] != StatusCodes.Good && results[ii].InputArgumentResults[jj] != StatusCodes.BadOutOfRange)
-                        {
+
+                        if (results[ii].InputArgumentResults[jj] != StatusCodes.Good &&
+                            results[ii].InputArgumentResults[jj] != StatusCodes.BadOutOfRange) {
                             Log(
                                 "Incorrect error returned for valid argument '{0}'. NodeId = {1}, Method = {2}, Argument = {3}, StatusCode = {4}",
                                 method.Parent,
@@ -513,20 +462,18 @@ namespace Opc.Ua.ServerTest
                         }
                     }
 
-                    if (!success)
-                    {
+                    if (!success) {
                         break;
                     }
 
-                    if (!errorFound)
-                    {
+                    if (!errorFound) {
                         Log(
                             "No matching argument level error for method '{0}'. NodeId = {1}, Method = {2}, StatusCode = {4}",
                             method.Parent,
                             method.Parent.NodeId,
                             method.Method,
                             results[ii].StatusCode);
-                        
+
                         success = false;
                         break;
                     }
@@ -534,10 +481,8 @@ namespace Opc.Ua.ServerTest
                     continue;
                 }
 
-                if (StatusCode.IsBad(results[ii].StatusCode))
-                {
-                    if (results[ii].StatusCode != StatusCodes.BadNotImplemented)
-                    {
+                if (StatusCode.IsBad(results[ii].StatusCode)) {
+                    if (results[ii].StatusCode != StatusCodes.BadNotImplemented) {
                         Log(
                             "Unexpected error when calling method '{0}'. NodeId = {1}, Method = {2}, StatusCode = {3}",
                             method.Parent,
@@ -552,8 +497,7 @@ namespace Opc.Ua.ServerTest
                     continue;
                 }
 
-                if (results[ii].OutputArguments.Count != method.OutputArguments.Count)
-                {
+                if (results[ii].OutputArguments.Count != method.OutputArguments.Count) {
                     Log(
                         "Incorrect number of output arguments '{0}'. NodeId = {1}, Method = {2}, Expected = {3}, Actual = {4}",
                         method.Parent,
@@ -565,9 +509,8 @@ namespace Opc.Ua.ServerTest
                     success = false;
                     break;
                 }
-                 
-                for (int jj = 0; jj < method.OutputArguments.Count; jj++)
-                {
+
+                for (int jj = 0; jj < method.OutputArguments.Count; jj++) {
                     Argument argument = method.OutputArguments[jj];
 
                     // check if data type matches.
@@ -578,8 +521,7 @@ namespace Opc.Ua.ServerTest
                         Session.NamespaceUris,
                         Session.TypeTree);
 
-                    if (typeInfo == null)
-                    {
+                    if (typeInfo == null) {
                         Log(
                             "Datatype for output argument is invalid '{0}'. NodeId = {1}, Method = {2}, Argument = {3}, Value = {4}",
                             method.Parent,
@@ -588,17 +530,14 @@ namespace Opc.Ua.ServerTest
                             method.OutputArguments[jj].Name,
                             results[ii].OutputArguments[jj]);
 
-                        success = false;                            
+                        success = false;
                         continue;
                     }
 
                     // check for special test methods that return the input parameters.
-                    if (method.Parent.BrowseName.Name == "MethodTest")
-                    {
-                        if (jj < request.InputArguments.Count)
-                        {
-                            if (!comparer.CompareVariant(request.InputArguments[jj], results[ii].OutputArguments[jj]))
-                            {
+                    if (method.Parent.BrowseName.Name == "MethodTest") {
+                        if (jj < request.InputArguments.Count) {
+                            if (!comparer.CompareVariant(request.InputArguments[jj], results[ii].OutputArguments[jj])) {
                                 Log(
                                     "Output argument did not match input '{0}'. NodeId = {1}, Method = {2}, Argument = {3}, Value = {4}, Output = {5}",
                                     method.Parent,
@@ -608,34 +547,31 @@ namespace Opc.Ua.ServerTest
                                     request.InputArguments[jj],
                                     results[ii].OutputArguments[jj]);
 
-                                success = false;                            
+                                success = false;
                                 continue;
                             }
                         }
                     }
                 }
 
-                if (!success)
-                {
+                if (!success) {
                     break;
                 }
             }
-            
+
             return success;
         }
-        
+
         /// <summary>
         /// Adds random parameters
         /// </summary>
         private void AddMethodCall(
-            TestMethod method, 
+            TestMethod method,
             CallMethodRequestCollection methodsToCall,
-            bool testErrors)
-        {            
+            bool testErrors) {
             VariantCollection inputArguments = new VariantCollection();
 
-            for (int ii = 0; ii < method.InputArguments.Count; ii++)
-            {
+            for (int ii = 0; ii < method.InputArguments.Count; ii++) {
                 Argument argument = method.InputArguments[ii];
 
                 object value = m_generator.GetRandom(
@@ -643,15 +579,14 @@ namespace Opc.Ua.ServerTest
                     argument.ValueRank,
                     argument.ArrayDimensions,
                     Session.TypeTree);
-                
+
                 inputArguments.Add(new Variant(value));
             }
-         
+
             CallMethodRequest request = null;
 
             // add valid method.
-            if (!testErrors)
-            {
+            if (!testErrors) {
                 request = new CallMethodRequest();
 
                 request.ObjectId = method.Parent.NodeId;
@@ -663,7 +598,7 @@ namespace Opc.Ua.ServerTest
 
                 return;
             }
-                     
+
             // add invalid object.
             request = new CallMethodRequest();
 
@@ -673,9 +608,8 @@ namespace Opc.Ua.ServerTest
             request.InputArguments = new VariantCollection(inputArguments);
 
             methodsToCall.Add(request);
-                                 
-            if (inputArguments.Count > 0)
-            {
+
+            if (inputArguments.Count > 0) {
                 // add too few parameters.
                 request = new CallMethodRequest();
 
@@ -683,10 +617,10 @@ namespace Opc.Ua.ServerTest
                 request.MethodId = method.Method.NodeId;
                 request.Handle = method;
                 request.InputArguments = new VariantCollection(inputArguments);
-                request.InputArguments.RemoveAt(request.InputArguments.Count-1);
+                request.InputArguments.RemoveAt(request.InputArguments.Count - 1);
 
                 methodsToCall.Add(request);
-                
+
                 // add invalid parameter.
                 request = new CallMethodRequest();
 
@@ -694,16 +628,14 @@ namespace Opc.Ua.ServerTest
                 request.MethodId = method.Method.NodeId;
                 request.Handle = method;
                 request.InputArguments = new VariantCollection(inputArguments);
-                
-                Argument argument = method.InputArguments[inputArguments.Count/2];      
-          
-                if (TypeInfo.GetBuiltInType(argument.DataType, Session.TypeTree) != BuiltInType.Variant)
-                {
+
+                Argument argument = method.InputArguments[inputArguments.Count / 2];
+
+                if (TypeInfo.GetBuiltInType(argument.DataType, Session.TypeTree) != BuiltInType.Variant) {
                     TypeInfo typeInfo = null;
 
-                    do
-                    { 
-                        Variant arg = (Variant)m_generator.GetRandom(BuiltInType.Variant);
+                    do {
+                        Variant arg = (Variant) m_generator.GetRandom(BuiltInType.Variant);
 
                         typeInfo = TypeInfo.IsInstanceOfDataType(
                             arg.Value,
@@ -712,14 +644,12 @@ namespace Opc.Ua.ServerTest
                             Session.NamespaceUris,
                             Session.TypeTree);
 
-                        if (typeInfo == null)
-                        {
-                            request.InputArguments[inputArguments.Count/2] = arg;
+                        if (typeInfo == null) {
+                            request.InputArguments[inputArguments.Count / 2] = arg;
                             methodsToCall.Add(request);
                             break;
                         }
-                    }
-                    while (typeInfo != null);
+                    } while (typeInfo != null);
                 }
             }
 

@@ -20,16 +20,16 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     #region ServiceMessageContextBehaviorAttribute Class
+
     /// <summary>
     /// Uses to indicate that a service endpoint uses the UA stack.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class ServiceMessageContextBehaviorAttribute : Attribute, IServiceBehavior
-    {
+    public sealed class ServiceMessageContextBehaviorAttribute : Attribute, IServiceBehavior {
         #region IServiceBehavior Members
+
         /// <summary>
         /// Provides the ability to pass custom data to binding elements to support the contract implementation.
         /// </summary>
@@ -39,37 +39,30 @@ namespace Opc.Ua
         /// <param name="bindingParameters">Custom objects to which binding elements have access.</param>
         public void AddBindingParameters(
             ServiceDescription serviceDescription,
-            ServiceHostBase serviceHostBase, 
+            ServiceHostBase serviceHostBase,
             System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints,
-            BindingParameterCollection bindingParameters)
-        {
-        }
+            BindingParameterCollection bindingParameters) { }
 
         /// <summary>
         /// Provides the ability to change run-time property values or insert custom extension objects such as error handlers, message or parameter interceptors, security extensions, and other custom extension objects.
         /// </summary>
         /// <param name="serviceDescription">The service description.</param>
         /// <param name="serviceHostBase">The host that is currently being built.</param>
-        public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
-        {
+        public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
             ServiceMessageContext contextToUse = null;
 
             Opc.Ua.ServiceHost serviceHost = serviceHostBase as Opc.Ua.ServiceHost;
- 
-            if (serviceHost == null)
-            {
+
+            if (serviceHost == null) {
                 contextToUse = ServiceMessageContext.GlobalContext;
-            }
-            else
-            {
+            } else {
                 contextToUse = serviceHost.Server.MessageContext;
             }
 
-            foreach (ChannelDispatcher dispatcher in serviceHostBase.ChannelDispatchers)
-            {
-                foreach (EndpointDispatcher endpoint in dispatcher.Endpoints)
-                {
-                    endpoint.DispatchRuntime.MessageInspectors.Add(new ServiceMessageContextMessageInspector(contextToUse));
+            foreach (ChannelDispatcher dispatcher in serviceHostBase.ChannelDispatchers) {
+                foreach (EndpointDispatcher endpoint in dispatcher.Endpoints) {
+                    endpoint.DispatchRuntime.MessageInspectors.Add(
+                        new ServiceMessageContextMessageInspector(contextToUse));
                 }
             }
         }
@@ -79,25 +72,25 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="serviceDescription">The service description.</param>
         /// <param name="serviceHostBase">The service host that is currently being constructed.</param>
-        public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
-        {
-        }
+        public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) { }
+
         #endregion
     }
+
     #endregion
-    
+
     #region ServiceMessageContextMessageInspector Class
+
     /// <summary>
     /// Ensures the operation context is set up correctly.
     /// </summary>
-    public class ServiceMessageContextMessageInspector : IDispatchMessageInspector, IClientMessageInspector, IEndpointBehavior
-    {
+    public class ServiceMessageContextMessageInspector : IDispatchMessageInspector, IClientMessageInspector,
+        IEndpointBehavior {
         /// <summary>
         /// Initializes the object with the message context to use.
         /// </summary>
         /// <param name="messageContext">The message context.</param>
-        public ServiceMessageContextMessageInspector(ServiceMessageContext messageContext)
-        {
+        public ServiceMessageContextMessageInspector(ServiceMessageContext messageContext) {
             m_messageContext = messageContext;
         }
 
@@ -105,25 +98,22 @@ namespace Opc.Ua
         /// Initializes the object with the binding to use.
         /// </summary>
         /// <param name="binding">The binding.</param>
-        public ServiceMessageContextMessageInspector(Binding binding)
-        {
+        public ServiceMessageContextMessageInspector(Binding binding) {
             Opc.Ua.Bindings.BaseBinding instance = binding as Opc.Ua.Bindings.BaseBinding;
 
-            if (instance != null)
-            {
+            if (instance != null) {
                 m_messageContext = instance.MessageContext;
             }
         }
 
         #region IClientMessageInspector Members
+
         /// <summary>
         /// Enables inspection or modification of a message after a reply message is received but prior to passing it back to the client application.
         /// </summary>
         /// <param name="reply">The message to be transformed into types and handed back to the client application.</param>
         /// <param name="correlationState">Correlation state data.</param>
-        public void AfterReceiveReply(ref Message reply, object correlationState)
-        {
-        }
+        public void AfterReceiveReply(ref Message reply, object correlationState) { }
 
         /// <summary>
         /// Enables inspection or modification of a message before a request message is sent to a service.
@@ -133,21 +123,21 @@ namespace Opc.Ua
         /// <returns>
         /// The object that is returned as the <paramref name="correlationState "/>argument of the <see cref="M:System.ServiceModel.Dispatcher.IClientMessageInspector.AfterReceiveReply(System.ServiceModel.Channels.Message@,System.Object)"/> method. This is null if no correlation state is used.The best practice is to make this a <see cref="T:System.Guid"/> to ensure that no two <paramref name="correlationState"/> objects are the same.
         /// </returns>
-        public object BeforeSendRequest(ref Message request, IClientChannel channel)
-        {
+        public object BeforeSendRequest(ref Message request, IClientChannel channel) {
             OperationContext context = OperationContext.Current;
 
-            if (context != null)
-            {
+            if (context != null) {
                 context.Extensions.Add(new MessageContextExtension(m_messageContext));
             }
-            
+
             ServiceMessageContext.ThreadContext = m_messageContext;
             return request.Headers.MessageId;
         }
+
         #endregion
 
         #region IDispatchMessageInspector Members
+
         /// <summary>
         /// Called after an inbound message has been received but before the message is dispatched to the intended operation.
         /// </summary>
@@ -158,18 +148,15 @@ namespace Opc.Ua
         /// The object used to correlate state. This object is passed back in the <see cref="M:System.ServiceModel.Dispatcher.IDispatchMessageInspector.BeforeSendReply(System.ServiceModel.Channels.Message@,System.Object)"/> method.
         /// </returns>
         public object AfterReceiveRequest(
-            ref Message request, 
-            IClientChannel channel, 
-            InstanceContext instanceContext)
-
-        {
+            ref Message request,
+            IClientChannel channel,
+            InstanceContext instanceContext) {
             OperationContext context = OperationContext.Current;
 
-            if (context != null)
-            {
+            if (context != null) {
                 context.Extensions.Add(new MessageContextExtension(m_messageContext));
             }
-            
+
             ServiceMessageContext.ThreadContext = m_messageContext;
 
             return request.Headers.MessageId;
@@ -180,30 +167,27 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="reply">The reply message. This value is null if the operation is one way.</param>
         /// <param name="correlationState">The correlation object returned from the <see cref="M:System.ServiceModel.Dispatcher.IDispatchMessageInspector.AfterReceiveRequest(System.ServiceModel.Channels.Message@,System.ServiceModel.IClientChannel,System.ServiceModel.InstanceContext)"/> method.</param>
-        public void BeforeSendReply(ref System.ServiceModel.Channels.Message reply, object correlationState)
-        {
-        }  
+        public void BeforeSendReply(ref System.ServiceModel.Channels.Message reply, object correlationState) { }
+
         #endregion
 
         private ServiceMessageContext m_messageContext;
 
         #region IEndpointBehavior Members
+
         /// <summary>
         /// Implement to pass data at runtime to bindings to support custom behavior.
         /// </summary>
         /// <param name="endpoint">The endpoint to modify.</param>
         /// <param name="bindingParameters">The objects that binding elements require to support the behavior.</param>
-        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
-        {
-        }
+        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
 
         /// <summary>
         /// Implements a modification or extension of the client across an endpoint.
         /// </summary>
         /// <param name="endpoint">The endpoint that is to be customized.</param>
         /// <param name="clientRuntime">The client runtime to be customized.</param>
-        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
-        {
+        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime) {
             clientRuntime.MessageInspectors.Add(this);
         }
 
@@ -212,18 +196,16 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="endpoint">The endpoint that exposes the contract.</param>
         /// <param name="endpointDispatcher">The endpoint dispatcher to be modified or extended.</param>
-        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
-        {
-        }
+        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher) { }
 
         /// <summary>
         /// Implement to confirm that the endpoint meets some intended criteria.
         /// </summary>
         /// <param name="endpoint">The endpoint to validate.</param>
-        public void Validate(ServiceEndpoint endpoint)
-        {
-        }
+        public void Validate(ServiceEndpoint endpoint) { }
+
         #endregion
     }
+
     #endregion
 }

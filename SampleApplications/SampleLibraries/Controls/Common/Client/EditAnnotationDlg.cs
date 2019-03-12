@@ -37,43 +37,42 @@ using System.Xml.Serialization;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class EditAnnotationDlg : Form
-    {
+    public partial class EditAnnotationDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public EditAnnotationDlg()
-        {
+        public EditAnnotationDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to edit an annotation.
         /// </summary>
-        public Annotation ShowDialog(Session session, Annotation annotation, string caption)
-        {
-            if (caption != null)
-            {
+        public Annotation ShowDialog(Session session, Annotation annotation, string caption) {
+            if (caption != null) {
                 this.Text = caption;
             }
 
             m_session = session;
 
-            if (annotation == null)
-            {
+            if (annotation == null) {
                 annotation = new Annotation();
                 annotation.AnnotationTime = DateTime.UtcNow;
                 annotation.UserName = Environment.GetEnvironmentVariable("USERNAME");
@@ -84,8 +83,7 @@ namespace Opc.Ua.Client.Controls
             UserNameTB.Text = annotation.UserName;
             CommentTB.Text = annotation.Message;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
@@ -96,20 +94,19 @@ namespace Opc.Ua.Client.Controls
 
             return annotation;
         }
+
         #endregion
 
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

@@ -37,31 +37,27 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the results from a history read operation.
     /// </summary>
-    public partial class EditDataValueCtrl : UserControl
-    {
+    public partial class EditDataValueCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public EditDataValueCtrl()
-        {
+        public EditDataValueCtrl() {
             InitializeComponent();
 
-            for (BuiltInType ii = BuiltInType.Null; ii < BuiltInType.Variant; ii++)
-            {
+            for (BuiltInType ii = BuiltInType.Null; ii < BuiltInType.Variant; ii++) {
                 DataTypeCB.Items.Add(ii);
             }
 
             DataTypeCB.SelectedIndex = 0;
             DataTypeCB.Enabled = false;
 
-            for (ValueRankOptions ii = ValueRankOptions.Scalar; ii <= ValueRankOptions.OneDimension; ii++)
-            {
+            for (ValueRankOptions ii = ValueRankOptions.Scalar; ii <= ValueRankOptions.OneDimension; ii++) {
                 ValueRankCB.Items.Add(ii);
             }
 
@@ -82,33 +78,35 @@ namespace Opc.Ua.Client.Controls
             ServerTimestampDP.Value = DateTime.UtcNow;
             SourceTimestampDP.Value = DateTime.UtcNow;
         }
+
         #endregion
 
         #region Value Rank Class
+
         /// <summary>
         /// The value ranks supported by the control.
         /// </summary>
-        private enum ValueRankOptions
-        {
+        private enum ValueRankOptions {
             Scalar = -1,
             OneDimension = 1
         }
+
         #endregion
 
         #region Private Methods
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Returns the data value displayed in the control.
         /// </summary>
-        public DataValue GetDataValue()
-        {
+        public DataValue GetDataValue() {
             DataValue value = new DataValue();
             value.WrappedValue = GetValue();
 
-            if (ShowStatusTimestamp)
-            {
+            if (ShowStatusTimestamp) {
                 value.StatusCode = StatusCode;
                 value.SourceTimestamp = SourceTimestamp;
                 value.ServerTimestamp = ServerTimestamp;
@@ -120,8 +118,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the data value displayed in the control.
         /// </summary>
-        public void SetDataValue(DataValue value, TypeInfo targetType)
-        {
+        public void SetDataValue(DataValue value, TypeInfo targetType) {
             DataTypeCB.SelectedItem = BuiltInType.Null;
             ValueRankCB.SelectedItem = ValueRankOptions.Scalar;
 
@@ -129,8 +126,7 @@ namespace Opc.Ua.Client.Controls
             SourceTimestamp = DateTime.MinValue;
             ServerTimestamp = DateTime.MinValue;
 
-            if (value != null)
-            {
+            if (value != null) {
                 SetValue(value.WrappedValue);
 
                 StatusCode = value.StatusCode;
@@ -145,8 +141,7 @@ namespace Opc.Ua.Client.Controls
             // allow data type to be changed by default.
             DataTypeCB.Enabled = true;
 
-            if (targetType != null)
-            {
+            if (targetType != null) {
                 DataType = targetType.BuiltInType;
                 ValueRank = targetType.ValueRank;
 
@@ -158,91 +153,59 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// The value displayed in the control.
         /// </summary>
-        public Variant Value
-        {
-            get
-            {
-                return GetValue();
-            }
+        public Variant Value {
+            get { return GetValue(); }
 
-            set
-            {
-                SetValue(value);
-            }
+            set { SetValue(value); }
         }
 
         /// <summary>
         /// The data type of the value displayed in the control.
         /// </summary>
-        public BuiltInType DataType
-        {
-            get
-            {
-                return (BuiltInType)DataTypeCB.SelectedItem;
-            }
+        public BuiltInType DataType {
+            get { return (BuiltInType) DataTypeCB.SelectedItem; }
 
-            set
-            {
-                DataTypeCB.SelectedItem = value;
-            }
+            set { DataTypeCB.SelectedItem = value; }
         }
-        
+
         /// <summary>
         /// The value rank of the value displayed in the control.
         /// </summary>
-        public int ValueRank
-        {
-            get
-            {
-                return (int)ValueRankCB.SelectedItem;
-            }
+        public int ValueRank {
+            get { return (int) ValueRankCB.SelectedItem; }
 
-            set
-            {
-                ValueRankCB.SelectedItem = (ValueRankOptions)value;
-            }
+            set { ValueRankCB.SelectedItem = (ValueRankOptions) value; }
         }
 
         /// <summary>
         /// The status code associated with the value.
         /// </summary>
-        public StatusCode StatusCode
-        {
-            get
-            {
-                if (!StatusCodeCK.Checked)
-                {
+        public StatusCode StatusCode {
+            get {
+                if (!StatusCodeCK.Checked) {
                     return StatusCodes.Good;
                 }
 
-                return (StatusCode)StatusCodeCB.SelectedItem;
+                return (StatusCode) StatusCodeCB.SelectedItem;
             }
 
-            set
-            {
-                ValueRankCB.SelectedItem = value;
-            }
+            set { ValueRankCB.SelectedItem = value; }
         }
 
         /// <summary>
         /// The source timestamp associated with the value.
         /// </summary>
-        public DateTime SourceTimestamp
-        {
-            get
-            {
-                if (!SourceTimestampCK.Checked)
-                {
+        public DateTime SourceTimestamp {
+            get {
+                if (!SourceTimestampCK.Checked) {
                     return DateTime.MinValue;
                 }
 
                 return SourceTimestampDP.Value;
             }
 
-            set
-            {
-                if (value < SourceTimestampDP.MinDate)
-                {
+            set {
+                if (value < SourceTimestampDP.MinDate) {
                     SourceTimestampCK.Checked = false;
                     return;
                 }
@@ -254,22 +217,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// The server timestamp associated with the value.
         /// </summary>
-        public DateTime ServerTimestamp
-        {
-            get
-            {
-                if (!ServerTimestampCK.Checked)
-                {
+        public DateTime ServerTimestamp {
+            get {
+                if (!ServerTimestampCK.Checked) {
                     return DateTime.MinValue;
                 }
 
                 return ServerTimestampDP.Value;
             }
 
-            set
-            {
-                if (value < ServerTimestampDP.MinDate)
-                {
+            set {
+                if (value < ServerTimestampDP.MinDate) {
                     ServerTimestampCK.Checked = false;
                     return;
                 }
@@ -281,32 +239,25 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// If true the status code, server timestamp and source timestamp fields are displayed.
         /// </summary>
-        public bool ShowStatusTimestamp
-        {
-            get
-            {
-                return StatusCodeCB.Visible;
-            }
+        public bool ShowStatusTimestamp {
+            get { return StatusCodeCB.Visible; }
 
-            set
-            {
-                SetShowStatusTimestamp(value);
-            }
+            set { SetShowStatusTimestamp(value); }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Returns the value shown in the control.
         /// </summary>
-        private Variant GetValue()
-        {
-            BuiltInType targetType = (BuiltInType)DataTypeCB.SelectedItem;
-            int valueRank = (int)ValueRankCB.SelectedItem;
+        private Variant GetValue() {
+            BuiltInType targetType = (BuiltInType) DataTypeCB.SelectedItem;
+            int valueRank = (int) ValueRankCB.SelectedItem;
 
             // TBD - Add Support for Arrays
-            if (valueRank != ValueRanks.Scalar)
-            {
+            if (valueRank != ValueRanks.Scalar) {
                 return Variant.Null;
             }
 
@@ -319,44 +270,39 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Sets the value shown in the control.
         /// </summary>
-        private void SetValue(Variant value)
-        {
+        private void SetValue(Variant value) {
             BuiltInType targetType = BuiltInType.Null;
             int valueRank = ValueRanks.Scalar;
 
-            if (value.TypeInfo != null && value.TypeInfo.BuiltInType != BuiltInType.Null)
-            {
+            if (value.TypeInfo != null && value.TypeInfo.BuiltInType != BuiltInType.Null) {
                 targetType = value.TypeInfo.BuiltInType;
                 valueRank = value.TypeInfo.ValueRank;
             }
 
             DataTypeCB.SelectedItem = targetType;
-            ValueRankCB.SelectedItem = (ValueRankOptions)valueRank;
+            ValueRankCB.SelectedItem = (ValueRankOptions) valueRank;
 
-            if (value.Value == null)
-            {
+            if (value.Value == null) {
                 ValueTB.Text = String.Empty;
                 return;
             }
 
             // check for arrays.
-            if (valueRank != ValueRanks.Scalar)
-            {
+            if (valueRank != ValueRanks.Scalar) {
                 ValueTB.Text = value.ToString();
                 ValueTB.ReadOnly = true;
                 return;
             }
 
             // cast the value to the requested data type.
-            ValueTB.Text = (string)TypeInfo.Cast(value.Value, value.TypeInfo, BuiltInType.String);
+            ValueTB.Text = (string) TypeInfo.Cast(value.Value, value.TypeInfo, BuiltInType.String);
             ValueTB.ReadOnly = false;
         }
 
         /// <summary>
         /// Shows or hides the status and timestamp fields.
         /// </summary>
-        private void SetShowStatusTimestamp(bool show)
-        {
+        private void SetShowStatusTimestamp(bool show) {
             StatusCodeCB.Visible = show;
             SourceTimestampDP.Visible = show;
             ServerTimestampDP.Visible = show;
@@ -367,23 +313,23 @@ namespace Opc.Ua.Client.Controls
             SourceTimestampCK.Visible = show;
             ServerTimestampCK.Visible = show;
         }
+
         #endregion
 
         #region Event Handlers
-        private void StatusCodeCK_CheckedChanged(object sender, EventArgs e)
-        {
+
+        private void StatusCodeCK_CheckedChanged(object sender, EventArgs e) {
             StatusCodeCB.Enabled = StatusCodeCK.Checked;
         }
 
-        private void SourceTimestampCK_CheckedChanged(object sender, EventArgs e)
-        {
+        private void SourceTimestampCK_CheckedChanged(object sender, EventArgs e) {
             SourceTimestampDP.Enabled = SourceTimestampCK.Checked;
         }
 
-        private void ServerTimestampCK_CheckedChanged(object sender, EventArgs e)
-        {
+        private void ServerTimestampCK_CheckedChanged(object sender, EventArgs e) {
             ServerTimestampDP.Enabled = ServerTimestampCK.Checked;
         }
+
         #endregion
     }
 }

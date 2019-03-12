@@ -20,13 +20,11 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 
-namespace Opc.Ua
-{
-	/// <summary>
-	/// Defines methods used to encode and decode objects.
-	/// </summary>
-	public interface IEncodeable : ICloneable
-	{
+namespace Opc.Ua {
+    /// <summary>
+    /// Defines methods used to encode and decode objects.
+    /// </summary>
+    public interface IEncodeable : ICloneable {
         /// <summary>
         /// Returns the UA type identifier for the encodable type.
         /// </summary>
@@ -49,13 +47,13 @@ namespace Opc.Ua
         /// Encodes the object in a stream.
         /// </summary>
         /// <param name="encoder">The encoder to be used for encoding the current value.</param>
-		    void Encode(IEncoder encoder);
+        void Encode(IEncoder encoder);
 
         /// <summary>
         /// Decodes the object from a stream.
         /// </summary>
         /// <param name="decoder">The decoder to be used for decoding the current value..</param>
-		    void Decode(IDecoder decoder);
+        void Decode(IDecoder decoder);
 
         /// <summary>
         /// Checks if the value is equal to the another encodeable object.
@@ -64,16 +62,16 @@ namespace Opc.Ua
         /// <returns>
         /// 	<c>true</c> if the specified instance of the <see cref="IEncodeable"/> type is equal; otherwise <c>false</c>.
         /// </returns>
-	      bool IsEqual(IEncodeable encodeable);
+        bool IsEqual(IEncodeable encodeable);
     }
-        
+
     #region IEncodeableCollection
+
     /// <summary>
     /// A collection of encodeable objects.
     /// </summary>
     [CollectionDataContract(Name = "ListOfEncodeable", Namespace = Namespaces.OpcUaXsd, ItemName = "Encodeable")]
-    public class IEncodeableCollection : List<IEncodeable>
-    {
+    public class IEncodeableCollection : List<IEncodeable> {
         /// <summary>
         /// Initializes an empty collection.
         /// </summary>
@@ -86,7 +84,7 @@ namespace Opc.Ua
         /// <exception cref="T:System.ArgumentNullException">
         /// 	<paramref name="collection"/> is null.
         /// </exception>
-        public IEncodeableCollection(IEnumerable<IEncodeable> collection) : base(collection) {}
+        public IEncodeableCollection(IEnumerable<IEncodeable> collection) : base(collection) { }
 
         /// <summary>
         /// Initializes the collection with the specified capacity.
@@ -99,10 +97,8 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="values">The values to be converted to an instance of <see cref="IEncodeableCollection"/>.</param>
         /// <returns>Instance of the <see cref="IEncodeableCollection"/> containing <paramref name="values"/></returns>
-        public static IEncodeableCollection ToIEncodeableCollection(IEncodeable[] values)
-        {
-            if (values != null)
-            {
+        public static IEncodeableCollection ToIEncodeableCollection(IEncodeable[] values) {
+            if (values != null) {
                 return new IEncodeableCollection(values);
             }
 
@@ -114,10 +110,10 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="values">The values to be converted to new instance of <see cref="IEncodeableCollection"/>.</param>
         /// <returns>The result of the conversion.</returns>
-        public static implicit operator IEncodeableCollection(IEncodeable[] values)
-        {
+        public static implicit operator IEncodeableCollection(IEncodeable[] values) {
             return ToIEncodeableCollection(values);
         }
     }
+
     #endregion
 }

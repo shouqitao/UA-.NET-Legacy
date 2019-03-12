@@ -24,23 +24,20 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using System.Threading;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary> 
     /// The base class for all object nodes.
     /// </summary>
-    public class BaseObjectState : BaseInstanceState
-    {
+    public class BaseObjectState : BaseInstanceState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public BaseObjectState(NodeState parent) : base(NodeClass.Object, parent)
-        {
+        public BaseObjectState(NodeState parent) : base(NodeClass.Object, parent) {
             m_eventNotifier = EventNotifiers.None;
 
-            if (parent != null)
-            {
+            if (parent != null) {
                 ReferenceTypeId = Opc.Ua.ReferenceTypeIds.HasComponent;
             }
         }
@@ -50,18 +47,18 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns>The new node.</returns>
-        public static NodeState Construct(NodeState parent)
-        {
+        public static NodeState Construct(NodeState parent) {
             return new BaseObjectState(parent);
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             SymbolicName = Utils.Format("{0}_Instance1", Opc.Ua.BrowseNames.BaseObjectType);
             NodeId = null;
             BrowseName = new QualifiedName(SymbolicName, 1);
@@ -77,12 +74,10 @@ namespace Opc.Ua
         /// <summary>
         /// Initializes the instance from another instance.
         /// </summary>
-        protected override void Initialize(ISystemContext context, NodeState source)
-        {
+        protected override void Initialize(ISystemContext context, NodeState source) {
             BaseObjectState instance = source as BaseObjectState;
 
-            if (instance != null)
-            {
+            if (instance != null) {
                 m_eventNotifier = instance.m_eventNotifier;
             }
 
@@ -92,36 +87,33 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the id of the default type definition node for the instance.
         /// </summary>
-        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
-        {
+        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris) {
             return ObjectTypes.BaseObjectType;
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The inverse name for the reference.
         /// </summary>
-        public byte EventNotifier
-        {
-            get
-            {
-                return m_eventNotifier;
-            }
+        public byte EventNotifier {
+            get { return m_eventNotifier; }
 
-            set
-            {
-                if (m_eventNotifier != value)
-                {
+            set {
+                if (m_eventNotifier != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
                 m_eventNotifier = value;
             }
         }
+
         #endregion
 
         #region Event Callbacks
+
         /// <summary>
         /// Raised when the EventNotifier attribute is read.
         /// </summary>
@@ -131,22 +123,22 @@ namespace Opc.Ua
         /// Raised when the EventNotifier attribute is written.
         /// </summary>
         public NodeAttributeEventHandler<byte> OnWriteEventNotifier;
+
         #endregion
 
         #region Serialization Functions
+
         /// <summary>
         /// Exports a copt of the node to a node table.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="node">The node.</param>
-        protected override void Export(ISystemContext context, Node node)
-        {
+        protected override void Export(ISystemContext context, Node node) {
             base.Export(context, node);
 
             ObjectNode objectNode = node as ObjectNode;
 
-            if (objectNode != null)
-            {
+            if (objectNode != null) {
                 objectNode.EventNotifier = this.EventNotifier;
             }
         }
@@ -156,14 +148,12 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="encoder">The encoder wrapping the stream to write.</param>
-        public override void Save(ISystemContext context, XmlEncoder encoder)
-        {
+        public override void Save(ISystemContext context, XmlEncoder encoder) {
             base.Save(context, encoder);
 
             encoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (m_eventNotifier != 0)
-            {
+            if (m_eventNotifier != 0) {
                 encoder.WriteByte("EventNotifier", m_eventNotifier);
             }
 
@@ -175,31 +165,27 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="decoder">The decoder wrapping the stream to read.</param>
-        public override void Update(ISystemContext context, XmlDecoder decoder)
-        {
+        public override void Update(ISystemContext context, XmlDecoder decoder) {
             base.Update(context, decoder);
 
             decoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (decoder.Peek("EventNotifier"))
-            {
+            if (decoder.Peek("EventNotifier")) {
                 EventNotifier = decoder.ReadByte("EventNotifier");
             }
 
             decoder.PopNamespace();
         }
-        
+
         /// <summary>
         /// Returns a mask which indicates which attributes have non-default value.
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <returns>A mask the specifies the available attributes.</returns>
-        public override AttributesToSave GetAttributesToSave(ISystemContext context)
-        {
+        public override AttributesToSave GetAttributesToSave(ISystemContext context) {
             AttributesToSave attributesToSave = base.GetAttributesToSave(context);
 
-            if (m_eventNotifier != EventNotifiers.None)
-            {
+            if (m_eventNotifier != EventNotifiers.None) {
                 attributesToSave |= AttributesToSave.EventNotifier;
             }
 
@@ -212,12 +198,10 @@ namespace Opc.Ua
         /// <param name="context">The context user.</param>
         /// <param name="encoder">The encoder to write to.</param>
         /// <param name="attributesToSave">The masks indicating what attributes to write.</param>
-        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave)
-        {
+        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave) {
             base.Save(context, encoder, attributesToSave);
 
-            if ((attributesToSave & AttributesToSave.EventNotifier) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.EventNotifier) != 0) {
                 encoder.WriteByte(null, m_eventNotifier);
             }
         }
@@ -228,41 +212,36 @@ namespace Opc.Ua
         /// <param name="context">The context.</param>
         /// <param name="decoder">The decoder.</param>
         /// <param name="attibutesToLoad">The attributes to load.</param>
-        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad)
-        {
+        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad) {
             base.Update(context, decoder, attibutesToLoad);
 
-            if ((attibutesToLoad & AttributesToSave.EventNotifier) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.EventNotifier) != 0) {
                 m_eventNotifier = decoder.ReadByte(null);
             }
         }
+
         #endregion
 
         #region Read Support Functions
+
         /// <summary>
         /// Reads the value for any non-value attribute.
         /// </summary>
         protected override ServiceResult ReadNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            ref object value)
-        {
+            ref object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.EventNotifier:
-                {
+            switch (attributeId) {
+                case Attributes.EventNotifier: {
                     byte eventNotifier = m_eventNotifier;
 
-                    if (OnReadEventNotifier != null)
-                    {
+                    if (OnReadEventNotifier != null) {
                         result = OnReadEventNotifier(context, this, ref eventNotifier);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = eventNotifier;
                     }
 
@@ -272,44 +251,39 @@ namespace Opc.Ua
 
             return base.ReadNonValueAttribute(context, attributeId, ref value);
         }
+
         #endregion
 
         #region Write Support Functions
+
         /// <summary>
         /// Write the value for any non-value attribute.
         /// </summary>
         protected override ServiceResult WriteNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            object value)
-        {
+            object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.EventNotifier:
-                {
+            switch (attributeId) {
+                case Attributes.EventNotifier: {
                     byte? eventNotifierRef = value as byte?;
 
-                    if (eventNotifierRef == null)
-                    {
+                    if (eventNotifierRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.EventNotifier) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.EventNotifier) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     byte eventNotifier = eventNotifierRef.Value;
 
-                    if (OnWriteEventNotifier != null)
-                    {
+                    if (OnWriteEventNotifier != null) {
                         result = OnWriteEventNotifier(context, this, ref eventNotifier);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         EventNotifier = eventNotifier;
                     }
 
@@ -319,33 +293,35 @@ namespace Opc.Ua
 
             return base.WriteNonValueAttribute(context, attributeId, value);
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private byte m_eventNotifier;
+
         #endregion
     }
-    
+
     /// <summary> 
     /// The base class for all folder nodes.
     /// </summary>
-    public class FolderState : BaseObjectState
-    {
+    public class FolderState : BaseObjectState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public FolderState(NodeState parent) : base( parent)
-        {
-        }
+        public FolderState(NodeState parent) : base(parent) { }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             SymbolicName = Utils.Format("{0}_Instance1", Opc.Ua.BrowseNames.FolderType);
             NodeId = null;
             BrowseName = new QualifiedName(SymbolicName, 1);
@@ -361,10 +337,10 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the id of the default type definition node for the instance.
         /// </summary>
-        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
-        {
+        protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris) {
             return ObjectTypes.FolderType;
         }
+
         #endregion
     }
 }

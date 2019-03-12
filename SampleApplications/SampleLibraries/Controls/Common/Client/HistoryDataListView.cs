@@ -37,19 +37,17 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the results from a history read operation.
     /// </summary>
-    public partial class HistoryDataListView : UserControl
-    {
+    public partial class HistoryDataListView : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public HistoryDataListView()
-        {
+        public HistoryDataListView() {
             InitializeComponent();
             ResultsDV.AutoGenerateColumns = false;
             LeftPN.Enabled = false;
@@ -67,7 +65,7 @@ namespace Opc.Ua.Client.Controls
             ReadTypeCB.Items.Add(HistoryReadType.DeleteModified);
             ReadTypeCB.Items.Add(HistoryReadType.DeleteAtTime);
             ReadTypeCB.SelectedIndex = 0;
-            
+
             m_dataset = new DataSet();
             m_dataset.Tables.Add("Results");
 
@@ -87,14 +85,15 @@ namespace Opc.Ua.Client.Controls
 
             ResultsDV.DataSource = m_dataset.Tables[0];
         }
+
         #endregion
 
         #region HistoryReadType Class
+
         /// <summary>
         /// The type history read operation.
         /// </summary>
-        public enum HistoryReadType
-        {
+        public enum HistoryReadType {
             /// <summary>
             /// Subscribe to data changes.
             /// </summary>
@@ -155,59 +154,56 @@ namespace Opc.Ua.Client.Controls
             /// </summary>
             DeleteAtTime
         }
+
         #endregion
 
         #region AvailableAggregate Class
+
         /// <summary>
         /// An aggregate supported by server. 
         /// </summary>
-        private class AvailableAggregate
-        {
+        private class AvailableAggregate {
             public NodeId NodeId { get; set; }
             public string DisplayName { get; set; }
 
-            public override string ToString()
-            {
+            public override string ToString() {
                 return DisplayName;
             }
         }
+
         #endregion
 
         #region AvailableSession Class
+
         /// <summary>
         /// A session available in the conntrol.
         /// </summary>
-        private class AvailableSession
-        {
+        private class AvailableSession {
             public Session Session { get; set; }
 
-            public override string ToString()
-            {
+            public override string ToString() {
                 return Session.SessionName;
             }
         }
+
         #endregion
 
         #region PropertyWithHistory Class
+
         /// <summary>
         /// Stores the metadata about a property with history to read or update.
         /// </summary>
-        private class PropertyWithHistory
-        {
-            public PropertyWithHistory()
-            {
-            }
+        private class PropertyWithHistory {
+            public PropertyWithHistory() { }
 
-            public PropertyWithHistory(ReferenceDescription reference, byte accessLevel)
-            {
+            public PropertyWithHistory(ReferenceDescription reference, byte accessLevel) {
                 DisplayText = reference.ToString();
-                NodeId = (NodeId)reference.NodeId;
+                NodeId = (NodeId) reference.NodeId;
                 BrowseName = reference.BrowseName;
                 AccessLevel = accessLevel;
             }
 
-            public override string ToString()
-            {
+            public override string ToString() {
                 return DisplayText;
             }
 
@@ -216,9 +212,11 @@ namespace Opc.Ua.Client.Controls
             public QualifiedName BrowseName;
             public byte AccessLevel;
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
         private Subscription m_subscription;
         private MonitoredItem m_monitoredItem;
@@ -231,37 +229,28 @@ namespace Opc.Ua.Client.Controls
         private bool m_timesChanged;
         private HistoricalDataConfigurationState m_configuration;
         private List<PropertyWithHistory> m_properties;
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The node id to use.
         /// </summary>        
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public NodeId NodeId
-        {
-            get 
-            { 
-                return m_nodeId; 
-            }
-            
-            set
-            {
+        public NodeId NodeId {
+            get { return m_nodeId; }
+
+            set {
                 m_nodeId = value;
 
-                if (m_session != null)
-                {
+                if (m_session != null) {
                     NodeIdTB.Text = m_session.NodeCache.GetDisplayText(m_nodeId);
-                }
-                else
-                {
-                    if (NodeId.IsNull(m_nodeId))
-                    {
+                } else {
+                    if (NodeId.IsNull(m_nodeId)) {
                         NodeIdTB.Text = String.Empty;
-                    }
-                    else
-                    {
+                    } else {
                         NodeIdTB.Text = m_nodeId.ToString();
                     }
                 }
@@ -273,9 +262,8 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public HistoryReadType ReadType
-        {
-            get { return (HistoryReadType)ReadTypeCB.SelectedItem; }
+        public HistoryReadType ReadType {
+            get { return (HistoryReadType) ReadTypeCB.SelectedItem; }
             set { ReadTypeCB.SelectedItem = value; }
         }
 
@@ -284,28 +272,22 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public DateTime StartTime
-        {
-            get
-            {
-                if (StartTimeCK.Checked)
-                {
+        public DateTime StartTime {
+            get {
+                if (StartTimeCK.Checked) {
                     return DateTime.MinValue;
                 }
 
                 return StartTimeDP.Value;
             }
 
-            set
-            {
-                if (value < Utils.TimeBase)
-                {
+            set {
+                if (value < Utils.TimeBase) {
                     StartTimeCK.Checked = false;
                     return;
                 }
 
-                if (value.Kind == DateTimeKind.Local)
-                {
+                if (value.Kind == DateTimeKind.Local) {
                     value = value.ToUniversalTime();
                 }
 
@@ -319,28 +301,22 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public DateTime EndTime
-        {
-            get
-            {
-                if (EndTimeCK.Checked)
-                {
+        public DateTime EndTime {
+            get {
+                if (EndTimeCK.Checked) {
                     return DateTime.MinValue;
                 }
 
                 return EndTimeDP.Value;
             }
 
-            set
-            {
-                if (value < Utils.TimeBase)
-                {
+            set {
+                if (value < Utils.TimeBase) {
                     EndTimeCK.Checked = false;
                     return;
                 }
 
-                if (value.Kind == DateTimeKind.Local)
-                {
+                if (value.Kind == DateTimeKind.Local) {
                     value = value.ToUniversalTime();
                 }
 
@@ -354,20 +330,16 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public uint MaxReturnValues
-        {
-            get
-            {
-                if (MaxReturnValuesCK.Checked)
-                {
+        public uint MaxReturnValues {
+            get {
+                if (MaxReturnValuesCK.Checked) {
                     return 0;
                 }
 
-                return (uint)MaxReturnValuesNP.Value;
+                return (uint) MaxReturnValuesNP.Value;
             }
 
-            set
-            {
+            set {
                 MaxReturnValuesCK.Checked = value != 0;
                 MaxReturnValuesNP.Value = value;
             }
@@ -378,17 +350,10 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ReturnBounds
-        {
-            get
-            {
-                return ReturnBoundsCK.Checked;
-            }
+        public bool ReturnBounds {
+            get { return ReturnBoundsCK.Checked; }
 
-            set
-            {
-                ReturnBoundsCK.Checked = value;
-            }
+            set { ReturnBoundsCK.Checked = value; }
         }
 
         /// <summary>
@@ -396,35 +361,27 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public NodeId Aggregate
-        {
-            get
-            {
+        public NodeId Aggregate {
+            get {
                 AvailableAggregate aggregate = AggregateCB.SelectedItem as AvailableAggregate;
 
-                if (aggregate == null)
-                {
+                if (aggregate == null) {
                     return NodeId.Null;
                 }
 
                 return aggregate.NodeId;
             }
 
-            set
-            {
-                if (NodeId.IsNull(value))
-                {
+            set {
+                if (NodeId.IsNull(value)) {
                     AggregateCB.SelectedIndex = -1;
                     return;
                 }
 
-                foreach (AvailableAggregate aggregate in AggregateCB.Items)
-                {
-                    if (aggregate.NodeId == value)
-                    {
+                foreach (AvailableAggregate aggregate in AggregateCB.Items) {
+                    if (aggregate.NodeId == value) {
                         AggregateCB.SelectedItem = value;
                         return;
-
                     }
                 }
 
@@ -437,30 +394,25 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public double ProcessingInterval
-        {
-            get { return (double)ProcessingIntervalNP.Value; }
-            set { ProcessingIntervalNP.Value = (decimal)value; }
+        public double ProcessingInterval {
+            get { return (double) ProcessingIntervalNP.Value; }
+            set { ProcessingIntervalNP.Value = (decimal) value; }
         }
 
         /// <summary>
         /// Changes the session.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
-            if (Object.ReferenceEquals(session, m_session))
-            {
+        public void ChangeSession(Session session) {
+            if (Object.ReferenceEquals(session, m_session)) {
                 return;
             }
 
-            if (m_session != null)
-            {
+            if (m_session != null) {
                 DeleteSubscription();
                 m_session = null;
             }
 
-            if (session == null)
-            {
+            if (session == null) {
                 return;
             }
 
@@ -468,20 +420,18 @@ namespace Opc.Ua.Client.Controls
             m_dataset.Clear();
             LeftPN.Enabled = m_session != null;
 
-            if (m_session != null)
-            {
+            if (m_session != null) {
                 AggregateCB.Items.Clear();
 
-                ILocalNode node = m_session.NodeCache.Find(ObjectIds.Server_ServerCapabilities_AggregateFunctions) as ILocalNode;
+                ILocalNode node =
+                    m_session.NodeCache.Find(ObjectIds.Server_ServerCapabilities_AggregateFunctions) as ILocalNode;
 
-                if (node != null)
-                {
-                    foreach (IReference reference in node.References.Find(ReferenceTypeIds.HierarchicalReferences, false, true, m_session.TypeTree))
-                    {
+                if (node != null) {
+                    foreach (IReference reference in node.References.Find(ReferenceTypeIds.HierarchicalReferences,
+                        false, true, m_session.TypeTree)) {
                         ILocalNode aggregate = m_session.NodeCache.Find(reference.TargetId) as ILocalNode;
 
-                        if (aggregate != null || aggregate.TypeDefinitionId == ObjectTypeIds.AggregateFunctionType)
-                        {
+                        if (aggregate != null || aggregate.TypeDefinitionId == ObjectTypeIds.AggregateFunctionType) {
                             AvailableAggregate item = new AvailableAggregate();
                             item.NodeId = aggregate.NodeId;
                             item.DisplayName = m_session.NodeCache.GetDisplayText(aggregate);
@@ -489,17 +439,30 @@ namespace Opc.Ua.Client.Controls
                         }
                     }
 
-                    if (AggregateCB.Items.Count == 0)
-                    {
-                        AggregateCB.Items.Add(new AvailableAggregate() { NodeId = ObjectIds.AggregateFunction_Interpolative, DisplayName = BrowseNames.AggregateFunction_Interpolative });
-                        AggregateCB.Items.Add(new AvailableAggregate() { NodeId = ObjectIds.AggregateFunction_Average, DisplayName = BrowseNames.AggregateFunction_Average });
-                        AggregateCB.Items.Add(new AvailableAggregate() { NodeId = ObjectIds.AggregateFunction_TimeAverage, DisplayName = BrowseNames.AggregateFunction_TimeAverage });
-                        AggregateCB.Items.Add(new AvailableAggregate() { NodeId = ObjectIds.AggregateFunction_Total, DisplayName = BrowseNames.AggregateFunction_Total });
-                        AggregateCB.Items.Add(new AvailableAggregate() { NodeId = ObjectIds.AggregateFunction_Count, DisplayName = BrowseNames.AggregateFunction_Count });
+                    if (AggregateCB.Items.Count == 0) {
+                        AggregateCB.Items.Add(new AvailableAggregate() {
+                            NodeId = ObjectIds.AggregateFunction_Interpolative,
+                            DisplayName = BrowseNames.AggregateFunction_Interpolative
+                        });
+                        AggregateCB.Items.Add(new AvailableAggregate() {
+                            NodeId = ObjectIds.AggregateFunction_Average,
+                            DisplayName = BrowseNames.AggregateFunction_Average
+                        });
+                        AggregateCB.Items.Add(new AvailableAggregate() {
+                            NodeId = ObjectIds.AggregateFunction_TimeAverage,
+                            DisplayName = BrowseNames.AggregateFunction_TimeAverage
+                        });
+                        AggregateCB.Items.Add(new AvailableAggregate() {
+                            NodeId = ObjectIds.AggregateFunction_Total,
+                            DisplayName = BrowseNames.AggregateFunction_Total
+                        });
+                        AggregateCB.Items.Add(new AvailableAggregate() {
+                            NodeId = ObjectIds.AggregateFunction_Count,
+                            DisplayName = BrowseNames.AggregateFunction_Count
+                        });
                     }
 
-                    if (AggregateCB.Items.Count > 0)
-                    {
+                    if (AggregateCB.Items.Count > 0) {
                         AggregateCB.SelectedIndex = 0;
                     }
                 }
@@ -507,24 +470,19 @@ namespace Opc.Ua.Client.Controls
                 SubscriptionStateChanged();
             }
         }
-        
+
         /// <summary>
         /// Updates the control after the session has reconnected.
         /// </summary>
-        public void SessionReconnected(Session session)
-        {
+        public void SessionReconnected(Session session) {
             m_session = session;
 
-            if (m_session != null)
-            {
-                foreach (Subscription subscription in m_session.Subscriptions)
-                {
-                    if (Object.ReferenceEquals(subscription.Handle, this))
-                    {
+            if (m_session != null) {
+                foreach (Subscription subscription in m_session.Subscriptions) {
+                    if (Object.ReferenceEquals(subscription.Handle, this)) {
                         m_subscription = subscription;
 
-                        foreach (MonitoredItem monitoredItem in subscription.MonitoredItems)
-                        {
+                        foreach (MonitoredItem monitoredItem in subscription.MonitoredItems) {
                             m_monitoredItem = monitoredItem;
                             break;
                         }
@@ -538,8 +496,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Changes the node monitored by the control.
         /// </summary>
-        public void ChangeNode(NodeId nodeId)
-        {
+        public void ChangeNode(NodeId nodeId) {
             m_nodeId = nodeId;
             m_configuration = null;
             m_properties = null;
@@ -547,18 +504,14 @@ namespace Opc.Ua.Client.Controls
             m_dataset.Clear();
             NodeIdTB.Text = m_session.NodeCache.GetDisplayText(m_nodeId);
 
-            if (!NodeId.IsNull(nodeId))
-            {
+            if (!NodeId.IsNull(nodeId)) {
                 m_properties = FindPropertiesWithHistory();
 
-                if (m_properties == null || m_properties.Count <= 1)
-                {
+                if (m_properties == null || m_properties.Count <= 1) {
                     PropertyLB.Visible = false;
                     PropertyCB.Visible = false;
-                }
-                else
-                {
-                    PropertyCB.Items.AddRange((object[])m_properties.ToArray());
+                } else {
+                    PropertyCB.Items.AddRange((object[]) m_properties.ToArray());
                     PropertyCB.SelectedIndex = 0;
                     PropertyLB.Visible = true;
                     PropertyCB.Visible = true;
@@ -566,36 +519,29 @@ namespace Opc.Ua.Client.Controls
 
                 m_configuration = ReadConfiguration();
 
-                if (StatusCode.IsBad(m_configuration.Stepped.StatusCode))
-                {
+                if (StatusCode.IsBad(m_configuration.Stepped.StatusCode)) {
                     this.ReadTypeCB.Enabled = false;
                     this.ReadTypeCB.SelectedItem = HistoryReadType.Subscribe;
-                }
-                else
-                {
+                } else {
                     this.ReadTypeCB.Enabled = true;
 
-                    if (!m_timesChanged)
-                    {
+                    if (!m_timesChanged) {
                         DateTime startTime = ReadFirstDate();
 
-                        if (startTime != DateTime.MinValue)
-                        {
+                        if (startTime != DateTime.MinValue) {
                             StartTimeDP.Value = startTime;
                         }
 
                         DateTime endTime = ReadLastDate();
 
-                        if (endTime != DateTime.MinValue)
-                        {
+                        if (endTime != DateTime.MinValue) {
                             EndTimeDP.Value = endTime;
                         }
                     }
                 }
             }
-            
-            if (m_subscription != null)
-            {
+
+            if (m_subscription != null) {
                 MonitoredItem monitoredItem = new MonitoredItem(m_monitoredItem);
                 monitoredItem.StartNodeId = nodeId;
 
@@ -614,16 +560,11 @@ namespace Opc.Ua.Client.Controls
         /// Sets the sort order for the control.
         /// </summary>
         /// <param name="mostRecentFirst">If true the most recent entries are displayed first.</param>
-        public void SetSortOrder(bool mostRecentFirst)
-        {
-            if (m_dataset != null && m_dataset.Tables.Count > 0)
-            {
-                if (mostRecentFirst)
-                {
+        public void SetSortOrder(bool mostRecentFirst) {
+            if (m_dataset != null && m_dataset.Tables.Count > 0) {
+                if (mostRecentFirst) {
                     m_dataset.Tables[0].DefaultView.Sort = "Index DESC";
-                }
-                else
-                {
+                } else {
                     m_dataset.Tables[0].DefaultView.Sort = "Index";
                 }
             }
@@ -632,8 +573,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// A kludge to get around the stupid designer that keeps setting property values to bogus defaults.
         /// </summary>
-        public void Reset()
-        {
+        public void Reset() {
             NodeId = null;
             ReadType = HistoryReadType.Raw;
             StartTime = DateTime.MinValue;
@@ -651,19 +591,18 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Shows the configuration.
         /// </summary>
-        public void ShowConfiguration()
-        {
-            if (m_session != null)
-            {
-                if (m_configuration != null)
-                {
+        public void ShowConfiguration() {
+            if (m_session != null) {
+                if (m_configuration != null) {
                     new ViewNodeStateDlg().ShowDialog(m_session, m_configuration, null);
                 }
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Recursively collects the variables in a NodeState and returns a collection of BrowsePaths.
         /// </summary>
@@ -672,21 +611,18 @@ namespace Opc.Ua.Client.Controls
             NodeId rootId,
             NodeState parent,
             RelativePath parentPath,
-            BrowsePathCollection browsePaths)
-        {
+            BrowsePathCollection browsePaths) {
             List<BaseInstanceState> children = new List<BaseInstanceState>();
             parent.GetChildren(context, children);
 
-            for (int ii = 0; ii < children.Count; ii++)
-            {
+            for (int ii = 0; ii < children.Count; ii++) {
                 BaseInstanceState child = children[ii];
 
                 BrowsePath browsePath = new BrowsePath();
                 browsePath.StartingNode = rootId;
                 browsePath.Handle = child;
 
-                if (parentPath != null)
-                {
+                if (parentPath != null) {
                     browsePath.RelativePath.Elements.AddRange(parentPath.Elements);
                 }
 
@@ -698,51 +634,50 @@ namespace Opc.Ua.Client.Controls
 
                 browsePath.RelativePath.Elements.Add(element);
 
-                if (child.NodeClass == NodeClass.Variable)
-                {
+                if (child.NodeClass == NodeClass.Variable) {
                     browsePaths.Add(browsePath);
                 }
 
-                GetBrowsePathFromNodeState(context, rootId, child, browsePath.RelativePath, browsePaths); 
+                GetBrowsePathFromNodeState(context, rootId, child, browsePath.RelativePath, browsePaths);
             }
         }
 
         /// <summary>
         /// Reads the historical configuration for the node.
         /// </summary>
-        private List<PropertyWithHistory> FindPropertiesWithHistory()
-        {
+        private List<PropertyWithHistory> FindPropertiesWithHistory() {
             BrowseDescription nodeToBrowse = new BrowseDescription();
             nodeToBrowse.NodeId = m_nodeId;
             nodeToBrowse.ReferenceTypeId = Opc.Ua.ReferenceTypeIds.HasProperty;
             nodeToBrowse.IncludeSubtypes = true;
             nodeToBrowse.BrowseDirection = BrowseDirection.Forward;
             nodeToBrowse.NodeClassMask = 0;
-            nodeToBrowse.ResultMask = (uint)(BrowseResultMask.DisplayName | BrowseResultMask.BrowseName);
+            nodeToBrowse.ResultMask = (uint) (BrowseResultMask.DisplayName | BrowseResultMask.BrowseName);
 
             ReferenceDescriptionCollection references = ClientUtils.Browse(m_session, nodeToBrowse, false);
 
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            for (int ii = 0; ii < references.Count; ii++)
-            {
-                if (references[ii].NodeId.IsAbsolute)
-                {
+            for (int ii = 0; ii < references.Count; ii++) {
+                if (references[ii].NodeId.IsAbsolute) {
                     continue;
                 }
 
                 ReadValueId nodeToRead = new ReadValueId();
-                nodeToRead.NodeId = (NodeId)references[ii].NodeId;
+                nodeToRead.NodeId = (NodeId) references[ii].NodeId;
                 nodeToRead.AttributeId = Attributes.AccessLevel;
                 nodeToRead.Handle = references[ii];
                 nodesToRead.Add(nodeToRead);
             }
 
             List<PropertyWithHistory> properties = new List<PropertyWithHistory>();
-            properties.Add(new PropertyWithHistory() { DisplayText = "(none)", NodeId = m_nodeId, AccessLevel = AccessLevels.HistoryReadOrWrite });
+            properties.Add(new PropertyWithHistory() {
+                DisplayText = "(none)",
+                NodeId = m_nodeId,
+                AccessLevel = AccessLevels.HistoryReadOrWrite
+            });
 
-            if (nodesToRead.Count > 0)
-            {
+            if (nodesToRead.Count > 0) {
                 DataValueCollection values = null;
                 DiagnosticInfoCollection diagnosticInfos = null;
 
@@ -757,13 +692,12 @@ namespace Opc.Ua.Client.Controls
                 ClientBase.ValidateResponse(values, nodesToRead);
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-                for (int ii = 0; ii < nodesToRead.Count; ii++)
-                {
+                for (int ii = 0; ii < nodesToRead.Count; ii++) {
                     byte accessLevel = values[ii].GetValue<byte>(0);
 
-                    if ((accessLevel & AccessLevels.HistoryRead) != 0)
-                    {
-                        properties.Add(new PropertyWithHistory((ReferenceDescription)nodesToRead[ii].Handle, accessLevel));
+                    if ((accessLevel & AccessLevels.HistoryRead) != 0) {
+                        properties.Add(new PropertyWithHistory((ReferenceDescription) nodesToRead[ii].Handle,
+                            accessLevel));
                     }
                 }
             }
@@ -774,8 +708,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Reads the historical configuration for the node.
         /// </summary>
-        private HistoricalDataConfigurationState ReadConfiguration()
-        {
+        private HistoricalDataConfigurationState ReadConfiguration() {
             // load the defaults for the historical configuration object. 
             HistoricalDataConfigurationState configuration = new HistoricalDataConfigurationState(null);
 
@@ -793,7 +726,7 @@ namespace Opc.Ua.Client.Controls
                 Opc.Ua.BrowseNames.HAConfiguration,
                 null,
                 false);
-            
+
             // get the browse paths to query.
             RelativePathElement element = new RelativePathElement();
             element.ReferenceTypeId = Opc.Ua.ReferenceTypeIds.HasHistoricalConfiguration;
@@ -829,20 +762,18 @@ namespace Opc.Ua.Client.Controls
             // build list of values to read.
             ReadValueIdCollection valuesToRead = new ReadValueIdCollection();
 
-            for (int ii = 0; ii < pathsToTranslate.Count; ii++)
-            {
-                BaseVariableState variable = (BaseVariableState)pathsToTranslate[ii].Handle;
+            for (int ii = 0; ii < pathsToTranslate.Count; ii++) {
+                BaseVariableState variable = (BaseVariableState) pathsToTranslate[ii].Handle;
                 variable.Value = null;
                 variable.StatusCode = StatusCodes.BadNotSupported;
 
-                if (StatusCode.IsBad(results[ii].StatusCode) || results[ii].Targets.Count == 0)
-                {
+                if (StatusCode.IsBad(results[ii].StatusCode) || results[ii].Targets.Count == 0) {
                     continue;
                 }
 
-                if (results[ii].Targets[0].RemainingPathIndex == UInt32.MaxValue && !results[ii].Targets[0].TargetId.IsAbsolute)
-                {
-                    variable.NodeId = (NodeId)results[ii].Targets[0].TargetId;
+                if (results[ii].Targets[0].RemainingPathIndex == UInt32.MaxValue &&
+                    !results[ii].Targets[0].TargetId.IsAbsolute) {
+                    variable.NodeId = (NodeId) results[ii].Targets[0].TargetId;
 
                     ReadValueId valueToRead = new ReadValueId();
                     valueToRead.NodeId = variable.NodeId;
@@ -851,10 +782,9 @@ namespace Opc.Ua.Client.Controls
                     valuesToRead.Add(valueToRead);
                 }
             }
-            
+
             // read the values.
-            if (valuesToRead.Count > 0)
-            {
+            if (valuesToRead.Count > 0) {
                 DataValueCollection values = null;
 
                 m_session.Read(
@@ -868,9 +798,8 @@ namespace Opc.Ua.Client.Controls
                 ClientBase.ValidateResponse(values, valuesToRead);
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, valuesToRead);
 
-                for (int ii = 0; ii < valuesToRead.Count; ii++)
-                {
-                    BaseVariableState variable = (BaseVariableState)valuesToRead[ii].Handle;
+                for (int ii = 0; ii < valuesToRead.Count; ii++) {
+                    BaseVariableState variable = (BaseVariableState) valuesToRead[ii].Handle;
                     variable.WrappedValue = values[ii].WrappedValue;
                     variable.StatusCode = values[ii].StatusCode;
                 }
@@ -882,18 +811,14 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Reads the first date in the archive (truncates milliseconds and converts to local).
         /// </summary>
-        private DateTime ReadFirstDate()
-        {
+        private DateTime ReadFirstDate() {
             // use the historical data configuration if available.
-            if (m_configuration != null)
-            {
-                if (StatusCode.IsGood(m_configuration.StartOfOnlineArchive.StatusCode))
-                {
+            if (m_configuration != null) {
+                if (StatusCode.IsGood(m_configuration.StartOfOnlineArchive.StatusCode)) {
                     return m_configuration.StartOfOnlineArchive.Value.ToLocalTime();
                 }
 
-                if (StatusCode.IsGood(m_configuration.StartOfArchive.StatusCode))
-                {
+                if (StatusCode.IsGood(m_configuration.StartOfArchive.StatusCode)) {
                     return m_configuration.StartOfArchive.Value.ToLocalTime();
                 }
             }
@@ -927,22 +852,19 @@ namespace Opc.Ua.Client.Controls
             Session.ValidateResponse(results, nodesToRead);
             Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 return DateTime.MinValue;
             }
 
             HistoryData data = ExtensionObject.ToEncodeable(results[0].HistoryData) as HistoryData;
 
-            if (results == null)
-            {
+            if (results == null) {
                 return DateTime.MinValue;
             }
 
             DateTime startTime = data.DataValues[0].SourceTimestamp;
 
-            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0)
-            {
+            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0) {
                 nodeToRead.ContinuationPoint = results[0].ContinuationPoint;
 
                 m_session.HistoryRead(
@@ -957,8 +879,9 @@ namespace Opc.Ua.Client.Controls
                 Session.ValidateResponse(results, nodesToRead);
                 Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
             }
-            
-            startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, startTime.Minute, startTime.Second, 0, DateTimeKind.Utc);
+
+            startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, startTime.Minute,
+                startTime.Second, 0, DateTimeKind.Utc);
             startTime = startTime.ToLocalTime();
 
             return startTime;
@@ -967,8 +890,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Reads the last date in the archive (truncates milliseconds and converts to local).
         /// </summary>
-        private DateTime ReadLastDate()
-        {
+        private DateTime ReadLastDate() {
             ReadRawModifiedDetails details = new ReadRawModifiedDetails();
             details.StartTime = DateTime.MinValue;
             details.EndTime = DateTime.UtcNow.AddDays(1);
@@ -997,22 +919,19 @@ namespace Opc.Ua.Client.Controls
             Session.ValidateResponse(results, nodesToRead);
             Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 return DateTime.MinValue;
             }
 
             HistoryData data = ExtensionObject.ToEncodeable(results[0].HistoryData) as HistoryData;
 
-            if (data == null || data.DataValues.Count == 0)
-            {
+            if (data == null || data.DataValues.Count == 0) {
                 return DateTime.MinValue;
             }
 
             DateTime endTime = data.DataValues[0].SourceTimestamp;
 
-            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0)
-            {
+            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0) {
                 nodeToRead.ContinuationPoint = results[0].ContinuationPoint;
 
                 m_session.HistoryRead(
@@ -1028,7 +947,8 @@ namespace Opc.Ua.Client.Controls
                 Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
             }
 
-            endTime = new DateTime(endTime.Year, endTime.Month, endTime.Day, endTime.Hour, endTime.Minute, endTime.Second, 0, DateTimeKind.Utc);
+            endTime = new DateTime(endTime.Year, endTime.Month, endTime.Day, endTime.Hour, endTime.Minute,
+                endTime.Second, 0, DateTimeKind.Utc);
             endTime = endTime.AddSeconds(1);
             endTime = endTime.ToLocalTime();
 
@@ -1038,10 +958,8 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Creates the subscription.
         /// </summary>
-        private void CreateSubscription()
-        {
-            if (m_session == null)
-            {
+        private void CreateSubscription() {
+            if (m_session == null) {
                 return;
             }
 
@@ -1061,29 +979,24 @@ namespace Opc.Ua.Client.Controls
             m_monitoredItem = new MonitoredItem();
             m_monitoredItem.StartNodeId = m_nodeId;
             m_monitoredItem.AttributeId = Attributes.Value;
-            m_monitoredItem.SamplingInterval = (int)SamplingIntervalNP.Value;
+            m_monitoredItem.SamplingInterval = (int) SamplingIntervalNP.Value;
             m_monitoredItem.QueueSize = 1000;
             m_monitoredItem.DiscardOldest = true;
 
             // specify aggregate filter.
-            if (AggregateCB.SelectedItem != null)
-            {
+            if (AggregateCB.SelectedItem != null) {
                 AggregateFilter filter = new AggregateFilter();
 
-                if (StartTimeCK.Checked)
-                {
+                if (StartTimeCK.Checked) {
                     filter.StartTime = StartTimeDP.Value.ToUniversalTime();
-                }
-                else
-                {
+                } else {
                     filter.StartTime = DateTime.UtcNow;
                 }
 
-                filter.ProcessingInterval = (double)ProcessingIntervalNP.Value;
-                filter.AggregateType = ((AvailableAggregate)AggregateCB.SelectedItem).NodeId;
+                filter.ProcessingInterval = (double) ProcessingIntervalNP.Value;
+                filter.AggregateType = ((AvailableAggregate) AggregateCB.SelectedItem).NodeId;
 
-                if (filter.AggregateType != null)
-                {
+                if (filter.AggregateType != null) {
                     m_monitoredItem.Filter = filter;
                 }
             }
@@ -1098,10 +1011,8 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Deletes the subscription.
         /// </summary>
-        private void DeleteSubscription()
-        {
-            if (m_subscription != null)
-            {
+        private void DeleteSubscription() {
+            if (m_subscription != null) {
                 m_subscription.Delete(true);
                 m_session.RemoveSubscription(m_subscription);
                 m_subscription = null;
@@ -1114,12 +1025,9 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the controls after the subscription state changes.
         /// </summary>
-        private void SubscriptionStateChanged()
-        {
-            if (m_monitoredItem != null)
-            {
-                if (ServiceResult.IsBad(m_monitoredItem.Status.Error))
-                {
+        private void SubscriptionStateChanged() {
+            if (m_monitoredItem != null) {
+                if (ServiceResult.IsBad(m_monitoredItem.Status.Error)) {
                     StatusTB.Text = m_monitoredItem.Status.Error.ToString();
                     return;
                 }
@@ -1130,9 +1038,7 @@ namespace Opc.Ua.Client.Controls
                 GoBTN.Visible = true;
                 StopBTN.Enabled = true;
                 NextBTN.Visible = false;
-            }
-            else
-            {
+            } else {
                 StatusTB.Text = "Monitoring stopped.";
                 m_isSubscribed = false;
                 GoBTN.Enabled = true;
@@ -1145,8 +1051,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Adds a value to the grid.
         /// </summary>
-        private void AddValue(DataValue value, ModificationInfo modificationInfo)
-        {            
+        private void AddValue(DataValue value, ModificationInfo modificationInfo) {
             DataRow row = m_dataset.Tables[0].NewRow();
 
             m_nextId += 10000;
@@ -1160,16 +1065,14 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates a value in the grid.
         /// </summary>
-        private void UpdateRow(DataRow row, DataValue value, ModificationInfo modificationInfo)
-        {
+        private void UpdateRow(DataRow row, DataValue value, ModificationInfo modificationInfo) {
             row[1] = value.SourceTimestamp.ToLocalTime().ToString("HH:mm:ss.fff");
             row[2] = value.ServerTimestamp.ToLocalTime().ToString("HH:mm:ss.fff");
             row[3] = value.WrappedValue;
             row[4] = new StatusCode(value.StatusCode.Code);
             row[5] = value.StatusCode.AggregateBits.ToString();
 
-            if (modificationInfo != null)
-            {
+            if (modificationInfo != null) {
                 row[6] = modificationInfo.UpdateType;
                 row[7] = modificationInfo.ModificationTime.ToLocalTime().ToString("HH:mm:ss");
                 row[8] = modificationInfo.UserName;
@@ -1181,38 +1084,31 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the display with a new value for a monitored variable. 
         /// </summary>
-        private void MonitoredItem_Notification(MonitoredItem monitoredItem, MonitoredItemNotificationEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new MonitoredItemNotificationEventHandler(MonitoredItem_Notification), monitoredItem, e);
+        private void MonitoredItem_Notification(MonitoredItem monitoredItem, MonitoredItemNotificationEventArgs e) {
+            if (this.InvokeRequired) {
+                this.BeginInvoke(new MonitoredItemNotificationEventHandler(MonitoredItem_Notification), monitoredItem,
+                    e);
                 return;
             }
 
-            try
-            {
-                if (!Object.ReferenceEquals(monitoredItem.Subscription, m_subscription))
-                {
+            try {
+                if (!Object.ReferenceEquals(monitoredItem.Subscription, m_subscription)) {
                     return;
                 }
 
                 MonitoredItemNotification notification = e.NotificationValue as MonitoredItemNotification;
 
-                if (notification == null)
-                {
+                if (notification == null) {
                     return;
                 }
 
                 AddValue(notification.Value, null);
                 m_dataset.AcceptChanges();
 
-                if (ResultsDV.Rows.Count > 0)
-                {
+                if (ResultsDV.Rows.Count > 0) {
                     ResultsDV.FirstDisplayedCell = ResultsDV.Rows[ResultsDV.Rows.Count - 1].Cells[0];
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
@@ -1220,10 +1116,8 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Fetches the next batch of history.
         /// </summary>
-        private void ReadNext()
-        {
-            if (m_nodeToContinue == null)
-            {
+        private void ReadNext() {
+            if (m_nodeToContinue == null) {
                 return;
             }
 
@@ -1245,8 +1139,7 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToRead);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -1260,11 +1153,9 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the currently selected historical variable or property node id.
         /// </summary>
-        private NodeId GetSelectedNode()
-        {
-            if (PropertyCB.SelectedIndex >= 0)
-            {
-                return ((PropertyWithHistory)PropertyCB.SelectedItem).NodeId;
+        private NodeId GetSelectedNode() {
+            if (PropertyCB.SelectedIndex >= 0) {
+                return ((PropertyWithHistory) PropertyCB.SelectedItem).NodeId;
             }
 
             return m_nodeId;
@@ -1273,16 +1164,15 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Fetches the recent history.
         /// </summary>
-        private void ReadRaw(bool isReadModified)
-        {
+        private void ReadRaw(bool isReadModified) {
             m_dataset.Clear();
 
             ReadRawModifiedDetails details = new ReadRawModifiedDetails();
-            details.StartTime =(StartTimeCK.Checked)?StartTimeDP.Value.ToUniversalTime():DateTime.MinValue;
-            details.EndTime = (EndTimeCK.Checked)?EndTimeDP.Value.ToUniversalTime():DateTime.MinValue;
-            details.NumValuesPerNode = (MaxReturnValuesCK.Checked)?(uint)MaxReturnValuesNP.Value:0;
+            details.StartTime = (StartTimeCK.Checked) ? StartTimeDP.Value.ToUniversalTime() : DateTime.MinValue;
+            details.EndTime = (EndTimeCK.Checked) ? EndTimeDP.Value.ToUniversalTime() : DateTime.MinValue;
+            details.NumValuesPerNode = (MaxReturnValuesCK.Checked) ? (uint) MaxReturnValuesNP.Value : 0;
             details.IsReadModified = isReadModified;
-            details.ReturnBounds = (isReadModified)?false:ReturnBoundsCK.Checked;
+            details.ReturnBounds = (isReadModified) ? false : ReturnBoundsCK.Checked;
 
             HistoryReadValueIdCollection nodesToRead = new HistoryReadValueIdCollection();
             HistoryReadValueId nodeToRead = new HistoryReadValueId();
@@ -1304,8 +1194,7 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToRead);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -1319,8 +1208,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Fetches the recent history.
         /// </summary>
-        private void ReadAtTime()
-        {
+        private void ReadAtTime() {
             m_dataset.Clear();
 
             ReadAtTimeDetails details = new ReadAtTimeDetails();
@@ -1329,9 +1217,8 @@ namespace Opc.Ua.Client.Controls
             // generate times
             DateTime startTime = StartTimeDP.Value.ToUniversalTime();
 
-            for (int ii = 0; ii < MaxReturnValuesNP.Value; ii++)
-            {
-                details.ReqTimes.Add(startTime.AddMilliseconds((double)(ii*TimeStepNP.Value)));
+            for (int ii = 0; ii < MaxReturnValuesNP.Value; ii++) {
+                details.ReqTimes.Add(startTime.AddMilliseconds((double) (ii * TimeStepNP.Value)));
             }
 
             HistoryReadValueIdCollection nodesToRead = new HistoryReadValueIdCollection();
@@ -1354,8 +1241,7 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToRead);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -1369,21 +1255,19 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Fetches the recent history.
         /// </summary>
-        private void ReadProcessed()
-        {
+        private void ReadProcessed() {
             m_dataset.Clear();
 
-            AvailableAggregate aggregate = (AvailableAggregate)AggregateCB.SelectedItem;
+            AvailableAggregate aggregate = (AvailableAggregate) AggregateCB.SelectedItem;
 
-            if (aggregate == null)
-            {
+            if (aggregate == null) {
                 return;
             }
 
             ReadProcessedDetails details = new ReadProcessedDetails();
             details.StartTime = StartTimeDP.Value.ToUniversalTime();
             details.EndTime = EndTimeDP.Value.ToUniversalTime();
-            details.ProcessingInterval = (double)ProcessingIntervalNP.Value;
+            details.ProcessingInterval = (double) ProcessingIntervalNP.Value;
             details.AggregateType.Add(aggregate.NodeId);
             details.AggregateConfiguration.UseServerCapabilitiesDefaults = true;
 
@@ -1407,8 +1291,7 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToRead);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -1422,14 +1305,13 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Saves a continuation point for later use.
         /// </summary>
-        private void SaveContinuationPoint(HistoryReadDetails details, HistoryReadValueId nodeToRead, byte[] continuationPoint)
-        {
+        private void SaveContinuationPoint(HistoryReadDetails details, HistoryReadValueId nodeToRead,
+            byte[] continuationPoint) {
             // clear existing continuation point.
-            if (m_nodeToContinue != null)
-            {
+            if (m_nodeToContinue != null) {
                 HistoryReadValueIdCollection nodesToRead = new HistoryReadValueIdCollection();
                 nodesToRead.Add(m_nodeToContinue);
-                                
+
                 HistoryReadResultCollection results = null;
                 DiagnosticInfoCollection diagnosticInfos = null;
 
@@ -1450,23 +1332,19 @@ namespace Opc.Ua.Client.Controls
             m_nodeToContinue = null;
 
             // save new continutation point.
-            if (continuationPoint != null && continuationPoint.Length > 0)
-            {
+            if (continuationPoint != null && continuationPoint.Length > 0) {
                 m_details = details;
                 m_nodeToContinue = nodeToRead;
                 m_nodeToContinue.ContinuationPoint = continuationPoint;
             }
 
             // update controls.
-            if (m_nodeToContinue != null)
-            {
+            if (m_nodeToContinue != null) {
                 GoBTN.Visible = false;
                 NextBTN.Visible = true;
                 NextBTN.Enabled = true;
                 StopBTN.Enabled = true;
-            }
-            else
-            {
+            } else {
                 GoBTN.Visible = true;
                 GoBTN.Enabled = true;
                 NextBTN.Visible = false;
@@ -1477,22 +1355,19 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the history.
         /// </summary>
-        private void InsertReplace(PerformUpdateType updateType)
-        {
+        private void InsertReplace(PerformUpdateType updateType) {
             DataValueCollection values = new DataValueCollection();
 
-            foreach (DataRowView row in m_dataset.Tables[0].DefaultView)
-            {
-                DataValue value = (DataValue)row.Row[9];
+            foreach (DataRowView row in m_dataset.Tables[0].DefaultView) {
+                DataValue value = (DataValue) row.Row[9];
                 values.Add(value);
             }
-            
+
             bool isStructured = false;
 
             PropertyWithHistory property = PropertyCB.SelectedItem as PropertyWithHistory;
 
-            if (property != null && property.BrowseName == Opc.Ua.BrowseNames.Annotations)
-            {
+            if (property != null && property.BrowseName == Opc.Ua.BrowseNames.Annotations) {
                 isStructured = true;
             }
 
@@ -1500,8 +1375,7 @@ namespace Opc.Ua.Client.Controls
 
             ResultsDV.Columns[ResultsDV.Columns.Count - 1].Visible = true;
 
-            for (int ii = 0; ii < m_dataset.Tables[0].DefaultView.Count; ii++)
-            {
+            for (int ii = 0; ii < m_dataset.Tables[0].DefaultView.Count; ii++) {
                 m_dataset.Tables[0].DefaultView[ii].Row[10] = results[0].OperationResults[ii];
             }
 
@@ -1511,20 +1385,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the history.
         /// </summary>
-        private HistoryUpdateResultCollection InsertReplace(NodeId nodeId, PerformUpdateType updateType, bool isStructure, IList<DataValue> values)
-        {
+        private HistoryUpdateResultCollection InsertReplace(NodeId nodeId, PerformUpdateType updateType,
+            bool isStructure, IList<DataValue> values) {
             HistoryUpdateDetails details = null;
 
-            if (isStructure)
-            {
+            if (isStructure) {
                 UpdateStructureDataDetails details2 = new UpdateStructureDataDetails();
                 details2.NodeId = nodeId;
                 details2.PerformInsertReplace = updateType;
                 details2.UpdateValues.AddRange(values);
                 details = details2;
-            }
-            else
-            {
+            } else {
                 UpdateDataDetails details2 = new UpdateDataDetails();
                 details2.NodeId = nodeId;
                 details2.PerformInsertReplace = updateType;
@@ -1547,8 +1418,7 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToUpdate);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToUpdate);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -1558,8 +1428,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Deletes the block of data.
         /// </summary>
-        private void DeleteRaw(bool isModified)
-        {
+        private void DeleteRaw(bool isModified) {
             DeleteRawModifiedDetails details = new DeleteRawModifiedDetails();
             details.NodeId = m_nodeId;
             details.IsDeleteModified = isModified;
@@ -1581,8 +1450,7 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToUpdate);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToUpdate);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -1593,14 +1461,12 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Deletes the history.
         /// </summary>
-        private void DeleteAtTime()
-        {
+        private void DeleteAtTime() {
             DeleteAtTimeDetails details = new DeleteAtTimeDetails();
             details.NodeId = m_nodeId;
 
-            foreach (DataRowView row in m_dataset.Tables[0].DefaultView)
-            {
-                DateTime value = (DateTime)row.Row[1];
+            foreach (DataRowView row in m_dataset.Tables[0].DefaultView) {
+                DateTime value = (DateTime) row.Row[1];
                 details.ReqTimes.Add(value);
             }
 
@@ -1619,15 +1485,13 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToUpdate);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToUpdate);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
-            ResultsDV.Columns[ResultsDV.Columns.Count-1].Visible = true;
+            ResultsDV.Columns[ResultsDV.Columns.Count - 1].Visible = true;
 
-            for (int ii = 0; ii < m_dataset.Tables[0].DefaultView.Count; ii++)
-            {
+            for (int ii = 0; ii < m_dataset.Tables[0].DefaultView.Count; ii++) {
                 m_dataset.Tables[0].DefaultView[ii].Row[10] = results[0].OperationResults[ii];
             }
 
@@ -1637,33 +1501,26 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the results of a history operation.
         /// </summary>
-        private void DisplayResults(HistoryData values)
-        {
+        private void DisplayResults(HistoryData values) {
             HistoryModifiedData modifiedData = values as HistoryModifiedData;
 
-            if (modifiedData != null)
-            {
+            if (modifiedData != null) {
                 ResultsDV.Columns[5].Visible = true;
                 ResultsDV.Columns[6].Visible = true;
                 ResultsDV.Columns[7].Visible = true;
                 ResultsDV.Columns[8].Visible = false;
 
-                for (int ii = 0; ii < modifiedData.DataValues.Count; ii++)
-                {
+                for (int ii = 0; ii < modifiedData.DataValues.Count; ii++) {
                     AddValue(modifiedData.DataValues[ii], modifiedData.ModificationInfos[ii]);
                 }
-            }
-            else
-            {
+            } else {
                 ResultsDV.Columns[5].Visible = false;
                 ResultsDV.Columns[6].Visible = false;
                 ResultsDV.Columns[7].Visible = false;
                 ResultsDV.Columns[8].Visible = false;
 
-                if (values != null)
-                {
-                    foreach (DataValue value in values.DataValues)
-                    {
+                if (values != null) {
+                    foreach (DataValue value in values.DataValues) {
                         AddValue(value, null);
                     }
                 }
@@ -1672,12 +1529,9 @@ namespace Opc.Ua.Client.Controls
             m_dataset.AcceptChanges();
         }
 
-        private void NodeIdBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_session == null)
-                {
+        private void NodeIdBTN_Click(object sender, EventArgs e) {
+            try {
+                if (m_session == null) {
                     return;
                 }
 
@@ -1689,166 +1543,124 @@ namespace Opc.Ua.Client.Controls
                     Opc.Ua.ReferenceTypeIds.Organizes,
                     Opc.Ua.ReferenceTypeIds.Aggregates);
 
-                if (reference == null)
-                {
+                if (reference == null) {
                     return;
                 }
 
-                if (reference.NodeId != m_nodeId)
-                {
-                    ChangeNode((NodeId)reference.NodeId);
+                if (reference.NodeId != m_nodeId) {
+                    ChangeNode((NodeId) reference.NodeId);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void SubscribeCK_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_session != null)
-                {
-                    if (m_isSubscribed)
-                    {
+        private void SubscribeCK_CheckedChanged(object sender, EventArgs e) {
+            try {
+                if (m_session != null) {
+                    if (m_isSubscribed) {
                         CreateSubscription();
-                    }
-                    else
-                    {
+                    } else {
                         DeleteSubscription();
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void GoBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void GoBTN_Click(object sender, EventArgs e) {
+            try {
                 m_dataset.Tables[0].Rows.Clear();
 
-                switch ((HistoryReadType)ReadTypeCB.SelectedItem)
-                {
-                    case HistoryReadType.Subscribe:
-                    {
+                switch ((HistoryReadType) ReadTypeCB.SelectedItem) {
+                    case HistoryReadType.Subscribe: {
                         CreateSubscription();
                         break;
                     }
 
-                    case HistoryReadType.Raw:
-                    {
+                    case HistoryReadType.Raw: {
                         ReadRaw(false);
                         break;
                     }
 
-                    case HistoryReadType.Modified:
-                    {
+                    case HistoryReadType.Modified: {
                         ReadRaw(true);
                         break;
                     }
 
-                    case HistoryReadType.Processed:
-                    {
+                    case HistoryReadType.Processed: {
                         ReadProcessed();
                         break;
                     }
 
-                    case HistoryReadType.AtTime:
-                    {
+                    case HistoryReadType.AtTime: {
                         ReadAtTime();
                         break;
                     }
 
-                    case HistoryReadType.Insert:
-                    {
+                    case HistoryReadType.Insert: {
                         InsertReplace(PerformUpdateType.Insert);
                         break;
                     }
 
-                    case HistoryReadType.Replace:
-                    {
+                    case HistoryReadType.Replace: {
                         InsertReplace(PerformUpdateType.Replace);
                         break;
                     }
 
-                    case HistoryReadType.InsertReplace:
-                    {
+                    case HistoryReadType.InsertReplace: {
                         InsertReplace(PerformUpdateType.Update);
                         break;
                     }
 
-                    case HistoryReadType.Remove:
-                    {
+                    case HistoryReadType.Remove: {
                         InsertReplace(PerformUpdateType.Remove);
                         break;
                     }
 
-                    case HistoryReadType.DeleteRaw:
-                    {
+                    case HistoryReadType.DeleteRaw: {
                         DeleteRaw(false);
                         break;
                     }
 
-                    case HistoryReadType.DeleteModified:
-                    {
+                    case HistoryReadType.DeleteModified: {
                         DeleteRaw(true);
                         break;
                     }
 
-                    case HistoryReadType.DeleteAtTime:
-                    {
+                    case HistoryReadType.DeleteAtTime: {
                         DeleteAtTime();
                         break;
                     }
                 }
-
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void NextBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void NextBTN_Click(object sender, EventArgs e) {
+            try {
                 ReadNext();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void StopBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void StopBTN_Click(object sender, EventArgs e) {
+            try {
                 DeleteSubscription();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ReadTypeCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                HistoryReadType readType = (HistoryReadType)ReadTypeCB.SelectedItem;
+        private void ReadTypeCB_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
+                HistoryReadType readType = (HistoryReadType) ReadTypeCB.SelectedItem;
 
-                switch (readType)
-                {
-                    case HistoryReadType.Subscribe:
-                    {
+                switch (readType) {
+                    case HistoryReadType.Subscribe: {
                         PropertyLB.Visible = false;
                         PropertyCB.Visible = false;
                         SamplingIntervalLB.Visible = true;
@@ -1881,8 +1693,7 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
 
-                    case HistoryReadType.Raw:
-                    {
+                    case HistoryReadType.Raw: {
                         PropertyLB.Visible = (m_properties != null && m_properties.Count > 1);
                         PropertyCB.Visible = (m_properties != null && m_properties.Count > 1);
                         SamplingIntervalLB.Visible = false;
@@ -1918,8 +1729,7 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
 
-                    case HistoryReadType.Modified:
-                    {
+                    case HistoryReadType.Modified: {
                         PropertyLB.Visible = false;
                         PropertyCB.Visible = false;
                         SamplingIntervalLB.Visible = false;
@@ -1955,8 +1765,7 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
 
-                    case HistoryReadType.Processed:
-                    {
+                    case HistoryReadType.Processed: {
                         PropertyLB.Visible = false;
                         PropertyCB.Visible = false;
                         SamplingIntervalLB.Visible = false;
@@ -1991,8 +1800,7 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
 
-                    case HistoryReadType.AtTime:
-                    {
+                    case HistoryReadType.AtTime: {
                         PropertyLB.Visible = (m_properties != null && m_properties.Count > 1);
                         PropertyCB.Visible = (m_properties != null && m_properties.Count > 1);
                         SamplingIntervalLB.Visible = false;
@@ -2032,8 +1840,7 @@ namespace Opc.Ua.Client.Controls
                     case HistoryReadType.Insert:
                     case HistoryReadType.InsertReplace:
                     case HistoryReadType.Replace:
-                    case HistoryReadType.Remove:
-                    {
+                    case HistoryReadType.Remove: {
                         PropertyLB.Visible = (m_properties != null && m_properties.Count > 1);
                         PropertyCB.Visible = (m_properties != null && m_properties.Count > 1);
                         SamplingIntervalLB.Visible = false;
@@ -2070,8 +1877,7 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
 
-                    case HistoryReadType.DeleteAtTime:
-                    {
+                    case HistoryReadType.DeleteAtTime: {
                         PropertyLB.Visible = false;
                         PropertyCB.Visible = false;
                         SamplingIntervalLB.Visible = false;
@@ -2109,8 +1915,7 @@ namespace Opc.Ua.Client.Controls
                     }
 
                     case HistoryReadType.DeleteRaw:
-                    case HistoryReadType.DeleteModified:
-                    {
+                    case HistoryReadType.DeleteModified: {
                         PropertyLB.Visible = false;
                         PropertyCB.Visible = false;
                         SamplingIntervalLB.Visible = false;
@@ -2147,156 +1952,119 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
 
         #region Event Handlers
-        private void StartTimeDP_ValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void StartTimeDP_ValueChanged(object sender, EventArgs e) {
+            try {
                 m_timesChanged = true;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void DetectLimitsBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void DetectLimitsBTN_Click(object sender, EventArgs e) {
+            try {
                 DateTime startTime = ReadFirstDate();
 
-                if (startTime != DateTime.MinValue)
-                {
+                if (startTime != DateTime.MinValue) {
                     StartTimeDP.Value = startTime;
                 }
 
                 DateTime endTime = ReadLastDate();
 
-                if (endTime != DateTime.MinValue)
-                {
+                if (endTime != DateTime.MinValue) {
                     EndTimeDP.Value = endTime;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void StartTimeCK_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void StartTimeCK_CheckedChanged(object sender, EventArgs e) {
+            try {
                 StartTimeDP.Enabled = StartTimeCK.Checked;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void EndTimeCK_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void EndTimeCK_CheckedChanged(object sender, EventArgs e) {
+            try {
                 EndTimeDP.Enabled = EndTimeCK.Checked;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void MaxReturnValuesCK_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void MaxReturnValuesCK_CheckedChanged(object sender, EventArgs e) {
+            try {
                 MaxReturnValuesNP.Enabled = MaxReturnValuesCK.Checked;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void TimeShiftBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (DataRowView row in m_dataset.Tables[0].DefaultView)
-                {
-                    DataValue value = (DataValue)row.Row[9];
-                    value.SourceTimestamp = value.SourceTimestamp.AddMilliseconds((double)TimeStepNP.Value);
-                    value.ServerTimestamp = value.ServerTimestamp.AddMilliseconds((double)TimeStepNP.Value);
+        private void TimeShiftBTN_Click(object sender, EventArgs e) {
+            try {
+                foreach (DataRowView row in m_dataset.Tables[0].DefaultView) {
+                    DataValue value = (DataValue) row.Row[9];
+                    value.SourceTimestamp = value.SourceTimestamp.AddMilliseconds((double) TimeStepNP.Value);
+                    value.ServerTimestamp = value.ServerTimestamp.AddMilliseconds((double) TimeStepNP.Value);
 
                     row[1] = value.SourceTimestamp.ToLocalTime().ToString("HH:mm:ss.fff");
                     row[2] = value.ServerTimestamp.ToLocalTime().ToString("HH:mm:ss.fff");
                 }
 
                 m_dataset.AcceptChanges();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void InsertAnnotationMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_session == null)
-                {
+        private void InsertAnnotationMI_Click(object sender, EventArgs e) {
+            try {
+                if (m_session == null) {
                     return;
                 }
 
                 NodeId propertyId = null;
 
-                if (m_properties != null)
-                {
-                    foreach (PropertyWithHistory property in m_properties)
-                    {
-                        if (property.BrowseName == Opc.Ua.BrowseNames.Annotations)
-                        {
+                if (m_properties != null) {
+                    foreach (PropertyWithHistory property in m_properties) {
+                        if (property.BrowseName == Opc.Ua.BrowseNames.Annotations) {
                             propertyId = property.NodeId;
                             break;
                         }
                     }
                 }
 
-                if (propertyId == null)
-                {
+                if (propertyId == null) {
                     return;
                 }
 
                 Annotation annotation = new EditAnnotationDlg().ShowDialog(m_session, null, null);
 
-                if (annotation != null)
-                {
+                if (annotation != null) {
                     List<DataValue> valuesToUpdate = new List<DataValue>();
 
-                    foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                    {
+                    foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                         DataRowView source = row.DataBoundItem as DataRowView;
-                        DataValue value = (DataValue)source.Row[9];
-
+                        DataValue value = (DataValue) source.Row[9];
                     }
 
-                    HistoryUpdateResultCollection results = InsertReplace(propertyId, PerformUpdateType.Insert, true, valuesToUpdate); 
+                    HistoryUpdateResultCollection results =
+                        InsertReplace(propertyId, PerformUpdateType.Insert, true, valuesToUpdate);
 
                     ResultsDV.Columns[ResultsDV.Columns.Count - 1].Visible = true;
 
-                    for (int ii = 0; ii < ResultsDV.SelectedRows.Count; ii++)
-                    {
+                    for (int ii = 0; ii < ResultsDV.SelectedRows.Count; ii++) {
                         DataGridViewRow row = ResultsDV.SelectedRows[ii];
                         DataRowView source = row.DataBoundItem as DataRowView;
                         source.Row[10] = results[0].OperationResults[ii];
@@ -2304,31 +2072,24 @@ namespace Opc.Ua.Client.Controls
 
                     m_dataset.AcceptChanges();
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void EditValueMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_session == null)
-                {
+        private void EditValueMI_Click(object sender, EventArgs e) {
+            try {
+                if (m_session == null) {
                     return;
                 }
-                
-                foreach (DataGridViewRow row in ResultsDV.SelectedRows)
-                {
+
+                foreach (DataGridViewRow row in ResultsDV.SelectedRows) {
                     DataRowView source = row.DataBoundItem as DataRowView;
-                    DataValue value = (DataValue)source.Row[9];
+                    DataValue value = (DataValue) source.Row[9];
 
                     DataValue newValue = new EditDataValueDlg().ShowDialog(value, null, null);
 
-                    if (newValue == null)
-                    {
+                    if (newValue == null) {
                         return;
                     }
 
@@ -2336,17 +2097,15 @@ namespace Opc.Ua.Client.Controls
                     m_dataset.AcceptChanges();
                     break;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ShowServerTimestampMI_CheckedChanged(object sender, EventArgs e)
-        {
+        private void ShowServerTimestampMI_CheckedChanged(object sender, EventArgs e) {
             ServerTimestampCH.Visible = ShowServerTimestampMI.Checked;
         }
+
         #endregion
     }
 }

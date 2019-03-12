@@ -20,34 +20,29 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Stores a range.
     /// </summary>
-    public partial class Range
-    {
+    public partial class Range {
         /// <summary>
         /// Initializes the object with the high and low limits.
         /// </summary>
-        public Range(double high, double low)
-        {
-            m_low  = low;
+        public Range(double high, double low) {
+            m_low = low;
             m_high = high;
 
             // swap values if high is not actually higher.
-            if (low > high)
-            {
+            if (low > high) {
                 m_high = low;
-                m_low  = high;
+                m_low = high;
             }
         }
 
         /// <summary>
         /// Returns the difference between high and low.
         /// </summary>
-        public double Magnitude
-        {
+        public double Magnitude {
             get { return Math.Abs(m_high - m_low); }
         }
     }

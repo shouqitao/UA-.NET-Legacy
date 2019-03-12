@@ -36,51 +36,48 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A dialog to edit a string value.
     /// </summary>
-    public partial class StringValueEditDlg : Form
-    {
+    public partial class StringValueEditDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StringValueEditDlg"/> class.
         /// </summary>
-        public StringValueEditDlg()
-        {
+        public StringValueEditDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public string ShowDialog(string value)
-        {
+        public string ShowDialog(string value) {
             ValueTB.Text = value;
 
-            if (value != null)
-            {
-                int length = value.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).Length;
+            if (value != null) {
+                int length = value.Split(new string[] {"\r\n", "\n"}, StringSplitOptions.None).Length;
 
-                if (length > 20)
-                {
+                if (length > 20) {
                     length = 20;
                 }
 
-                this.Height += (length-1)*16;
+                this.Height += (length - 1) * 16;
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return ValueTB.Text;
         }
+
         #endregion
     }
 }

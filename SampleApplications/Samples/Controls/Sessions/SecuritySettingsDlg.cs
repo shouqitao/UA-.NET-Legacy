@@ -40,29 +40,23 @@ using System.IdentityModel.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.ServiceModel.Channels;
-
 using Opc.Ua.Bindings;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
+namespace Opc.Ua.Sample.Controls {
     /// <summary>
     /// Prompts the user to create a new secure channel.
     /// </summary>
-    public partial class SecuritySettingsDlg : Form
-    {
-        public SecuritySettingsDlg()
-        {
+    public partial class SecuritySettingsDlg : Form {
+        public SecuritySettingsDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
 
-            foreach (MessageSecurityMode value in Enum.GetValues(typeof(MessageSecurityMode)))
-            {
+            foreach (MessageSecurityMode value in Enum.GetValues(typeof(MessageSecurityMode))) {
                 SecurityModeCB.Items.Add(value);
             }
 
-            foreach (string value in SecurityPolicies.GetDisplayNames())
-            {
+            foreach (string value in SecurityPolicies.GetDisplayNames()) {
                 SecurityPolicyUriCB.Items.Add(value);
             }
         }
@@ -70,44 +64,38 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(ref MessageSecurityMode securityMode, ref string securityPolicyUri, ref bool useNativeStack)
-        {
+        public bool ShowDialog(ref MessageSecurityMode securityMode, ref string securityPolicyUri,
+            ref bool useNativeStack) {
             // set security mode.
             SecurityModeCB.SelectedItem = securityMode;
-            
+
             // set security policy uri
             SecurityPolicyUriCB.SelectedIndex = -1;
 
             // set native stack flag.
             UseNativeStackCK.Checked = useNativeStack;
 
-            if (!String.IsNullOrEmpty(securityPolicyUri))
-            {
+            if (!String.IsNullOrEmpty(securityPolicyUri)) {
                 SecurityPolicyUriCB.SelectedItem = SecurityPolicies.GetDisplayName(securityPolicyUri);
             }
 
             // show dialog.
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
-                
-            securityMode      = (MessageSecurityMode)SecurityModeCB.SelectedItem;
-            securityPolicyUri = SecurityPolicies.GetUri((string)SecurityPolicyUriCB.SelectedItem);
-            useNativeStack    = UseNativeStackCK.Checked;
-                       
+
+            securityMode = (MessageSecurityMode) SecurityModeCB.SelectedItem;
+            securityPolicyUri = SecurityPolicies.GetUri((string) SecurityPolicyUriCB.SelectedItem);
+            useNativeStack = UseNativeStackCK.Checked;
+
             return true;
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 // close the dialog.
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

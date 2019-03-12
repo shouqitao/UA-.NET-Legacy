@@ -23,27 +23,22 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Manages a set of user access permission templates.
     /// </summary>
-    public class AccessTemplateManager
-    {
+    public class AccessTemplateManager {
         /// <summary>
         /// Initializes the manager to use the specified directory.
         /// </summary>
-        public AccessTemplateManager(string directory)
-        {
-            if (directory == null)
-            {
+        public AccessTemplateManager(string directory) {
+            if (directory == null) {
                 throw new ArgumentNullException("directory");
             }
 
             directory = Utils.GetAbsoluteDirectoryPath(directory, false, false, false);
 
-            if (directory == null)
-            {
+            if (directory == null) {
                 throw new ArgumentException("Specified user template directory does not exist.", "directory");
             }
 
@@ -53,12 +48,10 @@ namespace Opc.Ua
         /// <summary>
         /// Enumerates the available templates.
         /// </summary>
-        public string[] EnumerateTemplates()
-        {
+        public string[] EnumerateTemplates() {
             List<string> templates = new List<string>();
 
-            foreach (FileInfo file in m_directory.GetFiles("*" + m_FileExtension))
-            {
+            foreach (FileInfo file in m_directory.GetFiles("*" + m_FileExtension)) {
                 templates.Add(file.Name.Substring(0, file.Name.Length - file.Extension.Length));
             }
 
@@ -68,18 +61,16 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the permissions to match the template on the specified file.
         /// </summary>
-        public void SetPermissions(string template, FileInfo target)
-        {
-            if (target == null || !target.Exists)
-            {
+        public void SetPermissions(string template, FileInfo target) {
+            if (target == null || !target.Exists) {
                 throw new ArgumentException("Target file does not exist.", "target");
             }
 
-            string filePath = Utils.GetAbsoluteFilePath(m_directory.FullName + "\\" + template + m_FileExtension, false, false, false);
+            string filePath = Utils.GetAbsoluteFilePath(m_directory.FullName + "\\" + template + m_FileExtension, false,
+                false, false);
 
             // nothing more to do if no file.
-            if (filePath == null)
-            {
+            if (filePath == null) {
                 return;
             }
 
@@ -88,22 +79,18 @@ namespace Opc.Ua
             FileSecurity security1 = templateFile.GetAccessControl(AccessControlSections.Access);
             FileSecurity security2 = target.GetAccessControl(AccessControlSections.Access);
 
-            foreach (AuthorizationRule rule in security2.GetAccessRules(true, true, typeof(NTAccount)))
-            {
+            foreach (AuthorizationRule rule in security2.GetAccessRules(true, true, typeof(NTAccount))) {
                 FileSystemAccessRule fsr = rule as FileSystemAccessRule;
 
-                if (fsr != null)
-                {
+                if (fsr != null) {
                     security2.RemoveAccessRule(fsr);
                 }
             }
 
-            foreach (AuthorizationRule rule in security1.GetAccessRules(true, true, typeof(NTAccount)))
-            {
+            foreach (AuthorizationRule rule in security1.GetAccessRules(true, true, typeof(NTAccount))) {
                 FileSystemAccessRule fsr = rule as FileSystemAccessRule;
 
-                if (fsr != null)
-                {
+                if (fsr != null) {
                     security2.AddAccessRule(fsr);
                 }
             }
@@ -115,18 +102,16 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the permissions to match the template on the specified directory.
         /// </summary>
-        public void SetPermissions(string template, DirectoryInfo target, bool recursive)
-        {
-            if (target == null || !target.Exists)
-            {
+        public void SetPermissions(string template, DirectoryInfo target, bool recursive) {
+            if (target == null || !target.Exists) {
                 throw new ArgumentException("Target directory does not exist.", "target");
             }
 
-            string filePath = Utils.GetAbsoluteFilePath(m_directory.FullName + "\\" + template + m_FileExtension, false, false, false);
+            string filePath = Utils.GetAbsoluteFilePath(m_directory.FullName + "\\" + template + m_FileExtension, false,
+                false, false);
 
             // nothing more to do if no file.
-            if (filePath == null)
-            {
+            if (filePath == null) {
                 return;
             }
 
@@ -135,22 +120,18 @@ namespace Opc.Ua
             FileSecurity security1 = templateFile.GetAccessControl(AccessControlSections.Access);
             DirectorySecurity security2 = target.GetAccessControl(AccessControlSections.Access);
 
-            foreach (AuthorizationRule rule in security2.GetAccessRules(true, true, typeof(NTAccount)))
-            {
+            foreach (AuthorizationRule rule in security2.GetAccessRules(true, true, typeof(NTAccount))) {
                 FileSystemAccessRule fsr = rule as FileSystemAccessRule;
 
-                if (fsr != null)
-                {
+                if (fsr != null) {
                     security2.RemoveAccessRule(fsr);
                 }
             }
 
-            foreach (AuthorizationRule rule in security1.GetAccessRules(true, true, typeof(NTAccount)))
-            {
+            foreach (AuthorizationRule rule in security1.GetAccessRules(true, true, typeof(NTAccount))) {
                 FileSystemAccessRule fsr = rule as FileSystemAccessRule;
 
-                if (fsr != null)
-                {
+                if (fsr != null) {
                     FileSystemAccessRule copy = new FileSystemAccessRule(
                         fsr.IdentityReference,
                         fsr.FileSystemRights,
@@ -165,15 +146,12 @@ namespace Opc.Ua
             security2.SetAccessRuleProtection(true, false);
             target.SetAccessControl(security2);
 
-            if (recursive)
-            {
-                foreach (DirectoryInfo directory in target.GetDirectories())
-                {
+            if (recursive) {
+                foreach (DirectoryInfo directory in target.GetDirectories()) {
                     InheritPermissions(directory);
                 }
 
-                foreach (FileInfo file in target.GetFiles())
-                {
+                foreach (FileInfo file in target.GetFiles()) {
                     InheritPermissions(file);
                 }
             }
@@ -182,37 +160,31 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the permissions to match the template on the specified directory.
         /// </summary>
-        public void SetPermissions(string template, Uri url, bool exactMatch)
-        {
-            if (url == null)
-            {
+        public void SetPermissions(string template, Uri url, bool exactMatch) {
+            if (url == null) {
                 throw new ArgumentException("Target URI is not valid.", "target");
             }
 
-            string filePath = Utils.GetAbsoluteFilePath(m_directory.FullName + "\\" + template + m_FileExtension, false, false, false);
+            string filePath = Utils.GetAbsoluteFilePath(m_directory.FullName + "\\" + template + m_FileExtension, false,
+                false, false);
 
             // nothing more to do if no file.
-            if (filePath == null)
-            {
+            if (filePath == null) {
                 return;
             }
 
             string urlMask = null;
 
-            if (!exactMatch)
-            {
+            if (!exactMatch) {
                 urlMask = url.Scheme;
                 urlMask += "://+:";
                 urlMask += url.Port;
                 urlMask += url.PathAndQuery;
 
-                if (!urlMask.EndsWith("/"))
-                {
+                if (!urlMask.EndsWith("/")) {
                     urlMask += "/";
                 }
-            }
-            else
-            {
+            } else {
                 urlMask = url.ToString();
             }
 
@@ -220,27 +192,20 @@ namespace Opc.Ua
             FileSecurity security1 = templateFile.GetAccessControl(AccessControlSections.Access);
             List<HttpAccessRule> httpRules = new List<HttpAccessRule>();
 
-            foreach (AuthorizationRule rule in security1.GetAccessRules(true, true, typeof(NTAccount)))
-            {
+            foreach (AuthorizationRule rule in security1.GetAccessRules(true, true, typeof(NTAccount))) {
                 FileSystemAccessRule fsr = rule as FileSystemAccessRule;
 
-                if (fsr != null)
-                {
+                if (fsr != null) {
                     HttpAccessRule httpRule = new HttpAccessRule();
                     httpRule.UrlPrefix = urlMask;
                     httpRule.IdentityName = fsr.IdentityReference.Translate(typeof(NTAccount)).ToString();
                     httpRules.Add(httpRule);
 
-                    if ((fsr.FileSystemRights & FileSystemRights.ChangePermissions) != 0)
-                    {
+                    if ((fsr.FileSystemRights & FileSystemRights.ChangePermissions) != 0) {
                         httpRule.Right = ApplicationAccessRight.Configure;
-                    }
-                    else if ((fsr.FileSystemRights & FileSystemRights.WriteData) != 0)
-                    {
+                    } else if ((fsr.FileSystemRights & FileSystemRights.WriteData) != 0) {
                         httpRule.Right = ApplicationAccessRight.Update;
-                    }
-                    else if ((fsr.FileSystemRights & FileSystemRights.ReadData) != 0)
-                    {
+                    } else if ((fsr.FileSystemRights & FileSystemRights.ReadData) != 0) {
                         httpRule.Right = ApplicationAccessRight.Run;
                     }
                 }
@@ -252,12 +217,11 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the permissions the specified directory.
         /// </summary>
-        public static void SetPermissions(DirectoryInfo directory, FileSystemRights rights, bool recursive, params WellKnownSidType[] sids)
-        {
+        public static void SetPermissions(DirectoryInfo directory, FileSystemRights rights, bool recursive,
+            params WellKnownSidType[] sids) {
             DirectorySecurity security = directory.GetAccessControl(AccessControlSections.Access);
 
-            foreach (FileSystemAccessRule target in security.GetAccessRules(true, true, typeof(NTAccount)))
-            {
+            foreach (FileSystemAccessRule target in security.GetAccessRules(true, true, typeof(NTAccount))) {
                 security.RemoveAccessRule(target);
             }
 
@@ -272,10 +236,8 @@ namespace Opc.Ua
 
             security.AddAccessRule(rule);
 
-            if (sids != null)
-            {
-                foreach (WellKnownSidType sid in sids)
-                {
+            if (sids != null) {
+                foreach (WellKnownSidType sid in sids) {
                     rule = new FileSystemAccessRule(
                         new SecurityIdentifier(sid, null).Translate(typeof(NTAccount)),
                         rights,
@@ -289,15 +251,12 @@ namespace Opc.Ua
 
             directory.SetAccessControl(security);
 
-            if (recursive)
-            {
-                foreach (DirectoryInfo subdir in directory.GetDirectories())
-                {
+            if (recursive) {
+                foreach (DirectoryInfo subdir in directory.GetDirectories()) {
                     InheritPermissions(subdir);
                 }
 
-                foreach (FileInfo file in directory.GetFiles())
-                {
+                foreach (FileInfo file in directory.GetFiles()) {
                     InheritPermissions(file);
                 }
             }
@@ -306,30 +265,25 @@ namespace Opc.Ua
         /// <summary>
         /// Recursively clears the permissions on the directory and enables permission inheritance.
         /// </summary>
-        private static void InheritPermissions(DirectoryInfo target)
-        {
+        private static void InheritPermissions(DirectoryInfo target) {
             DirectorySecurity security = target.GetAccessControl(AccessControlSections.Access);
             security.SetAccessRuleProtection(false, false);
 
-            foreach (AuthorizationRule rule in security.GetAccessRules(true, false, typeof(NTAccount)))
-            {
+            foreach (AuthorizationRule rule in security.GetAccessRules(true, false, typeof(NTAccount))) {
                 FileSystemAccessRule fsr = rule as FileSystemAccessRule;
 
-                if (fsr != null)
-                {
+                if (fsr != null) {
                     security.RemoveAccessRule(fsr);
                 }
             }
 
             target.SetAccessControl(security);
 
-            foreach (DirectoryInfo directory in target.GetDirectories())
-            {
+            foreach (DirectoryInfo directory in target.GetDirectories()) {
                 InheritPermissions(directory);
             }
 
-            foreach (FileInfo file in target.GetFiles())
-            {
+            foreach (FileInfo file in target.GetFiles()) {
                 InheritPermissions(file);
             }
         }
@@ -337,17 +291,14 @@ namespace Opc.Ua
         /// <summary>
         /// Clears the permissions on the file and enables permission inheritance.
         /// </summary>
-        private static void InheritPermissions(FileInfo target)
-        {
+        private static void InheritPermissions(FileInfo target) {
             FileSecurity security = target.GetAccessControl(AccessControlSections.Access);
             security.SetAccessRuleProtection(false, false);
 
-            foreach (AuthorizationRule rule in security.GetAccessRules(true, false, typeof(NTAccount)))
-            {
+            foreach (AuthorizationRule rule in security.GetAccessRules(true, false, typeof(NTAccount))) {
                 FileSystemAccessRule fsr = rule as FileSystemAccessRule;
 
-                if (fsr != null)
-                {
+                if (fsr != null) {
                     security.RemoveAccessRule(fsr);
                 }
             }
@@ -358,8 +309,7 @@ namespace Opc.Ua
         /// <summary>
         /// Creates an access template file.
         /// </summary>
-        public static void CreateTemplate(string directory, string templateName, params WellKnownSidType[] sids)
-        {
+        public static void CreateTemplate(string directory, string templateName, params WellKnownSidType[] sids) {
             string filePath = directory + " \\" + templateName + ".access";
             AccessTemplateManager.CreateFile(filePath, sids);
         }
@@ -367,8 +317,7 @@ namespace Opc.Ua
         /// <summary>
         /// Deletes an access template file.
         /// </summary>
-        public static void DeleteTemplate(string directory, string templateName)
-        {
+        public static void DeleteTemplate(string directory, string templateName) {
             string filePath = directory + " \\" + templateName + m_FileExtension;
             AccessTemplateManager.DeleteFile(filePath);
         }
@@ -376,15 +325,13 @@ namespace Opc.Ua
         /// <summary>
         /// Creates an access template file.
         /// </summary>
-        internal static void CreateFile(string filePath, params WellKnownSidType[] sids)
-        {
+        internal static void CreateFile(string filePath, params WellKnownSidType[] sids) {
             File.WriteAllText(filePath, String.Empty);
 
             FileInfo info = new FileInfo(filePath);
             FileSecurity security = info.GetAccessControl(System.Security.AccessControl.AccessControlSections.Access);
 
-            foreach (FileSystemAccessRule target in security.GetAccessRules(true, true, typeof(NTAccount)))
-            {
+            foreach (FileSystemAccessRule target in security.GetAccessRules(true, true, typeof(NTAccount))) {
                 security.RemoveAccessRule(target);
             }
 
@@ -399,12 +346,9 @@ namespace Opc.Ua
 
             security.AddAccessRule(rule);
 
-            if (sids != null)
-            {
-                foreach (WellKnownSidType sid in sids)
-                {
-                    try
-                    {
+            if (sids != null) {
+                foreach (WellKnownSidType sid in sids) {
+                    try {
                         rule = new FileSystemAccessRule(
                             new SecurityIdentifier(sid, null).Translate(typeof(NTAccount)),
                             FileSystemRights.ReadAndExecute,
@@ -413,10 +357,8 @@ namespace Opc.Ua
                             System.Security.AccessControl.AccessControlType.Allow);
 
                         security.AddAccessRule(rule);
-                    }
-                    catch (Exception e)
-                    {
-                        Utils.Trace((int)Utils.TraceMasks.Error, "Could not translate SID '{0}': {1}", sid, e.Message);
+                    } catch (Exception e) {
+                        Utils.Trace((int) Utils.TraceMasks.Error, "Could not translate SID '{0}': {1}", sid, e.Message);
                     }
                 }
             }
@@ -427,17 +369,12 @@ namespace Opc.Ua
         /// <summary>
         /// Deletes an access template file.
         /// </summary>
-        internal static void DeleteFile(string filePath)
-        {
-            try
-            {
-                if (File.Exists(filePath))
-                {
+        internal static void DeleteFile(string filePath) {
+            try {
+                if (File.Exists(filePath)) {
                     File.Delete(filePath);
                 }
-            }
-            catch
-            {
+            } catch {
                 // ignore errors.
             }
         }

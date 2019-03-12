@@ -34,59 +34,57 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class EditReadValueIdDlg : Form
-    {
+    public partial class EditReadValueIdDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public EditReadValueIdDlg()
-        {
+        public EditReadValueIdDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
 
             // add the attributes in numerical order.
-            foreach (uint attributeId in Attributes.GetIdentifiers())
-            {
+            foreach (uint attributeId in Attributes.GetIdentifiers()) {
                 AttributeCB.Items.Add(Attributes.GetBrowseName(attributeId));
             }
         }
+
         #endregion
 
         #region EncodingInfo Class
+
         /// <summary>
         /// Stores information about a data encoding.
         /// </summary>
-        private class EncodingInfo
-        {
+        private class EncodingInfo {
             public QualifiedName EncodingName;
 
-            public override string ToString()
-            {
-                if (EncodingName != null)
-                {
+            public override string ToString() {
+                if (EncodingName != null) {
                     return EncodingName.ToString();
                 }
 
                 return "Not Set";
             }
         }
+
         #endregion
-      
+
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to edit the read request parameters for the set of nodes provided.
         /// </summary>
-        public ReadValueId[] ShowDialog(Session session, params ReadValueId[] nodesToRead)
-        {
+        public ReadValueId[] ShowDialog(Session session, params ReadValueId[] nodesToRead) {
             NodeBTN.Session = session;
             NodeBTN.SelectedReference = null;
 
@@ -96,52 +94,40 @@ namespace Opc.Ua.Client.Controls
             bool editDataEncoding = true;
 
             // populate the controls.
-            if (nodesToRead != null && nodesToRead.Length > 0)
-            {
+            if (nodesToRead != null && nodesToRead.Length > 0) {
                 bool nonValueAttribute = false;
 
-                for (int ii = 0; ii < nodesToRead.Length; ii++)
-                {
-                    if (nodesToRead[ii] == null)
-                    {
+                for (int ii = 0; ii < nodesToRead.Length; ii++) {
+                    if (nodesToRead[ii] == null) {
                         continue;
                     }
 
                     // only show the node if all have the same node id.
-                    if (editNode)
-                    {
-                        if (NodeBTN.SelectedNode != null && nodesToRead[ii].NodeId != NodeBTN.SelectedNode)
-                        {
+                    if (editNode) {
+                        if (NodeBTN.SelectedNode != null && nodesToRead[ii].NodeId != NodeBTN.SelectedNode) {
                             NodeTB.Visible = false;
                             NodeLB.Visible = false;
                             NodeBTN.Visible = false;
                             editNode = false;
-                        }
-                        else
-                        {
+                        } else {
                             NodeBTN.SelectedNode = nodesToRead[ii].NodeId;
                         }
                     }
 
                     // only show the attribute if all have the same attribute id.
-                    if (editAttribute)
-                    {
+                    if (editAttribute) {
                         // check if any non-value attributes are present.
-                        if (nodesToRead[ii].AttributeId != Attributes.Value)
-                        {
+                        if (nodesToRead[ii].AttributeId != Attributes.Value) {
                             nonValueAttribute = true;
                         }
 
-                        int index = (int)nodesToRead[ii].AttributeId - 1;
+                        int index = (int) nodesToRead[ii].AttributeId - 1;
 
-                        if (AttributeCB.SelectedIndex != -1 && index != AttributeCB.SelectedIndex)
-                        {
+                        if (AttributeCB.SelectedIndex != -1 && index != AttributeCB.SelectedIndex) {
                             AttributeCB.Visible = false;
                             AttributeLB.Visible = false;
                             editAttribute = false;
-                        }
-                        else
-                        {
+                        } else {
                             AttributeCB.SelectedIndex = index;
                         }
                     }
@@ -153,27 +139,23 @@ namespace Opc.Ua.Client.Controls
                 IndexRangeLB.Visible = editIndexRange;
                 IndexRangeTB.Visible = editIndexRange;
 
-                if (!nonValueAttribute)
-                {
+                if (!nonValueAttribute) {
                     // use the index range for the first node as template.
                     IndexRangeTB.Text = nodesToRead[0].IndexRange;
 
                     // fetch the available encodings for the first node in the list from the server.
                     IVariableBase variable = session.NodeCache.Find(nodesToRead[0].NodeId) as IVariableBase;
 
-                    if (variable != null)
-                    {
-                        if (session.NodeCache.IsTypeOf(variable.DataType, Opc.Ua.DataTypeIds.Structure))
-                        {
+                    if (variable != null) {
+                        if (session.NodeCache.IsTypeOf(variable.DataType, Opc.Ua.DataTypeIds.Structure)) {
                             DataEncodingCB.Items.Add(new EncodingInfo());
                             DataEncodingCB.SelectedIndex = 0;
 
-                            foreach (INode encoding in session.NodeCache.Find(variable.DataType, Opc.Ua.ReferenceTypeIds.HasEncoding, false, true))
-                            {
-                                DataEncodingCB.Items.Add(new EncodingInfo() { EncodingName = encoding.BrowseName });
+                            foreach (INode encoding in session.NodeCache.Find(variable.DataType,
+                                Opc.Ua.ReferenceTypeIds.HasEncoding, false, true)) {
+                                DataEncodingCB.Items.Add(new EncodingInfo() {EncodingName = encoding.BrowseName});
 
-                                if (nodesToRead[0].DataEncoding == encoding.BrowseName)
-                                {
+                                if (nodesToRead[0].DataEncoding == encoding.BrowseName) {
                                     DataEncodingCB.SelectedIndex = DataEncodingCB.Items.Count - 1;
                                 }
                             }
@@ -182,82 +164,65 @@ namespace Opc.Ua.Client.Controls
                 }
 
                 // hide the data encodings if none to select.
-                if (DataEncodingCB.Items.Count == 0)
-                {
+                if (DataEncodingCB.Items.Count == 0) {
                     DataEncodingCB.Visible = false;
                     DataEncodingLB.Visible = false;
                     editDataEncoding = false;
                 }
             }
 
-            if (!editNode && !editAttribute && !editIndexRange && !editDataEncoding)
-            {
-                throw new ArgumentException("nodesToRead", "It is not possible to edit the current selection as a group.");
+            if (!editNode && !editAttribute && !editIndexRange && !editDataEncoding) {
+                throw new ArgumentException("nodesToRead",
+                    "It is not possible to edit the current selection as a group.");
             }
 
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             // create the list of results.
             ReadValueId[] results = null;
 
-            if (nodesToRead == null || nodesToRead.Length == 0)
-            {
+            if (nodesToRead == null || nodesToRead.Length == 0) {
                 results = new ReadValueId[1];
-            }
-            else
-            {
+            } else {
                 results = new ReadValueId[nodesToRead.Length];
             }
 
             // copy the controls into the results.
-            for (int ii = 0; ii < results.Length; ii++)
-            {
+            for (int ii = 0; ii < results.Length; ii++) {
                 // preserve the existing settings if they are not being changed.
-                if (nodesToRead != null && nodesToRead.Length > 0)
-                {
-                    results[ii] = (ReadValueId)nodesToRead[ii].Clone();
-                }
-                else
-                {
+                if (nodesToRead != null && nodesToRead.Length > 0) {
+                    results[ii] = (ReadValueId) nodesToRead[ii].Clone();
+                } else {
                     results[ii] = new ReadValueId();
                 }
 
                 // only copy results that were actually being edited. 
-                if (editNode)
-                {
+                if (editNode) {
                     results[ii].NodeId = NodeBTN.SelectedNode;
                 }
 
-                if (editAttribute)
-                {
-                    results[ii].AttributeId = (uint)(AttributeCB.SelectedIndex + 1);
+                if (editAttribute) {
+                    results[ii].AttributeId = (uint) (AttributeCB.SelectedIndex + 1);
                 }
 
-                if (editIndexRange)
-                {
+                if (editIndexRange) {
                     results[ii].ParsedIndexRange = NumericRange.Parse(IndexRangeTB.Text);
 
-                    if (NumericRange.Empty != results[ii].ParsedIndexRange)
-                    {
+                    if (NumericRange.Empty != results[ii].ParsedIndexRange) {
                         results[ii].IndexRange = results[ii].ParsedIndexRange.ToString();
-                    }
-                    else
-                    {
+                    } else {
                         results[ii].IndexRange = String.Empty;
                     }
                 }
 
-                if (editDataEncoding)
-                {
+                if (editDataEncoding) {
                     results[ii].DataEncoding = null;
 
                     EncodingInfo encoding = DataEncodingCB.SelectedItem as EncodingInfo;
 
-                    if (encoding != null)
-                    {
+                    if (encoding != null) {
                         results[ii].DataEncoding = encoding.EncodingName;
                     }
                 }
@@ -265,25 +230,23 @@ namespace Opc.Ua.Client.Controls
 
             return results;
         }
+
         #endregion
-        
+
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (IndexRangeTB.Visible)
-                {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
+                if (IndexRangeTB.Visible) {
                     NumericRange.Parse(IndexRangeTB.Text);
                 }
 
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

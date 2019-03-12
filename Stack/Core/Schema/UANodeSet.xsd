@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <xs:schema
-    targetNamespace="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd"
-    elementFormDefault="qualified"
-    xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
->
+  targetNamespace="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd"
+  elementFormDefault="qualified"
+  xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="UANodeSet">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="NamespaceUris" type="UriTable" minOccurs="0"></xs:element>
-        <xs:element name="ServerUris" type ="UriTable" minOccurs="0"></xs:element>
+        <xs:element name="ServerUris" type="UriTable" minOccurs="0"></xs:element>
         <xs:element name="Models" type="ModelTable" minOccurs="0"></xs:element>
-        <xs:element name="Aliases" type ="AliasTable" minOccurs="0"></xs:element>
+        <xs:element name="Aliases" type="AliasTable" minOccurs="0"></xs:element>
         <xs:element name="Extensions" type="ListOfExtensions" minOccurs="0"></xs:element>
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="UAObject" type="UAObject"></xs:element>
@@ -27,13 +27,13 @@
       <xs:attribute name="LastModified" type="xs:dateTime" use="optional"></xs:attribute>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="UANodeSetChanges">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="NamespaceUris" type ="UriTable" minOccurs="0"></xs:element>
-        <xs:element name="ServerUris" type ="UriTable" minOccurs="0"></xs:element>
-        <xs:element name="Aliases" type ="AliasTable" minOccurs="0"></xs:element>
+        <xs:element name="NamespaceUris" type="UriTable" minOccurs="0"></xs:element>
+        <xs:element name="ServerUris" type="UriTable" minOccurs="0"></xs:element>
+        <xs:element name="Aliases" type="AliasTable" minOccurs="0"></xs:element>
         <xs:element name="Extensions" type="ListOfExtensions" minOccurs="0"></xs:element>
         <xs:element name="NodesToAdd" type="NodesToAdd" minOccurs="0"></xs:element>
         <xs:element name="ReferencesToAdd" type="ReferencesToChange" minOccurs="0"></xs:element>
@@ -58,7 +58,7 @@
       <xs:attribute name="TransactionId" type="xs:string" use="required"></xs:attribute>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:complexType name="NodesToAdd">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element name="UAObject" type="UAObject"></xs:element>
@@ -77,7 +77,7 @@
       <xs:element name="Node" type="NodeToDelete" minOccurs="0" maxOccurs="unbounded"></xs:element>
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:complexType name="NodeToDelete">
     <xs:simpleContent>
       <xs:extension base="NodeId">
@@ -91,7 +91,7 @@
       <xs:element name="Reference" type="ReferenceChange" minOccurs="0" maxOccurs="unbounded"></xs:element>
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:complexType name="ReferenceChange">
     <xs:simpleContent>
       <xs:extension base="NodeId">
@@ -115,7 +115,7 @@
       <xs:element name="Status" type="NodeSetStatus" minOccurs="0" maxOccurs="unbounded"></xs:element>
     </xs:sequence>
   </xs:complexType>
-  
+
   <xs:complexType name="UriTable">
     <xs:sequence>
       <xs:element name="Uri" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
@@ -416,4 +416,3 @@
   </xs:complexType>
 
 </xs:schema>
-

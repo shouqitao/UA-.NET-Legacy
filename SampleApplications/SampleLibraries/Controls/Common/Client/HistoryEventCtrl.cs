@@ -37,19 +37,17 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the results from a history read operation.
     /// </summary>
-    public partial class HistoryEventCtrl : UserControl
-    {
+    public partial class HistoryEventCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public HistoryEventCtrl()
-        {
+        public HistoryEventCtrl() {
             InitializeComponent();
             LeftPN.Enabled = false;
 
@@ -58,14 +56,15 @@ namespace Opc.Ua.Client.Controls
             ReadTypeCB.Items.Add(HistoryOperation.Delete);
             ReadTypeCB.SelectedIndex = 0;
         }
+
         #endregion
 
         #region HistoryOperation Enumeration
+
         /// <summary>
         /// The available history operations.
         /// </summary>
-        public enum HistoryOperation
-        {
+        public enum HistoryOperation {
             /// <summary>
             /// Read raw data.
             /// </summary>
@@ -81,42 +80,35 @@ namespace Opc.Ua.Client.Controls
             /// </summary>
             Delete,
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
         private NodeId m_nodeId;
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The node id to use.
         /// </summary>        
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public NodeId NodeId
-        {
-            get 
-            { 
-                return m_nodeId; 
-            }
-            
-            set
-            {
+        public NodeId NodeId {
+            get { return m_nodeId; }
+
+            set {
                 m_nodeId = value;
 
-                if (m_session != null)
-                {
+                if (m_session != null) {
                     NodeIdTB.Text = m_session.NodeCache.GetDisplayText(m_nodeId);
-                }
-                else
-                {
-                    if (NodeId.IsNull(m_nodeId))
-                    {
+                } else {
+                    if (NodeId.IsNull(m_nodeId)) {
                         NodeIdTB.Text = String.Empty;
-                    }
-                    else
-                    {
+                    } else {
                         NodeIdTB.Text = m_nodeId.ToString();
                     }
                 }
@@ -128,9 +120,8 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public HistoryOperation Operation
-        {
-            get { return (HistoryOperation)ReadTypeCB.SelectedItem; }
+        public HistoryOperation Operation {
+            get { return (HistoryOperation) ReadTypeCB.SelectedItem; }
             set { ReadTypeCB.SelectedItem = value; }
         }
 
@@ -139,28 +130,22 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public DateTime StartTime
-        {
-            get
-            {
-                if (StartTimeCK.Checked)
-                {
+        public DateTime StartTime {
+            get {
+                if (StartTimeCK.Checked) {
                     return DateTime.MinValue;
                 }
 
                 return StartTimeDP.Value;
             }
 
-            set
-            {
-                if (value < Utils.TimeBase)
-                {
+            set {
+                if (value < Utils.TimeBase) {
                     StartTimeCK.Checked = false;
                     return;
                 }
 
-                if (value.Kind == DateTimeKind.Local)
-                {
+                if (value.Kind == DateTimeKind.Local) {
                     value = value.ToUniversalTime();
                 }
 
@@ -174,28 +159,22 @@ namespace Opc.Ua.Client.Controls
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public DateTime EndTime
-        {
-            get
-            {
-                if (EndTimeCK.Checked)
-                {
+        public DateTime EndTime {
+            get {
+                if (EndTimeCK.Checked) {
                     return DateTime.MinValue;
                 }
 
                 return EndTimeDP.Value;
             }
 
-            set
-            {
-                if (value < Utils.TimeBase)
-                {
+            set {
+                if (value < Utils.TimeBase) {
                     EndTimeCK.Checked = false;
                     return;
                 }
 
-                if (value.Kind == DateTimeKind.Local)
-                {
+                if (value.Kind == DateTimeKind.Local) {
                     value = value.ToUniversalTime();
                 }
 
@@ -207,25 +186,22 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Changes the session.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             m_session = session;
             LeftPN.Enabled = m_session != null;
         }
-        
+
         /// <summary>
         /// Updates the control after the session has reconnected.
         /// </summary>
-        public void SessionReconnected(Session session)
-        {
+        public void SessionReconnected(Session session) {
             m_session = session;
         }
 
         /// <summary>
         /// Changes the node monitored by the control.
         /// </summary>
-        public void ChangeNode(NodeId nodeId)
-        {
+        public void ChangeNode(NodeId nodeId) {
             m_nodeId = nodeId;
             NodeIdTB.Text = m_session.NodeCache.GetDisplayText(m_nodeId);
         }
@@ -233,8 +209,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// A kludge to get around the stupid designer that keeps setting property values to bogus defaults.
         /// </summary>
-        public void Reset()
-        {
+        public void Reset() {
             NodeId = null;
             Operation = HistoryOperation.Read;
             StartTime = DateTime.MinValue;
@@ -242,9 +217,11 @@ namespace Opc.Ua.Client.Controls
             StartTimeCK.Checked = true;
             EndTimeCK.Checked = false;
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Recursively collects the variables in a NodeState and returns a collection of BrowsePaths.
         /// </summary>
@@ -253,21 +230,18 @@ namespace Opc.Ua.Client.Controls
             NodeId rootId,
             NodeState parent,
             RelativePath parentPath,
-            BrowsePathCollection browsePaths)
-        {
+            BrowsePathCollection browsePaths) {
             List<BaseInstanceState> children = new List<BaseInstanceState>();
             parent.GetChildren(context, children);
 
-            for (int ii = 0; ii < children.Count; ii++)
-            {
+            for (int ii = 0; ii < children.Count; ii++) {
                 BaseInstanceState child = children[ii];
 
                 BrowsePath browsePath = new BrowsePath();
                 browsePath.StartingNode = rootId;
                 browsePath.Handle = child;
 
-                if (parentPath != null)
-                {
+                if (parentPath != null) {
                     browsePath.RelativePath.Elements.AddRange(parentPath.Elements);
                 }
 
@@ -279,21 +253,17 @@ namespace Opc.Ua.Client.Controls
 
                 browsePath.RelativePath.Elements.Add(element);
 
-                if (child.NodeClass == NodeClass.Variable)
-                {
+                if (child.NodeClass == NodeClass.Variable) {
                     browsePaths.Add(browsePath);
                 }
 
-                GetBrowsePathFromNodeState(context, rootId, child, browsePath.RelativePath, browsePaths); 
+                GetBrowsePathFromNodeState(context, rootId, child, browsePath.RelativePath, browsePaths);
             }
         }
 
-        private void NodeIdBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (m_session == null)
-                {
+        private void NodeIdBTN_Click(object sender, EventArgs e) {
+            try {
+                if (m_session == null) {
                     return;
                 }
 
@@ -304,54 +274,36 @@ namespace Opc.Ua.Client.Controls
                     "Select Notifier",
                     Opc.Ua.ReferenceTypeIds.HasNotifier);
 
-                if (reference == null)
-                {
+                if (reference == null) {
                     return;
                 }
 
-                if (reference.NodeId != m_nodeId)
-                {
-                    ChangeNode((NodeId)reference.NodeId);
+                if (reference.NodeId != m_nodeId) {
+                    ChangeNode((NodeId) reference.NodeId);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void GoBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-            }
-            catch (Exception exception)
-            {
+        private void GoBTN_Click(object sender, EventArgs e) {
+            try { } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void NextBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-            }
-            catch (Exception exception)
-            {
+        private void NextBTN_Click(object sender, EventArgs e) {
+            try { } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ReadTypeCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                HistoryOperation operation = (HistoryOperation)ReadTypeCB.SelectedItem;
+        private void ReadTypeCB_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
+                HistoryOperation operation = (HistoryOperation) ReadTypeCB.SelectedItem;
 
-                switch (operation)
-                {
-                    case HistoryOperation.Read:
-                    {
+                switch (operation) {
+                    case HistoryOperation.Read: {
                         StartTimeLB.Visible = true;
                         StartTimeDP.Visible = true;
                         StartTimeCK.Visible = true;
@@ -368,8 +320,7 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
 
-                    case HistoryOperation.Update:
-                    {
+                    case HistoryOperation.Update: {
                         StartTimeLB.Visible = true;
                         StartTimeDP.Visible = true;
                         StartTimeCK.Visible = true;
@@ -386,8 +337,7 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
 
-                    case HistoryOperation.Delete:
-                    {
+                    case HistoryOperation.Delete: {
                         StartTimeLB.Visible = true;
                         StartTimeDP.Visible = true;
                         StartTimeCK.Visible = true;
@@ -405,60 +355,43 @@ namespace Opc.Ua.Client.Controls
                         break;
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
 
         #region Event Handlers
-        private void StartTimeDP_ValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-            }
-            catch (Exception exception)
-            {
+
+        private void StartTimeDP_ValueChanged(object sender, EventArgs e) {
+            try { } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void StartTimeCK_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void StartTimeCK_CheckedChanged(object sender, EventArgs e) {
+            try {
                 StartTimeDP.Enabled = StartTimeCK.Checked;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void EndTimeCK_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void EndTimeCK_CheckedChanged(object sender, EventArgs e) {
+            try {
                 EndTimeDP.Enabled = EndTimeCK.Checked;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void TimeShiftBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-            }
-            catch (Exception exception)
-            {
+        private void TimeShiftBTN_Click(object sender, EventArgs e) {
+            try { } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

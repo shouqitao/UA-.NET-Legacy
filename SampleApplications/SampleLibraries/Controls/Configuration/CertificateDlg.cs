@@ -36,18 +36,15 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a ApplicationDescription.
     /// </summary>
-    public partial class CertificateDlg : Form
-    {
+    public partial class CertificateDlg : Form {
         /// <summary>
         /// Contructs the object.
         /// </summary>
-        public CertificateDlg()
-        {
+        public CertificateDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
 
@@ -59,66 +56,54 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(CertificateIdentifier certificateIdentifier)
-        {
+        public bool ShowDialog(CertificateIdentifier certificateIdentifier) {
             CertificateStoreCTRL.StoreType = null;
             CertificateStoreCTRL.StorePath = null;
             PrivateKeyCB.SelectedIndex = 0;
-            PropertiesCTRL.Initialize((X509Certificate2)null);
+            PropertiesCTRL.Initialize((X509Certificate2) null);
 
-            if (certificateIdentifier != null)
-            {
+            if (certificateIdentifier != null) {
                 X509Certificate2 certificate = certificateIdentifier.Find();
 
                 CertificateStoreCTRL.StoreType = certificateIdentifier.StoreType;
                 CertificateStoreCTRL.StorePath = certificateIdentifier.StorePath;
 
-                if (certificate != null && certificateIdentifier.Find(true) != null)
-                {
+                if (certificate != null && certificateIdentifier.Find(true) != null) {
                     PrivateKeyCB.SelectedIndex = 1;
-                }
-                else
-                {
+                } else {
                     PrivateKeyCB.SelectedIndex = 0;
                 }
 
                 PropertiesCTRL.Initialize(certificate);
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
             return true;
         }
-        
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(X509Certificate2 certificate)
-        {
+        public bool ShowDialog(X509Certificate2 certificate) {
             CertificateStoreCTRL.StoreType = null;
             CertificateStoreCTRL.StorePath = null;
             PrivateKeyCB.SelectedIndex = 0;
             PropertiesCTRL.Initialize(certificate);
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
-  
+
             return true;
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

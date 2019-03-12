@@ -37,23 +37,21 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the results from a history read operation.
     /// </summary>
-    public partial class TypeFieldsListViewCtrl : UserControl
-    {
+    public partial class TypeFieldsListViewCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
-        public TypeFieldsListViewCtrl()
-        {
+        public TypeFieldsListViewCtrl() {
             InitializeComponent();
             ResultsDV.AutoGenerateColumns = false;
             ImageList = new ClientUtils().ImageList;
-            
+
             m_dataset = new DataSet();
             m_dataset.Tables.Add("Requests");
 
@@ -66,30 +64,31 @@ namespace Opc.Ua.Client.Controls
 
             ResultsDV.DataSource = m_dataset.Tables[0];
         }
+
         #endregion
 
         #region Private Fields
+
         private DataSet m_dataset;
         private Session m_session;
         private List<InstanceDeclaration> m_declarations;
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Changes the session used by the control.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             m_session = session;
         }
 
         /// <summary>
         /// Displays the components of the type in the control.
         /// </summary>
-        public void ShowType(NodeId typeId)
-        {
-            if (NodeId.IsNull(typeId))
-            {
+        public void ShowType(NodeId typeId) {
+            if (NodeId.IsNull(typeId)) {
                 m_dataset.Tables[0].Rows.Clear();
                 return;
             }
@@ -97,10 +96,8 @@ namespace Opc.Ua.Client.Controls
             m_declarations = ClientUtils.CollectInstanceDeclarationsForType(m_session, typeId, false);
 
             // update existing rows.
-            for (int ii = 0; ii < m_declarations.Count && ii < m_dataset.Tables[0].Rows.Count; ii++)
-            {
-                if (m_declarations[ii].NodeClass == NodeClass.Method)
-                {
+            for (int ii = 0; ii < m_declarations.Count && ii < m_dataset.Tables[0].Rows.Count; ii++) {
+                if (m_declarations[ii].NodeClass == NodeClass.Method) {
                     continue;
                 }
 
@@ -108,10 +105,8 @@ namespace Opc.Ua.Client.Controls
             }
 
             // add new rows.
-            for (int ii = m_dataset.Tables[0].Rows.Count; ii < m_declarations.Count; ii++)
-            {
-                if (m_declarations[ii].NodeClass == NodeClass.Method)
-                {
+            for (int ii = m_dataset.Tables[0].Rows.Count; ii < m_declarations.Count; ii++) {
+                if (m_declarations[ii].NodeClass == NodeClass.Method) {
                     continue;
                 }
 
@@ -121,14 +116,12 @@ namespace Opc.Ua.Client.Controls
             }
 
             // delete unused rows.
-            for (int ii = m_declarations.Count; ii < m_dataset.Tables[0].Rows.Count; ii++)
-            {
+            for (int ii = m_declarations.Count; ii < m_dataset.Tables[0].Rows.Count; ii++) {
                 m_dataset.Tables[0].Rows[ii].Delete();
             }
 
             // deselect all rows.
-            foreach (DataGridViewRow row in ResultsDV.Rows)
-            {
+            foreach (DataGridViewRow row in ResultsDV.Rows) {
                 row.Selected = false;
             }
         }
@@ -136,12 +129,10 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the current filter components in the control.
         /// </summary>
-        public void ShowFilter(FilterDeclaration filter)
-        {
+        public void ShowFilter(FilterDeclaration filter) {
             m_declarations = new List<InstanceDeclaration>();
 
-            foreach (FilterDeclarationField declaration in filter.Fields)
-            {
+            foreach (FilterDeclarationField declaration in filter.Fields) {
                 DataRow row = m_dataset.Tables[0].NewRow();
                 UpdateRow(row, declaration.InstanceDeclaration);
                 m_dataset.Tables[0].Rows.Add(row);
@@ -152,10 +143,11 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the row with the node to read.
         /// </summary>
-        public void UpdateRow(DataRow row, InstanceDeclaration declaration)
-        {
+        public void UpdateRow(DataRow row, InstanceDeclaration declaration) {
             row[0] = declaration;
-            row[1] = ImageList.Images[ClientUtils.GetImageIndex((declaration.NodeClass == NodeClass.Variable) ? Attributes.Value : Attributes.NodeId, null)];
+            row[1] = ImageList.Images[
+                ClientUtils.GetImageIndex(
+                    (declaration.NodeClass == NodeClass.Variable) ? Attributes.Value : Attributes.NodeId, null)];
             row[2] = declaration.DisplayPath;
             row[3] = declaration.DataTypeDisplayText;
             row[4] = declaration.Description;
@@ -164,20 +156,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Reads the values displayed in the control and moves to the display results state.
         /// </summary>
-        public void Read()
-        {
-            if (m_session == null)
-            {
+        public void Read() {
+            if (m_session == null) {
                 throw new ServiceResultException(StatusCodes.BadNotConnected);
             }
 
             // build list of values to read.
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            foreach (DataGridViewRow row in ResultsDV.Rows)
-            {
+            foreach (DataGridViewRow row in ResultsDV.Rows) {
                 DataRowView source = row.DataBoundItem as DataRowView;
-                InstanceDeclaration value = (InstanceDeclaration)source.Row[0];
+                InstanceDeclaration value = (InstanceDeclaration) source.Row[0];
                 row.Selected = false;
 
                 ReadValueId nodeToRead = new ReadValueId();
@@ -185,7 +174,7 @@ namespace Opc.Ua.Client.Controls
                 nodeToRead.AttributeId = (value.NodeClass == NodeClass.Variable) ? Attributes.Value : Attributes.NodeId;
                 nodesToRead.Add(nodeToRead);
             }
-            
+
             // read the values.
             DataValueCollection results = null;
             DiagnosticInfoCollection diagnosticInfos = null;
@@ -205,25 +194,27 @@ namespace Opc.Ua.Client.Controls
             ValueCH.Visible = true;
 
             // add the results to the display.
-            for (int ii = 0; ii < results.Count; ii++)
-            {
+            for (int ii = 0; ii < results.Count; ii++) {
                 DataRowView source = ResultsDV.Rows[ii].DataBoundItem as DataRowView;
                 UpdateRow(source.Row, results[ii]);
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Updates the row with the node to read.
         /// </summary>
-        public void UpdateRow(DataRow row, DataValue value)
-        {
+        public void UpdateRow(DataRow row, DataValue value) {
             row[5] = value.WrappedValue;
         }
+
         #endregion
 
         #region Event Handlers
+
         #endregion
     }
 }

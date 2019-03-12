@@ -37,79 +37,71 @@ using Opc.Ua;
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Allows the user to read and update history for a variable.
     /// </summary>
-    public partial class HistoryDataDlg : Form, ISessionForm
-    {
+    public partial class HistoryDataDlg : Form, ISessionForm {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public HistoryDataDlg()
-        {
+        public HistoryDataDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Changes the session used.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             HistoryDataCTRL.ChangeSession(session);
         }
 
         /// <summary>
         /// Sets the variable shown in the dialog.
         /// </summary>
-        public void SetVariable(NodeId variableId)
-        {
+        public void SetVariable(NodeId variableId) {
             HistoryDataCTRL.ChangeNode(variableId);
         }
+
         #endregion
 
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void CancelBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.Modal)
-                {
+        private void CancelBTN_Click(object sender, EventArgs e) {
+            try {
+                if (this.Modal) {
                     DialogResult = DialogResult.Cancel;
-                }
-                else
-                {
+                } else {
                     Close();
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

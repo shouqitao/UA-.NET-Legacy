@@ -34,18 +34,15 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// A dialog that displays an exception trace in an HTML page.
     /// </summary>
-    public partial class ExceptionDlg : Form
-    {
+    public partial class ExceptionDlg : Form {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionDlg"/> class.
         /// </summary>
-        public ExceptionDlg()
-        {
+        public ExceptionDlg() {
             InitializeComponent();
         }
 
@@ -54,8 +51,7 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Replaces all special characters in the message.
         /// </summary>
-        private string ReplaceSpecialCharacters(string message)
-        {
+        private string ReplaceSpecialCharacters(string message) {
             message = message.Replace("&", "&#38;");
             message = message.Replace("<", "&lt;");
             message = message.Replace(">", "&gt;");
@@ -66,35 +62,24 @@ namespace Opc.Ua.Configuration
             return message;
         }
 
-        private void AddBlock(StringBuilder buffer, string text)
-        {
+        private void AddBlock(StringBuilder buffer, string text) {
             AddBlock(buffer, text, 0);
         }
 
-        private void AddBlock(StringBuilder buffer, string text, int level)
-        {
-            if (!String.IsNullOrEmpty(text))
-            {
-                if (level > 0)
-                {
-                    if (level == 1)
-                    {
+        private void AddBlock(StringBuilder buffer, string text, int level) {
+            if (!String.IsNullOrEmpty(text)) {
+                if (level > 0) {
+                    if (level == 1) {
                         buffer.Append("<tr style='background-color:#990000;");
-                    }
-                    else if (level == 2)
-                    {
+                    } else if (level == 2) {
                         buffer.Append("<tr style='background-color:#CC6600;");
-                    }
-                    else
-                    {
+                    } else {
                         buffer.Append("<tr style='background-color:#999999;");
                     }
 
                     buffer.Append("color:#FFFFFF;font-weight:bold;font-size:10pt;font-family:Verdana'><td>");
-                    buffer.Append("<p>"); 
-                }
-                else
-                {
+                    buffer.Append("<p>");
+                } else {
                     buffer.Append("<tr style='font-size:10pt;font-family:Verdana'><td>");
                     buffer.Append("<p>");
                 }
@@ -105,35 +90,29 @@ namespace Opc.Ua.Configuration
             }
         }
 
-        private void Add(StringBuilder buffer, Exception e, bool showStackTrace)
-        {
+        private void Add(StringBuilder buffer, Exception e, bool showStackTrace) {
             AddBlock(buffer, "EXCEPTION (" + e.GetType().Name + ")", 1);
             AddBlock(buffer, e.Message);
 
             ServiceResultException sre = e as ServiceResultException;
 
-            if (sre != null)
-            {
+            if (sre != null) {
                 ServiceResult sr = new ServiceResult(sre);
 
-                while (sr != null)
-                {
+                while (sr != null) {
                     AddBlock(buffer, "SERVICE RESULT (" + new StatusCode(sr.Code).ToString() + ")", 2);
 
                     string text = (sr.LocalizedText != null) ? sr.LocalizedText.Text : null;
 
-                    if (text != e.Message)
-                    {
+                    if (text != e.Message) {
                         AddBlock(buffer, text);
                     }
 
                     AddBlock(buffer, sr.SymbolicId);
                     AddBlock(buffer, sr.NamespaceUri);
 
-                    if (showStackTrace)
-                    {
-                        if (!String.IsNullOrEmpty(sre.AdditionalInfo))
-                        {
+                    if (showStackTrace) {
+                        if (!String.IsNullOrEmpty(sre.AdditionalInfo)) {
                             AddBlock(buffer, "ADDITIONAL INFO (" + new StatusCode(sr.Code).ToString() + ")", 3);
                             AddBlock(buffer, sre.AdditionalInfo);
                         }
@@ -143,15 +122,13 @@ namespace Opc.Ua.Configuration
                 }
             }
 
-            if (showStackTrace)
-            {
+            if (showStackTrace) {
                 AddBlock(buffer, "STACK TRACE", 3);
                 AddBlock(buffer, e.StackTrace);
             }
         }
 
-        private void Show(bool showStackTrace)
-        {
+        private void Show(bool showStackTrace) {
             StringBuilder buffer = new StringBuilder();
             buffer.Append("<html><body style='margin:0;width:100%'>");
             //buffer.Append(ExceptionBrowser.Parent.Width);
@@ -160,8 +137,7 @@ namespace Opc.Ua.Configuration
 
             Exception e = m_exception;
 
-            while (e != null)
-            {
+            while (e != null) {
                 Add(buffer, e, showStackTrace);
                 e = e.InnerException;
             }
@@ -175,47 +151,41 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Displays the exception in a dialog.
         /// </summary>
-        public static void Show(string caption, Exception e)
-        {
+        public static void Show(string caption, Exception e) {
             // check if running as a service.
-            if (!Environment.UserInteractive)
-            {
+            if (!Environment.UserInteractive) {
                 Utils.Trace(e, "Unexpected error in '{0}'.", caption);
                 return;
             }
-            
+
             new ExceptionDlg().ShowDialog(caption, e);
         }
 
         /// <summary>
         /// Display the exception in the dialog.
         /// </summary>
-        public void ShowDialog(string caption, Exception e)
-        {
-            if (!String.IsNullOrEmpty(caption))
-            {
+        public void ShowDialog(string caption, Exception e) {
+            if (!String.IsNullOrEmpty(caption)) {
                 Text = caption;
             }
 
             m_exception = e;
-            
-            #if _DEBUG
+
+#if _DEBUG
             ShowStackTracesCK.Checked = true;
-            #else
+#else
             ShowStackTracesCK.Checked = false;
-            #endif
+#endif
 
             Show(ShowStackTracesCK.Checked);
             ShowDialog();
         }
 
-        private void OkButton_Click(object sender, EventArgs e)
-        {
+        private void OkButton_Click(object sender, EventArgs e) {
             Close();
         }
 
-        private void ShowStackTracesCK_CheckedChanged(object sender, EventArgs e)
-        {
+        private void ShowStackTracesCK_CheckedChanged(object sender, EventArgs e) {
             Show(ShowStackTracesCK.Checked);
         }
     }

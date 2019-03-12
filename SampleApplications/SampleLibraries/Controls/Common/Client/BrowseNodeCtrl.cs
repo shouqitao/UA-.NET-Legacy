@@ -37,27 +37,28 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control which displays browse tree.
     /// </summary>
-    public partial class BrowseNodeCtrl : UserControl
-    {
+    public partial class BrowseNodeCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Creates a new instance of the control.
         /// </summary>
-        public BrowseNodeCtrl()
-        {
+        public BrowseNodeCtrl() {
             InitializeComponent();
         }
+
         #endregion
 
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Initializes the control with a root and a set of hierarchial reference types to follow. 
         /// </summary>
@@ -67,8 +68,7 @@ namespace Opc.Ua.Client.Controls
         public void Initialize(
             Session session,
             NodeId rootId,
-            params NodeId[] referenceTypeIds)
-        {
+            params NodeId[] referenceTypeIds) {
             BrowseCTRL.Initialize(session, rootId, referenceTypeIds);
         }
 
@@ -76,16 +76,14 @@ namespace Opc.Ua.Client.Controls
         /// Changes the session used by the control.
         /// </summary>
         /// <param name="session">The session.</param>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             BrowseCTRL.ChangeSession(session);
         }
 
         /// <summary>
         /// The view to use.
         /// </summary>
-        public ViewDescription View
-        {
+        public ViewDescription View {
             get { return BrowseCTRL.View; }
             set { BrowseCTRL.View = value; }
         }
@@ -93,8 +91,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Gets or sets the default position of the splitter
         /// </summary>
-        public int SplitterDistance
-        {
+        public int SplitterDistance {
             get { return MainPN.SplitterDistance; }
             set { MainPN.SplitterDistance = value; }
         }
@@ -102,17 +99,15 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Gets or sets a flag that indicates whether the attributes should be displayed.
         /// </summary>
-        public bool AttributesListCollapsed 
-        {
-            get { return MainPN.Panel2Collapsed;  }
+        public bool AttributesListCollapsed {
+            get { return MainPN.Panel2Collapsed; }
             set { MainPN.Panel2Collapsed = value; }
         }
 
         /// <summary>
         /// Gets or sets the context menu for the browse tree.
         /// </summary>
-        public ContextMenuStrip BrowseMenuStrip
-        {
+        public ContextMenuStrip BrowseMenuStrip {
             get { return BrowseCTRL.BrowseMenuStrip; }
             set { BrowseCTRL.BrowseMenuStrip = value; }
         }
@@ -120,8 +115,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Gets or sets the context menu for the attributes list.
         /// </summary>
-        public ContextMenuStrip AttributesMenuStrip
-        {
+        public ContextMenuStrip AttributesMenuStrip {
             get { return AttributesCTRL.AttributesMenuStrip; }
             set { AttributesCTRL.AttributesMenuStrip = value; }
         }
@@ -129,63 +123,54 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// The reference for the currently selected node.
         /// </summary>
-        public ReferenceDescription SelectedNode
-        {
-            get
-            {
-                return BrowseCTRL.SelectedNode;
-            }
+        public ReferenceDescription SelectedNode {
+            get { return BrowseCTRL.SelectedNode; }
         }
 
         /// <summary>
         /// The reference for the parent of the currently selected node.
         /// </summary>
-        public ReferenceDescription SelectedParent
-        {
-            get
-            {
-                return BrowseCTRL.SelectedParent;
-            }
+        public ReferenceDescription SelectedParent {
+            get { return BrowseCTRL.SelectedParent; }
         }
 
         /// <summary>
         /// Returns the child node at the specified index.
         /// </summary>
-        public ReferenceDescription GetChildOfSelectedNode(int index)
-        {
+        public ReferenceDescription GetChildOfSelectedNode(int index) {
             return BrowseCTRL.GetChildOfSelectedNode(index);
         }
 
         /// <summary>
         /// Returns the attribute at the specified index.
         /// </summary>
-        public ReadValueId GetSelectedAttribute(int index)
-        {
+        public ReadValueId GetSelectedAttribute(int index) {
             return AttributesCTRL.GetSelectedAttribute(index);
         }
 
         /// <summary>
         /// The reference for the parent of the currently selected node.
         /// </summary>
-        public void RefreshSelection()
-        {
+        public void RefreshSelection() {
             BrowseCTRL.RefreshSelection();
         }
 
         /// <summary>
         /// Raised after a node is selected in the control.
         /// </summary>
-        public event EventHandler AfterSelect 
-        {
+        public event EventHandler AfterSelect {
             add { BrowseCTRL.AfterSelect += value; }
-            remove { BrowseCTRL.AfterSelect -= value; } 
+            remove { BrowseCTRL.AfterSelect -= value; }
         }
+
         #endregion
 
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
+
         #endregion
     }
 }

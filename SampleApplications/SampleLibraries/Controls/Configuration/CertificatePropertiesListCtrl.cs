@@ -37,75 +37,73 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays the properties for an X509 certificate.
     /// </summary>
-    public partial class CertificatePropertiesListCtrl : Opc.Ua.Client.Controls.BaseListCtrl
-    {
+    public partial class CertificatePropertiesListCtrl : Opc.Ua.Client.Controls.BaseListCtrl {
         #region Constructors
+
         /// <summary>
         /// Initalize the control.
         /// </summary>
-        public CertificatePropertiesListCtrl()
-        {
+        public CertificatePropertiesListCtrl() {
             InitializeComponent();
 
             SetColumns(m_ColumnNames);
         }
+
         #endregion
-        
+
         #region Private Fields
+
         // The columns to display in the control.		
-		private readonly object[][] m_ColumnNames = new object[][]
-		{ 
-			new object[] { "Field", HorizontalAlignment.Left, null },  
-			new object[] { "Value", HorizontalAlignment.Left, null },
-		};
+        private readonly object[][] m_ColumnNames = new object[][] {
+            new object[] {"Field", HorizontalAlignment.Left, null},
+            new object[] {"Value", HorizontalAlignment.Left, null},
+        };
+
         #endregion
-        
+
         #region FieldInfo Class
-        private class FieldInfo
-        {
+
+        private class FieldInfo {
             public string Name;
             public string Value;
 
-            public FieldInfo(string name, object value)
-            {
+            public FieldInfo(string name, object value) {
                 Name = name;
                 Value = Utils.Format("{0}", value);
             }
         }
+
         #endregion
 
         #region Public Interface 
+
         /// <summary>
         /// Removes all items in the list.
         /// </summary>
-        internal void Clear()
-        {
+        internal void Clear() {
             ItemsLV.Items.Clear();
             Instructions = String.Empty;
-            AdjustColumns();            
+            AdjustColumns();
         }
 
         /// <summary>
         /// Displays the properties of a certificate.
         /// </summary>
-        internal void Initialize(X509Certificate2 certificate)
-        {
+        internal void Initialize(X509Certificate2 certificate) {
             ItemsLV.Items.Clear();
 
-            if (certificate == null)
-            {
+            if (certificate == null) {
                 Instructions = "No certificate properties to display";
                 AdjustColumns();
                 return;
             }
 
-            AddItem(new FieldInfo("Version", certificate.Version));            
-            AddItem(new FieldInfo("Subject", certificate.Subject));      
+            AddItem(new FieldInfo("Version", certificate.Version));
+            AddItem(new FieldInfo("Subject", certificate.Subject));
             AddItem(new FieldInfo("FriendlyName", certificate.FriendlyName));
             AddItem(new FieldInfo("Thumbprint", certificate.Thumbprint));
             AddItem(new FieldInfo("Issuer", certificate.Issuer));
@@ -116,25 +114,19 @@ namespace Opc.Ua.Client.Controls
             AddItem(new FieldInfo("KeyExchangeAlgorithm", certificate.PublicKey.Key.KeyExchangeAlgorithm));
             AddItem(new FieldInfo("SignatureAlgorithm", certificate.SignatureAlgorithm.FriendlyName));
 
-            foreach (X509Extension extension in certificate.Extensions)
-            {
-                X509BasicConstraintsExtension basicContraints = extension as X509BasicConstraintsExtension; 
-                
-                if (basicContraints != null)
-                {
+            foreach (X509Extension extension in certificate.Extensions) {
+                X509BasicConstraintsExtension basicContraints = extension as X509BasicConstraintsExtension;
+
+                if (basicContraints != null) {
                     StringBuilder buffer = new StringBuilder();
 
-                    if (basicContraints.CertificateAuthority)
-                    {
+                    if (basicContraints.CertificateAuthority) {
                         buffer.Append("CA");
-                    }
-                    else
-                    {
+                    } else {
                         buffer.Append("End Entity");
                     }
 
-                    if (basicContraints.HasPathLengthConstraint)
-                    {
+                    if (basicContraints.HasPathLengthConstraint) {
                         buffer.AppendFormat(", PathLength={0}", basicContraints.PathLengthConstraint);
                     }
 
@@ -144,16 +136,12 @@ namespace Opc.Ua.Client.Controls
 
                 X509KeyUsageExtension keyUsage = extension as X509KeyUsageExtension;
 
-                if (keyUsage != null)
-                {
+                if (keyUsage != null) {
                     StringBuilder buffer = new StringBuilder();
 
-                    foreach (X509KeyUsageFlags usageFlag in Enum.GetValues(typeof(X509KeyUsageFlags)))
-                    {
-                        if ((keyUsage.KeyUsages & usageFlag) != 0)
-                        {
-                            if (buffer.Length > 0)
-                            {
+                    foreach (X509KeyUsageFlags usageFlag in Enum.GetValues(typeof(X509KeyUsageFlags))) {
+                        if ((keyUsage.KeyUsages & usageFlag) != 0) {
+                            if (buffer.Length > 0) {
                                 buffer.Append(", ");
                             }
 
@@ -166,24 +154,18 @@ namespace Opc.Ua.Client.Controls
                 }
 
                 X509EnhancedKeyUsageExtension enhancedKeyUsage = extension as X509EnhancedKeyUsageExtension;
-                
-                if (enhancedKeyUsage != null)
-                {
+
+                if (enhancedKeyUsage != null) {
                     StringBuilder buffer = new StringBuilder();
 
-                    foreach (Oid usageOid in enhancedKeyUsage.EnhancedKeyUsages)
-                    {
-                        if (buffer.Length > 0)
-                        {
+                    foreach (Oid usageOid in enhancedKeyUsage.EnhancedKeyUsages) {
+                        if (buffer.Length > 0) {
                             buffer.Append(", ");
                         }
 
-                        if (!String.IsNullOrEmpty(usageOid.FriendlyName))
-                        {
+                        if (!String.IsNullOrEmpty(usageOid.FriendlyName)) {
                             buffer.AppendFormat("{0}", usageOid.FriendlyName);
-                        }
-                        else
-                        {
+                        } else {
                             buffer.AppendFormat("{0}", usageOid.Value);
                         }
                     }
@@ -193,38 +175,37 @@ namespace Opc.Ua.Client.Controls
                 }
 
                 X509SubjectKeyIdentifierExtension subjectKeyId = extension as X509SubjectKeyIdentifierExtension;
-                
-                if (subjectKeyId != null)
-                {
+
+                if (subjectKeyId != null) {
                     AddItem(new FieldInfo("SubjectKeyIdentifier", subjectKeyId.SubjectKeyIdentifier));
                     continue;
                 }
 
-                if (extension.Oid.Value == X509SubjectAltNameExtension.SubjectAltNameOid || extension.Oid.Value == X509SubjectAltNameExtension.SubjectAltName2Oid)
-                {
-                    X509SubjectAltNameExtension alternateName = new X509SubjectAltNameExtension(extension, extension.Critical);
+                if (extension.Oid.Value == X509SubjectAltNameExtension.SubjectAltNameOid ||
+                    extension.Oid.Value == X509SubjectAltNameExtension.SubjectAltName2Oid) {
+                    X509SubjectAltNameExtension alternateName =
+                        new X509SubjectAltNameExtension(extension, extension.Critical);
                     AddItem(new FieldInfo("SubjectAlternateName", alternateName.Format(false)));
                     continue;
                 }
 
-                if (extension.Oid.Value == X509AuthorityKeyIdentifierExtension.AuthorityKeyIdentifier2Oid)
-                {
-                    X509AuthorityKeyIdentifierExtension keyId = new X509AuthorityKeyIdentifierExtension(extension, extension.Critical);
+                if (extension.Oid.Value == X509AuthorityKeyIdentifierExtension.AuthorityKeyIdentifier2Oid) {
+                    X509AuthorityKeyIdentifierExtension keyId =
+                        new X509AuthorityKeyIdentifierExtension(extension, extension.Critical);
                     AddItem(new FieldInfo("AuthorityKeyIdentifier", keyId.Format(false)));
                     continue;
                 }
 
                 string name = extension.Oid.FriendlyName;
 
-                if (String.IsNullOrEmpty(name))
-                {
+                if (String.IsNullOrEmpty(name)) {
                     name = extension.Oid.Value;
                 }
 
                 string value = Utils.ToHexString(extension.RawData);
-                
+
                 AddItem(new FieldInfo(name, value));
-            }              
+            }
 
             AdjustColumns();
         }
@@ -232,47 +213,46 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the properties of a certificate.
         /// </summary>
-        internal void Initialize(Opc.Ua.Security.SecuredApplication application)
-        {
+        internal void Initialize(Opc.Ua.Security.SecuredApplication application) {
             ItemsLV.Items.Clear();
 
-            if (application == null)
-            {
+            if (application == null) {
                 Instructions = "No application properties to display";
                 AdjustColumns();
                 return;
             }
 
             AddItem(new FieldInfo("ApplicationName", application.ApplicationName));
-            AddItem(new FieldInfo("ApplicationUri", application.ApplicationUri));   
-            AddItem(new FieldInfo("ProductName", application.ProductName));   
-            AddItem(new FieldInfo("ApplicationType", application.ApplicationType));   
-            AddItem(new FieldInfo("ConfigurationFile", application.ConfigurationFile));  
-            AddItem(new FieldInfo("ExecutableFile", application.ExecutableFile));  
+            AddItem(new FieldInfo("ApplicationUri", application.ApplicationUri));
+            AddItem(new FieldInfo("ProductName", application.ProductName));
+            AddItem(new FieldInfo("ApplicationType", application.ApplicationType));
+            AddItem(new FieldInfo("ConfigurationFile", application.ConfigurationFile));
+            AddItem(new FieldInfo("ExecutableFile", application.ExecutableFile));
 
             AdjustColumns();
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Updates an item in the control.
         /// </summary>
-        protected override void UpdateItem(ListViewItem listItem, object item)
-        {
+        protected override void UpdateItem(ListViewItem listItem, object item) {
             FieldInfo info = item as FieldInfo;
 
-            if (info == null)
-            {
+            if (info == null) {
                 base.UpdateItem(listItem, item);
                 return;
             }
 
-			listItem.SubItems[0].Text = String.Format("{0}", info.Name);
-			listItem.SubItems[1].Text = String.Format("{0}", info.Value);
-            
+            listItem.SubItems[0].Text = String.Format("{0}", info.Name);
+            listItem.SubItems[1].Text = String.Format("{0}", info.Value);
+
             listItem.Tag = item;
         }
+
         #endregion
     }
 }

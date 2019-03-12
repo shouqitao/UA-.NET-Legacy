@@ -21,19 +21,16 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 
-namespace Opc.Ua
-{
-	/// <summary>
-	/// The SoftwareCertificate class.
-	/// </summary>
-	public partial class SoftwareCertificate
-	{
+namespace Opc.Ua {
+    /// <summary>
+    /// The SoftwareCertificate class.
+    /// </summary>
+    public partial class SoftwareCertificate {
         /// <summary>
         /// The SignedSoftwareCertificate that contains the SoftwareCertificate
         /// </summary>
-        public X509Certificate2 SignedCertificate
-        {
-            get { return m_signedCertificate;  } 
+        public X509Certificate2 SignedCertificate {
+            get { return m_signedCertificate; }
             set { m_signedCertificate = value; }
         }
 
@@ -44,55 +41,48 @@ namespace Opc.Ua
         /// </summary>
         public static ServiceResult Validate(
             CertificateValidator validator,
-            byte[] signedCertificate, 
-            out SoftwareCertificate softwareCertificate)
-        {
+            byte[] signedCertificate,
+            out SoftwareCertificate softwareCertificate) {
             softwareCertificate = null;
 
             // validate the certificate.
             X509Certificate2 certificate = null;
 
-            try
-            {
+            try {
                 certificate = CertificateFactory.Create(signedCertificate, true);
                 validator.Validate(certificate);
-            }
-            catch (Exception e)
-            {
-                return ServiceResult.Create(e, StatusCodes.BadDecodingError, "Could not decode software certificate body.");
+            } catch (Exception e) {
+                return ServiceResult.Create(e, StatusCodes.BadDecodingError,
+                    "Could not decode software certificate body.");
             }
 
             // find the software certficate.
             byte[] encodedData = null;
 
-            foreach (X509Extension extension in certificate.Extensions)
-            {
-                if (extension.Oid.Value == "0.0.0.0.0")
-                {
+            foreach (X509Extension extension in certificate.Extensions) {
+                if (extension.Oid.Value == "0.0.0.0.0") {
                     encodedData = extension.RawData;
                     break;
                 }
             }
 
-            if (encodedData == null)
-            {
-                return ServiceResult.Create(StatusCodes.BadCertificateInvalid, "Could not find extension containing the software certficate.");
+            if (encodedData == null) {
+                return ServiceResult.Create(StatusCodes.BadCertificateInvalid,
+                    "Could not find extension containing the software certficate.");
             }
 
-            try
-            {
+            try {
                 MemoryStream istrm = new MemoryStream(encodedData, false);
                 DataContractSerializer serializer = new DataContractSerializer(typeof(SoftwareCertificate));
-                softwareCertificate = (SoftwareCertificate)serializer.ReadObject(istrm);
+                softwareCertificate = (SoftwareCertificate) serializer.ReadObject(istrm);
                 softwareCertificate.SignedCertificate = certificate;
-            }
-            catch (Exception e)
-            {
-                return ServiceResult.Create(e, StatusCodes.BadCertificateInvalid, "Certificate does not contain a valid SoftwareCertificate body.");
+            } catch (Exception e) {
+                return ServiceResult.Create(e, StatusCodes.BadCertificateInvalid,
+                    "Certificate does not contain a valid SoftwareCertificate body.");
             }
 
             // certificate is valid.
             return ServiceResult.Good;
         }
-	}
+    }
 }

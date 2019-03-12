@@ -39,40 +39,37 @@ using System.Runtime.Serialization;
 using System.Windows.Forms;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-
 using Opc.Ua;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// A class that install, configures and runs a UA application.
     /// </summary>
-    public class ApplicationInstance
-    {
+    public class ApplicationInstance {
         #region Ctors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationInstance"/> class.
         /// </summary>
-        public ApplicationInstance()
-        { }
+        public ApplicationInstance() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationInstance"/> class.
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
-        public ApplicationInstance(ApplicationConfiguration applicationConfiguration)
-        {
-                m_applicationConfiguration = applicationConfiguration;
-        } 
+        public ApplicationInstance(ApplicationConfiguration applicationConfiguration) {
+            m_applicationConfiguration = applicationConfiguration;
+        }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Gets or sets the name of the application.
         /// </summary>
         /// <value>The name of the application.</value>
-        public string ApplicationName
-        {
+        public string ApplicationName {
             get { return m_applicationName; }
             set { m_applicationName = value; }
         }
@@ -81,8 +78,7 @@ namespace Opc.Ua.Configuration
         /// Gets or sets the type of the application.
         /// </summary>
         /// <value>The type of the application.</value>
-        public ApplicationType ApplicationType
-        {
+        public ApplicationType ApplicationType {
             get { return m_applicationType; }
             set { m_applicationType = value; }
         }
@@ -91,8 +87,7 @@ namespace Opc.Ua.Configuration
         /// Gets or sets the name of the config section containing the path to the application configuration file.
         /// </summary>
         /// <value>The name of the config section.</value>
-        public string ConfigSectionName
-        {
+        public string ConfigSectionName {
             get { return m_configSectionName; }
             set { m_configSectionName = value; }
         }
@@ -101,8 +96,7 @@ namespace Opc.Ua.Configuration
         /// Gets or sets the type of configuration file.
         /// </summary>
         /// <value>The type of configuration file.</value>
-        public Type ConfigurationType
-        {
+        public Type ConfigurationType {
             get { return m_configurationType; }
             set { m_configurationType = value; }
         }
@@ -111,8 +105,7 @@ namespace Opc.Ua.Configuration
         /// Gets or sets the installation configuration.
         /// </summary>
         /// <value>The installation configuration.</value>
-        public InstalledApplication InstallConfig
-        {
+        public InstalledApplication InstallConfig {
             get { return m_installConfig; }
             set { m_installConfig = value; }
         }
@@ -121,8 +114,7 @@ namespace Opc.Ua.Configuration
         /// Gets the server.
         /// </summary>
         /// <value>The server.</value>
-        public ServerBase Server
-        {
+        public ServerBase Server {
             get { return m_server; }
         }
 
@@ -130,8 +122,7 @@ namespace Opc.Ua.Configuration
         /// Gets the application configuration used when the Start() method was called.
         /// </summary>
         /// <value>The application configuration.</value>
-        public ApplicationConfiguration ApplicationConfiguration
-        {
+        public ApplicationConfiguration ApplicationConfiguration {
             get { return m_applicationConfiguration; }
             set { m_applicationConfiguration = value; }
         }
@@ -141,25 +132,24 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <value>If true the application will not be visible to the GDS local agent after installation.</value>
         public bool NoGdsAgentAdmin { get; set; }
+
         #endregion
 
         #region InstallConfig Handling
+
         /// <summary>
         /// Loads the installation configuration from a file.
         /// </summary>
-        public InstalledApplication LoadInstallConfigFromFile(string filePath)
-        {
+        public InstalledApplication LoadInstallConfigFromFile(string filePath) {
             if (filePath == null) throw new ArgumentNullException("filePath");
-            
+
             Stream istrm = null;
 
-            try
-            {
+            try {
                 istrm = File.Open(filePath, FileMode.Open, FileAccess.Read);
-            }
-            catch (Exception e)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadDecodingError, e, "Could not open file: {0}", filePath);
+            } catch (Exception e) {
+                throw ServiceResultException.Create(StatusCodes.BadDecodingError, e, "Could not open file: {0}",
+                    filePath);
             }
 
             return LoadInstallConfigFromStream(istrm);
@@ -168,20 +158,18 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Loads the installation configuration from an embedded resource.
         /// </summary>
-        public InstalledApplication LoadInstallConfigFromResource(string resourcePath, Assembly assembly)
-        {
+        public InstalledApplication LoadInstallConfigFromResource(string resourcePath, Assembly assembly) {
             if (resourcePath == null) throw new ArgumentNullException("resourcePath");
 
-            if (assembly == null)
-            {
+            if (assembly == null) {
                 assembly = Assembly.GetCallingAssembly();
             }
 
             Stream istrm = assembly.GetManifestResourceStream(resourcePath);
 
-            if (istrm == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadDecodingError, "Could not find resource file: {0}", resourcePath);
+            if (istrm == null) {
+                throw ServiceResultException.Create(StatusCodes.BadDecodingError, "Could not find resource file: {0}",
+                    resourcePath);
             }
 
             return LoadInstallConfigFromStream(istrm);
@@ -190,19 +178,15 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Loads the installation configuration from a stream.
         /// </summary>
-        public InstalledApplication LoadInstallConfigFromStream(Stream istrm)
-        {
-            try
-            {
-                using (XmlTextReader reader = new XmlTextReader(istrm))
-                {
+        public InstalledApplication LoadInstallConfigFromStream(Stream istrm) {
+            try {
+                using (XmlTextReader reader = new XmlTextReader(istrm)) {
                     DataContractSerializer serializer = new DataContractSerializer(typeof(InstalledApplication));
-                    return (InstalledApplication)serializer.ReadObject(reader, false);
+                    return (InstalledApplication) serializer.ReadObject(reader, false);
                 }
-            }
-            catch (Exception e)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadDecodingError, e, "Could not parse install configuration.");
+            } catch (Exception e) {
+                throw ServiceResultException.Create(StatusCodes.BadDecodingError, e,
+                    "Could not parse install configuration.");
             }
         }
 
@@ -210,62 +194,54 @@ namespace Opc.Ua.Configuration
         /// Loads the installation configuration.
         /// </summary>
         /// <param name="configFile">The config file (may be null).</param>
-        public virtual void LoadInstallConfig(string configFile)
-        {
+        public virtual void LoadInstallConfig(string configFile) {
             // load configuration from command line.
-            if (!String.IsNullOrEmpty(configFile))
-            {
+            if (!String.IsNullOrEmpty(configFile)) {
                 InstallConfig = LoadInstallConfigFromFile(configFile);
             }
 
             // load it from a resource if not already loaded.
-            else if (InstallConfig == null)
-            {
-                foreach (string resourcePath in Assembly.GetEntryAssembly().GetManifestResourceNames())
-                {
-                    if (resourcePath.EndsWith("InstallConfig.xml"))
-                    {
+            else if (InstallConfig == null) {
+                foreach (string resourcePath in Assembly.GetEntryAssembly().GetManifestResourceNames()) {
+                    if (resourcePath.EndsWith("InstallConfig.xml")) {
                         InstallConfig = LoadInstallConfigFromResource(resourcePath, Assembly.GetEntryAssembly());
                         break;
                     }
                 }
 
-                if (InstallConfig == null)
-                {
-                    throw new ServiceResultException(StatusCodes.BadConfigurationError, "Could not load default installation config file.");
+                if (InstallConfig == null) {
+                    throw new ServiceResultException(StatusCodes.BadConfigurationError,
+                        "Could not load default installation config file.");
                 }
             }
 
             // override the application name.
-            if (String.IsNullOrEmpty(InstallConfig.ApplicationName))
-            {
+            if (String.IsNullOrEmpty(InstallConfig.ApplicationName)) {
                 InstallConfig.ApplicationName = ApplicationName;
-            }
-            else
-            {
+            } else {
                 ApplicationName = InstallConfig.ApplicationName;
             }
 
             // update fixed fields in the installation config.
-            InstallConfig.ApplicationType = (Opc.Ua.Security.ApplicationType)(int)ApplicationType;
+            InstallConfig.ApplicationType = (Opc.Ua.Security.ApplicationType) (int) ApplicationType;
             InstallConfig.ExecutableFile = Application.ExecutablePath;
 
-            if (InstallConfig.TraceConfiguration != null)
-            {
+            if (InstallConfig.TraceConfiguration != null) {
                 InstallConfig.TraceConfiguration.ApplySettings();
             }
         }
+
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Processes the command line.
         /// </summary>
         /// <returns>
         /// True if the arguments were processed; False otherwise.
         /// </returns>
-        public bool ProcessCommandLine()
-        {
+        public bool ProcessCommandLine() {
             // NP Jan-20-2012: removing GDS reference, per new OPCF decree of no GDS.
             NoGdsAgentAdmin = true;
             return ProcessCommandLine(false);
@@ -278,18 +254,16 @@ namespace Opc.Ua.Configuration
         /// <returns>
         /// True if the arguments were processed; False otherwise.
         /// </returns>
-        public bool ProcessCommandLine(bool ignoreUnknownArguments)
-        {
+        public bool ProcessCommandLine(bool ignoreUnknownArguments) {
             TraceConfiguration config = new TraceConfiguration();
             config.OutputFilePath = "%CommonApplicationData%\\OPC Foundation\\Logs\\Default.InstallLog.txt";
             config.DeleteOnLoad = false;
             config.TraceMasks = 1023;
             config.ApplySettings();
 
-            string[] args =  Environment.GetCommandLineArgs();
+            string[] args = Environment.GetCommandLineArgs();
 
-            if (args.Length <= 1)
-            {
+            if (args.Length <= 1) {
                 return false;
             }
 
@@ -300,33 +274,26 @@ namespace Opc.Ua.Configuration
         /// Processes the command line.
         /// </summary>
         /// <returns>True if the arguments were processed; False otherwise.</returns>
-        public bool ProcessCommandLine(bool ignoreUnknownArguments, params string[] args)
-        {
-            if (args.Length <= 1)
-            {
+        public bool ProcessCommandLine(bool ignoreUnknownArguments, params string[] args) {
+            if (args.Length <= 1) {
                 return false;
             }
 
             // arguments can be standalone or name-value pairs seperated by a ':'.
-            Dictionary<string,string> argTable = new Dictionary<string, string>();
+            Dictionary<string, string> argTable = new Dictionary<string, string>();
 
-            for (int ii = 1; ii < args.Length; ii++)
-            {
+            for (int ii = 1; ii < args.Length; ii++) {
                 string arg = args[ii];
 
-                if (String.IsNullOrEmpty(arg))
-                {
+                if (String.IsNullOrEmpty(arg)) {
                     continue;
                 }
 
                 int index = args[ii].IndexOf(':');
 
-                if (index != -1 && index > 0 && index < arg.Length-1)
-                {
-                    argTable[arg.Substring(0, index).ToLower()] = arg.Substring(index+1);
-                }
-                else
-                {
+                if (index != -1 && index > 0 && index < arg.Length - 1) {
+                    argTable[arg.Substring(0, index).ToLower()] = arg.Substring(index + 1);
+                } else {
                     argTable[arg.ToLower()] = String.Empty;
                 }
             }
@@ -334,92 +301,76 @@ namespace Opc.Ua.Configuration
             // validate arguments.
             string error = ValidateArguments(ignoreUnknownArguments, argTable);
 
-            if (!String.IsNullOrEmpty(error))
-            {
+            if (!String.IsNullOrEmpty(error)) {
                 throw ServiceResultException.Create(StatusCodes.BadInvalidArgument, error);
             }
 
             // check for the silent switch.
             bool silent = !Environment.UserInteractive;
 
-            if (argTable.ContainsKey("/silent"))
-            {
+            if (argTable.ContainsKey("/silent")) {
                 silent = true;
             }
 
             string configFile = null;
 
-            try
-            {
+            try {
                 // get configuration file from command line.
-                if (argTable.TryGetValue("/configfile", out configFile))
-                {
+                if (argTable.TryGetValue("/configfile", out configFile)) {
                     configFile = Utils.GetAbsoluteFilePath(configFile, true, true, false);
                 }
 
                 // load the configuration.
                 LoadInstallConfig(configFile);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 StringBuilder buffer = new StringBuilder();
                 buffer.Append("Could not load the install configuration. ");
                 buffer.Append(configFile);
 
-                if (!silent)
-                {
+                if (!silent) {
                     throw ServiceResultException.Create(StatusCodes.BadInvalidArgument, e, buffer.ToString());
                 }
 
                 Utils.Trace(e, buffer.ToString());
                 return true;
             }
-                
-            try
-            {
+
+            try {
                 // install the application.
-                if (argTable.ContainsKey("/start"))
-                {
-                    if (Opc.Ua.Configuration.ServiceInstaller.StartService(InstallConfig.ApplicationName))
-                    {
-                        Utils.Trace(Utils.TraceMasks.Information, "Service started '{0}'.", InstallConfig.ApplicationName);
+                if (argTable.ContainsKey("/start")) {
+                    if (Opc.Ua.Configuration.ServiceInstaller.StartService(InstallConfig.ApplicationName)) {
+                        Utils.Trace(Utils.TraceMasks.Information, "Service started '{0}'.",
+                            InstallConfig.ApplicationName);
                     }
 
                     return true;
                 }
 
                 // install the application.
-                if (argTable.ContainsKey("/install"))
-                {
+                if (argTable.ContainsKey("/install")) {
                     Install(silent, argTable);
                     return true;
                 }
 
                 // uninstall the application.
-                if (argTable.ContainsKey("/uninstall"))
-                {
+                if (argTable.ContainsKey("/uninstall")) {
                     Uninstall(silent, argTable);
                     return true;
                 }
 
                 // handle any argument defined by the subclass.
                 return ProcessCommand(silent, argTable);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 StringBuilder buffer = new StringBuilder();
                 buffer.Append("Could not process the command line arguments provided. ");
 
-                if (args != null)
-                {
-                    for (int ii = 1; ii < args.Length; ii++)
-                    {
+                if (args != null) {
+                    for (int ii = 1; ii < args.Length; ii++) {
                         buffer.AppendFormat("{0} ", args[ii]);
                     }
                 }
 
-                if (!silent)
-                {
+                if (!silent) {
                     throw ServiceResultException.Create(StatusCodes.BadInvalidArgument, e, buffer.ToString());
                 }
 
@@ -432,8 +383,7 @@ namespace Opc.Ua.Configuration
         /// Starts the UA server as a Windows Service.
         /// </summary>
         /// <param name="server">The server.</param>
-        public void StartAsService(ServerBase server)
-        {
+        public void StartAsService(ServerBase server) {
             m_server = server;
             ServiceBase.Run(new WindowsService(server, ConfigSectionName, ApplicationType, ConfigurationType));
         }
@@ -442,39 +392,39 @@ namespace Opc.Ua.Configuration
         /// Starts the UA server.
         /// </summary>
         /// <param name="server">The server.</param>
-        public void Start(ServerBase server)
-        {
+        public void Start(ServerBase server) {
             m_server = server;
 
-            if (m_applicationConfiguration == null)
-            {
+            if (m_applicationConfiguration == null) {
                 LoadApplicationConfiguration(false);
             }
 
-            if (m_applicationConfiguration.SecurityConfiguration != null && m_applicationConfiguration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
-            {
-                m_applicationConfiguration.CertificateValidator.CertificateValidation += CertificateValidator_CertificateValidation;
+            if (m_applicationConfiguration.SecurityConfiguration != null &&
+                m_applicationConfiguration.SecurityConfiguration.AutoAcceptUntrustedCertificates) {
+                m_applicationConfiguration.CertificateValidator.CertificateValidation +=
+                    CertificateValidator_CertificateValidation;
             }
-            
+
             server.Start(m_applicationConfiguration);
         }
 
         /// <summary>
         /// Stops the UA server.
         /// </summary>
-        public void Stop()
-        {
+        public void Stop() {
             m_server.Stop();
         }
+
         #endregion
 
         #region WindowsService Class
+
         /// <summary>
         /// Manages the interface between the UA server and the Windows SCM.
         /// </summary>
-        protected class WindowsService : ServiceBase
-        {
+        protected class WindowsService : ServiceBase {
             #region Constructors
+
             /// <summary>
             /// Initializes a new instance of the <see cref="WindowsService"/> class.
             /// </summary>
@@ -482,22 +432,23 @@ namespace Opc.Ua.Configuration
             /// <param name="configSectionName">Name of the config section.</param>
             /// <param name="applicationType">Type of the application.</param>
             /// <param name="configurationType">Type of the configuration.</param>
-            public WindowsService(ServerBase server, string configSectionName, ApplicationType applicationType, Type configurationType)
-            {
+            public WindowsService(ServerBase server, string configSectionName, ApplicationType applicationType,
+                Type configurationType) {
                 m_server = server;
                 m_configSectionName = configSectionName;
                 m_applicationType = applicationType;
                 m_configurationType = configurationType;
                 EventLog.Source = "UA Application";
             }
+
             #endregion
-            
+
             #region Overridden Methods
+
             /// <summary>
             /// Starts the server in a background thread.
             /// </summary>
-            protected override void OnStart(string[] args)
-            {
+            protected override void OnStart(string[] args) {
                 Thread thread = new Thread(OnBackgroundStart);
                 thread.Start(null);
             }
@@ -505,67 +456,68 @@ namespace Opc.Ua.Configuration
             /// <summary>
             /// Stops the server so the service can shutdown.
             /// </summary>
-            protected override void OnStop()
-            {
+            protected override void OnStop() {
                 m_server.Stop();
             }
+
             #endregion
-            
+
             #region Private Methods
+
             /// <summary>
             /// Runs the service in a background thread.
             /// </summary>
-            private void OnBackgroundStart(object state)
-            {
+            private void OnBackgroundStart(object state) {
                 string filePath = null;
                 ApplicationConfiguration configuration = null;
 
-                try
-                {
+                try {
                     filePath = ApplicationConfiguration.GetFilePathFromAppConfig(m_configSectionName);
-                    configuration = ApplicationInstance.LoadAppConfig(false, filePath, m_applicationType, m_configurationType, true);
-                }
-                catch (Exception e)
-                {
-                    ServiceResult error = ServiceResult.Create(e, StatusCodes.BadConfigurationError, "Could not load UA Service configuration file.\r\nPATH={0}", filePath);
+                    configuration = ApplicationInstance.LoadAppConfig(false, filePath, m_applicationType,
+                        m_configurationType, true);
+                } catch (Exception e) {
+                    ServiceResult error = ServiceResult.Create(e, StatusCodes.BadConfigurationError,
+                        "Could not load UA Service configuration file.\r\nPATH={0}", filePath);
                     this.EventLog.WriteEntry(error.ToLongString(), EventLogEntryType.Error);
                 }
 
-                try
-                {
-                    if (configuration.SecurityConfiguration != null && configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)                   
-                    {
-                        configuration.CertificateValidator.CertificateValidation += CertificateValidator_CertificateValidation;
+                try {
+                    if (configuration.SecurityConfiguration != null &&
+                        configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates) {
+                        configuration.CertificateValidator.CertificateValidation +=
+                            CertificateValidator_CertificateValidation;
                     }
 
                     m_server.Start(configuration);
                     // this.EventLog.WriteEntry("SERVICE STARTED! " + this.m_configSectionName, EventLogEntryType.Information);
-                }
-                catch (Exception e)
-                {
-                    ServiceResult error = ServiceResult.Create(e, StatusCodes.BadConfigurationError, "Could not start UA Service.");
+                } catch (Exception e) {
+                    ServiceResult error = ServiceResult.Create(e, StatusCodes.BadConfigurationError,
+                        "Could not start UA Service.");
                     this.EventLog.WriteEntry(error.ToLongString(), EventLogEntryType.Error);
-                    Utils.Trace((int)Utils.TraceMasks.Error, error.ToLongString());
+                    Utils.Trace((int) Utils.TraceMasks.Error, error.ToLongString());
                 }
             }
 
             #endregion
 
             #region Private Fields
+
             private ServerBase m_server;
             private string m_configSectionName;
             private ApplicationType m_applicationType;
             private Type m_configurationType;
+
             #endregion
         }
+
         #endregion
 
         #region ArgumentDescription Class
+
         /// <summary>
         /// Stores the description of an argument.
         /// </summary>
-        protected class ArgumentDescription
-        {
+        protected class ArgumentDescription {
             /// <summary>
             /// The argument name.
             /// </summary>
@@ -594,11 +546,10 @@ namespace Opc.Ua.Configuration
             /// <param name="valueAllowed">if set to <c>true</c> a value is allowed.</param>
             /// <param name="description">The description.</param>
             public ArgumentDescription(
-                 string name,
-                 bool valueRequired,
-                 bool valueAllowed,
-                 string description)
-            {
+                string name,
+                bool valueRequired,
+                bool valueAllowed,
+                string description) {
                 Name = name;
                 ValueRequired = valueRequired;
                 ValueAllowed = valueAllowed;
@@ -606,49 +557,46 @@ namespace Opc.Ua.Configuration
             }
         }
 
-        private static ArgumentDescription[] s_SupportedArguments = new ArgumentDescription[]
-        {            
-            new ArgumentDescription("/start", false, false, "Starts the application as a service (/start [/silent] [/configFile:<filepath>])."),
-            new ArgumentDescription("/install", false, false, "Installs the application (/install [/silent] [/configFile:<filepath>])."),
-            new ArgumentDescription("/uninstall", false, false, "Uninstalls the application (/uninstall [/silent] [/configFile:<filepath>])."),
-            new ArgumentDescription("/silent", false, false, "Performs operations without prompting user to confirm or displaying errors."),
+        private static ArgumentDescription[] s_SupportedArguments = new ArgumentDescription[] {
+            new ArgumentDescription("/start", false, false,
+                "Starts the application as a service (/start [/silent] [/configFile:<filepath>])."),
+            new ArgumentDescription("/install", false, false,
+                "Installs the application (/install [/silent] [/configFile:<filepath>])."),
+            new ArgumentDescription("/uninstall", false, false,
+                "Uninstalls the application (/uninstall [/silent] [/configFile:<filepath>])."),
+            new ArgumentDescription("/silent", false, false,
+                "Performs operations without prompting user to confirm or displaying errors."),
             new ArgumentDescription("/configFile", true, true, "Specifies the installation configuration file."),
         };
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Gets the descriptions for the supported arguments.
         /// </summary>
-        protected virtual ArgumentDescription[] GetArgumentDescriptions()
-        {
+        protected virtual ArgumentDescription[] GetArgumentDescriptions() {
             return s_SupportedArguments;
         }
 
         /// <summary>
         /// Gets the help string.
         /// </summary>
-        protected virtual string GetHelpString(ArgumentDescription[] commands)
-        {
+        protected virtual string GetHelpString(ArgumentDescription[] commands) {
             StringBuilder text = new StringBuilder();
             text.Append("These are the supported arguments:\r\n");
 
-            for (int ii = 0; ii < commands.Length; ii++)
-            {
+            for (int ii = 0; ii < commands.Length; ii++) {
                 ArgumentDescription command = commands[ii];
 
                 text.Append("\r\n");
 
-                if (command.ValueRequired)
-                {
+                if (command.ValueRequired) {
                     text.AppendFormat("{0}:<value> {1}", command.Name, command.Description);
-                }
-                else if (command.ValueAllowed)
-                {
+                } else if (command.ValueAllowed) {
                     text.AppendFormat("{0}[:<value>] {1}", command.Name, command.Description);
-                }
-                else
-                {
+                } else {
                     text.AppendFormat("{0} {1}", command.Name, command.Description);
                 }
             }
@@ -660,38 +608,30 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Validates the arguments.
         /// </summary>
-        protected virtual string ValidateArguments(bool ignoreUnknownArguments, Dictionary<string, string> args)
-        {
+        protected virtual string ValidateArguments(bool ignoreUnknownArguments, Dictionary<string, string> args) {
             ArgumentDescription[] commands = GetArgumentDescriptions();
 
             // check if help was requested.
-            if (args.ContainsKey("/?"))
-            {
+            if (args.ContainsKey("/?")) {
                 return GetHelpString(commands);
             }
 
             // validate the arguments.
             StringBuilder error = new StringBuilder();
 
-            foreach (KeyValuePair<string,string> arg in args)
-            {
+            foreach (KeyValuePair<string, string> arg in args) {
                 ArgumentDescription command = null;
 
-                for (int ii = 0; ii < commands.Length; ii++)
-                {
-                    if (String.Compare(commands[ii].Name, arg.Key, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
+                for (int ii = 0; ii < commands.Length; ii++) {
+                    if (String.Compare(commands[ii].Name, arg.Key, StringComparison.OrdinalIgnoreCase) == 0) {
                         command = commands[ii];
                         break;
                     }
                 }
 
-                if (command == null)
-                {
-                    if (!ignoreUnknownArguments)
-                    {
-                        if (error.Length > 0)
-                        {
+                if (command == null) {
+                    if (!ignoreUnknownArguments) {
+                        if (error.Length > 0) {
                             error.Append("\r\n");
                         }
 
@@ -701,10 +641,8 @@ namespace Opc.Ua.Configuration
                     continue;
                 }
 
-                if (command.ValueRequired && String.IsNullOrEmpty(arg.Value))
-                {
-                    if (error.Length > 0)
-                    {
+                if (command.ValueRequired && String.IsNullOrEmpty(arg.Value)) {
+                    if (error.Length > 0) {
                         error.Append("\r\n");
                     }
 
@@ -712,10 +650,8 @@ namespace Opc.Ua.Configuration
                     continue;
                 }
 
-                if (!command.ValueAllowed && !String.IsNullOrEmpty(arg.Value))
-                {
-                    if (error.Length > 0)
-                    {
+                if (!command.ValueAllowed && !String.IsNullOrEmpty(arg.Value)) {
+                    if (error.Length > 0) {
                         error.Append("\r\n");
                     }
 
@@ -732,89 +668,72 @@ namespace Opc.Ua.Configuration
         /// Updates the application configuration with the values from the installation configuration.
         /// </summary>
         /// <param name="configuration">The configuration to update.</param>
-        protected virtual void UpdateAppConfigWithInstallConfig(ApplicationConfiguration configuration)
-        {
+        protected virtual void UpdateAppConfigWithInstallConfig(ApplicationConfiguration configuration) {
             // override the application name.
-            if (InstallConfig.ApplicationName != null)
-            {
-                if (configuration.SecurityConfiguration != null && configuration.SecurityConfiguration.ApplicationCertificate != null)
-                {
-                    if (configuration.SecurityConfiguration.ApplicationCertificate.SubjectName == configuration.ApplicationName)
-                    {
-                        configuration.SecurityConfiguration.ApplicationCertificate.SubjectName = InstallConfig.ApplicationName;
+            if (InstallConfig.ApplicationName != null) {
+                if (configuration.SecurityConfiguration != null &&
+                    configuration.SecurityConfiguration.ApplicationCertificate != null) {
+                    if (configuration.SecurityConfiguration.ApplicationCertificate.SubjectName ==
+                        configuration.ApplicationName) {
+                        configuration.SecurityConfiguration.ApplicationCertificate.SubjectName =
+                            InstallConfig.ApplicationName;
                     }
                 }
 
                 configuration.ApplicationName = InstallConfig.ApplicationName;
             }
 
-            if (InstallConfig.ApplicationUri != null)
-            {
+            if (InstallConfig.ApplicationUri != null) {
                 configuration.ApplicationUri = InstallConfig.ApplicationUri;
             }
 
             // replace localhost with the current machine name.
-            if (configuration.ApplicationUri != null)
-            {
+            if (configuration.ApplicationUri != null) {
                 int index = configuration.ApplicationUri.IndexOf("localhost", StringComparison.OrdinalIgnoreCase);
 
-                if (index != -1)
-                {
+                if (index != -1) {
                     StringBuilder buffer = new StringBuilder();
                     buffer.Append(configuration.ApplicationUri.Substring(0, index));
                     buffer.Append(System.Net.Dns.GetHostName());
-                    buffer.Append(configuration.ApplicationUri.Substring(index+"localhost".Length));
+                    buffer.Append(configuration.ApplicationUri.Substring(index + "localhost".Length));
                     configuration.ApplicationUri = buffer.ToString();
                 }
             }
 
             ServerBaseConfiguration serverConfiguration = null;
 
-            if (configuration.ServerConfiguration != null)
-            {
+            if (configuration.ServerConfiguration != null) {
                 serverConfiguration = configuration.ServerConfiguration;
-            }
-            else if (configuration.DiscoveryServerConfiguration != null)
-            {
+            } else if (configuration.DiscoveryServerConfiguration != null) {
                 serverConfiguration = configuration.DiscoveryServerConfiguration;
             }
 
-            if (serverConfiguration != null)
-            {
-                if (InstallConfig.BaseAddresses != null && InstallConfig.BaseAddresses.Count > 0)
-                {
+            if (serverConfiguration != null) {
+                if (InstallConfig.BaseAddresses != null && InstallConfig.BaseAddresses.Count > 0) {
                     Dictionary<string, string> addresses = new Dictionary<string, string>();
                     serverConfiguration.BaseAddresses.Clear();
 
-                    for (int ii = 0; ii < InstallConfig.BaseAddresses.Count; ii++)
-                    {
+                    for (int ii = 0; ii < InstallConfig.BaseAddresses.Count; ii++) {
                         Uri url = Utils.ParseUri(InstallConfig.BaseAddresses[ii]);
 
-                        if (url != null)
-                        {
-                            if (!addresses.ContainsKey(url.Scheme))
-                            {
+                        if (url != null) {
+                            if (!addresses.ContainsKey(url.Scheme)) {
                                 serverConfiguration.BaseAddresses.Add(url.ToString());
                                 addresses.Add(url.Scheme, String.Empty);
-                            }
-                            else
-                            {
+                            } else {
                                 serverConfiguration.AlternateBaseAddresses.Add(url.ToString());
                             }
                         }
                     }
                 }
 
-                if (InstallConfig.SecurityProfiles != null && InstallConfig.SecurityProfiles.Count > 0)
-                {
+                if (InstallConfig.SecurityProfiles != null && InstallConfig.SecurityProfiles.Count > 0) {
                     ServerSecurityPolicyCollection securityPolicies = new ServerSecurityPolicyCollection();
 
-                    for (int ii = 0; ii < InstallConfig.SecurityProfiles.Count; ii++)
-                    {
-                        for (int jj = 0; jj < serverConfiguration.SecurityPolicies.Count; jj++)
-                        {
-                            if (serverConfiguration.SecurityPolicies[jj].SecurityPolicyUri == InstallConfig.SecurityProfiles[ii].ProfileUri)
-                            {
+                    for (int ii = 0; ii < InstallConfig.SecurityProfiles.Count; ii++) {
+                        for (int jj = 0; jj < serverConfiguration.SecurityPolicies.Count; jj++) {
+                            if (serverConfiguration.SecurityPolicies[jj].SecurityPolicyUri ==
+                                InstallConfig.SecurityProfiles[ii].ProfileUri) {
                                 securityPolicies.Add(serverConfiguration.SecurityPolicies[jj]);
                             }
                         }
@@ -824,34 +743,40 @@ namespace Opc.Ua.Configuration
                 }
             }
 
-            if (InstallConfig.ApplicationCertificate != null)
-            {
-                configuration.SecurityConfiguration.ApplicationCertificate.StoreType = InstallConfig.ApplicationCertificate.StoreType;
-                configuration.SecurityConfiguration.ApplicationCertificate.StorePath = InstallConfig.ApplicationCertificate.StorePath;
+            if (InstallConfig.ApplicationCertificate != null) {
+                configuration.SecurityConfiguration.ApplicationCertificate.StoreType =
+                    InstallConfig.ApplicationCertificate.StoreType;
+                configuration.SecurityConfiguration.ApplicationCertificate.StorePath =
+                    InstallConfig.ApplicationCertificate.StorePath;
 
-                if (String.IsNullOrEmpty(InstallConfig.ApplicationCertificate.SubjectName))
-                {
-                    configuration.SecurityConfiguration.ApplicationCertificate.SubjectName = InstallConfig.ApplicationCertificate.SubjectName;
+                if (String.IsNullOrEmpty(InstallConfig.ApplicationCertificate.SubjectName)) {
+                    configuration.SecurityConfiguration.ApplicationCertificate.SubjectName =
+                        InstallConfig.ApplicationCertificate.SubjectName;
                 }
             }
 
-            if (InstallConfig.RejectedCertificatesStore != null)
-            {
-                configuration.SecurityConfiguration.RejectedCertificateStore = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(InstallConfig.RejectedCertificatesStore);
+            if (InstallConfig.RejectedCertificatesStore != null) {
+                configuration.SecurityConfiguration.RejectedCertificateStore =
+                    Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(InstallConfig
+                        .RejectedCertificatesStore);
             }
-            
-            if (InstallConfig.IssuerCertificateStore != null)
-            {
-                configuration.SecurityConfiguration.TrustedIssuerCertificates.StoreType = InstallConfig.IssuerCertificateStore.StoreType;
-                configuration.SecurityConfiguration.TrustedIssuerCertificates.StorePath = InstallConfig.IssuerCertificateStore.StorePath;
-                configuration.SecurityConfiguration.TrustedIssuerCertificates.ValidationOptions = (CertificateValidationOptions)(int)InstallConfig.IssuerCertificateStore.ValidationOptions;
+
+            if (InstallConfig.IssuerCertificateStore != null) {
+                configuration.SecurityConfiguration.TrustedIssuerCertificates.StoreType =
+                    InstallConfig.IssuerCertificateStore.StoreType;
+                configuration.SecurityConfiguration.TrustedIssuerCertificates.StorePath =
+                    InstallConfig.IssuerCertificateStore.StorePath;
+                configuration.SecurityConfiguration.TrustedIssuerCertificates.ValidationOptions =
+                    (CertificateValidationOptions) (int) InstallConfig.IssuerCertificateStore.ValidationOptions;
             }
-            
-            if (InstallConfig.TrustedCertificateStore != null)
-            {
-                configuration.SecurityConfiguration.TrustedPeerCertificates.StoreType = InstallConfig.TrustedCertificateStore.StoreType;
-                configuration.SecurityConfiguration.TrustedPeerCertificates.StorePath = InstallConfig.TrustedCertificateStore.StorePath;
-                configuration.SecurityConfiguration.TrustedPeerCertificates.ValidationOptions = (CertificateValidationOptions)(int)InstallConfig.TrustedCertificateStore.ValidationOptions;
+
+            if (InstallConfig.TrustedCertificateStore != null) {
+                configuration.SecurityConfiguration.TrustedPeerCertificates.StoreType =
+                    InstallConfig.TrustedCertificateStore.StoreType;
+                configuration.SecurityConfiguration.TrustedPeerCertificates.StorePath =
+                    InstallConfig.TrustedCertificateStore.StorePath;
+                configuration.SecurityConfiguration.TrustedPeerCertificates.ValidationOptions =
+                    (CertificateValidationOptions) (int) InstallConfig.TrustedCertificateStore.ValidationOptions;
             }
 
             configuration.CertificateValidator.Update(configuration);
@@ -862,24 +787,24 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="silent">if set to <c>true</c> no dialogs such be displayed.</param>
         /// <param name="args">Additional arguments provided on the command line.</param>
-        protected virtual void Install(bool silent, Dictionary<string, string> args)
-        {
+        protected virtual void Install(bool silent, Dictionary<string, string> args) {
             Utils.Trace(Utils.TraceMasks.Information, "Installing application.");
 
             // check the configuration.
             string filePath = Utils.GetAbsoluteFilePath(InstallConfig.ConfigurationFile, true, false, false);
 
-            if (filePath == null)
-            {
-                Utils.Trace("WARNING: Could not load config file specified in the installation configuration: {0}", InstallConfig.ConfigurationFile);
+            if (filePath == null) {
+                Utils.Trace("WARNING: Could not load config file specified in the installation configuration: {0}",
+                    InstallConfig.ConfigurationFile);
                 filePath = ApplicationConfiguration.GetFilePathFromAppConfig(ConfigSectionName);
                 InstallConfig.ConfigurationFile = filePath;
             }
 
-            ApplicationConfiguration configuration = LoadAppConfig(silent, filePath, Opc.Ua.Security.SecuredApplication.FromApplicationType(InstallConfig.ApplicationType), ConfigurationType, false);
+            ApplicationConfiguration configuration = LoadAppConfig(silent, filePath,
+                Opc.Ua.Security.SecuredApplication.FromApplicationType(InstallConfig.ApplicationType),
+                ConfigurationType, false);
 
-            if (configuration == null)
-            {
+            if (configuration == null) {
                 return;
             }
 
@@ -891,42 +816,37 @@ namespace Opc.Ua.Configuration
             // check the certificate.
             X509Certificate2 certificate = configuration.SecurityConfiguration.ApplicationCertificate.Find(true);
 
-            if (certificate != null)
-            {
-                if (!silent)
-                {
-                    if (!CheckApplicationInstanceCertificate(configuration, certificate, silent, InstallConfig.MinimumKeySize))
-                    {
+            if (certificate != null) {
+                if (!silent) {
+                    if (!CheckApplicationInstanceCertificate(configuration, certificate, silent,
+                        InstallConfig.MinimumKeySize)) {
                         certificate = null;
                     }
                 }
             }
 
             // create a new certificate.
-            if (certificate == null)
-            {
-                certificate = CreateApplicationInstanceCertificate(configuration, InstallConfig.MinimumKeySize, InstallConfig.LifeTimeInMonths);
+            if (certificate == null) {
+                certificate = CreateApplicationInstanceCertificate(configuration, InstallConfig.MinimumKeySize,
+                    InstallConfig.LifeTimeInMonths);
             }
 
             // ensure the certificate is trusted.
             AddToTrustedStore(configuration, certificate);
-            
+
             // add to discovery server.
-            if (configuration.ApplicationType == ApplicationType.Server || configuration.ApplicationType == ApplicationType.ClientAndServer)
-            {
-                try
-                {
-                    AddToDiscoveryServerTrustList(certificate, null, null, configuration.SecurityConfiguration.TrustedPeerCertificates);
-                }
-                catch (Exception e)
-                {
+            if (configuration.ApplicationType == ApplicationType.Server ||
+                configuration.ApplicationType == ApplicationType.ClientAndServer) {
+                try {
+                    AddToDiscoveryServerTrustList(certificate, null, null,
+                        configuration.SecurityConfiguration.TrustedPeerCertificates);
+                } catch (Exception e) {
                     Utils.Trace(e, "Could not add certificate to LDS trust list.");
                 }
             }
 
             // configure the firewall.
-            if (InstallConfig.ConfigureFirewall)
-            {
+            if (InstallConfig.ConfigureFirewall) {
                 ConfigureFirewall(configuration, silent, false);
             }
 
@@ -939,55 +859,52 @@ namespace Opc.Ua.Configuration
             // update configuration file.
             ConfigUtils.UpdateConfigurationLocation(InstallConfig.ExecutableFile, InstallConfig.ConfigurationFile);
 
-            try
-            {
+            try {
                 // ensure the RawData does not get serialized.
                 certificate = configuration.SecurityConfiguration.ApplicationCertificate.Certificate;
 
                 configuration.SecurityConfiguration.ApplicationCertificate.Certificate = null;
                 configuration.SecurityConfiguration.ApplicationCertificate.SubjectName = certificate.Subject;
-                configuration.SecurityConfiguration.ApplicationCertificate.Thumbprint  = certificate.Thumbprint;
+                configuration.SecurityConfiguration.ApplicationCertificate.Thumbprint = certificate.Thumbprint;
 
                 configuration.SaveToFile(configuration.SourceFilePath);
-                
+
                 // restore the configuration.
                 configuration.SecurityConfiguration.ApplicationCertificate.Certificate = certificate;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Could not save configuration file. FilePath={0}", configuration.SourceFilePath);
             }
 
-            if (!NoGdsAgentAdmin)
-            {
-                try
-                {
+            if (!NoGdsAgentAdmin) {
+                try {
                     // install the GDS agent configuration file
-                    string agentPath = Utils.GetAbsoluteDirectoryPath("%CommonApplicationData%\\OPC Foundation\\GDS\\Applications", false, false, true);
+                    string agentPath =
+                        Utils.GetAbsoluteDirectoryPath("%CommonApplicationData%\\OPC Foundation\\GDS\\Applications",
+                            false, false, true);
 
-                    if (agentPath != null)
-                    {
-                        Opc.Ua.Security.SecuredApplication export = new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configuration.SourceFilePath);
+                    if (agentPath != null) {
+                        Opc.Ua.Security.SecuredApplication export =
+                            new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configuration
+                                .SourceFilePath);
                         export.ExecutableFile = InstallConfig.ExecutableFile;
 
-                        DataContractSerializer serializer = new DataContractSerializer(typeof(Opc.Ua.Security.SecuredApplication));
+                        DataContractSerializer serializer =
+                            new DataContractSerializer(typeof(Opc.Ua.Security.SecuredApplication));
 
-                        using (FileStream ostrm = File.Open(agentPath + "\\" + configuration.ApplicationName + ".xml", FileMode.Create))
-                        {
+                        using (FileStream ostrm = File.Open(agentPath + "\\" + configuration.ApplicationName + ".xml",
+                            FileMode.Create)) {
                             serializer.WriteObject(ostrm, export);
                             Utils.Trace(Utils.TraceMasks.Information, "Created GDS agent configuration file.");
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    Utils.Trace(Utils.TraceMasks.Error, "Could not create GDS agent configuration file: {0}", e.Message);
+                } catch (Exception e) {
+                    Utils.Trace(Utils.TraceMasks.Error, "Could not create GDS agent configuration file: {0}",
+                        e.Message);
                 }
             }
 
             // install the service.
-            if (InstallConfig.InstallAsService)
-            {
+            if (InstallConfig.InstallAsService) {
                 Utils.Trace(Utils.TraceMasks.Information, "Installing service '{0}'.", InstallConfig.ApplicationName);
 
                 OnBeforeInstallService();
@@ -1004,20 +921,20 @@ namespace Opc.Ua.Configuration
                     InstallConfig.ServicePassword,
                     ref start);
 
-                if (!result)
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "Could not install service.");
+                if (!result) {
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                        "Could not install service.");
                 }
 
-                Utils.Trace(Utils.TraceMasks.Information, "Service '{0}' installed as {1}.", InstallConfig.ApplicationName, InstallConfig.ServiceStartMode);
+                Utils.Trace(Utils.TraceMasks.Information, "Service '{0}' installed as {1}.",
+                    InstallConfig.ApplicationName, InstallConfig.ServiceStartMode);
             }
         }
 
         /// <summary>
         /// Called immediately before the service is installed.
         /// </summary>
-        protected virtual void OnBeforeInstallService()
-        {
+        protected virtual void OnBeforeInstallService() {
             // can be overridden in child class.
         }
 
@@ -1026,23 +943,23 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="silent">if set to <c>true</c> no dialogs such be displayed.</param>
         /// <param name="args">Additional arguments provided on the command line.</param>
-        protected virtual void Uninstall(bool silent, Dictionary<string, string> args)
-        {
+        protected virtual void Uninstall(bool silent, Dictionary<string, string> args) {
             // check the configuration.
             string filePath = Utils.GetAbsoluteFilePath(InstallConfig.ConfigurationFile, true, false, false);
 
-            if (filePath == null)
-            {
-                Utils.Trace("WARNING: Could not load config file specified in the installation configuration: {0}", InstallConfig.ConfigurationFile);
+            if (filePath == null) {
+                Utils.Trace("WARNING: Could not load config file specified in the installation configuration: {0}",
+                    InstallConfig.ConfigurationFile);
                 filePath = ApplicationConfiguration.GetFilePathFromAppConfig(ConfigSectionName);
                 InstallConfig.ConfigurationFile = filePath;
             }
 
-            ApplicationConfiguration configuration = LoadAppConfig(silent, filePath, Opc.Ua.Security.SecuredApplication.FromApplicationType(InstallConfig.ApplicationType), ConfigurationType, false);
+            ApplicationConfiguration configuration = LoadAppConfig(silent, filePath,
+                Opc.Ua.Security.SecuredApplication.FromApplicationType(InstallConfig.ApplicationType),
+                ConfigurationType, false);
             ApplicationConfiguration = configuration;
 
-            if (configuration != null)
-            {
+            if (configuration != null) {
                 // configure the firewall.
                 ConfigureFirewall(configuration, false, true);
 
@@ -1050,34 +967,29 @@ namespace Opc.Ua.Configuration
                 ConfigureHttpAccess(configuration, true);
 
                 // delete certificate.
-                if (InstallConfig.DeleteCertificatesOnUninstall)
-                {
+                if (InstallConfig.DeleteCertificatesOnUninstall) {
                     DeleteApplicationInstanceCertificate(configuration);
-                }            
+                }
             }
 
-            if (InstallConfig.InstallAsService)
-            {
-                if (!Opc.Ua.Configuration.ServiceInstaller.UnInstallService(InstallConfig.ApplicationName))
-                {
+            if (InstallConfig.InstallAsService) {
+                if (!Opc.Ua.Configuration.ServiceInstaller.UnInstallService(InstallConfig.ApplicationName)) {
                     Utils.Trace("Service could not be uninstalled.");
                 }
             }
 
-            if (!NoGdsAgentAdmin)
-            {
-                try
-                {
-                    string agentPath = Utils.GetAbsoluteDirectoryPath("%CommonApplicationData%\\OPC Foundation\\GDS\\Applications", false, false, false);
+            if (!NoGdsAgentAdmin) {
+                try {
+                    string agentPath =
+                        Utils.GetAbsoluteDirectoryPath("%CommonApplicationData%\\OPC Foundation\\GDS\\Applications",
+                            false, false, false);
 
-                    if (agentPath != null)
-                    {
+                    if (agentPath != null) {
                         File.Delete(agentPath + "\\" + configuration.ApplicationName + ".xml");
                     }
-                }
-                catch (Exception e)
-                {
-                    Utils.Trace(Utils.TraceMasks.Error, "Could not create GDS agent configuration file: {0}", e.Message);
+                } catch (Exception e) {
+                    Utils.Trace(Utils.TraceMasks.Error, "Could not create GDS agent configuration file: {0}",
+                        e.Message);
                 }
             }
         }
@@ -1088,46 +1000,41 @@ namespace Opc.Ua.Configuration
         /// <param name="silent">if set to <c>true</c> no dialogs such be displayed.</param>
         /// <param name="args">Additional arguments provided on the command line.</param>
         /// <returns>True if the command was processed.</returns>
-        protected virtual bool ProcessCommand(bool silent, Dictionary<string, string> args)
-        {
+        protected virtual bool ProcessCommand(bool silent, Dictionary<string, string> args) {
             return false;
         }
+
         #endregion
 
         #region Static Methods
+
         /// <summary>
         /// Loads the configuration.
         /// </summary>
         public static ApplicationConfiguration LoadAppConfig(
-            bool silent, 
+            bool silent,
             string filePath,
             ApplicationType applicationType,
-            Type configurationType, 
-            bool applyTraceSettings)
-        {
+            Type configurationType,
+            bool applyTraceSettings) {
             Utils.Trace(Utils.TraceMasks.Information, "Loading application configuration file. {0}", filePath);
 
-            try
-            {
+            try {
                 // load the configuration file.
                 ApplicationConfiguration configuration = ApplicationConfiguration.Load(
-                    new System.IO.FileInfo(filePath), 
+                    new System.IO.FileInfo(filePath),
                     applicationType,
                     configurationType,
                     applyTraceSettings);
 
-                if (configuration == null)
-                {
+                if (configuration == null) {
                     return null;
                 }
 
                 return configuration;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // warn user.
-                if (!silent)
-                {
+                if (!silent) {
                     ExceptionDlg.Show("Load Application Configuration", e);
                 }
 
@@ -1139,13 +1046,13 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Loads the application configuration.
         /// </summary>
-        public ApplicationConfiguration LoadApplicationConfiguration(string filePath, bool silent)
-        {
-            ApplicationConfiguration configuration = LoadAppConfig(silent, filePath, ApplicationType, ConfigurationType, true);
+        public ApplicationConfiguration LoadApplicationConfiguration(string filePath, bool silent) {
+            ApplicationConfiguration configuration =
+                LoadAppConfig(silent, filePath, ApplicationType, ConfigurationType, true);
 
-            if (configuration == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "Could not load configuration file.");
+            if (configuration == null) {
+                throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                    "Could not load configuration file.");
             }
 
             m_applicationConfiguration = configuration;
@@ -1156,14 +1063,14 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Loads the application configuration.
         /// </summary>
-        public ApplicationConfiguration LoadApplicationConfiguration(bool silent)
-        {
+        public ApplicationConfiguration LoadApplicationConfiguration(bool silent) {
             string filePath = ApplicationConfiguration.GetFilePathFromAppConfig(ConfigSectionName);
-            ApplicationConfiguration configuration = LoadAppConfig(silent, filePath, ApplicationType, ConfigurationType, true);
+            ApplicationConfiguration configuration =
+                LoadAppConfig(silent, filePath, ApplicationType, ConfigurationType, true);
 
-            if (configuration == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "Could not load configuration file.");
+            if (configuration == null) {
+                throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                    "Could not load configuration file.");
             }
 
             m_applicationConfiguration = configuration;
@@ -1178,14 +1085,12 @@ namespace Opc.Ua.Configuration
         /// <param name="minimumKeySize">Minimum size of the key.</param>
         public void CheckApplicationInstanceCertificate(
             bool silent,
-            ushort minimumKeySize)
-        {
+            ushort minimumKeySize) {
             Utils.Trace(Utils.TraceMasks.Information, "Checking application instance certificate.");
 
             ApplicationConfiguration configuration = null;
 
-            if (m_applicationConfiguration == null)
-            {
+            if (m_applicationConfiguration == null) {
                 LoadApplicationConfiguration(silent);
             }
 
@@ -1195,33 +1100,29 @@ namespace Opc.Ua.Configuration
             // find the existing certificate.
             CertificateIdentifier id = configuration.SecurityConfiguration.ApplicationCertificate;
 
-            if (id == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "Configuration file does not specify a certificate.");
+            if (id == null) {
+                throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                    "Configuration file does not specify a certificate.");
             }
 
             X509Certificate2 certificate = id.Find(true);
 
             // check that it is ok.
-            if (certificate != null)
-            {
-                createNewCertificate = !CheckApplicationInstanceCertificate(configuration, certificate, silent, minimumKeySize);
-            }
-            else
-            {
+            if (certificate != null) {
+                createNewCertificate =
+                    !CheckApplicationInstanceCertificate(configuration, certificate, silent, minimumKeySize);
+            } else {
                 // check for missing private key.
                 certificate = id.Find(false);
 
-                if (certificate != null)
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "Cannot access certificate private key. Subject={0}", certificate.Subject);
+                if (certificate != null) {
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                        "Cannot access certificate private key. Subject={0}", certificate.Subject);
                 }
 
                 // check for missing thumbprint.
-                if (!String.IsNullOrEmpty(id.Thumbprint))
-                {
-                    if (!String.IsNullOrEmpty(id.SubjectName))
-                    {
+                if (!String.IsNullOrEmpty(id.Thumbprint)) {
+                    if (!String.IsNullOrEmpty(id.SubjectName)) {
                         CertificateIdentifier id2 = new CertificateIdentifier();
                         id2.StoreType = id.StoreType;
                         id2.StorePath = id.StorePath;
@@ -1230,8 +1131,7 @@ namespace Opc.Ua.Configuration
                         certificate = id2.Find(true);
                     }
 
-                    if (certificate != null)
-                    {
+                    if (certificate != null) {
                         string message = Utils.Format(
                             "Thumbprint was explicitly specified in the configuration." +
                             "\r\nAnother certificate with the same subject name was found." +
@@ -1242,57 +1142,53 @@ namespace Opc.Ua.Configuration
                             certificate.Subject);
 
                         throw ServiceResultException.Create(StatusCodes.BadConfigurationError, message);
-                    }
-                    else
-                    {
-                        string message = Utils.Format("Thumbprint was explicitly specified in the configuration. Cannot generate a new certificate.");
+                    } else {
+                        string message =
+                            Utils.Format(
+                                "Thumbprint was explicitly specified in the configuration. Cannot generate a new certificate.");
                         throw ServiceResultException.Create(StatusCodes.BadConfigurationError, message);
                     }
-                }
-                else
-                {
-                    if (String.IsNullOrEmpty(id.SubjectName))
-                    {
-                        string message = Utils.Format("Both SubjectName and Thumbprint are not specified in the configuration. Cannot generate a new certificate.");
+                } else {
+                    if (String.IsNullOrEmpty(id.SubjectName)) {
+                        string message =
+                            Utils.Format(
+                                "Both SubjectName and Thumbprint are not specified in the configuration. Cannot generate a new certificate.");
                         throw ServiceResultException.Create(StatusCodes.BadConfigurationError, message);
                     }
                 }
             }
-            
+
             // create a new certificate.
-            if (createNewCertificate)
-            {
+            if (createNewCertificate) {
                 certificate = CreateApplicationInstanceCertificate(configuration, minimumKeySize, 600);
             }
 
             // ensure it is trusted.
-            else
-            {
+            else {
                 AddToTrustedStore(configuration, certificate);
             }
 
             // add to discovery server.
-            if (configuration.ApplicationType == ApplicationType.Server || configuration.ApplicationType == ApplicationType.ClientAndServer)
-            {
-                try
-                {
-                    AddToDiscoveryServerTrustList(certificate, null, null, configuration.SecurityConfiguration.TrustedPeerCertificates);
-                }
-                catch (Exception e)
-                {
+            if (configuration.ApplicationType == ApplicationType.Server ||
+                configuration.ApplicationType == ApplicationType.ClientAndServer) {
+                try {
+                    AddToDiscoveryServerTrustList(certificate, null, null,
+                        configuration.SecurityConfiguration.TrustedPeerCertificates);
+                } catch (Exception e) {
                     Utils.Trace(e, "Could not add certificate to LDS trust list.");
                 }
             }
         }
+
         #endregion
 
         #region HTTPS Support
+
         /// <summary>
         /// Uses the UA validation logic for HTTPS certificates.
         /// </summary>
         /// <param name="validator">The validator.</param>
-        public static void SetUaValidationForHttps(CertificateValidator validator)
-        {
+        public static void SetUaValidationForHttps(CertificateValidator validator) {
             m_validator = validator;
             System.Net.ServicePointManager.ServerCertificateValidationCallback = HttpsCertificateValidation;
         }
@@ -1304,39 +1200,34 @@ namespace Opc.Ua.Configuration
             object sender,
             X509Certificate cert,
             X509Chain chain,
-            System.Net.Security.SslPolicyErrors error)
-        {
-            try
-            {
+            System.Net.Security.SslPolicyErrors error) {
+            try {
                 m_validator.Validate(new X509Certificate2(cert.GetRawCertData()));
                 return true;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Could not verify SSL certificate: {0}", cert.Subject);
                 return false;
             }
         }
 
         private static CertificateValidator m_validator;
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Handles a certificate validation error.
         /// </summary>
-        private static void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
-            try
-            {
-                if (e.Error != null && e.Error.Code == StatusCodes.BadCertificateUntrusted)
-                {
+        private static void CertificateValidator_CertificateValidation(CertificateValidator validator,
+            CertificateValidationEventArgs e) {
+            try {
+                if (e.Error != null && e.Error.Code == StatusCodes.BadCertificateUntrusted) {
                     e.Accept = true;
-                    Utils.Trace((int)Utils.TraceMasks.Security, "Automatically accepted certificate: {0}", e.Certificate.Subject);
+                    Utils.Trace((int) Utils.TraceMasks.Security, "Automatically accepted certificate: {0}",
+                        e.Certificate.Subject);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 Utils.Trace(exception, "Error accepting certificate.");
             }
         }
@@ -1348,21 +1239,19 @@ namespace Opc.Ua.Configuration
             ApplicationConfiguration configuration,
             X509Certificate2 certificate,
             bool silent,
-            ushort minimumKeySize)
-        {
-            if (certificate == null)
-            {
+            ushort minimumKeySize) {
+            if (certificate == null) {
                 return false;
             }
 
-            Utils.Trace(Utils.TraceMasks.Information, "Checking application instance certificate. {0}", certificate.Subject);
+            Utils.Trace(Utils.TraceMasks.Information, "Checking application instance certificate. {0}",
+                certificate.Subject);
 
             // validate certificate.
             configuration.CertificateValidator.Validate(certificate);
 
             // check key size.
-            if (minimumKeySize > certificate.PublicKey.Key.KeySize)
-            {
+            if (minimumKeySize > certificate.PublicKey.Key.KeySize) {
                 bool valid = false;
 
                 string message = Utils.Format(
@@ -1370,27 +1259,23 @@ namespace Opc.Ua.Configuration
                     certificate.PublicKey.Key.KeySize,
                     minimumKeySize);
 
-                if (!silent)
-                {
-                    if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                    {
+                if (!silent) {
+                    if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning) != DialogResult.Yes) {
                         valid = true;
                     }
                 }
 
                 Utils.Trace(message);
 
-                if (!valid)
-                {
+                if (!valid) {
                     return false;
                 }
             }
 
             // check domains.
-            if (configuration.ApplicationType != ApplicationType.Client)
-            {
-                if (!CheckDomainsInCertificate(configuration, certificate, silent))
-                {
+            if (configuration.ApplicationType != ApplicationType.Client) {
+                if (!CheckDomainsInCertificate(configuration, certificate, silent)) {
                     return false;
                 }
             }
@@ -1398,28 +1283,25 @@ namespace Opc.Ua.Configuration
             // update uri.
             string applicationUri = Utils.GetApplicationUriFromCertficate(certificate);
 
-            if (String.IsNullOrEmpty(applicationUri))
-            {
+            if (String.IsNullOrEmpty(applicationUri)) {
                 bool valid = false;
 
                 string message = "The Application URI is not specified in the certificate. Update certificate?";
 
-                if (!silent)
-                {
-                    if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                    {
+                if (!silent) {
+                    if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning) != DialogResult.Yes) {
                         valid = true;
                     }
                 }
 
                 Utils.Trace(message);
 
-                if (!valid)
-                {
+                if (!valid) {
                     return false;
                 }
             }
-            
+
             // update configuration.
             configuration.ApplicationUri = applicationUri;
             configuration.SecurityConfiguration.ApplicationCertificate.Certificate = certificate;
@@ -1433,8 +1315,7 @@ namespace Opc.Ua.Configuration
         private static bool CheckDomainsInCertificate(
             ApplicationConfiguration configuration,
             X509Certificate2 certificate,
-            bool silent)
-        {
+            bool silent) {
             Utils.Trace(Utils.TraceMasks.Information, "Checking domains in certificate. {0}", certificate.Subject);
 
             bool valid = true;
@@ -1447,49 +1328,39 @@ namespace Opc.Ua.Configuration
             // get DNS aliases and IP addresses.
             System.Net.IPHostEntry entry = System.Net.Dns.GetHostEntry(computerName);
 
-            for (int ii = 0; ii < serverDomainNames.Count; ii++)
-            {
-                if (Utils.FindStringIgnoreCase(certificateDomainNames, serverDomainNames[ii]))
-                {
+            for (int ii = 0; ii < serverDomainNames.Count; ii++) {
+                if (Utils.FindStringIgnoreCase(certificateDomainNames, serverDomainNames[ii])) {
                     continue;
                 }
 
-                if (String.Compare(serverDomainNames[ii], "localhost", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    if (Utils.FindStringIgnoreCase(certificateDomainNames, computerName))
-                    {
+                if (String.Compare(serverDomainNames[ii], "localhost", StringComparison.OrdinalIgnoreCase) == 0) {
+                    if (Utils.FindStringIgnoreCase(certificateDomainNames, computerName)) {
                         continue;
                     }
 
                     // check for aliases.
                     bool found = false;
 
-                    for (int jj = 0; jj < entry.Aliases.Length; jj++)
-                    {
-                        if (Utils.FindStringIgnoreCase(certificateDomainNames, entry.Aliases[jj]))
-                        {
+                    for (int jj = 0; jj < entry.Aliases.Length; jj++) {
+                        if (Utils.FindStringIgnoreCase(certificateDomainNames, entry.Aliases[jj])) {
                             found = true;
                             break;
                         }
                     }
 
-                    if (found)
-                    {
+                    if (found) {
                         continue;
                     }
 
                     // check for ip addresses.
-                    for (int jj = 0; jj < entry.AddressList.Length; jj++)
-                    {
-                        if (Utils.FindStringIgnoreCase(certificateDomainNames, entry.AddressList[jj].ToString()))
-                        {
+                    for (int jj = 0; jj < entry.AddressList.Length; jj++) {
+                        if (Utils.FindStringIgnoreCase(certificateDomainNames, entry.AddressList[jj].ToString())) {
                             found = true;
                             break;
                         }
                     }
 
-                    if (found)
-                    {
+                    if (found) {
                         continue;
                     }
                 }
@@ -1500,10 +1371,9 @@ namespace Opc.Ua.Configuration
 
                 valid = false;
 
-                if (!silent)
-                {
-                    if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                    {
+                if (!silent) {
+                    if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning) != DialogResult.Yes) {
                         valid = true;
                         continue;
                     }
@@ -1522,32 +1392,25 @@ namespace Opc.Ua.Configuration
         /// <param name="configuration">The configuration.</param>
         /// <param name="silent">if set to <c>true</c> if no dialogs should be displayed.</param>
         /// <param name="remove">if set to <c>true</c> if removing permissions.</param>
-        private static void ConfigureFirewall(ApplicationConfiguration configuration, bool silent, bool remove)
-        {
+        private static void ConfigureFirewall(ApplicationConfiguration configuration, bool silent, bool remove) {
             Utils.Trace(Utils.TraceMasks.Information, "Configuring firewall.");
 
             // check for ports to open/close.
             StringCollection baseAddresses = new StringCollection();
 
-            if (configuration.ServerConfiguration != null)
-            {
+            if (configuration.ServerConfiguration != null) {
                 baseAddresses = configuration.ServerConfiguration.BaseAddresses;
             }
 
-            if (configuration.DiscoveryServerConfiguration != null)
-            {
+            if (configuration.DiscoveryServerConfiguration != null) {
                 baseAddresses = configuration.DiscoveryServerConfiguration.BaseAddresses;
             }
 
             // remove access.
-            if (remove)
-            {
-                try
-                {
+            if (remove) {
+                try {
                     ConfigUtils.RemoveFirewallAccess(Application.ExecutablePath, baseAddresses);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Utils.Trace(e, "Unexpected error while removing firewall access.");
                 }
 
@@ -1555,31 +1418,27 @@ namespace Opc.Ua.Configuration
             }
 
             // enable access.
-            try
-            {
+            try {
                 // check if firewall needs configuration.
-                if (!ConfigUtils.CheckFirewallAccess(Application.ExecutablePath, baseAddresses))
-                {
+                if (!ConfigUtils.CheckFirewallAccess(Application.ExecutablePath, baseAddresses)) {
                     bool configure = true;
 
-                    if (!silent)
-                    {
-                        string message = "The firewall has not been configured to allow external access to the server. Configure firewall?";
+                    if (!silent) {
+                        string message =
+                            "The firewall has not been configured to allow external access to the server. Configure firewall?";
 
-                        if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                        {
+                        if (MessageBox.Show(message, configuration.ApplicationName, MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question) != DialogResult.Yes) {
                             configure = false;
                         }
                     }
 
-                    if (configure)
-                    {
-                        ConfigUtils.SetFirewallAccess(configuration.ApplicationName, Application.ExecutablePath, baseAddresses);
+                    if (configure) {
+                        ConfigUtils.SetFirewallAccess(configuration.ApplicationName, Application.ExecutablePath,
+                            baseAddresses);
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error while checking or changing the firewall configuration.");
             }
         }
@@ -1592,11 +1451,11 @@ namespace Opc.Ua.Configuration
         /// <param name="lifetimeInMonths">The lifetime in months.</param>
         /// <returns>The new certificate</returns>
         private static X509Certificate2 CreateApplicationInstanceCertificate(
-            ApplicationConfiguration configuration, 
-            ushort keySize, 
-            ushort lifetimeInMonths)
-        {
-            Utils.Trace(Utils.TraceMasks.Information, "Creating application instance certificate. KeySize={0}, Lifetime={1}", keySize, lifetimeInMonths);
+            ApplicationConfiguration configuration,
+            ushort keySize,
+            ushort lifetimeInMonths) {
+            Utils.Trace(Utils.TraceMasks.Information,
+                "Creating application instance certificate. KeySize={0}, Lifetime={1}", keySize, lifetimeInMonths);
 
             // delete existing any existing certificate.
             DeleteApplicationInstanceCertificate(configuration);
@@ -1606,14 +1465,12 @@ namespace Opc.Ua.Configuration
             // get the domains from the configuration file.
             IList<string> serverDomainNames = configuration.GetServerDomainNames();
 
-            if (serverDomainNames.Count == 0)
-            {
+            if (serverDomainNames.Count == 0) {
                 serverDomainNames.Add(System.Net.Dns.GetHostName());
             }
 
             // ensure the certificate store directory exists.
-            if (id.StoreType == CertificateStoreType.Directory)
-            {
+            if (id.StoreType == CertificateStoreType.Directory) {
                 Utils.GetAbsoluteDirectoryPath(id.StorePath, true, true, true);
             }
 
@@ -1672,15 +1529,13 @@ namespace Opc.Ua.Configuration
         /// Deletes an existing application instance certificate.
         /// </summary>
         /// <param name="configuration">The configuration instance that stores the configurable information for a UA application.</param>
-        private static void DeleteApplicationInstanceCertificate(ApplicationConfiguration configuration)
-        {
+        private static void DeleteApplicationInstanceCertificate(ApplicationConfiguration configuration) {
             Utils.Trace(Utils.TraceMasks.Information, "Deleting application instance certificate.");
 
             // create a default certificate id none specified.
             CertificateIdentifier id = configuration.SecurityConfiguration.ApplicationCertificate;
 
-            if (id == null)
-            {
+            if (id == null) {
                 return;
             }
 
@@ -1688,26 +1543,23 @@ namespace Opc.Ua.Configuration
             X509Certificate2 certificate = id.Find();
 
             // delete trusted peer certificate.
-            if (configuration.SecurityConfiguration != null && configuration.SecurityConfiguration.TrustedPeerCertificates != null)
-            {
+            if (configuration.SecurityConfiguration != null &&
+                configuration.SecurityConfiguration.TrustedPeerCertificates != null) {
                 string thumbprint = id.Thumbprint;
 
-                if (certificate != null)
-                {
+                if (certificate != null) {
                     thumbprint = certificate.Thumbprint;
                 }
 
-                using (ICertificateStore store = configuration.SecurityConfiguration.TrustedPeerCertificates.OpenStore())
-                {
+                using (ICertificateStore store =
+                    configuration.SecurityConfiguration.TrustedPeerCertificates.OpenStore()) {
                     store.Delete(thumbprint);
                 }
             }
 
             // delete private key.
-            if (certificate != null)
-            {
-                using (ICertificateStore store = id.OpenStore())
-                {
+            if (certificate != null) {
+                using (ICertificateStore store = id.OpenStore()) {
                     store.Delete(certificate.Thumbprint);
                 }
             }
@@ -1720,40 +1572,42 @@ namespace Opc.Ua.Configuration
             X509Certificate2 certificate,
             string oldThumbprint,
             IList<X509Certificate2> issuers,
-            CertificateStoreIdentifier trustedCertificateStore)
-        {
+            CertificateStoreIdentifier trustedCertificateStore) {
             Utils.Trace(Utils.TraceMasks.Information, "Adding certificate to discovery server trust list.");
 
-            try
-            {
-                string configurationPath = Utils.GetAbsoluteFilePath(@"%CommonApplicationData%\OPC Foundation\Config\Opc.Ua.DiscoveryServer.Config.xml", true, false, false);
+            try {
+                string configurationPath = Utils.GetAbsoluteFilePath(
+                    @"%CommonApplicationData%\OPC Foundation\Config\Opc.Ua.DiscoveryServer.Config.xml", true, false,
+                    false);
 
-                if (configurationPath == null)
-                {
-                    throw new ServiceResultException("Could not find the discovery server configuration file. Please confirm that it is installed.");
+                if (configurationPath == null) {
+                    throw new ServiceResultException(
+                        "Could not find the discovery server configuration file. Please confirm that it is installed.");
                 }
 
-                Opc.Ua.Security.SecuredApplication ldsConfiguration = new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configurationPath);
-                CertificateStoreIdentifier csid = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(ldsConfiguration.TrustedCertificateStore);
+                Opc.Ua.Security.SecuredApplication ldsConfiguration =
+                    new Opc.Ua.Security.SecurityConfigurationManager().ReadConfiguration(configurationPath);
+                CertificateStoreIdentifier csid =
+                    Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(ldsConfiguration
+                        .TrustedCertificateStore);
                 AddApplicationCertificateToStore(csid, certificate, oldThumbprint);
 
-                if (issuers != null && ldsConfiguration.IssuerCertificateStore != null)
-                {
-                    csid = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(ldsConfiguration.IssuerCertificateStore);
+                if (issuers != null && ldsConfiguration.IssuerCertificateStore != null) {
+                    csid = Opc.Ua.Security.SecuredApplication.FromCertificateStoreIdentifier(ldsConfiguration
+                        .IssuerCertificateStore);
                     AddIssuerCertificatesToStore(csid, issuers);
                 }
 
-                CertificateIdentifier cid = Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(ldsConfiguration.ApplicationCertificate);
+                CertificateIdentifier cid =
+                    Opc.Ua.Security.SecuredApplication.FromCertificateIdentifier(
+                        ldsConfiguration.ApplicationCertificate);
                 X509Certificate2 ldsCertificate = cid.Find(false);
 
                 // add LDS certificate to application trust list.
-                if (ldsCertificate != null && trustedCertificateStore != null)
-                {
+                if (ldsCertificate != null && trustedCertificateStore != null) {
                     AddApplicationCertificateToStore(csid, ldsCertificate, null);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Could not add certificate to discovery server trust list.");
             }
         }
@@ -1764,30 +1618,23 @@ namespace Opc.Ua.Configuration
         private static void AddApplicationCertificateToStore(
             CertificateStoreIdentifier csid,
             X509Certificate2 certificate,
-            string oldThumbprint)
-        {
+            string oldThumbprint) {
             ICertificateStore store = csid.OpenStore();
 
-            try
-            {
+            try {
                 // delete the old certificate.
-                if (oldThumbprint != null)
-                {
+                if (oldThumbprint != null) {
                     store.Delete(oldThumbprint);
                 }
 
                 // delete certificates with the same application uri.
-                if (store.FindByThumbprint(certificate.Thumbprint) == null)
-                {
+                if (store.FindByThumbprint(certificate.Thumbprint) == null) {
                     string applicationUri = Utils.GetApplicationUriFromCertficate(certificate);
 
                     // delete any existing certificates.
-                    foreach (X509Certificate2 target in store.Enumerate())
-                    {
-                        if (Utils.CompareDistinguishedName(target.Subject, certificate.Subject))
-                        {
-                            if (Utils.GetApplicationUriFromCertficate(target) == applicationUri)
-                            {
+                    foreach (X509Certificate2 target in store.Enumerate()) {
+                        if (Utils.CompareDistinguishedName(target.Subject, certificate.Subject)) {
+                            if (Utils.GetApplicationUriFromCertficate(target) == applicationUri) {
                                 store.Delete(target.Thumbprint);
                             }
                         }
@@ -1796,9 +1643,7 @@ namespace Opc.Ua.Configuration
                     // add new certificate.
                     store.Add(new X509Certificate2(certificate.RawData));
                 }
-            }
-            finally
-            {
+            } finally {
                 store.Close();
             }
         }
@@ -1806,22 +1651,17 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Adds an application certificate to a store.
         /// </summary>
-        private static void AddIssuerCertificatesToStore(CertificateStoreIdentifier csid, IList<X509Certificate2> issuers)
-        {
+        private static void AddIssuerCertificatesToStore(CertificateStoreIdentifier csid,
+            IList<X509Certificate2> issuers) {
             ICertificateStore store = csid.OpenStore();
 
-            try
-            {
-                foreach (X509Certificate2 issuer in issuers)
-                {
-                    if (store.FindByThumbprint(issuer.Thumbprint) == null)
-                    {
+            try {
+                foreach (X509Certificate2 issuer in issuers) {
+                    if (store.FindByThumbprint(issuer.Thumbprint) == null) {
                         store.Add(issuer);
                     }
                 }
-            }
-            finally
-            {
+            } finally {
                 store.Close();
             }
         }
@@ -1831,54 +1671,46 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="configuration">The application's configuration which specifies the location of the TrustedStore.</param>
         /// <param name="certificate">The certificate to register.</param>
-        private static void AddToTrustedStore(ApplicationConfiguration configuration, X509Certificate2 certificate)
-        {
+        private static void AddToTrustedStore(ApplicationConfiguration configuration, X509Certificate2 certificate) {
             string storePath = null;
 
-            if (configuration != null && configuration.SecurityConfiguration != null && configuration.SecurityConfiguration.TrustedPeerCertificates != null)
-            {
+            if (configuration != null && configuration.SecurityConfiguration != null &&
+                configuration.SecurityConfiguration.TrustedPeerCertificates != null) {
                 storePath = configuration.SecurityConfiguration.TrustedPeerCertificates.StorePath;
             }
 
-            if (String.IsNullOrEmpty(storePath))
-            {
+            if (String.IsNullOrEmpty(storePath)) {
                 Utils.Trace(Utils.TraceMasks.Information, "WARNING: Trusted peer store not specified.");
                 return;
             }
 
-            try
-            {
+            try {
                 ICertificateStore store = configuration.SecurityConfiguration.TrustedPeerCertificates.OpenStore();
 
-                if (store == null)
-                {
+                if (store == null) {
                     Utils.Trace("Could not open trusted peer store. StorePath={0}", storePath);
                     return;
                 }
 
-                try
-                {
+                try {
                     // check if it already exists.
                     X509Certificate2 certificate2 = store.FindByThumbprint(certificate.Thumbprint);
 
-                    if (certificate2 != null)
-                    {
+                    if (certificate2 != null) {
                         return;
-                    } 
-                    
-                    Utils.Trace(Utils.TraceMasks.Information, "Adding certificate to trusted peer store. StorePath={0}", storePath);
+                    }
+
+                    Utils.Trace(Utils.TraceMasks.Information, "Adding certificate to trusted peer store. StorePath={0}",
+                        storePath);
 
                     List<string> subjectName = Utils.ParseDistinguishedName(certificate.Subject);
 
                     // check for old certificate.
                     X509Certificate2Collection certificates = store.Enumerate();
 
-                    for (int ii = 0; ii < certificates.Count; ii++)
-                    {
-                        if (Utils.CompareDistinguishedName(certificates[ii], subjectName))
-                        {
-                            if (certificates[ii].Thumbprint == certificate.Thumbprint)
-                            {
+                    for (int ii = 0; ii < certificates.Count; ii++) {
+                        if (Utils.CompareDistinguishedName(certificates[ii], subjectName)) {
+                            if (certificates[ii].Thumbprint == certificate.Thumbprint) {
                                 return;
                             }
 
@@ -1890,14 +1722,10 @@ namespace Opc.Ua.Configuration
                     // add new certificate.
                     X509Certificate2 publicKey = new X509Certificate2(certificate.GetRawCertData());
                     store.Add(publicKey);
-                }
-                finally
-                {
+                } finally {
                     store.Close();
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Could not add certificate to trusted peer store. StorePath={0}", storePath);
             }
         }
@@ -1907,30 +1735,25 @@ namespace Opc.Ua.Configuration
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="remove">if set to <c>true</c> then the HTTP access should be removed.</param>
-        private void ConfigureHttpAccess(ApplicationConfiguration configuration, bool remove)
-        {
+        private void ConfigureHttpAccess(ApplicationConfiguration configuration, bool remove) {
             Utils.Trace(Utils.TraceMasks.Information, "Configuring HTTP access.");
 
             // check for HTTP endpoints which need configuring.
             StringCollection baseAddresses = new StringCollection();
 
-            if (configuration.DiscoveryServerConfiguration != null)
-            {
+            if (configuration.DiscoveryServerConfiguration != null) {
                 baseAddresses = configuration.DiscoveryServerConfiguration.BaseAddresses;
             }
 
-            if (configuration.ServerConfiguration != null)
-            {
+            if (configuration.ServerConfiguration != null) {
                 baseAddresses = configuration.ServerConfiguration.BaseAddresses;
             }
 
             // configure WCF http access.
-            for (int ii = 0; ii < baseAddresses.Count; ii++)
-            {
+            for (int ii = 0; ii < baseAddresses.Count; ii++) {
                 string url = GetHttpUrlForAccessRule(baseAddresses[ii]);
 
-                if (url != null)
-                {
+                if (url != null) {
                     SetHttpAccessRules(url, remove);
                 }
             }
@@ -1939,41 +1762,34 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Gets the HTTP URL to use for HTTP access rules.
         /// </summary>
-        public static string GetHttpUrlForAccessRule(string baseAddress)
-        {
+        public static string GetHttpUrlForAccessRule(string baseAddress) {
             Uri url = Utils.ParseUri(baseAddress);
 
-            if (url == null)
-            {
+            if (url == null) {
                 return null;
             }
-            
+
             UriBuilder builder = new UriBuilder(url);
 
-            switch (url.Scheme)
-            {
-                case Utils.UriSchemeHttps:
-                {
+            switch (url.Scheme) {
+                case Utils.UriSchemeHttps: {
                     builder.Path = String.Empty;
                     builder.Query = String.Empty;
                     break;
                 }
 
-                case Utils.UriSchemeNoSecurityHttp:
-                {
+                case Utils.UriSchemeNoSecurityHttp: {
                     builder.Scheme = Utils.UriSchemeHttp;
                     builder.Path = String.Empty;
                     builder.Query = String.Empty;
                     break;
                 }
 
-                case Utils.UriSchemeHttp:
-                {
+                case Utils.UriSchemeHttp: {
                     break;
                 }
 
-                default:
-                {
+                default: {
                     return null;
                 }
             }
@@ -1984,21 +1800,17 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Gets the access rules to use for the application.
         /// </summary>
-        private List<ApplicationAccessRule> GetAccessRules()
-        {
+        private List<ApplicationAccessRule> GetAccessRules() {
             List<ApplicationAccessRule> rules = new List<ApplicationAccessRule>();
 
             // check for rules specified in the installer configuration.
             bool hasAdmin = false;
 
-            if (InstallConfig.AccessRules != null)
-            {
-                for (int ii = 0; ii < InstallConfig.AccessRules.Count; ii++)
-                {
+            if (InstallConfig.AccessRules != null) {
+                for (int ii = 0; ii < InstallConfig.AccessRules.Count; ii++) {
                     ApplicationAccessRule rule = InstallConfig.AccessRules[ii];
 
-                    if (rule.Right == ApplicationAccessRight.Configure && rule.RuleType == AccessControlType.Allow)
-                    {
+                    if (rule.Right == ApplicationAccessRight.Configure && rule.RuleType == AccessControlType.Allow) {
                         hasAdmin = true;
                         break;
                     }
@@ -2008,8 +1820,7 @@ namespace Opc.Ua.Configuration
             }
 
             // provide some default rules.
-            if (rules.Count == 0)
-            {
+            if (rules.Count == 0) {
                 // give user run access.
                 ApplicationAccessRule rule = new ApplicationAccessRule();
                 rule.RuleType = AccessControlType.Allow;
@@ -2018,8 +1829,7 @@ namespace Opc.Ua.Configuration
                 rules.Add(rule);
 
                 // ensure service can access.
-                if (InstallConfig.InstallAsService)
-                {
+                if (InstallConfig.InstallAsService) {
                     rule = new ApplicationAccessRule();
                     rule.RuleType = AccessControlType.Allow;
                     rule.Right = ApplicationAccessRight.Run;
@@ -2031,12 +1841,11 @@ namespace Opc.Ua.Configuration
                     rule.Right = ApplicationAccessRight.Run;
                     rule.IdentityName = WellKnownSids.LocalService;
                     rules.Add(rule);
-                }               
+                }
             }
 
             // ensure someone can change the configuration later.
-            if (!hasAdmin)
-            {
+            if (!hasAdmin) {
                 ApplicationAccessRule rule = new ApplicationAccessRule();
                 rule.RuleType = AccessControlType.Allow;
                 rule.Right = ApplicationAccessRight.Configure;
@@ -2050,21 +1859,16 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Sets the HTTP access rules for the URL.
         /// </summary>
-        private void SetHttpAccessRules(string url, bool remove)
-        {
-            try
-            {
+        private void SetHttpAccessRules(string url, bool remove) {
+            try {
                 List<ApplicationAccessRule> rules = new List<ApplicationAccessRule>();
 
-                if (!remove)
-                {
+                if (!remove) {
                     rules = GetAccessRules();
                 }
 
                 HttpAccessRule.SetAccessRules(new Uri(url), rules, false);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected configuring the HTTP access rules.");
             }
         }
@@ -2072,57 +1876,46 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Configures access to the executable, the configuration file and the private key.
         /// </summary>
-        private void ConfigureFileAccess(ApplicationConfiguration configuration)
-        {
+        private void ConfigureFileAccess(ApplicationConfiguration configuration) {
             Utils.Trace(Utils.TraceMasks.Information, "Configuring file access.");
 
             List<ApplicationAccessRule> rules = GetAccessRules();
 
             // apply access rules to the excutable file.
-            try
-            {
-                if (InstallConfig.SetExecutableFilePermissions)
-                {
+            try {
+                if (InstallConfig.SetExecutableFilePermissions) {
                     ApplicationAccessRule.SetAccessRules(InstallConfig.ExecutableFile, rules, true);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Could not set executable file permissions.");
             }
 
             // apply access rules to the configuration file.
-            try
-            {
-                if (InstallConfig.SetConfigurationFilePermisions)
-                {
+            try {
+                if (InstallConfig.SetConfigurationFilePermisions) {
                     ApplicationAccessRule.SetAccessRules(configuration.SourceFilePath, rules, true);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Could not set configuration file permissions.");
             }
 
             // apply access rules to the private key file.
-            try
-            {
+            try {
                 X509Certificate2 certificate = configuration.SecurityConfiguration.ApplicationCertificate.Find(true);
 
-                if (certificate != null)
-                {
+                if (certificate != null) {
                     ICertificateStore store = configuration.SecurityConfiguration.ApplicationCertificate.OpenStore();
                     store.SetAccessRules(certificate.Thumbprint, rules, true);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Could not set private key file permissions.");
             }
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private string m_applicationName;
         private ApplicationType m_applicationType;
         private string m_configSectionName;
@@ -2130,6 +1923,7 @@ namespace Opc.Ua.Configuration
         private InstalledApplication m_installConfig;
         private ServerBase m_server;
         private ApplicationConfiguration m_applicationConfiguration;
+
         #endregion
     }
 }

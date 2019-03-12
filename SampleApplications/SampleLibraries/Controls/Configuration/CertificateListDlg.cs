@@ -37,18 +37,15 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays a list of certificates.
     /// </summary>
-    public partial class CertificateListDlg : Form
-    {
+    public partial class CertificateListDlg : Form {
         /// <summary>
         /// Contructs the object.
         /// </summary>
-        public CertificateListDlg()
-        {
+        public CertificateListDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
@@ -56,22 +53,19 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public CertificateIdentifier ShowDialog(CertificateStoreIdentifier store, bool allowStoreChange)
-        {
+        public CertificateIdentifier ShowDialog(CertificateStoreIdentifier store, bool allowStoreChange) {
             CertificateStoreCTRL.StoreType = CertificateStoreType.Directory;
             CertificateStoreCTRL.StorePath = String.Empty;
             CertificateStoreCTRL.ReadOnly = !allowStoreChange;
             CertificatesCTRL.Initialize(null);
             OkBTN.Enabled = false;
 
-            if (store != null)
-            {
+            if (store != null) {
                 CertificateStoreCTRL.StoreType = store.StoreType;
                 CertificateStoreCTRL.StorePath = store.StorePath;
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
@@ -81,23 +75,17 @@ namespace Opc.Ua.Client.Controls
             id.Certificate = CertificatesCTRL.SelectedCertificate;
             return id;
         }
-        
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void FilterBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void FilterBTN_Click(object sender, EventArgs e) {
+            try {
                 CertificateListFilter filter = new CertificateListFilter();
                 filter.SubjectName = SubjectNameTB.Text.Trim();
                 filter.IssuerName = IssuerNameTB.Text.Trim();
@@ -106,69 +94,53 @@ namespace Opc.Ua.Client.Controls
 
                 List<CertificateListFilterType> types = new List<CertificateListFilterType>();
 
-                if (ApplicationCK.Checked)
-                {
+                if (ApplicationCK.Checked) {
                     types.Add(CertificateListFilterType.Application);
                 }
 
-                if (CaCK.Checked)
-                {
+                if (CaCK.Checked) {
                     types.Add(CertificateListFilterType.CA);
                 }
 
-                if (SelfSignedCK.Checked)
-                {
+                if (SelfSignedCK.Checked) {
                     types.Add(CertificateListFilterType.SelfSigned);
                 }
 
-                if (IssuedCK.Checked)
-                {
+                if (IssuedCK.Checked) {
                     types.Add(CertificateListFilterType.Issued);
                 }
 
-                if (types.Count > 0)
-                {
+                if (types.Count > 0) {
                     filter.CertificateTypes = types.ToArray();
                 }
 
                 CertificatesCTRL.SetFilter(filter);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void CertificatesCTRL_ItemsSelected(object sender, ListItemActionEventArgs e)
-        {
-            try
-            {
+        private void CertificatesCTRL_ItemsSelected(object sender, ListItemActionEventArgs e) {
+            try {
                 OkBTN.Enabled = e.Items.Count == 1;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void CertificateStoreCTRL_StoreChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void CertificateStoreCTRL_StoreChanged(object sender, EventArgs e) {
+            try {
                 CertificateStoreIdentifier store = new CertificateStoreIdentifier();
                 store.StoreType = CertificateStoreCTRL.StoreType;
                 store.StorePath = CertificateStoreCTRL.StorePath;
                 CertificatesCTRL.Initialize(store, null);
 
-                if (!CertificatesCTRL.IsEmptyStore)
-                {
+                if (!CertificatesCTRL.IsEmptyStore) {
                     Utils.UpdateRecentFileList("CertificateStores:" + store.StoreType, store.StorePath, 16);
                 }
 
                 FilterBTN_Click(sender, e);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

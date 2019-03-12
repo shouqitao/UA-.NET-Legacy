@@ -37,58 +37,50 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control with button that displays edit array dialog.
     /// </summary>
-    public partial class SelectUrlsCtrl : UserControl
-    {
+    public partial class SelectUrlsCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Creates a new instance of the control.
         /// </summary>
-        public SelectUrlsCtrl()
-        {
+        public SelectUrlsCtrl() {
             InitializeComponent();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private event EventHandler m_UrlsChanged;
         private List<Uri> m_urls;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// The list of urls.
         /// </summary>
-        public List<Uri> Urls 
-        {
-            get 
-            {
-                return m_urls; 
-            }
+        public List<Uri> Urls {
+            get { return m_urls; }
 
-            set
-            {
-                if (CurrentUrlsControl != null)
-                {
+            set {
+                if (CurrentUrlsControl != null) {
                     StringBuilder builder = new StringBuilder();
 
-                    if (value != null)
-                    {
-                        for (int ii = 0; ii < value.Count; ii++)
-                        {
-                            if (builder.Length > 0)
-                            {
+                    if (value != null) {
+                        for (int ii = 0; ii < value.Count; ii++) {
+                            if (builder.Length > 0) {
                                 builder.Append(", ");
                             }
 
                             builder.Append(value[ii].Scheme);
 
-                            if (value[ii].Port > 0)
-                            {
+                            if (value[ii].Port > 0) {
                                 builder.Append(":");
                                 builder.Append(value[ii].Port);
                             }
@@ -101,7 +93,7 @@ namespace Opc.Ua.Client.Controls
                 m_urls = value;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the control that is stores with the current file path.
         /// </summary>
@@ -110,59 +102,53 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Raised when the profiles are changed.
         /// </summary>
-        public event EventHandler UrlsChanged
-        {
+        public event EventHandler UrlsChanged {
             add { m_UrlsChanged += value; }
             remove { m_UrlsChanged -= value; }
         }
+
         #endregion
 
         #region Event Handlers
-        private void BrowseBTN_Click(object sender, EventArgs e)
-        {
-            if (CurrentUrlsControl == null)
-            {
+
+        private void BrowseBTN_Click(object sender, EventArgs e) {
+            if (CurrentUrlsControl == null) {
                 return;
             }
 
             string[] strings = null;
 
-            if (m_urls != null)
-            {
+            if (m_urls != null) {
                 strings = new string[m_urls.Count];
 
-                for (int ii = 0; ii < m_urls.Count; ii++)
-                {
+                for (int ii = 0; ii < m_urls.Count; ii++) {
                     strings[ii] = m_urls[ii].ToString();
                 }
             }
 
             strings = new EditArrayDlg().ShowDialog(strings, BuiltInType.String, false, null) as string[];
 
-            if (strings == null)
-            {
+            if (strings == null) {
                 return;
             }
 
             List<Uri> urls = new List<Uri>();
 
-            for (int ii = 0; ii < strings.Length; ii++)
-            {
+            for (int ii = 0; ii < strings.Length; ii++) {
                 Uri url = Utils.ParseUri(strings[ii]);
 
-                if (url != null)
-                {
+                if (url != null) {
                     urls.Add(url);
                 }
             }
 
             Urls = urls;
 
-            if (m_UrlsChanged != null)
-            {
+            if (m_UrlsChanged != null) {
                 m_UrlsChanged(this, e);
             }
         }
+
         #endregion
     }
 }

@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <xs:schema id="SecuredApplication"
-    targetNamespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
-    elementFormDefault="qualified"
-    xmlns="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
-    xmlns:mstns="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
->
+           targetNamespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
+           xmlns:mstns="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:complexType name="SecuredApplication">
     <xs:sequence>
       <xs:element name="ApplicationName" type="xs:string" minOccurs="0" nillable="true"></xs:element>
@@ -18,13 +18,13 @@
       <xs:element name="ExecutableFile" type="xs:string" minOccurs="0"></xs:element>
       <xs:element name="ApplicationCertificate" type="CertificateIdentifier" minOccurs="0"></xs:element>
       <xs:element name="TrustedCertificateStore" type="CertificateStoreIdentifier" minOccurs="0"></xs:element>
-      <xs:element name="TrustedCertificates" type="CertificateList"  minOccurs="0"></xs:element>
+      <xs:element name="TrustedCertificates" type="CertificateList" minOccurs="0"></xs:element>
       <xs:element name="IssuerCertificateStore" type="CertificateStoreIdentifier" minOccurs="0"></xs:element>
-      <xs:element name="IssuerCertificates" type="CertificateList"  minOccurs="0"></xs:element>
+      <xs:element name="IssuerCertificates" type="CertificateList" minOccurs="0"></xs:element>
       <xs:element name="RejectedCertificatesStore" type="CertificateStoreIdentifier" minOccurs="0"></xs:element>
       <xs:element name="BaseAddresses" type="ListOfBaseAddresses" minOccurs="0"></xs:element>
       <xs:element name="SecurityProfiles" type="ListOfSecurityProfiles" minOccurs="0"></xs:element>
-      <xs:element name="Extensions" type="ListOfExtensions" minOccurs="0"  />
+      <xs:element name="Extensions" type="ListOfExtensions" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SecuredApplication" type="SecuredApplication" />
@@ -34,33 +34,33 @@
       <xs:element name="Extension" minOccurs="0" maxOccurs="unbounded" nillable="true">
         <xs:complexType>
           <xs:sequence>
-            <xs:any minOccurs="0" processContents="lax"/>
+            <xs:any minOccurs="0" processContents="lax" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name ="ListOfBaseAddresses">
+  <xs:complexType name="ListOfBaseAddresses">
     <xs:sequence>
       <xs:element name="BaseAddress" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name ="SecurityProfile">
+  <xs:complexType name="SecurityProfile">
     <xs:sequence>
       <xs:element name="ProfileUri" type="xs:string" minOccurs="0"></xs:element>
       <xs:element name="Enabled" type="xs:boolean" minOccurs="0"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name ="ListOfSecurityProfiles">
+  <xs:complexType name="ListOfSecurityProfiles">
     <xs:sequence>
       <xs:element name="SecurityProfile" type="SecurityProfile" minOccurs="0" maxOccurs="unbounded"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:simpleType  name="ApplicationType">
+  <xs:simpleType name="ApplicationType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Server_0" />
       <xs:enumeration value="Client_1" />
@@ -69,7 +69,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:complexType name ="CertificateIdentifier">
+  <xs:complexType name="CertificateIdentifier">
     <xs:sequence>
       <xs:element name="StoreType" type="xs:string" minOccurs="0"></xs:element>
       <xs:element name="StorePath" type="xs:string" minOccurs="0"></xs:element>
@@ -82,13 +82,13 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name ="ListOfCertificateIdentifier">
+  <xs:complexType name="ListOfCertificateIdentifier">
     <xs:sequence>
       <xs:element name="CertificateIdentifier" type="CertificateIdentifier" minOccurs="0" maxOccurs="unbounded"></xs:element>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name ="CertificateStoreIdentifier">
+  <xs:complexType name="CertificateStoreIdentifier">
     <xs:sequence>
       <xs:element name="StoreType" type="xs:string" minOccurs="0"></xs:element>
       <xs:element name="StorePath" type="xs:string" minOccurs="0"></xs:element>
@@ -96,7 +96,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name ="CertificateList">
+  <xs:complexType name="CertificateList">
     <xs:sequence>
       <xs:element name="Certificates" type="ListOfCertificateIdentifier" minOccurs="0"></xs:element>
       <xs:element name="ValidationOptions" type="xs:int" minOccurs="0"></xs:element>

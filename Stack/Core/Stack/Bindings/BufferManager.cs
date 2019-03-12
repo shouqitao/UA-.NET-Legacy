@@ -17,37 +17,31 @@
 using System;
 using System.Collections.Generic;
 
-namespace Opc.Ua.Bindings
-{
-    
+namespace Opc.Ua.Bindings {
     #region BufferCollection Class
+
     /// <summary>
     /// A collection of buffers.
     /// </summary>
-    public class BufferCollection : List<ArraySegment<byte>>
-    {
+    public class BufferCollection : List<ArraySegment<byte>> {
         #region Constructors
+
         /// <summary>
         /// Creates an empty collection.
         /// </summary>
-        public BufferCollection()
-        {
-        }
+        public BufferCollection() { }
 
         /// <summary>
         /// Creates an empty collection with the specified capacity.
         /// </summary>
         /// <param name="capacity">The capacity.</param>
-        public BufferCollection(int capacity) : base(capacity)
-        {
-        }
+        public BufferCollection(int capacity) : base(capacity) { }
 
         /// <summary>
         /// Creates a collection with a single element.
         /// </summary>
         /// <param name="segment">The segment.</param>
-        public BufferCollection(ArraySegment<byte> segment)
-        {
+        public BufferCollection(ArraySegment<byte> segment) {
             Add(segment);
         }
 
@@ -57,25 +51,24 @@ namespace Opc.Ua.Bindings
         /// <param name="array">The array.</param>
         /// <param name="offset">The offset.</param>
         /// <param name="count">The count.</param>
-        public BufferCollection(byte[] array, int offset, int count)
-        {
+        public BufferCollection(byte[] array, int offset, int count) {
             Add(new ArraySegment<byte>(array, offset, count));
         }
+
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Returns the buffers to the manager before clearing the collection.
         /// </summary>
         /// <param name="bufferManager">The buffer manager.</param>
         /// <param name="owner">The owner.</param>
         /// <returns>Length of all buffers in this collection</returns>
-        public int Release(BufferManager bufferManager, string owner)
-        {
+        public int Release(BufferManager bufferManager, string owner) {
             int count = 0;
 
-            foreach (ArraySegment<byte> buffer in this)
-            {
+            foreach (ArraySegment<byte> buffer in this) {
                 count += buffer.Count;
                 bufferManager.ReturnBuffer(buffer.Array, owner);
             }
@@ -89,61 +82,59 @@ namespace Opc.Ua.Bindings
         /// Returns the total amount of data in the buffers.
         /// </summary>
         /// <value>The total size.</value>
-        public int TotalSize
-        {
-            get
-            {
+        public int TotalSize {
+            get {
                 int count = 0;
 
-                for (int ii = 0; ii < this.Count; ii++)
-                {
+                for (int ii = 0; ii < this.Count; ii++) {
                     count += this[ii].Count;
                 }
 
                 return count;
             }
         }
+
         #endregion
     }
+
     #endregion
 
     #region BufferManager Class
+
     /// <summary>
     /// A thread safe wrapper for the buffer manager class.
     /// </summary>
-    public class BufferManager
-    {
+    public class BufferManager {
         #region Constructors
+
         /// <summary>
         /// Constructs the buffer manager.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="maxPoolSize">Max size of the pool.</param>
         /// <param name="maxBufferSize">Max size of the buffer.</param>
-        public BufferManager(string name, int maxPoolSize, int maxBufferSize)
-        {
-            m_name      = name;
-            m_manager   = System.ServiceModel.Channels.BufferManager.CreateBufferManager(maxPoolSize, maxBufferSize);
+        public BufferManager(string name, int maxPoolSize, int maxBufferSize) {
+            m_name = name;
+            m_manager = System.ServiceModel.Channels.BufferManager.CreateBufferManager(maxPoolSize, maxBufferSize);
         }
+
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Returns a buffer with at least the specified size.
         /// </summary>
         /// <param name="size">The size.</param>
         /// <param name="owner">The owner.</param>
         /// <returns>The buffer content</returns>
-        public byte[] TakeBuffer(int size, string owner)
-        {
-            if (size > Int32.MaxValue - 5)
-            {
+        public byte[] TakeBuffer(int size, string owner) {
+            if (size > Int32.MaxValue - 5) {
                 throw new ArgumentOutOfRangeException("size");
             }
 
-            lock (m_lock)
-            {
-                #if TRACK_MEMORY
+            lock (m_lock) {
+#if TRACK_MEMORY
                 byte[] buffer = m_manager.TakeBuffer(size+5);                             
 
                 byte[] bytes = BitConverter.GetBytes(++m_id);
@@ -162,11 +153,11 @@ namespace Opc.Ua.Bindings
                 m_allocations[m_id] = allocation;
                 
                 return buffer;
-                #else
-                byte[] buffer = m_manager.TakeBuffer(size+1);               
-                buffer[buffer.Length-1] = 0;
+#else
+                byte[] buffer = m_manager.TakeBuffer(size + 1);
+                buffer[buffer.Length - 1] = 0;
                 return buffer;
-                #endif
+#endif
             }
         }
 
@@ -175,9 +166,8 @@ namespace Opc.Ua.Bindings
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="owner">The owner.</param>
-        public void TransferBuffer(byte[] buffer, string owner)
-        {
-            #if TRACK_MEMORY
+        public void TransferBuffer(byte[] buffer, string owner) {
+#if TRACK_MEMORY
             if (buffer == null)
             {
                 return;
@@ -203,35 +193,31 @@ namespace Opc.Ua.Bindings
                     }
                 }
             }
-            #endif
+#endif
         }
 
         /// <summary>
         /// Locks the buffer (used for debugging only).
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        public static void LockBuffer(byte[] buffer)
-        {
-            if (buffer[buffer.Length-1] != 0)
-            {
+        public static void LockBuffer(byte[] buffer) {
+            if (buffer[buffer.Length - 1] != 0) {
                 throw new InvalidOperationException("Buffer is already locked.");
             }
 
-            buffer[buffer.Length-1] = 1;
+            buffer[buffer.Length - 1] = 1;
         }
 
         /// <summary>
         /// Unlocks the buffer (used for debugging only).
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        public static void UnlockBuffer(byte[] buffer)
-        {
-            if (buffer[buffer.Length-1] == 0)
-            {
+        public static void UnlockBuffer(byte[] buffer) {
+            if (buffer[buffer.Length - 1] == 0) {
                 throw new InvalidOperationException("Buffer is not locked.");
             }
 
-            buffer[buffer.Length-1] = 0;
+            buffer[buffer.Length - 1] = 0;
         }
 
         /// <summary>
@@ -239,21 +225,17 @@ namespace Opc.Ua.Bindings
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="owner">The owner.</param>
-        public void ReturnBuffer(byte[] buffer, string owner)
-        {
-            if (buffer == null)
-            {
+        public void ReturnBuffer(byte[] buffer, string owner) {
+            if (buffer == null) {
                 return;
             }
 
-            lock (m_lock)
-            {
-                if (buffer[buffer.Length-1] != 0)
-                {
+            lock (m_lock) {
+                if (buffer[buffer.Length - 1] != 0) {
                     throw new InvalidOperationException("Buffer has been locked.");
                 }
 
-                #if TRACK_MEMORY
+#if TRACK_MEMORY
                 m_allocated -= buffer.Length;
                 
                 int id = BitConverter.ToInt32(buffer, buffer.Length-5);       
@@ -319,19 +301,21 @@ namespace Opc.Ua.Bindings
                         buffer[ii] = 0xFC;
                     }
                 }
-                #endif
-               
+#endif
+
                 m_manager.ReturnBuffer(buffer);
             }
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private object m_lock = new object();
         private string m_name;
         private System.ServiceModel.Channels.BufferManager m_manager;
 
-        #if TRACK_MEMORY
+#if TRACK_MEMORY
         class Allocation
         {
             public int Id;
@@ -345,9 +329,10 @@ namespace Opc.Ua.Bindings
         private int m_allocated;
         private int m_id;
         private SortedDictionary<int,Allocation> m_allocations = new SortedDictionary<int,Allocation>();
-        #endif
+#endif
 
         #endregion
     }
-    #endregion 
+
+    #endregion
 }

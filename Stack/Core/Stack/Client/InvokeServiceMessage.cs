@@ -16,34 +16,30 @@
 
 using System.ServiceModel;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// The message contract for the InvokeService service.
     /// </summary>
-    [MessageContract(IsWrapped=false)]
-    public class InvokeServiceMessage
-    {    
+    [MessageContract(IsWrapped = false)]
+    public class InvokeServiceMessage {
         /// <summary>
         /// The body of the message.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-        [MessageBodyMember(Namespace=Namespaces.OpcUaXsd, Order=0)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+            "CA1051:DoNotDeclareVisibleInstanceFields")]
+        [MessageBodyMember(Namespace = Namespaces.OpcUaXsd, Order = 0)]
         public byte[] InvokeServiceRequest;
-        
+
         /// <summary>
         /// Initializes an empty message.
         /// </summary>    
-        public InvokeServiceMessage()
-        {
-        }
-            
+        public InvokeServiceMessage() { }
+
         /// <summary>
         /// Initializes the message with the body.
         /// </summary>
         /// <param name="InvokeServiceRequest">The invoke service request.</param>
-        public InvokeServiceMessage(byte[] InvokeServiceRequest)
-        {
+        public InvokeServiceMessage(byte[] InvokeServiceRequest) {
             this.InvokeServiceRequest = InvokeServiceRequest;
         }
     }
@@ -51,29 +47,26 @@ namespace Opc.Ua
     /// <summary>
     /// The message contract for the InvokeService service response.
     /// </summary>
-    [MessageContract(IsWrapped=false)]
-    public class InvokeServiceResponseMessage
-    {    
+    [MessageContract(IsWrapped = false)]
+    public class InvokeServiceResponseMessage {
         /// <summary>
         /// The body of the message.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
-        [MessageBodyMember(Namespace=Namespaces.OpcUaXsd, Order=0)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+            "CA1051:DoNotDeclareVisibleInstanceFields")]
+        [MessageBodyMember(Namespace = Namespaces.OpcUaXsd, Order = 0)]
         public byte[] InvokeServiceResponse;
-        
+
         /// <summary>
         /// Initializes an empty message.
         /// </summary>
-        public InvokeServiceResponseMessage()
-        {
-        }
-            
+        public InvokeServiceResponseMessage() { }
+
         /// <summary>
         /// Initializes the message with the body.
         /// </summary>
         /// <param name="InvokeServiceResponse">The invoke service response.</param>
-        public InvokeServiceResponseMessage(byte[] InvokeServiceResponse)
-        {
+        public InvokeServiceResponseMessage(byte[] InvokeServiceResponse) {
             this.InvokeServiceResponse = InvokeServiceResponse;
         }
     }

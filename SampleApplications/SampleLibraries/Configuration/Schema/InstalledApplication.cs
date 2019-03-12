@@ -35,37 +35,33 @@ using System.IO;
 using System.Xml;
 using System.Reflection;
 
-namespace Opc.Ua.Configuration
-{    
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Specifies how to configure an application during installation.
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaSdk + "Installation.xsd")]
-    public partial class InstalledApplication : Opc.Ua.Security.SecuredApplication
-    {
-    	#region Constructors
-    	/// <summary>
-    	/// The default constructor.
-    	/// </summary>
-        public InstalledApplication()
-    	{
-    		Initialize();
-    	}
-        
-    	/// <summary>
-    	/// Called by the .NET framework during deserialization.
-    	/// </summary>
-        [OnDeserializing]
-        private void Initialize(StreamingContext context)
-    	{
-    		Initialize();
-    	}
+    public partial class InstalledApplication : Opc.Ua.Security.SecuredApplication {
+        #region Constructors
 
-    	/// <summary>
-    	/// Sets private members to default values.
-    	/// </summary>
-    	private void Initialize()
-    	{
+        /// <summary>
+        /// The default constructor.
+        /// </summary>
+        public InstalledApplication() {
+            Initialize();
+        }
+
+        /// <summary>
+        /// Called by the .NET framework during deserialization.
+        /// </summary>
+        [OnDeserializing]
+        private void Initialize(StreamingContext context) {
+            Initialize();
+        }
+
+        /// <summary>
+        /// Sets private members to default values.
+        /// </summary>
+        private void Initialize() {
             UseDefaultCertificateStores = true;
             DeleteCertificatesOnUninstall = true;
             ConfigureFirewall = false;
@@ -79,10 +75,12 @@ namespace Opc.Ua.Configuration
             LocallyRegisterOIDs = false;
             MinimumKeySize = 2048;
             LifeTimeInMonths = 300;
-    	}
-    	#endregion
+        }
+
+        #endregion
 
         #region Persistent Properties
+
         /// <summary>
         /// Whether to use the default stores.
         /// </summary>
@@ -172,17 +170,20 @@ namespace Opc.Ua.Configuration
         /// </summary>
         [DataMember(IsRequired = false, Order = 15)]
         public TraceConfiguration TraceConfiguration { get; set; }
+
         #endregion
     }
 
     #region InstalledApplicationCollection Class
+
     /// <summary>
     /// A collection of InstalledApplication objects.
     /// </summary>
-    [CollectionDataContract(Name = "ListOfInstalledApplication", Namespace = Namespaces.OpcUaConfig, ItemName = "InstalledApplication")]
-    public partial class InstalledApplicationCollection : List<InstalledApplication>
-    {
+    [CollectionDataContract(Name = "ListOfInstalledApplication", Namespace = Namespaces.OpcUaConfig,
+        ItemName = "InstalledApplication")]
+    public partial class InstalledApplicationCollection : List<InstalledApplication> {
         #region Constructors
+
         /// <summary>
         /// Initializes the collection with default values.
         /// </summary>
@@ -197,17 +198,19 @@ namespace Opc.Ua.Configuration
         /// Initializes the collection with another collection.
         /// </summary>
         public InstalledApplicationCollection(IEnumerable<InstalledApplication> collection) : base(collection) { }
+
         #endregion
     }
+
     #endregion
 
     #region StartMode Enum
+
     /// <summary>
     /// Start mode of the Windows service
     /// </summary>
     [DataContract(Namespace = Namespaces.OpcUaSdk + "Installation.xsd")]
-    public enum StartMode : uint
-    {
+    public enum StartMode : uint {
         /// <summary>
         /// Device driver started by the operating system loader (valid only for driver services).
         /// </summary>
@@ -238,5 +241,6 @@ namespace Opc.Ua.Configuration
         [EnumMember]
         Disabled = 0x00000004
     }
+
     #endregion
 }

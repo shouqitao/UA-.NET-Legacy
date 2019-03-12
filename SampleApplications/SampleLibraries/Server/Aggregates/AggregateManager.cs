@@ -33,62 +33,59 @@ using System.Text;
 using System.Threading;
 using System.Security.Principal;
 
-namespace Opc.Ua.Server
-{    
+namespace Opc.Ua.Server {
     /// <summary>
     /// An object that manages aggregate factories supported by the server.
     /// </summary>
-    public class AggregateManager : IDisposable
-    {
+    public class AggregateManager : IDisposable {
         #region Constructors
+
         /// <summary>
         /// Initilizes the manager.
         /// </summary>
-        public AggregateManager(IServerInternal server)
-        {
+        public AggregateManager(IServerInternal server) {
             m_server = server;
-            m_factories = new Dictionary<NodeId,AggregatorFactory>();
+            m_factories = new Dictionary<NodeId, AggregatorFactory>();
             m_minimumProcessingInterval = 1000;
         }
+
         #endregion
-        
+
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "m_requestTimer")]
-        protected virtual void Dispose(bool disposing)
-        {  
-            if (disposing)
-            {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed",
+            MessageId = "m_requestTimer")]
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
                 // TBD
-            }            
+            }
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Checks if the aggregate is supported by the server.
         /// </summary>
         /// <param name="aggregateId">The id of the aggregate function.</param>
         /// <returns>True if the aggregate is supported.</returns>
-        public bool IsSupported(NodeId aggregateId)
-        {
-            if (NodeId.IsNull(aggregateId))
-            {
+        public bool IsSupported(NodeId aggregateId) {
+            if (NodeId.IsNull(aggregateId)) {
                 return false;
             }
 
-            lock (m_lock)
-            {
+            lock (m_lock) {
                 return m_factories.ContainsKey(aggregateId);
             }
         }
@@ -96,20 +93,15 @@ namespace Opc.Ua.Server
         /// <summary>
         /// The minimum processing interval for any aggregate calculation.
         /// </summary>
-        public double MinimumProcessingInterval 
-        {
-            get
-            {
-                lock (m_lock)
-                {
+        public double MinimumProcessingInterval {
+            get {
+                lock (m_lock) {
                     return m_minimumProcessingInterval;
                 }
             }
 
-            set
-            {
-                lock (m_lock)
-                {
+            set {
+                lock (m_lock) {
                     m_minimumProcessingInterval = value;
                 }
             }
@@ -120,12 +112,9 @@ namespace Opc.Ua.Server
         /// </summary>
         /// <param name="variableId">The id of history data node.</param>
         /// <returns>The configuration.</returns>
-        public AggregateConfiguration GetDefaultConfiguration(NodeId variableId)
-        {
-            lock (m_lock)
-            {
-                if (m_defaultConfiguration == null)
-                {
+        public AggregateConfiguration GetDefaultConfiguration(NodeId variableId) {
+            lock (m_lock) {
+                if (m_defaultConfiguration == null) {
                     m_defaultConfiguration = new AggregateConfiguration();
                     m_defaultConfiguration.PercentDataBad = 100;
                     m_defaultConfiguration.PercentDataGood = 100;
@@ -142,10 +131,8 @@ namespace Opc.Ua.Server
         /// Sets the default aggregate configuration.
         /// </summary>
         /// <param name="configuration">The default aggregate configuration..</param>
-        public void SetDefaultConfiguration(AggregateConfiguration configuration)
-        {
-            lock (m_lock)
-            {
+        public void SetDefaultConfiguration(AggregateConfiguration configuration) {
+            lock (m_lock) {
                 m_defaultConfiguration = configuration;
             }
         }
@@ -166,32 +153,27 @@ namespace Opc.Ua.Server
             DateTime endTime,
             double processingInterval,
             bool stepped,
-            AggregateConfiguration configuration)
-        {
-            if (NodeId.IsNull(aggregateId))
-            {
+            AggregateConfiguration configuration) {
+            if (NodeId.IsNull(aggregateId)) {
                 return null;
             }
 
             AggregatorFactory factory = null;
 
-            lock (m_lock)
-            {
-                if (!m_factories.TryGetValue(aggregateId, out factory))
-                {
+            lock (m_lock) {
+                if (!m_factories.TryGetValue(aggregateId, out factory)) {
                     return null;
                 }
             }
 
-            if (configuration.UseServerCapabilitiesDefaults)
-            {
+            if (configuration.UseServerCapabilitiesDefaults) {
                 configuration = m_defaultConfiguration;
             }
 
-            IAggregateCalculator calculator = factory(aggregateId, startTime, endTime, processingInterval, stepped, configuration);
+            IAggregateCalculator calculator =
+                factory(aggregateId, startTime, endTime, processingInterval, stepped, configuration);
 
-            if (calculator == null)
-            {
+            if (calculator == null) {
                 return null;
             }
 
@@ -204,15 +186,12 @@ namespace Opc.Ua.Server
         /// <param name="aggregateId">The id of the aggregate function.</param>
         /// <param name="aggregateName">The id of the aggregate name.</param>
         /// <param name="factory">The factory used to create calculators.</param>
-        public void RegisterFactory(NodeId aggregateId, string aggregateName, AggregatorFactory factory)
-        {
-            lock (m_lock)
-            {
+        public void RegisterFactory(NodeId aggregateId, string aggregateName, AggregatorFactory factory) {
+            lock (m_lock) {
                 m_factories[aggregateId] = factory;
             }
 
-            if (m_server != null)
-            {
+            if (m_server != null) {
                 m_server.DiagnosticsNodeManager.AddAggregateFunction(aggregateId, aggregateName, true);
             }
         }
@@ -221,24 +200,26 @@ namespace Opc.Ua.Server
         /// Unregisters an aggregate factory.
         /// </summary>
         /// <param name="aggregateId">The id of the aggregate function.</param>
-        public void RegisterFactory(NodeId aggregateId)
-        {
-            lock (m_lock)
-            {
+        public void RegisterFactory(NodeId aggregateId) {
+            lock (m_lock) {
                 m_factories.Remove(aggregateId);
             }
         }
+
         #endregion
 
         #region Private Methods
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
         private IServerInternal m_server;
         private AggregateConfiguration m_defaultConfiguration;
-        private Dictionary<NodeId,AggregatorFactory> m_factories;
+        private Dictionary<NodeId, AggregatorFactory> m_factories;
         private double m_minimumProcessingInterval;
+
         #endregion
     }
 }

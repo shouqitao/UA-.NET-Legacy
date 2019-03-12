@@ -14,43 +14,39 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-namespace Opc.Ua
-{   
+namespace Opc.Ua {
     /// <summary>
-	/// An interface to a service request.
-	/// </summary>
-    public interface IServiceRequest : IEncodeable
-    {
+    /// An interface to a service request.
+    /// </summary>
+    public interface IServiceRequest : IEncodeable {
         /// <summary>
         /// The header for the request.
         /// </summary>
         /// <value>The request header.</value>
         RequestHeader RequestHeader { get; set; }
     }
-    
+
     /// <summary>
-	/// An interface to a service response.
-	/// </summary>
-    public interface IServiceResponse : IEncodeable 
-    {
+    /// An interface to a service response.
+    /// </summary>
+    public interface IServiceResponse : IEncodeable {
         /// <summary>
         /// The header for the response.
         /// </summary>
         /// <value>The response header.</value>
         ResponseHeader ResponseHeader { get; }
     }
-    
+
     /// <summary>
-	/// An interface to a service message.
-	/// </summary>
-    public interface IServiceMessage
-    {
+    /// An interface to a service message.
+    /// </summary>
+    public interface IServiceMessage {
         /// <summary>
         /// Returns the request contained in the message.
         /// </summary>
         /// <returns></returns>
         IServiceRequest GetRequest();
-    
+
         /// <summary>
         /// Creates an instance of a response message.
         /// </summary>

@@ -37,28 +37,30 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control with button that displays an open file dialog.
     /// </summary>
-    public partial class SelectFileCtrl : UserControl
-    {
+    public partial class SelectFileCtrl : UserControl {
         #region Constructors
+
         /// <summary>
         /// Creates a new instance of the control.
         /// </summary>
-        public SelectFileCtrl()
-        {
+        public SelectFileCtrl() {
             InitializeComponent();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private event EventHandler m_FileSelected;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Gets or sets the default file extension.
         /// </summary>
@@ -82,28 +84,25 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Raised when a new file is selected.
         /// </summary>
-        public event EventHandler FileSelected
-        {
+        public event EventHandler FileSelected {
             add { m_FileSelected += value; }
             remove { m_FileSelected -= value; }
         }
+
         #endregion
 
         #region Event Handlers
-        private void BrowseBTN_Click(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(Filter))
-            {
+
+        private void BrowseBTN_Click(object sender, EventArgs e) {
+            if (String.IsNullOrEmpty(Filter)) {
                 Filter = "All Files (*.*)|*.*";
             }
 
             // set the current directory.
-            if (!String.IsNullOrEmpty(FilePathControl.Text))
-            {
+            if (!String.IsNullOrEmpty(FilePathControl.Text)) {
                 FileInfo info = new FileInfo(FilePathControl.Text);
 
-                if (info.Exists)
-                {
+                if (info.Exists) {
                     CurrentDirectory = info.DirectoryName;
                 }
             }
@@ -121,18 +120,17 @@ namespace Opc.Ua.Client.Controls
             dialog.InitialDirectory = CurrentDirectory;
             dialog.RestoreDirectory = true;
 
-            if (dialog.ShowDialog() != DialogResult.OK)
-            {
+            if (dialog.ShowDialog() != DialogResult.OK) {
                 return;
             }
 
             FilePathControl.Text = dialog.FileName;
 
-            if (m_FileSelected != null)
-            {
+            if (m_FileSelected != null) {
                 m_FileSelected(this, new EventArgs());
             }
         }
+
         #endregion
     }
 }

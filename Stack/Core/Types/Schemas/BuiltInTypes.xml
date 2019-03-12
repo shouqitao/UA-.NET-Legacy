@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <opc:TypeDictionary
-	xmlns="http://opcfoundation.org/UA/BuiltInTypes/"
-	xmlns:opc="http://opcfoundation.org/UA/TypeDictionary/"
-  TargetNamespace="http://opcfoundation.org/UA/BuiltInTypes/"
->
+  xmlns="http://opcfoundation.org/UA/BuiltInTypes/"
+  xmlns:opc="http://opcfoundation.org/UA/TypeDictionary/"
+  TargetNamespace="http://opcfoundation.org/UA/BuiltInTypes/">
   <opc:DataType Name="Boolean" />
   <opc:DataType Name="SByte" />
   <opc:DataType Name="Byte" />
@@ -29,5 +29,5 @@
   <opc:DataType Name="ExtensionObject" />
   <opc:DataType Name="DataValue" />
   <opc:DataType Name="Variant" />
-  
+
 </opc:TypeDictionary>

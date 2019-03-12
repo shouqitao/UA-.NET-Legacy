@@ -34,49 +34,47 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class EditComplexValueDlg : Form
-    {
+    public partial class EditComplexValueDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public EditComplexValueDlg()
-        {
+        public EditComplexValueDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
 
-            for (BuiltInType ii = BuiltInType.Boolean; ii <= BuiltInType.StatusCode; ii++)
-            {
+            for (BuiltInType ii = BuiltInType.Boolean; ii <= BuiltInType.StatusCode; ii++) {
                 SetTypeCB.Items.Add(ii);
             }
 
             SetTypeCB.SelectedItem = BuiltInType.String;
         }
+
         #endregion
-      
+
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to view or edit the value.
         /// </summary>
         public object ShowDialog(
-            Session session, 
+            Session session,
             NodeId nodeId,
             uint attributeId,
-            string name, 
-            object value, 
+            string name,
+            object value,
             bool readOnly,
-            string caption)
-        {
-            if (!String.IsNullOrEmpty(caption))
-            {
+            string caption) {
+            if (!String.IsNullOrEmpty(caption)) {
                 this.Text = caption;
             }
 
@@ -85,14 +83,13 @@ namespace Opc.Ua.Client.Controls
             ValueCTRL.ChangeSession(session);
             ValueCTRL.ShowValue(nodeId, attributeId, name, value, readOnly);
 
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return ValueCTRL.GetValue();
         }
-        
+
         /// <summary>
         /// Prompts the user to edit the value.
         /// </summary>
@@ -102,10 +99,8 @@ namespace Opc.Ua.Client.Controls
             NodeId dataType,
             int valueRank,
             object value,
-            string caption)
-        {
-            if (!String.IsNullOrEmpty(caption))
-            {
+            string caption) {
+            if (!String.IsNullOrEmpty(caption)) {
                 this.Text = caption;
             }
 
@@ -114,8 +109,7 @@ namespace Opc.Ua.Client.Controls
             ValueCTRL.ChangeSession(session);
             ValueCTRL.ShowValue(name, dataType, valueRank, value);
 
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
@@ -129,10 +123,8 @@ namespace Opc.Ua.Client.Controls
             TypeInfo expectedType,
             string name,
             object value,
-            string caption)
-        {
-            if (!String.IsNullOrEmpty(caption))
-            {
+            string caption) {
+            if (!String.IsNullOrEmpty(caption)) {
                 this.Text = caption;
             }
 
@@ -141,8 +133,7 @@ namespace Opc.Ua.Client.Controls
             ValueCTRL.ChangeSession(null);
             ValueCTRL.ShowValue(expectedType, name, value);
 
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
@@ -152,8 +143,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Changes the session used.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             ValueCTRL.ChangeSession(session);
         }
 
@@ -164,76 +154,58 @@ namespace Opc.Ua.Client.Controls
             NodeId nodeId,
             uint attributeId,
             string name,
-            object value)
-        {
+            object value) {
             ValueCTRL.ShowValue(nodeId, attributeId, name, value, true);
         }
+
         #endregion
 
         #region Event Handlers
-        private void ValueCTRL_ValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void ValueCTRL_ValueChanged(object sender, EventArgs e) {
+            try {
                 BackBTN.Visible = ValueCTRL.CanGoBack;
                 SetTypeCB.Visible = ValueCTRL.CanChangeType;
                 SetTypeCB.SelectedItem = ValueCTRL.CurrentType;
                 SetArraySizeBTN.Visible = ValueCTRL.CanSetArraySize;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void BackBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BackBTN_Click(object sender, EventArgs e) {
+            try {
                 ValueCTRL.Back();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 ValueCTRL.EndEdit();
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void SetTypeBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void SetTypeBTN_Click(object sender, EventArgs e) {
+            try {
                 ValueCTRL.SetArraySize();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void SetTypeCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                ValueCTRL.SetType((BuiltInType)SetTypeCB.SelectedItem);
-            }
-            catch (Exception exception)
-            {
+        private void SetTypeCB_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
+                ValueCTRL.SetType((BuiltInType) SetTypeCB.SelectedItem);
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

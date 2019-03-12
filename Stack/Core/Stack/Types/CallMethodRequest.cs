@@ -20,36 +20,36 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua
-{
-	/// <summary>
-	/// The description of a value to write.
-	/// </summary>
-    public partial class CallMethodRequest
-    {
+namespace Opc.Ua {
+    /// <summary>
+    /// The description of a value to write.
+    /// </summary>
+    public partial class CallMethodRequest {
         #region Supporting Properties and Methods
+
         /// <summary>
         /// A handle assigned to the item during processing.
         /// </summary>
-        public object Handle
-        {
-            get { return m_handle;  }
+        public object Handle {
+            get { return m_handle; }
             set { m_handle = value; }
         }
 
         /// <summary>
         /// Whether the value has been processed.
         /// </summary>
-        public bool Processed
-        {
-            get { return m_processed;  }
+        public bool Processed {
+            get { return m_processed; }
             set { m_processed = value; }
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private object m_handle;
         private bool m_processed;
+
         #endregion
     }
 }

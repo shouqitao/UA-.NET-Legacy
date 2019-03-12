@@ -40,58 +40,49 @@ using System.IdentityModel.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.ServiceModel.Channels;
-
 using Opc.Ua.Bindings;
 
-namespace Opc.Ua.Sample.Controls
-{
+namespace Opc.Ua.Sample.Controls {
     /// <summary>
     /// Prompts the user to create a new secure channel.
     /// </summary>
-    public partial class EndpointViewDlg : Form
-    {
-        public EndpointViewDlg()
-        {
+    public partial class EndpointViewDlg : Form {
+        public EndpointViewDlg() {
             InitializeComponent();
         }
-        
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(EndpointDescription endpoint)
-        {
+        public bool ShowDialog(EndpointDescription endpoint) {
             if (endpoint == null) throw new ArgumentNullException("endpoint");
-        
-            EndpointTB.Text   = endpoint.EndpointUrl;
-            ServerNameTB.Text = endpoint.Server.ApplicationName.Text;
-            ServerUriTB.Text  = endpoint.Server.ApplicationUri;
 
-            try
-            {
+            EndpointTB.Text = endpoint.EndpointUrl;
+            ServerNameTB.Text = endpoint.Server.ApplicationName.Text;
+            ServerUriTB.Text = endpoint.Server.ApplicationUri;
+
+            try {
                 X509Certificate2 certificate = CertificateFactory.Create(endpoint.ServerCertificate, true);
                 ServerCertificateTB.Text = String.Format("{0}", certificate.Subject);
-            }
-            catch
-            {
+            } catch {
                 ServerCertificateTB.Text = "<bad certificate>";
             }
-                
-           
-            SecurityModeTB.Text      = String.Format("{0}", endpoint.SecurityMode);;
+
+
+            SecurityModeTB.Text = String.Format("{0}", endpoint.SecurityMode);
+            ;
             SecurityPolicyUriTB.Text = String.Format("{0}", endpoint.SecurityPolicyUri);
-            
+
             UserIdentityTypeTB.Text = "";
 
-            foreach (UserTokenPolicy policy in endpoint.UserIdentityTokens)
-            {
+            foreach (UserTokenPolicy policy in endpoint.UserIdentityTokens) {
                 UserIdentityTypeTB.Text += String.Format("{0} ", policy.TokenType);
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
-                       
+
             return true;
         }
     }

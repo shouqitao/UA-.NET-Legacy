@@ -36,18 +36,15 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to choose a certificate store.
     /// </summary>
-    public partial class CertificateStoreDlg : Form
-    {
+    public partial class CertificateStoreDlg : Form {
         /// <summary>
         /// Contructs the object.
         /// </summary>
-        public CertificateStoreDlg()
-        {
+        public CertificateStoreDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
@@ -55,19 +52,16 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public CertificateStoreIdentifier ShowDialog(CertificateStoreIdentifier store)
-        {
+        public CertificateStoreIdentifier ShowDialog(CertificateStoreIdentifier store) {
             CertificateStoreCTRL.StoreType = CertificateStoreType.Directory;
             CertificateStoreCTRL.StorePath = null;
 
-            if (store != null)
-            {
+            if (store != null) {
                 CertificateStoreCTRL.StoreType = store.StoreType;
                 CertificateStoreCTRL.StorePath = store.StorePath;
             }
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
@@ -77,29 +71,21 @@ namespace Opc.Ua.Client.Controls
             return store;
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void ViewBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void ViewBTN_Click(object sender, EventArgs e) {
+            try {
                 CertificateStoreIdentifier store = new CertificateStoreIdentifier();
                 store.StoreType = CertificateStoreCTRL.StoreType;
                 store.StorePath = CertificateStoreCTRL.StorePath;
                 new CertificateListDlg().ShowDialog(store, false);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

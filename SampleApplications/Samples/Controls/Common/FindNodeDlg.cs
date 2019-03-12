@@ -35,16 +35,12 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class FindNodeDlg : Form
-    {
-        public FindNodeDlg()
-        {
+namespace Opc.Ua.Sample.Controls {
+    public partial class FindNodeDlg : Form {
+        public FindNodeDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
@@ -54,32 +50,28 @@ namespace Opc.Ua.Sample.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public NodeIdCollection ShowDialog(Session session, NodeId startNodeId)
-        {
+        public NodeIdCollection ShowDialog(Session session, NodeId startNodeId) {
             m_session = session;
 
-            StartNode.Text    = String.Format("{0}", startNodeId);
+            StartNode.Text = String.Format("{0}", startNodeId);
             RelativePath.Text = null;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return null;
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {                
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 BrowsePathCollection browsePaths = new BrowsePathCollection();
-                
+
                 BrowsePath browsePath = new BrowsePath();
 
                 browsePath.StartingNode = NodeId.Parse(StartNode.Text);
                 browsePath.RelativePath = Opc.Ua.RelativePath.Parse(RelativePath.Text, m_session.TypeTree);
-                
+
                 browsePaths.Add(browsePath);
 
                 BrowsePathResultCollection results = null;
@@ -91,14 +83,11 @@ namespace Opc.Ua.Sample.Controls
                     out results,
                     out diagnosticInfos);
 
-                if (results != null && results.Count == 1)
-                {
+                if (results != null && results.Count == 1) {
                     // NodesCTRL.SetNodeList(results[0].MatchingNodeIds);
-                }    
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+                }
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
     }

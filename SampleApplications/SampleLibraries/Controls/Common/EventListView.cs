@@ -37,22 +37,20 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control which displays a list of events.
     /// </summary>
-    public partial class EventListView : UserControl
-    {
+    public partial class EventListView : UserControl {
         /// <summary>
         /// Initializes the object.
         /// </summary>
-        public EventListView()
-        {
+        public EventListView() {
             InitializeComponent();
         }
 
         #region Private Methods
+
         private Session m_session;
         private Subscription m_subscription;
         private MonitoredItem m_monitoredItem;
@@ -60,30 +58,25 @@ namespace Opc.Ua.Client.Controls
         private NodeId m_areaId;
         private bool m_isSubscribed;
         private bool m_displayConditions;
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Whether the control subscribes for new events.
         /// </summary>
-        public bool IsSubscribed
-        {
+        public bool IsSubscribed {
             get { return m_isSubscribed; }
-            
-            set 
-            {
-                if (m_isSubscribed != value)
-                {
+
+            set {
+                if (m_isSubscribed != value) {
                     m_isSubscribed = value;
 
-                    if (m_session != null)
-                    {
-                        if (m_isSubscribed)
-                        {
+                    if (m_session != null) {
+                        if (m_isSubscribed) {
                             CreateSubscription();
-                        }
-                        else
-                        {
+                        } else {
                             DeleteSubscription();
                         }
                     }
@@ -94,8 +87,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Whether to display the events as conditions.
         /// </summary>
-        public bool DisplayConditions
-        {
+        public bool DisplayConditions {
             get { return m_displayConditions; }
             set { m_displayConditions = value; }
         }
@@ -103,8 +95,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// The context menu to use.
         /// </summary>
-        public override ContextMenuStrip ContextMenuStrip
-        {
+        public override ContextMenuStrip ContextMenuStrip {
             get { return this.EventsLV.ContextMenuStrip; }
             set { this.EventsLV.ContextMenuStrip = value; }
         }
@@ -112,31 +103,26 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// The event area displayed in the control.
         /// </summary>
-        public NodeId AreaId
-        {
+        public NodeId AreaId {
             get { return m_areaId; }
         }
 
         /// <summary>
         /// The event filter applied to the control.
         /// </summary>
-        public FilterDeclaration Filter
-        {
+        public FilterDeclaration Filter {
             get { return m_filter; }
         }
 
         /// <summary>
         /// Changes the session.
         /// </summary>
-        public void ChangeSession(Session session, bool fetchRecent)
-        {
-            if (Object.ReferenceEquals(session, m_session))
-            {
+        public void ChangeSession(Session session, bool fetchRecent) {
+            if (Object.ReferenceEquals(session, m_session)) {
                 return;
             }
 
-            if (m_session != null)
-            {
+            if (m_session != null) {
                 DeleteSubscription();
                 m_session = null;
             }
@@ -144,34 +130,27 @@ namespace Opc.Ua.Client.Controls
             m_session = session;
             EventsLV.Items.Clear();
 
-            if (m_session != null && m_isSubscribed)
-            {
+            if (m_session != null && m_isSubscribed) {
                 CreateSubscription();
 
-                if (fetchRecent)
-                {
+                if (fetchRecent) {
                     ReadRecentHistory();
                 }
             }
         }
-        
+
         /// <summary>
         /// Updates the control after the session has reconnected.
         /// </summary>
-        public void SessionReconnected(Session session)
-        {
+        public void SessionReconnected(Session session) {
             m_session = session;
-            
-            if (m_isSubscribed)
-            {
-                foreach (Subscription subscription in m_session.Subscriptions)
-                {
-                    if (Object.ReferenceEquals(subscription.Handle, this))
-                    {
+
+            if (m_isSubscribed) {
+                foreach (Subscription subscription in m_session.Subscriptions) {
+                    if (Object.ReferenceEquals(subscription.Handle, this)) {
                         m_subscription = subscription;
 
-                        foreach (MonitoredItem monitoredItem in subscription.MonitoredItems)
-                        {
+                        foreach (MonitoredItem monitoredItem in subscription.MonitoredItems) {
                             m_monitoredItem = monitoredItem;
                             break;
                         }
@@ -185,18 +164,15 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Changes the area monitored by the control.
         /// </summary>
-        public void ChangeArea(NodeId areaId, bool fetchRecent)
-        {
+        public void ChangeArea(NodeId areaId, bool fetchRecent) {
             m_areaId = areaId;
             EventsLV.Items.Clear();
 
-            if (fetchRecent)
-            {
+            if (fetchRecent) {
                 ReadRecentHistory();
             }
 
-            if (m_subscription != null)
-            {
+            if (m_subscription != null) {
                 MonitoredItem monitoredItem = new MonitoredItem(m_monitoredItem);
                 monitoredItem.StartNodeId = areaId;
 
@@ -213,22 +189,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Changes the filter used to select the events.
         /// </summary>
-        public void ChangeFilter(FilterDeclaration filter, bool fetchRecent)
-        {
+        public void ChangeFilter(FilterDeclaration filter, bool fetchRecent) {
             m_filter = filter;
             EventsLV.Items.Clear();
 
             int index = 0;
 
-            if (m_filter != null)
-            {
+            if (m_filter != null) {
                 // add or update existing columns.
-                for (int ii = 0; ii < m_filter.Fields.Count; ii++)
-                {
-                    if (m_filter.Fields[ii].DisplayInList)
-                    {
-                        if (index >= EventsLV.Columns.Count)
-                        {
+                for (int ii = 0; ii < m_filter.Fields.Count; ii++) {
+                    if (m_filter.Fields[ii].DisplayInList) {
+                        if (index >= EventsLV.Columns.Count) {
                             EventsLV.Columns.Add(new ColumnHeader());
                         }
 
@@ -240,26 +211,22 @@ namespace Opc.Ua.Client.Controls
             }
 
             // remove extra columns.
-            while (index < EventsLV.Columns.Count)
-            {
+            while (index < EventsLV.Columns.Count) {
                 EventsLV.Columns.RemoveAt(EventsLV.Columns.Count - 1);
             }
 
             // adjust the width of the columns.
-            for (int ii = 0; ii < EventsLV.Columns.Count; ii++)
-            {
+            for (int ii = 0; ii < EventsLV.Columns.Count; ii++) {
                 EventsLV.Columns[ii].Width = -2;
             }
 
             // fetch recent history.
-            if (fetchRecent)
-            {
+            if (fetchRecent) {
                 ReadRecentHistory();
             }
 
             // update subscription.
-            if (m_subscription != null && m_filter != null)
-            {
+            if (m_subscription != null && m_filter != null) {
                 m_monitoredItem.Filter = m_filter.GetFilter();
                 m_subscription.ApplyChanges();
             }
@@ -268,13 +235,11 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Clears the event history in the control.
         /// </summary>
-        public void ClearEventHistory()
-        {
+        public void ClearEventHistory() {
             EventsLV.Items.Clear();
 
             // adjust the width of the columns.
-            for (int ii = 0; ii < EventsLV.Columns.Count; ii++)
-            {
+            for (int ii = 0; ii < EventsLV.Columns.Count; ii++) {
                 EventsLV.Columns[ii].Width = -2;
             }
         }
@@ -282,17 +247,14 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Adds the event history to the control.
         /// </summary>
-        public void AddEventHistory(HistoryEvent events)
-        {
-            for (int ii = 0; ii < events.Events.Count; ii++)
-            {
+        public void AddEventHistory(HistoryEvent events) {
+            for (int ii = 0; ii < events.Events.Count; ii++) {
                 ListViewItem item = CreateListItem(m_filter, events.Events[ii].EventFields);
                 EventsLV.Items.Add(item);
             }
 
             // adjust the width of the columns.
-            for (int ii = 0; ii < EventsLV.Columns.Count; ii++)
-            {
+            for (int ii = 0; ii < EventsLV.Columns.Count; ii++) {
                 EventsLV.Columns[ii].Width = -2;
             }
         }
@@ -300,10 +262,8 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Refreshes the conditions displayed.
         /// </summary>
-        public void ConditionRefresh()
-        {
-            if (m_subscription != null)
-            {
+        public void ConditionRefresh() {
+            if (m_subscription != null) {
                 m_subscription.ConditionRefresh();
             }
         }
@@ -311,23 +271,22 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the currently selected event at the specified index (null index is not valid).
         /// </summary>
-        public VariantCollection GetSelectedEvent(int index)
-        {
-            if (EventsLV.SelectedItems.Count > index)
-            {
+        public VariantCollection GetSelectedEvent(int index) {
+            if (EventsLV.SelectedItems.Count > index) {
                 return EventsLV.SelectedItems[index].Tag as VariantCollection;
             }
 
             return null;
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Creates the subscription.
         /// </summary>
-        private void CreateSubscription()
-        {
+        private void CreateSubscription() {
             m_subscription = new Subscription();
             m_subscription.Handle = this;
             m_subscription.DisplayName = null;
@@ -359,10 +318,8 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Deletes the subscription.
         /// </summary>
-        private void DeleteSubscription()
-        {
-            if (m_subscription != null)
-            {
+        private void DeleteSubscription() {
+            if (m_subscription != null) {
                 m_subscription.Delete(true);
                 m_session.RemoveSubscription(m_subscription);
                 m_subscription = null;
@@ -373,22 +330,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Creates list item for an event.
         /// </summary>
-        private ListViewItem CreateListItem(FilterDeclaration filter, VariantCollection fieldValues)
-        {
+        private ListViewItem CreateListItem(FilterDeclaration filter, VariantCollection fieldValues) {
             ListViewItem item = null;
 
-            if (m_displayConditions)
-            {
+            if (m_displayConditions) {
                 NodeId conditionId = fieldValues[0].Value as NodeId;
 
-                if (conditionId != null)
-                {
-                    for (int ii = 0; ii < EventsLV.Items.Count; ii++)
-                    {
+                if (conditionId != null) {
+                    for (int ii = 0; ii < EventsLV.Items.Count; ii++) {
                         VariantCollection fields = EventsLV.Items[ii].Tag as VariantCollection;
 
-                        if (fields != null && Utils.IsEqual(conditionId, fields[0].Value))
-                        {
+                        if (fields != null && Utils.IsEqual(conditionId, fields[0].Value)) {
                             item = EventsLV.Items[ii];
                             break;
                         }
@@ -396,18 +348,15 @@ namespace Opc.Ua.Client.Controls
                 }
             }
 
-            if (item == null)
-            {
+            if (item == null) {
                 item = new ListViewItem();
             }
 
             item.Tag = fieldValues;
             int position = -1;
 
-            for (int ii = 1; ii < filter.Fields.Count; ii++)
-            {
-                if (!filter.Fields[ii].DisplayInList)
-                {
+            for (int ii = 1; ii < filter.Fields.Count; ii++) {
+                if (!filter.Fields[ii].DisplayInList) {
                     continue;
                 }
 
@@ -417,57 +366,43 @@ namespace Opc.Ua.Client.Controls
                 Variant value = fieldValues[ii + 1];
 
                 // check for missing fields.
-                if (value.Value == null)
-                {
+                if (value.Value == null) {
                     text = String.Empty;
                 }
 
                 // display the name of a node instead of the node id.
-                else if (value.TypeInfo.BuiltInType == BuiltInType.NodeId)
-                {
-                    INode node = m_session.NodeCache.Find((NodeId)value.Value);
+                else if (value.TypeInfo.BuiltInType == BuiltInType.NodeId) {
+                    INode node = m_session.NodeCache.Find((NodeId) value.Value);
 
-                    if (node != null)
-                    {
+                    if (node != null) {
                         text = node.ToString();
                     }
                 }
 
                 // display local time for any time fields.
-                else if (value.TypeInfo.BuiltInType == BuiltInType.DateTime)
-                {
-                    DateTime datetime = (DateTime)value.Value;
+                else if (value.TypeInfo.BuiltInType == BuiltInType.DateTime) {
+                    DateTime datetime = (DateTime) value.Value;
 
-                    if (m_filter.Fields[ii].InstanceDeclaration.DisplayName.Contains("Time"))
-                    {
+                    if (m_filter.Fields[ii].InstanceDeclaration.DisplayName.Contains("Time")) {
                         text = datetime.ToLocalTime().ToString("HH:mm:ss.fff");
-                    }
-                    else
-                    {
+                    } else {
                         text = datetime.ToLocalTime().ToString("yyyy-MM-dd");
                     }
                 }
 
                 // use default string format.
-                else
-                {
+                else {
                     text = value.ToString();
                 }
 
                 // update subitem text.
-                if (item.Text == String.Empty)
-                {
+                if (item.Text == String.Empty) {
                     item.Text = text;
                     item.SubItems[0].Text = text;
-                }
-                else
-                {
-                    if (item.SubItems.Count <= position)
-                    {
+                } else {
+                    if (item.SubItems.Count <= position) {
                         item.SubItems.Add(text);
-                    }
-                    else
-                    {
+                    } else {
                         item.SubItems[position].Text = text;
                     }
                 }
@@ -479,47 +414,40 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the display with a new value for a monitored variable. 
         /// </summary>
-        private void MonitoredItem_Notification(MonitoredItem monitoredItem, MonitoredItemNotificationEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new MonitoredItemNotificationEventHandler(MonitoredItem_Notification), monitoredItem, e);
+        private void MonitoredItem_Notification(MonitoredItem monitoredItem, MonitoredItemNotificationEventArgs e) {
+            if (this.InvokeRequired) {
+                this.BeginInvoke(new MonitoredItemNotificationEventHandler(MonitoredItem_Notification), monitoredItem,
+                    e);
                 return;
             }
 
-            try
-            {
+            try {
                 // check for valid notification.
                 EventFieldList notification = e.NotificationValue as EventFieldList;
 
-                if (notification == null)
-                {
+                if (notification == null) {
                     return;
                 }
 
                 // check if monitored item has changed.
-                if (!Object.ReferenceEquals(m_monitoredItem, monitoredItem))
-                {
+                if (!Object.ReferenceEquals(m_monitoredItem, monitoredItem)) {
                     return;
                 }
 
                 // check if the filter has changed.
-                if (notification.EventFields.Count != m_filter.Fields.Count+1)
-                {
+                if (notification.EventFields.Count != m_filter.Fields.Count + 1) {
                     return;
                 }
 
-                if (m_displayConditions)
-                {
-                    NodeId eventTypeId = m_filter.GetValue<NodeId>(Opc.Ua.BrowseNames.EventType, notification.EventFields, null);
+                if (m_displayConditions) {
+                    NodeId eventTypeId =
+                        m_filter.GetValue<NodeId>(Opc.Ua.BrowseNames.EventType, notification.EventFields, null);
 
-                    if (eventTypeId == Opc.Ua.ObjectTypeIds.RefreshStartEventType)
-                    {
+                    if (eventTypeId == Opc.Ua.ObjectTypeIds.RefreshStartEventType) {
                         EventsLV.Items.Clear();
                     }
 
-                    if (eventTypeId == Opc.Ua.ObjectTypeIds.RefreshEndEventType)
-                    {
+                    if (eventTypeId == Opc.Ua.ObjectTypeIds.RefreshEndEventType) {
                         return;
                     }
                 }
@@ -527,36 +455,29 @@ namespace Opc.Ua.Client.Controls
                 // create an item and add to top of list.
                 ListViewItem item = CreateListItem(m_filter, notification.EventFields);
 
-                if (item.ListView == null)
-                {
+                if (item.ListView == null) {
                     EventsLV.Items.Insert(0, item);
                 }
 
                 // adjust the width of the columns.
-                for (int ii = 0; ii < EventsLV.Columns.Count; ii++)
-                {
+                for (int ii = 0; ii < EventsLV.Columns.Count; ii++) {
                     EventsLV.Columns[ii].Width = -2;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
-        
+
         /// <summary>
         /// Fetches the recent history.
         /// </summary>
-        private void ReadRecentHistory()
-        {
+        private void ReadRecentHistory() {
             // check if session is active.
-            if (m_session != null)
-            {
+            if (m_session != null) {
                 // check if area supports history.
                 IObject area = m_session.NodeCache.Find(m_areaId) as IObject;
 
-                if (area != null && ((area.EventNotifier & EventNotifiers.HistoryRead) != 0))
-                {
+                if (area != null && ((area.EventNotifier & EventNotifiers.HistoryRead) != 0)) {
                     // get the last hour or 10 events.
                     ReadEventDetails details = new ReadEventDetails();
                     details.StartTime = DateTime.UtcNow.AddSeconds(30);
@@ -573,8 +494,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Fetches the recent history.
         /// </summary>
-        private void ReadHistory(ReadEventDetails details, NodeId areaId)
-        {
+        private void ReadHistory(ReadEventDetails details, NodeId areaId) {
             HistoryReadValueIdCollection nodesToRead = new HistoryReadValueIdCollection();
             HistoryReadValueId nodeToRead = new HistoryReadValueId();
             nodeToRead.NodeId = areaId;
@@ -595,8 +515,7 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToRead);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -604,8 +523,7 @@ namespace Opc.Ua.Client.Controls
             AddEventHistory(events);
 
             // release continuation points.
-            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0)
-            {
+            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0) {
                 nodeToRead.ContinuationPoint = results[0].ContinuationPoint;
 
                 m_session.HistoryRead(
@@ -622,15 +540,12 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Deletes the recent history.
         /// </summary>
-        private void DeleteHistory(NodeId areaId, List<VariantCollection> events, FilterDeclaration filter)
-        {
+        private void DeleteHistory(NodeId areaId, List<VariantCollection> events, FilterDeclaration filter) {
             // find the event id.
             int index = 0;
 
-            foreach (FilterDeclarationField field in filter.Fields)
-            {
-                if (field.InstanceDeclaration.BrowseName == Opc.Ua.BrowseNames.EventId)
-                {
+            foreach (FilterDeclarationField field in filter.Fields) {
+                if (field.InstanceDeclaration.BrowseName == Opc.Ua.BrowseNames.EventId) {
                     break;
                 }
 
@@ -638,21 +553,19 @@ namespace Opc.Ua.Client.Controls
             }
 
             // can't delete events if no event id.
-            if (index >= filter.Fields.Count)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadEventIdUnknown, "Cannot delete events if EventId was not selected.");
+            if (index >= filter.Fields.Count) {
+                throw ServiceResultException.Create(StatusCodes.BadEventIdUnknown,
+                    "Cannot delete events if EventId was not selected.");
             }
 
             // build list of nodes to delete.
             DeleteEventDetails details = new DeleteEventDetails();
             details.NodeId = areaId;
 
-            foreach (VariantCollection e in events)
-            {
+            foreach (VariantCollection e in events) {
                 byte[] eventId = null;
 
-                if (e.Count > index)
-                {
+                if (e.Count > index) {
                     eventId = e[index].Value as byte[];
                 }
 
@@ -675,29 +588,24 @@ namespace Opc.Ua.Client.Controls
             ClientBase.ValidateResponse(results, nodesToUpdate);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToUpdate);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
             // check for item level errors.
-            if (results[0].OperationResults.Count > 0)
-            {
+            if (results[0].OperationResults.Count > 0) {
                 int count = 0;
 
-                for (int ii = 0; ii < results[0].OperationResults.Count; ii++)
-                {
-                    if (StatusCode.IsBad(results[0].OperationResults[ii]))
-                    {
+                for (int ii = 0; ii < results[0].OperationResults.Count; ii++) {
+                    if (StatusCode.IsBad(results[0].OperationResults[ii])) {
                         count++;
                     }
                 }
 
                 // raise an error.
-                if (count > 0)
-                {
+                if (count > 0) {
                     throw ServiceResultException.Create(
-                        StatusCodes.BadEventIdUnknown, 
+                        StatusCodes.BadEventIdUnknown,
                         "Error deleting events. Only {0} of {1} deletes succeeded.",
                         events.Count - count,
                         events.Count);
@@ -705,69 +613,54 @@ namespace Opc.Ua.Client.Controls
             }
         }
 
-        private void ViewDetailsMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (EventsLV.SelectedItems.Count == 0)
-                {
+        private void ViewDetailsMI_Click(object sender, EventArgs e) {
+            try {
+                if (EventsLV.SelectedItems.Count == 0) {
                     return;
                 }
 
                 VariantCollection fields = EventsLV.SelectedItems[0].Tag as VariantCollection;
 
-                if (fields != null)
-                {
+                if (fields != null) {
                     // new ViewEventDetailsDlg().ShowDialog(m_filter, fields);
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void DeleteHistoryMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (EventsLV.SelectedItems.Count == 0)
-                {
+        private void DeleteHistoryMI_Click(object sender, EventArgs e) {
+            try {
+                if (EventsLV.SelectedItems.Count == 0) {
                     return;
                 }
 
                 List<VariantCollection> events = new List<VariantCollection>();
 
-                foreach (ListViewItem item in EventsLV.SelectedItems)
-                {
+                foreach (ListViewItem item in EventsLV.SelectedItems) {
                     VariantCollection fields = item.Tag as VariantCollection;
 
-                    if (fields != null)
-                    {
+                    if (fields != null) {
                         events.Add(fields);
                     }
                 }
 
-                if (events.Count > 0)
-                {
+                if (events.Count > 0) {
                     DeleteHistory(m_areaId, events, m_filter);
 
-                    foreach (ListViewItem item in EventsLV.SelectedItems)
-                    {
+                    foreach (ListViewItem item in EventsLV.SelectedItems) {
                         VariantCollection fields = item.Tag as VariantCollection;
 
-                        if (fields != null)
-                        {
+                        if (fields != null) {
                             item.Font = new Font(item.Font, FontStyle.Strikeout);
                         }
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

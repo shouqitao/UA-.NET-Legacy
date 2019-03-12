@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <xs:schema
   targetNamespace="http://opcfoundation.org/BinarySchema/"
   elementFormDefault="qualified"
   xmlns="http://opcfoundation.org/BinarySchema/"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
->
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="Documentation">
     <xs:complexType mixed="true">
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        <xs:any minOccurs="0" maxOccurs="unbounded" />
       </xs:choice>
-      <xs:anyAttribute/>
+      <xs:anyAttribute />
     </xs:complexType>
   </xs:element>
 
@@ -46,7 +46,7 @@
 
   <xs:complexType name="EnumeratedValue">
     <xs:sequence>
-      <xs:element ref="Documentation"  minOccurs="0" maxOccurs="1" />
+      <xs:element ref="Documentation" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attribute name="Name" type="xs:string" use="optional" />
     <xs:attribute name="Value" type="xs:int" use="optional" />
@@ -102,7 +102,7 @@
   <xs:element name="TypeDictionary">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="Documentation"  minOccurs="0" maxOccurs="1" />
+        <xs:element ref="Documentation" minOccurs="0" maxOccurs="1" />
         <xs:element name="Import" type="ImportDirective" minOccurs="0" maxOccurs="unbounded" />
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="OpaqueType" type="OpaqueType" />

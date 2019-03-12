@@ -21,25 +21,21 @@ using System.Reflection;
 using System.Xml;
 using System.Runtime.Serialization;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// A class that defines constants used by UA applications.
     /// </summary>
-    public static partial class ReferenceTypes
-    {
+    public static partial class ReferenceTypes {
         #region Static Helper Functions
+
         /// <summary>
         /// Returns the browse name for the attribute.
         /// </summary>
-        public static string GetBrowseName(uint identifier)
-        {
+        public static string GetBrowseName(uint identifier) {
             FieldInfo[] fields = typeof(ReferenceTypes).GetFields(BindingFlags.Public | BindingFlags.Static);
 
-            foreach (FieldInfo field in fields)
-            {
-                if (identifier == (uint)field.GetValue(typeof(ReferenceTypes)))
-                {
+            foreach (FieldInfo field in fields) {
+                if (identifier == (uint) field.GetValue(typeof(ReferenceTypes))) {
                     return field.Name;
                 }
             }
@@ -50,16 +46,14 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the browse names for all attributes.
         /// </summary>
-        public static string[] GetBrowseNames()
-        {
+        public static string[] GetBrowseNames() {
             FieldInfo[] fields = typeof(ReferenceTypes).GetFields(BindingFlags.Public | BindingFlags.Static);
 
             int ii = 0;
 
             string[] names = new string[fields.Length];
 
-            foreach (FieldInfo field in fields)
-            {
+            foreach (FieldInfo field in fields) {
                 names[ii++] = field.Name;
             }
 
@@ -69,21 +63,18 @@ namespace Opc.Ua
         /// <summary>
         /// Returns the id for the attribute with the specified browse name.
         /// </summary>
-        public static uint GetIdentifier(string browseName)
-        {
+        public static uint GetIdentifier(string browseName) {
             FieldInfo[] fields = typeof(ReferenceTypes).GetFields(BindingFlags.Public | BindingFlags.Static);
 
-            foreach (FieldInfo field in fields)
-            {
-                if (field.Name == browseName)
-                {
-                    return (uint)field.GetValue(typeof(ReferenceTypes));
+            foreach (FieldInfo field in fields) {
+                if (field.Name == browseName) {
+                    return (uint) field.GetValue(typeof(ReferenceTypes));
                 }
             }
 
             return 0;
         }
+
         #endregion
     }
-
 }

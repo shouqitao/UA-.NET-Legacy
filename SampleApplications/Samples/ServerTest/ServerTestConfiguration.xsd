@@ -2,8 +2,7 @@
   xmlns:tns="http://opcfoundation.org/UA/SDK/ServerTest/Configuration.xsd"
   elementFormDefault="qualified"
   targetNamespace="http://opcfoundation.org/UA/SDK/ServerTest/Configuration.xsd"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
->
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:complexType name="ServerTestCase">
     <xs:sequence>
       <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1" />
@@ -32,7 +31,7 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ListOfTestNode" nillable="true" type="tns:ListOfTestNode" />
-  
+
   <xs:complexType name="ListOfString">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="String" nillable="true" type="xs:string" />
@@ -51,7 +50,7 @@
         <xs:element name="Seed" type="xs:int" minOccurs="0" maxOccurs="1" />
         <xs:element name="BrowseRoots" type="tns:ListOfTestNode" minOccurs="0" maxOccurs="1" />
         <xs:element name="WriteableVariables" type="tns:ListOfTestNode" minOccurs="0" maxOccurs="1" />
-        <xs:element name="NamespaceUris" type="tns:ListOfString" minOccurs="0" maxOccurs="1" />        
+        <xs:element name="NamespaceUris" type="tns:ListOfString" minOccurs="0" maxOccurs="1" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -69,5 +68,5 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="EndpointSelection" nillable="false" type="tns:EndpointSelection" />
-  
+
 </xs:schema>

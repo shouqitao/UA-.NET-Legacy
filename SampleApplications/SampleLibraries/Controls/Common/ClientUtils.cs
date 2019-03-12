@@ -40,18 +40,15 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A class that provide various common utility functions and shared resources.
     /// </summary>
-    public partial class ClientUtils : UserControl
-    {
+    public partial class ClientUtils : UserControl {
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientUtils"/> class.
         /// </summary>
-        public ClientUtils()
-        {
+        public ClientUtils() {
             InitializeComponent();
         }
 
@@ -72,14 +69,12 @@ namespace Opc.Ua.Client.Controls
         private const int ArrayValue = 14;
         private const int InputArgument = 15;
         private const int OutputArgument = 16;
-        
+
         /// <summary>
         /// Returns an image index for the specified method argument.
         /// </summary>
-        public static int GetImageIndex(bool isOutputArgument, object value)
-        {
-            if (isOutputArgument)
-            {
+        public static int GetImageIndex(bool isOutputArgument, object value) {
+            if (isOutputArgument) {
                 return OutputArgument;
             }
 
@@ -89,29 +84,23 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns an image index for the specified attribute.
         /// </summary>
-        public static int GetImageIndex(uint attributeId, object value)
-        {
-            if (attributeId == Attributes.Value)
-            {
+        public static int GetImageIndex(uint attributeId, object value) {
+            if (attributeId == Attributes.Value) {
                 TypeInfo typeInfo = TypeInfo.Construct(value);
 
-                if (typeInfo.ValueRank >= 0)
-                {
+                if (typeInfo.ValueRank >= 0) {
                     return ClientUtils.ArrayValue;
                 }
 
-                if (typeInfo.BuiltInType == BuiltInType.Variant)
-                {
-                    typeInfo = ((Variant)value).TypeInfo;
+                if (typeInfo.BuiltInType == BuiltInType.Variant) {
+                    typeInfo = ((Variant) value).TypeInfo;
 
-                    if (typeInfo == null)
-                    {
-                        typeInfo = TypeInfo.Construct(((Variant)value).Value);
+                    if (typeInfo == null) {
+                        typeInfo = TypeInfo.Construct(((Variant) value).Value);
                     }
                 }
 
-                switch (typeInfo.BuiltInType)
-                {
+                switch (typeInfo.BuiltInType) {
                     case BuiltInType.Number:
                     case BuiltInType.SByte:
                     case BuiltInType.Byte:
@@ -126,20 +115,17 @@ namespace Opc.Ua.Client.Controls
                     case BuiltInType.Enumeration:
                     case BuiltInType.UInteger:
                     case BuiltInType.Integer:
-                    case BuiltInType.Boolean:
-                    {
+                    case BuiltInType.Boolean: {
                         return ClientUtils.NumberValue;
                     }
 
-                    case BuiltInType.ByteString:
-                    {
+                    case BuiltInType.ByteString: {
                         return ClientUtils.ByteStringValue;
                     }
 
                     case BuiltInType.ExtensionObject:
                     case BuiltInType.DiagnosticInfo:
-                    case BuiltInType.DataValue:
-                    {
+                    case BuiltInType.DataValue: {
                         return ClientUtils.StructureValue;
                     }
                 }
@@ -153,28 +139,21 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns an image index for the specified attribute.
         /// </summary>
-        public static int GetImageIndex(Session session, NodeClass nodeClass, ExpandedNodeId typeDefinitionId, bool selected)
-        {
-            if (nodeClass == NodeClass.Variable)
-            {
-                if (session.NodeCache.IsTypeOf(typeDefinitionId, Opc.Ua.VariableTypeIds.PropertyType))
-                {
+        public static int GetImageIndex(Session session, NodeClass nodeClass, ExpandedNodeId typeDefinitionId,
+            bool selected) {
+            if (nodeClass == NodeClass.Variable) {
+                if (session.NodeCache.IsTypeOf(typeDefinitionId, Opc.Ua.VariableTypeIds.PropertyType)) {
                     return ClientUtils.Property;
                 }
 
                 return ClientUtils.Variable;
             }
 
-            if (nodeClass == NodeClass.Object)
-            {
-                if (session.NodeCache.IsTypeOf(typeDefinitionId, Opc.Ua.ObjectTypeIds.FolderType))
-                {
-                    if (selected)
-                    {
+            if (nodeClass == NodeClass.Object) {
+                if (session.NodeCache.IsTypeOf(typeDefinitionId, Opc.Ua.ObjectTypeIds.FolderType)) {
+                    if (selected) {
                         return ClientUtils.OpenFolder;
-                    }
-                    else
-                    {
+                    } else {
                         return ClientUtils.ClosedFolder;
                     }
                 }
@@ -182,13 +161,11 @@ namespace Opc.Ua.Client.Controls
                 return ClientUtils.Object;
             }
 
-            if (nodeClass == NodeClass.Method)
-            {
+            if (nodeClass == NodeClass.Method) {
                 return ClientUtils.Method;
             }
 
-            if (nodeClass == NodeClass.View)
-            {
+            if (nodeClass == NodeClass.View) {
                 return ClientUtils.View;
             }
 

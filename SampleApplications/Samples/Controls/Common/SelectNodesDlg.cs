@@ -35,70 +35,68 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class SelectNodesDlg : Form
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class SelectNodesDlg : Form {
         #region Constructors
-        public SelectNodesDlg()
-        {
+
+        public SelectNodesDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
 
         #region Private Fields
+
         private Session m_session;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
         public NodeIdCollection ShowDialog(
-            Session          session, 
-            BrowseViewType   browseView, 
+            Session session,
+            BrowseViewType browseView,
             NodeIdCollection nodesIds,
-            NodeClass        nodeClassMask)
-        {
+            NodeClass nodeClassMask) {
             if (session == null) throw new ArgumentNullException("session");
 
             m_session = session;
 
             BrowseCTRL.SetView(session, browseView, null);
             NodeListCTRL.Initialize(session, nodesIds, nodeClassMask);
-            
-            if (ShowDialog() != DialogResult.OK)
-            {
+
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
-                        
+
             return NodeListCTRL.GetNodeIds();
         }
+
         #endregion
-        
+
         #region Private Methods
+
         #endregion
-        
+
         #region Event Handler
-        private void BrowseCTRL_NodesSelected(object sender, NodesSelectedEventArgs e)
-        {
-            try
-            {
-                foreach (ReferenceDescription reference in e.References)
-                {
+
+        private void BrowseCTRL_NodesSelected(object sender, NodesSelectedEventArgs e) {
+            try {
+                foreach (ReferenceDescription reference in e.References) {
                     NodeListCTRL.AddNodeId(reference);
-                }    
-            }
-            catch (Exception exception)
-            {
+                }
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

@@ -17,26 +17,24 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-
 using Opc.Ua.Bindings;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// An object used by clients to access a UA discovery service.
     /// </summary>
-    public partial class DiscoveryClient
-    {
+    public partial class DiscoveryClient {
         #region Constructors
+
         /// <summary>
         /// Creates a binding for to use for discovering servers.
         /// </summary>
         /// <param name="discoveryUrl">The discovery URL.</param>
         /// <returns></returns>
-        public static DiscoveryClient Create(Uri discoveryUrl)
-        {
+        public static DiscoveryClient Create(Uri discoveryUrl) {
             EndpointConfiguration configuration = EndpointConfiguration.Create();
-            ITransportChannel channel = DiscoveryChannel.Create(discoveryUrl, configuration, new ServiceMessageContext());
+            ITransportChannel channel =
+                DiscoveryChannel.Create(discoveryUrl, configuration, new ServiceMessageContext());
             return new DiscoveryClient(channel);
         }
 
@@ -46,18 +44,17 @@ namespace Opc.Ua
         /// <param name="discoveryUrl">The discovery URL.</param>
         /// <param name="configuration">The configuration.</param>
         /// <returns></returns>
-        public static DiscoveryClient Create(Uri discoveryUrl, EndpointConfiguration configuration)
-        {
-            if (configuration == null)
-            {
+        public static DiscoveryClient Create(Uri discoveryUrl, EndpointConfiguration configuration) {
+            if (configuration == null) {
                 configuration = EndpointConfiguration.Create();
             }
 
-            ITransportChannel channel = DiscoveryChannel.Create(discoveryUrl, configuration, new ServiceMessageContext());
+            ITransportChannel channel =
+                DiscoveryChannel.Create(discoveryUrl, configuration, new ServiceMessageContext());
             return new DiscoveryClient(channel);
         }
 
-        #if !SILVERLIGHT
+#if !SILVERLIGHT
         /// <summary>
         /// Creates a binding for to use for discovering servers.
         /// </summary>
@@ -65,34 +62,34 @@ namespace Opc.Ua
         /// <param name="bindingFactory">The binding factory.</param>
         /// <param name="configuration">The configuration.</param>
         /// <returns></returns>
-        public static DiscoveryClient Create(Uri discoveryUrl, BindingFactory bindingFactory, EndpointConfiguration configuration)
-        {
+        public static DiscoveryClient Create(Uri discoveryUrl, BindingFactory bindingFactory,
+            EndpointConfiguration configuration) {
             if (discoveryUrl == null) throw new ArgumentNullException("discoveryUrl");
 
-            if (bindingFactory == null)
-            {
+            if (bindingFactory == null) {
                 bindingFactory = BindingFactory.Default;
             }
 
-            if (configuration == null)
-            {
+            if (configuration == null) {
                 configuration = EndpointConfiguration.Create();
             }
 
-            ITransportChannel channel = DiscoveryChannel.Create(discoveryUrl, bindingFactory, configuration, new ServiceMessageContext());
+            ITransportChannel channel =
+                DiscoveryChannel.Create(discoveryUrl, bindingFactory, configuration, new ServiceMessageContext());
             return new DiscoveryClient(channel);
         }
-        #endif
+#endif
+
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Invokes the GetEndpoints service.
         /// </summary>
         /// <param name="profileUris">The collection of profile URIs.</param>
         /// <returns></returns>
-        public virtual EndpointDescriptionCollection GetEndpoints(StringCollection profileUris)
-        {
+        public virtual EndpointDescriptionCollection GetEndpoints(StringCollection profileUris) {
             EndpointDescriptionCollection endpoints = null;
 
             GetEndpoints(
@@ -110,8 +107,7 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="serverUris">The collection of server URIs.</param>
         /// <returns></returns>
-        public virtual ApplicationDescriptionCollection FindServers(StringCollection serverUris)
-        {
+        public virtual ApplicationDescriptionCollection FindServers(StringCollection serverUris) {
             ApplicationDescriptionCollection servers = null;
 
             FindServers(
@@ -136,8 +132,7 @@ namespace Opc.Ua
             uint startingRecordId,
             uint maxRecordsToReturn,
             StringCollection serverCapabilityFilter,
-            out DateTime lastCounterResetTime)
-        {
+            out DateTime lastCounterResetTime) {
             ServerOnNetworkCollection servers = null;
 
             FindServersOnNetwork(
@@ -151,15 +146,15 @@ namespace Opc.Ua
             return servers;
         }
 
-        #endregion  
+        #endregion
     }
-    
+
     /// <summary>
     /// A channel object used by clients to access a UA discovery service.
     /// </summary>
-    public partial class DiscoveryChannel
-    {
+    public partial class DiscoveryChannel {
         #region Constructors
+
         /// <summary>
         /// Creates a new transport channel that supports the ISessionChannel service contract.
         /// </summary>
@@ -170,8 +165,7 @@ namespace Opc.Ua
         public static ITransportChannel Create(
             Uri discoveryUrl,
             EndpointConfiguration endpointConfiguration,
-            ServiceMessageContext messageContext)
-        {
+            ServiceMessageContext messageContext) {
             // create a dummy description.
             EndpointDescription endpoint = new EndpointDescription();
 
@@ -185,13 +179,13 @@ namespace Opc.Ua
                 null,
                 endpoint,
                 endpointConfiguration,
-                (System.Security.Cryptography.X509Certificates.X509Certificate2)null,
+                (System.Security.Cryptography.X509Certificates.X509Certificate2) null,
                 messageContext);
 
             return channel;
         }
 
-        #if !SILVERLIGHT
+#if !SILVERLIGHT
         /// <summary>
         /// Creates a new transport channel that supports the IDiscoveryChannel service contract.
         /// </summary>
@@ -204,8 +198,7 @@ namespace Opc.Ua
             Uri discoveryUrl,
             BindingFactory bindingFactory,
             EndpointConfiguration endpointConfiguration,
-            ServiceMessageContext messageContext)
-        {
+            ServiceMessageContext messageContext) {
             // create a dummy description.
             EndpointDescription endpoint = new EndpointDescription();
 
@@ -219,12 +212,11 @@ namespace Opc.Ua
                 null,
                 endpoint,
                 endpointConfiguration,
-                (System.Security.Cryptography.X509Certificates.X509Certificate2)null,
+                (System.Security.Cryptography.X509Certificates.X509Certificate2) null,
                 messageContext);
 
             // create a WCF XML channel.
-            if (channel == null)
-            {
+            if (channel == null) {
                 Binding binding = bindingFactory.Create(discoveryUrl.Scheme, endpointConfiguration);
 
                 DiscoveryChannel wcfXmlChannel = new DiscoveryChannel();
@@ -248,8 +240,7 @@ namespace Opc.Ua
         /// <param name="configurationName">Name of the configuration.</param>
         /// <returns></returns>
         [Obsolete("Should call DiscoveryClient.Create methods.")]
-        public static DiscoveryChannel Create(Uri discoveryUrl, string configurationName)
-        {
+        public static DiscoveryChannel Create(Uri discoveryUrl, string configurationName) {
             return Create(discoveryUrl, EndpointConfiguration.Create(), BindingFactory.Default, configurationName);
         }
 
@@ -260,8 +251,7 @@ namespace Opc.Ua
         /// <param name="configuration">The configuration.</param>
         /// <returns></returns>
         [Obsolete("Should call DiscoveryClient.Create methods.")]
-        public static DiscoveryChannel Create(Uri discoveryUrl, EndpointConfiguration configuration)
-        {
+        public static DiscoveryChannel Create(Uri discoveryUrl, EndpointConfiguration configuration) {
             return Create(discoveryUrl, configuration, BindingFactory.Default, null);
         }
 
@@ -275,12 +265,12 @@ namespace Opc.Ua
         /// <returns></returns>
         [Obsolete("Should call DiscoveryClient.Create methods.")]
         public static DiscoveryChannel Create(
-            Uri                   discoveryUrl,
+            Uri discoveryUrl,
             EndpointConfiguration configuration,
-            BindingFactory        bindingFactory,
-            string                configurationName)
-        {
-            return Create(discoveryUrl, configuration, bindingFactory.Create(discoveryUrl.Scheme, configuration), configurationName);
+            BindingFactory bindingFactory,
+            string configurationName) {
+            return Create(discoveryUrl, configuration, bindingFactory.Create(discoveryUrl.Scheme, configuration),
+                configurationName);
         }
 
         /// <summary>
@@ -293,11 +283,10 @@ namespace Opc.Ua
         /// <returns></returns>
         [Obsolete("Should call DiscoveryClient.Create methods.")]
         public static DiscoveryChannel Create(
-            Uri                   discoveryUrl,
+            Uri discoveryUrl,
             EndpointConfiguration configuration,
-            Binding               binding,
-            string                configurationName)
-        {
+            Binding binding,
+            string configurationName) {
             // create a dummy description.
             EndpointDescription endpoint = new EndpointDescription();
 
@@ -317,7 +306,8 @@ namespace Opc.Ua
 
             return channel;
         }
-        #endif
+#endif
+
         #endregion
-    } 
+    }
 }

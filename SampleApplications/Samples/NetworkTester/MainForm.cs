@@ -37,14 +37,11 @@ using System.Windows.Forms;
 using System.Reflection;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.NetworkTester
-{
-    public partial class MainForm : Form
-    {
-        public MainForm()
-        {
+namespace Opc.Ua.NetworkTester {
+    public partial class MainForm : Form {
+        public MainForm() {
             InitializeComponent();
-            
+
             ListenerUrlTB.Text = "opc.tcp://localhost:7001";
             ServerUrlTB.Text = "opc.tcp://localhost:61210";
 
@@ -53,12 +50,9 @@ namespace Opc.Ua.NetworkTester
 
         private Server m_server;
 
-        private void StartBTN_Click(object sender, EventArgs e)
-        {   
-            try
-            {
-                if (m_server != null)
-                {
+        private void StartBTN_Click(object sender, EventArgs e) {
+            try {
+                if (m_server != null) {
                     m_server.Stop();
                     m_server = null;
                 }
@@ -67,28 +61,21 @@ namespace Opc.Ua.NetworkTester
                 m_server.Start();
 
                 StopBTN.Enabled = true;
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void StopBTN_Click(object sender, EventArgs e)
-        {   
-            try
-            {
-                if (m_server != null)
-                {
+        private void StopBTN_Click(object sender, EventArgs e) {
+            try {
+                if (m_server != null) {
                     m_server.Stop();
                     m_server = null;
                 }
 
                 StopBTN.Enabled = false;
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
     }

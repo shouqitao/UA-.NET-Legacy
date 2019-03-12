@@ -32,13 +32,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// A aggregate filter with additional state information.
     /// </summary>
-    public class ServerAggregateFilter : AggregateFilter
-    {
+    public class ServerAggregateFilter : AggregateFilter {
         /// <summary>
         /// Whether the variable requires stepped interpolation.
         /// </summary>

@@ -19,100 +19,87 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// A base class for AsyncResult objects 
     /// </summary>
-    public class AsyncResultBase : IAsyncResult, IDisposable
-    {
+    public class AsyncResultBase : IAsyncResult, IDisposable {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncResultBase"/> class.
         /// </summary>
         /// <param name="callback">The callback to use when the operation completes.</param>
         /// <param name="callbackData">The callback data.</param>
         /// <param name="timeout">The timeout for the operation.</param>
-        public AsyncResultBase(AsyncCallback callback, object callbackData, int timeout)
-        {
+        public AsyncResultBase(AsyncCallback callback, object callbackData, int timeout) {
             m_callback = callback;
             m_asyncState = callbackData;
             m_deadline = DateTime.MinValue;
 
-            if (timeout > 0)
-            {
+            if (timeout > 0) {
                 m_deadline = DateTime.UtcNow.AddMilliseconds(timeout);
 
-                if (m_callback != null)
-                {
+                if (m_callback != null) {
                     m_timer = new Timer(OnTimeout, null, timeout, Timeout.Infinite);
                 }
             }
         }
+
         #endregion
 
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
                 // stop the timer.
-                if (m_timer != null)
-                {
-                    try
-                    {
+                if (m_timer != null) {
+                    try {
                         m_timer.Dispose();
                         m_timer = null;
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         // ignore 
                     }
                 }
 
                 // signal an waiting threads.
-                if (m_waitHandle != null)
-                {
-                    try
-                    {
+                if (m_waitHandle != null) {
+                    try {
                         m_waitHandle.Set();
                         m_waitHandle.Close();
                         m_waitHandle = null;
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         // ignore 
                     }
                 }
             }
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// An object used to synchronize access to the result object.
         /// </summary>
-        public object Lock
-        {
+        public object Lock {
             get { return m_lock; }
         }
 
         /// <summary>
         /// An object used to synchronize access to the result object.
         /// </summary>
-        public IAsyncResult InnerResult
-        {
+        public IAsyncResult InnerResult {
             get { return m_innerResult; }
             set { m_innerResult = value; }
         }
@@ -120,8 +107,7 @@ namespace Opc.Ua
         /// <summary>
         /// An exception that occured during processing.
         /// </summary>
-        public Exception Exception
-        {
+        public Exception Exception {
             get { return m_exception; }
             set { m_exception = value; }
         }
@@ -130,17 +116,14 @@ namespace Opc.Ua
         /// Waits for the operation to complete.
         /// </summary>
         /// <param name="ar">The result object returned from the Begin method.</param>
-        public static void WaitForComplete(IAsyncResult ar)
-        {
+        public static void WaitForComplete(IAsyncResult ar) {
             AsyncResultBase result = ar as AsyncResultBase;
-            
-            if (result == null)
-            {
+
+            if (result == null) {
                 throw new ArgumentException("IAsyncResult passed to call is not an instance of AsyncResultBase.");
             }
 
-            if (!result.WaitForComplete())
-            {
+            if (!result.WaitForComplete()) {
                 throw new TimeoutException();
             }
         }
@@ -149,103 +132,77 @@ namespace Opc.Ua
         /// Waits for the operation to complete.
         /// </summary>
         /// <returns>True if operation completed without any errors.</returns>
-        public bool WaitForComplete()
-        {
-            try
-            {
+        public bool WaitForComplete() {
+            try {
                 WaitHandle waitHandle = null;
 
                 int timeout = Timeout.Infinite;
 
-                lock (m_lock)
-                {
-                    if (m_exception != null)
-                    {
+                lock (m_lock) {
+                    if (m_exception != null) {
                         throw new ServiceResultException(m_exception, StatusCodes.BadCommunicationError);
                     }
 
-                    if (m_deadline != DateTime.MinValue)
-                    {
-                        timeout = (int)(m_deadline - DateTime.UtcNow).TotalMilliseconds;
+                    if (m_deadline != DateTime.MinValue) {
+                        timeout = (int) (m_deadline - DateTime.UtcNow).TotalMilliseconds;
 
-                        if (timeout <= 0)
-                        {
+                        if (timeout <= 0) {
                             return false;
                         }
                     }
 
-                    if (m_isCompleted)
-                    {
+                    if (m_isCompleted) {
                         return true;
                     }
 
-                    if (m_waitHandle == null)
-                    {
+                    if (m_waitHandle == null) {
                         m_waitHandle = new ManualResetEvent(false);
                     }
 
                     waitHandle = m_waitHandle;
                 }
 
-                if (waitHandle != null)
-                {
-                    try
-                    {
-                        #if !SILVERLIGHT
-                        if (!m_waitHandle.WaitOne(timeout, false))
-                        {
+                if (waitHandle != null) {
+                    try {
+#if !SILVERLIGHT
+                        if (!m_waitHandle.WaitOne(timeout, false)) {
                             return false;
                         }
-                        #else
+#else
                         if (!m_waitHandle.WaitOne(timeout))
                         {
                             return false;
                         }
-                        #endif
+#endif
 
-                        lock (m_lock)
-                        {
-                            if (m_exception != null)
-                            {
+                        lock (m_lock) {
+                            if (m_exception != null) {
                                 throw new ServiceResultException(m_exception, StatusCodes.BadCommunicationError);
                             }
                         }
-                    }
-                    catch (ObjectDisposedException)
-                    {
+                    } catch (ObjectDisposedException) {
                         return false;
                     }
                 }
-            }
-            finally
-            {
+            } finally {
                 // always stop the timer after operation completes.
-                lock (m_lock)
-                {
-                    if (m_timer != null)
-                    {
-                        try
-                        {
+                lock (m_lock) {
+                    if (m_timer != null) {
+                        try {
                             m_timer.Dispose();
                             m_timer = null;
-                        }
-                        catch (Exception)
-                        {
+                        } catch (Exception) {
                             // ignore 
                         }
                     }
                 }
 
                 // release the wait event.
-                if (m_waitHandle != null)
-                {
-                    try
-                    {
+                if (m_waitHandle != null) {
+                    try {
                         m_waitHandle.Close();
                         m_waitHandle = null;
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         // ignore 
                     }
                 }
@@ -257,29 +214,22 @@ namespace Opc.Ua
         /// <summary>
         /// Called to invoke the callback after the asynchronous operation completes.
         /// </summary>
-        public void OperationCompleted()
-        {
-            lock (m_lock)
-            {
+        public void OperationCompleted() {
+            lock (m_lock) {
                 m_isCompleted = true;
 
                 // signal an waiting threads.
-                if (m_waitHandle != null)
-                {
-                    try
-                    {
+                if (m_waitHandle != null) {
+                    try {
                         m_waitHandle.Set();
-                    }
-                    catch (ObjectDisposedException)
-                    {
+                    } catch (ObjectDisposedException) {
                         // ignore 
                     }
                 }
             }
 
             // invoke callback.
-            if (m_callback != null)
-            {
+            if (m_callback != null) {
                 m_callback(this);
             }
         }
@@ -287,26 +237,23 @@ namespace Opc.Ua
         /// <summary>
         /// Called when the operation times out.
         /// </summary>
-        private void OnTimeout(object state)
-        {
-            try
-            {
+        private void OnTimeout(object state) {
+            try {
                 OperationCompleted();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error handling timeout for AsyncResult operation.");
             }
         }
+
         #endregion
 
         #region IAsyncResult Members
+
         /// <summary>
         /// Gets a user-defined object that qualifies or contains information about an asynchronous operation.
         /// </summary>
         /// <returns>A user-defined object that qualifies or contains information about an asynchronous operation.</returns>
-        public object AsyncState
-        {
+        public object AsyncState {
             get { return m_asyncState; }
             set { m_asyncState = value; }
         }
@@ -315,14 +262,10 @@ namespace Opc.Ua
         /// Gets a <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.
         /// </summary>
         /// <returns>A <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.</returns>
-        public WaitHandle AsyncWaitHandle
-        {
-            get
-            {
-                lock (m_lock)
-                {
-                    if (m_waitHandle == null)
-                    {
+        public WaitHandle AsyncWaitHandle {
+            get {
+                lock (m_lock) {
+                    if (m_waitHandle == null) {
                         m_waitHandle = new ManualResetEvent(false);
                     }
 
@@ -335,8 +278,7 @@ namespace Opc.Ua
         /// Gets a value that indicates whether the asynchronous operation completed synchronously.
         /// </summary>
         /// <returns>true if the asynchronous operation completed synchronously; otherwise, false.</returns>
-        public bool CompletedSynchronously
-        {
+        public bool CompletedSynchronously {
             get { return false; }
         }
 
@@ -344,13 +286,14 @@ namespace Opc.Ua
         /// Gets a value that indicates whether the asynchronous operation has completed.
         /// </summary>
         /// <returns>true if the operation is complete; otherwise, false.</returns>
-        public bool IsCompleted
-        {
+        public bool IsCompleted {
             get { return m_isCompleted; }
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
         private AsyncCallback m_callback;
         private object m_asyncState;
@@ -360,6 +303,7 @@ namespace Opc.Ua
         private DateTime m_deadline;
         private Timer m_timer;
         private Exception m_exception;
+
         #endregion
     }
 }

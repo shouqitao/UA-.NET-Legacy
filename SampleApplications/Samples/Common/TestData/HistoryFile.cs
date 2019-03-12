@@ -38,25 +38,25 @@ using System.Globalization;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-namespace TestData
-{
+namespace TestData {
     /// <summary>
     /// Wraps a file which contains a list of historical values.
     /// </summary>
-    internal class HistoryFile : IHistoryDataSource
-    {
+    internal class HistoryFile : IHistoryDataSource {
         #region Constructors
+
         /// <summary>
         /// Creates a new file.
         /// </summary>
-        internal HistoryFile(object dataLock, List<HistoryEntry> entries)
-        {
+        internal HistoryFile(object dataLock, List<HistoryEntry> entries) {
             m_lock = dataLock;
             m_entries = entries;
         }
+
         #endregion
-        
+
         #region IHistoryReader Members
+
         /// <summary>
         /// Returns the next value in the archive.
         /// </summary>
@@ -65,37 +65,27 @@ namespace TestData
         /// <param name="isReadModified">Whether to return modified data.</param>
         /// <param name="position">A index that must be passed to the NextRaw call. </param>
         /// <returns>The DataValue.</returns>
-        public DataValue FirstRaw(DateTime startTime, bool isForward, bool isReadModified, out int position)
-        {
+        public DataValue FirstRaw(DateTime startTime, bool isForward, bool isReadModified, out int position) {
             position = -1;
-            
-            lock (m_lock)
-            {
-                if (isForward)
-                {
-                    for (int ii = 0; ii < m_entries.Count; ii++)
-                    {
-                        if (m_entries[ii].Value.ServerTimestamp >= startTime)
-                        {
+
+            lock (m_lock) {
+                if (isForward) {
+                    for (int ii = 0; ii < m_entries.Count; ii++) {
+                        if (m_entries[ii].Value.ServerTimestamp >= startTime) {
                             position = ii;
                             break;
                         }
                     }
-                }
-                else
-                {
-                    for (int ii = m_entries.Count-1; ii >= 0; ii--)
-                    {
-                        if (m_entries[ii].Value.ServerTimestamp <= startTime)
-                        {
+                } else {
+                    for (int ii = m_entries.Count - 1; ii >= 0; ii--) {
+                        if (m_entries[ii].Value.ServerTimestamp <= startTime) {
                             position = ii;
                             break;
                         }
                     }
                 }
 
-                if (position < 0 || position >= m_entries.Count)
-                {
+                if (position < 0 || position >= m_entries.Count) {
                     return null;
                 }
 
@@ -111,7 +101,7 @@ namespace TestData
                 return value;
             }
         }
-        
+
         /// <summary>
         /// Returns the next value in the archive.
         /// </summary>
@@ -120,14 +110,11 @@ namespace TestData
         /// <param name="isReadModified">Whether to return modified data.</param>
         /// <param name="position">A index previously returned by the reader.</param>
         /// <returns>The DataValue.</returns>
-        public DataValue NextRaw(DateTime lastTime, bool isForward, bool isReadModified, ref int position)
-        {
+        public DataValue NextRaw(DateTime lastTime, bool isForward, bool isReadModified, ref int position) {
             position++;
 
-            lock (m_lock)
-            {
-                if (position < 0 || position >= m_entries.Count)
-                {
+            lock (m_lock) {
+                if (position < 0 || position >= m_entries.Count) {
                     return null;
                 }
 
@@ -143,11 +130,14 @@ namespace TestData
                 return value;
             }
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private object m_lock = new object();
         private List<HistoryEntry> m_entries;
+
         #endregion
     }
 }

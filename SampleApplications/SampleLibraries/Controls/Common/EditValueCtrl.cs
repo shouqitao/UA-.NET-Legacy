@@ -36,18 +36,15 @@ using System.Text;
 using System.Windows.Forms;
 using Opc.Ua;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A control which is used to edit a value.
     /// </summary>
-    public partial class EditValueCtrl : UserControl
-    {
+    public partial class EditValueCtrl : UserControl {
         /// <summary>
         /// Initializes the object.
         /// </summary>
-        public EditValueCtrl()
-        {
+        public EditValueCtrl() {
             InitializeComponent();
         }
 
@@ -62,29 +59,20 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// The value being edited in the control.
         /// </summary>
-        public Variant Value 
-        {
-            get
-            {
-                return GetValue();
-            }
+        public Variant Value {
+            get { return GetValue(); }
 
-            set
-            {
-                SetValue(value);
-            }
+            set { SetValue(value); }
         }
 
         /// <summary>
         /// Returns the value shown in the control.
         /// </summary>
-        private Variant GetValue()
-        {
+        private Variant GetValue() {
             TypeInfo sourceType = m_value.TypeInfo;
 
             // check if the value needs to be updated.
-            if (m_textChanged)
-            {
+            if (m_textChanged) {
                 object value = TypeInfo.Cast(ValueTB.Text, TypeInfo.Scalars.String, sourceType.BuiltInType);
                 m_value = new Variant(value, sourceType);
             }
@@ -95,11 +83,9 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Sets the value shown in the control.
         /// </summary>
-        private void SetValue(Variant value)
-        {
+        private void SetValue(Variant value) {
             // check for null.
-            if (Variant.Null == value)
-            {
+            if (Variant.Null == value) {
                 ValueTB.Text = String.Empty;
                 ValueTB.Enabled = true;
                 m_value = Variant.Null;
@@ -109,45 +95,36 @@ namespace Opc.Ua.Client.Controls
             // get the source type.
             TypeInfo sourceType = value.TypeInfo;
 
-            if (sourceType == null)
-            {
+            if (sourceType == null) {
                 sourceType = TypeInfo.Construct(value.Value);
             }
 
             // convert to target type.
-            if (TargetType != null && TargetType.BuiltInType != sourceType.BuiltInType)
-            {
+            if (TargetType != null && TargetType.BuiltInType != sourceType.BuiltInType) {
                 m_value = new Variant(TypeInfo.Cast(value.Value, sourceType, TargetType.BuiltInType), TargetType);
                 sourceType = TargetType;
-            }
-            else
-            {
+            } else {
                 m_value = new Variant(value.Value, sourceType);
             }
 
             m_textChanged = false;
 
             // display arrays and structures as read only strings.
-            if (sourceType.ValueRank >= 0 || sourceType.BuiltInType == BuiltInType.ExtensionObject)
-            {
+            if (sourceType.ValueRank >= 0 || sourceType.BuiltInType == BuiltInType.ExtensionObject) {
                 ValueTB.Text = m_value.ToString();
                 ValueTB.Enabled = false;
                 return;
             }
 
             // display as editable text.
-            ValueTB.Text = (string)TypeInfo.Cast(m_value.Value, sourceType, BuiltInType.String);
+            ValueTB.Text = (string) TypeInfo.Cast(m_value.Value, sourceType, BuiltInType.String);
             ValueTB.Enabled = true;
         }
 
-        private void ValueTB_TextChanged(object sender, EventArgs e)
-        {
+        private void ValueTB_TextChanged(object sender, EventArgs e) {
             m_textChanged = true;
         }
 
-        private void ValueBTN_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void ValueBTN_Click(object sender, EventArgs e) { }
     }
 }

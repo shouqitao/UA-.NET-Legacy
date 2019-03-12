@@ -33,14 +33,13 @@ using System.Diagnostics;
 using System.Xml;
 using System.Threading;
 
-namespace Opc.Ua.Server 
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Stores the state of an asynchrounous publish operation.
     /// </summary>  
-    public class AsyncPublishOperation
-    {
+    public class AsyncPublishOperation {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncPublishOperation"/> class.
         /// </summary>
@@ -48,46 +47,45 @@ namespace Opc.Ua.Server
         /// <param name="request">The request.</param>
         /// <param name="server">The server.</param>
         public AsyncPublishOperation(
-             OperationContext context,
-             IEndpointIncomingRequest request,
-             StandardServer server)
-        {
+            OperationContext context,
+            IEndpointIncomingRequest request,
+            StandardServer server) {
             m_context = context;
             m_request = request;
             m_server = server;
             m_response = new PublishResponse();
             m_request.Calldata = this;
         }
+
         #endregion
 
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
                 m_request.OperationCompleted(null, StatusCodes.BadServerHalted);
             }
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Gets the context.
         /// </summary>
         /// <value>The context.</value>
-        public OperationContext Context
-        {
+        public OperationContext Context {
             get { return m_context; }
         }
 
@@ -95,8 +93,7 @@ namespace Opc.Ua.Server
         /// Gets the request handle.
         /// </summary>
         /// <value>The request handle.</value>
-        public uint RequestHandle
-        {
+        public uint RequestHandle {
             get { return m_request.Request.RequestHeader.RequestHandle; }
         }
 
@@ -104,8 +101,7 @@ namespace Opc.Ua.Server
         /// Gets the response.
         /// </summary>
         /// <value>The response.</value>
-        public PublishResponse Response
-        {
+        public PublishResponse Response {
             get { return m_response; }
         }
 
@@ -113,8 +109,7 @@ namespace Opc.Ua.Server
         /// Gets the calldata.
         /// </summary>
         /// <value>The calldata.</value>
-        public object Calldata
-        {
+        public object Calldata {
             get { return m_calldata; }
         }
 
@@ -122,19 +117,21 @@ namespace Opc.Ua.Server
         /// Schedules a thread to complete the request.
         /// </summary>
         /// <param name="calldata">The data that is used to complete the operation</param>
-        public void CompletePublish(object calldata)
-        {
+        public void CompletePublish(object calldata) {
             m_calldata = calldata;
             m_server.ScheduleIncomingRequest(m_request);
         }
+
         #endregion
 
         #region Private Fields
+
         private IEndpointIncomingRequest m_request;
         private StandardServer m_server;
         private OperationContext m_context;
         private PublishResponse m_response;
         private object m_calldata;
+
         #endregion
     }
 }

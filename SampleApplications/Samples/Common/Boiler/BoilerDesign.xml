@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <opc:ModelDesign
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:opc="http://opcfoundation.org/UA/ModelDesign.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:opc="http://opcfoundation.org/UA/ModelDesign.xsd"
   xmlns:ua="http://opcfoundation.org/UA/"
   xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd"
-	xmlns="http://opcfoundation.org/UA/Boiler/"
-  TargetNamespace="http://opcfoundation.org/UA/Boiler/"
->
+  xmlns="http://opcfoundation.org/UA/Boiler/"
+  TargetNamespace="http://opcfoundation.org/UA/Boiler/">
   <opc:Namespaces>
     <opc:Namespace Name="OpcUa" Prefix="Opc.Ua" InternalPrefix="Opc.Ua.Server" XmlNamespace="http://opcfoundation.org/UA/2008/02/Types.xsd">http://opcfoundation.org/UA/</opc:Namespace>
     <opc:Namespace Name="Boiler" Prefix="Boiler">http://opcfoundation.org/UA/Boiler/</opc:Namespace>
@@ -329,5 +329,5 @@
       </opc:Reference>
     </opc:References>
   </opc:Object>
-  
+
 </opc:ModelDesign>

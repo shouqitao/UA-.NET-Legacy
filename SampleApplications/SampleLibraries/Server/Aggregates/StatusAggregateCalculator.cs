@@ -31,14 +31,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Calculates the value of an aggregate. 
     /// </summary>
-    public class StatusAggregateCalculator : AggregateCalculator
-    {
+    public class StatusAggregateCalculator : AggregateCalculator {
         #region Constructors
+
         /// <summary>
         /// Initializes the aggregate calculator.
         /// </summary>
@@ -55,52 +54,44 @@ namespace Opc.Ua.Server
             double processingInterval,
             bool stepped,
             AggregateConfiguration configuration)
-        : 
-            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration)
-        {
+            :
+            base(aggregateId, startTime, endTime, processingInterval, stepped, configuration) {
             SetPartialBit = true;
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Computes the value for the timeslice.
         /// </summary>
-        protected override DataValue ComputeValue(TimeSlice slice)
-        {
+        protected override DataValue ComputeValue(TimeSlice slice) {
             uint? id = AggregateId.Identifier as uint?;
 
-            if (id != null)
-            {
-                switch (id.Value)
-                {
-                    case Objects.AggregateFunction_DurationGood:
-                    {
+            if (id != null) {
+                switch (id.Value) {
+                    case Objects.AggregateFunction_DurationGood: {
                         return ComputeDurationGoodBad(slice, false, false);
                     }
 
-                    case Objects.AggregateFunction_DurationBad:
-                    {
+                    case Objects.AggregateFunction_DurationBad: {
                         return ComputeDurationGoodBad(slice, true, false);
                     }
 
-                    case Objects.AggregateFunction_PercentGood:
-                    {
+                    case Objects.AggregateFunction_PercentGood: {
                         return ComputeDurationGoodBad(slice, false, true);
                     }
 
-                    case Objects.AggregateFunction_PercentBad:
-                    {
+                    case Objects.AggregateFunction_PercentBad: {
                         return ComputeDurationGoodBad(slice, true, true);
                     }
 
-                    case Objects.AggregateFunction_WorstQuality:
-                    {
+                    case Objects.AggregateFunction_WorstQuality: {
                         return ComputeWorstQuality(slice, false);
                     }
 
-                    case Objects.AggregateFunction_WorstQuality2:
-                    {
+                    case Objects.AggregateFunction_WorstQuality2: {
                         return ComputeWorstQuality(slice, true);
                     }
                 }
@@ -108,20 +99,20 @@ namespace Opc.Ua.Server
 
             return base.ComputeValue(slice);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Calculates the DurationGood and DurationBad aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeDurationGoodBad(TimeSlice slice, bool isBad, bool usePercent)
-        {
+        protected DataValue ComputeDurationGoodBad(TimeSlice slice, bool isBad, bool usePercent) {
             // get the values in the slice.
             List<DataValue> values = GetValuesWithSimpleBounds(slice);
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -131,28 +122,21 @@ namespace Opc.Ua.Server
             double duration = 0;
             double total = 0;
 
-            for (int ii = 0; ii < regions.Count; ii++)
-            {
+            for (int ii = 0; ii < regions.Count; ii++) {
                 total += regions[ii].Duration;
 
-                if (isBad)
-                {
-                    if (StatusCode.IsBad(regions[ii].StatusCode))
-                    {
+                if (isBad) {
+                    if (StatusCode.IsBad(regions[ii].StatusCode)) {
                         duration += regions[ii].Duration;
                     }
-                }
-                else
-                {
-                    if (StatusCode.IsGood(regions[ii].StatusCode))
-                    {
+                } else {
+                    if (StatusCode.IsGood(regions[ii].StatusCode)) {
                         duration += regions[ii].Duration;
                     }
                 }
             }
 
-            if (usePercent)
-            {
+            if (usePercent) {
                 duration = (duration / total) * 100;
             }
 
@@ -160,7 +144,7 @@ namespace Opc.Ua.Server
             DataValue value = new DataValue();
             value.WrappedValue = new Variant(duration, TypeInfo.Scalars.Double);
             value.SourceTimestamp = GetTimestamp(slice);
-            value.ServerTimestamp = GetTimestamp(slice);            
+            value.ServerTimestamp = GetTimestamp(slice);
             value.StatusCode = value.StatusCode.SetAggregateBits(AggregateBits.Calculated);
 
             // return result.
@@ -170,23 +154,18 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Calculates the DurationGood and DurationBad aggregates for the timeslice.
         /// </summary>
-        protected DataValue ComputeWorstQuality(TimeSlice slice, bool includeBounds)
-        {
+        protected DataValue ComputeWorstQuality(TimeSlice slice, bool includeBounds) {
             // get the values in the slice.
             List<DataValue> values = null;
-            
-            if (!includeBounds)
-            {
+
+            if (!includeBounds) {
                 values = GetValues(slice);
-            }
-            else
-            {
+            } else {
                 values = GetValuesWithSimpleBounds(slice);
             }
 
             // check for empty slice.
-            if (values == null || values.Count == 0)
-            {
+            if (values == null || values.Count == 0) {
                 return GetNoDataValue(slice);
             }
 
@@ -197,28 +176,23 @@ namespace Opc.Ua.Server
             int badQualityCount = 0;
             int uncertainQualityCount = 0;
 
-            for (int ii = 0; ii < values.Count; ii++)
-            {
+            for (int ii = 0; ii < values.Count; ii++) {
                 StatusCode quality = values[ii].StatusCode;
 
-                if (StatusCode.IsBad(quality))
-                {
+                if (StatusCode.IsBad(quality)) {
                     badQualityCount++;
 
-                    if (StatusCode.IsNotBad(worstQuality))
-                    {
+                    if (StatusCode.IsNotBad(worstQuality)) {
                         worstQuality = quality.CodeBits;
                     }
 
                     continue;
                 }
 
-                if (StatusCode.IsUncertain(quality))
-                {
+                if (StatusCode.IsUncertain(quality)) {
                     uncertainQualityCount++;
 
-                    if (StatusCode.IsGood(worstQuality))
-                    {
+                    if (StatusCode.IsGood(worstQuality)) {
                         worstQuality = quality.CodeBits;
                     }
 
@@ -233,14 +207,16 @@ namespace Opc.Ua.Server
             value.ServerTimestamp = GetTimestamp(slice);
             value.StatusCode = value.StatusCode.SetAggregateBits(AggregateBits.Calculated);
 
-            if ((StatusCode.IsBad(worstQuality) && badQualityCount > 1) || (StatusCode.IsUncertain(worstQuality) && uncertainQualityCount > 1))
-            {
-                value.StatusCode = value.StatusCode.SetAggregateBits(value.StatusCode.AggregateBits | AggregateBits.MultipleValues);
+            if ((StatusCode.IsBad(worstQuality) && badQualityCount > 1) ||
+                (StatusCode.IsUncertain(worstQuality) && uncertainQualityCount > 1)) {
+                value.StatusCode =
+                    value.StatusCode.SetAggregateBits(value.StatusCode.AggregateBits | AggregateBits.MultipleValues);
             }
 
             // return result.
             return value;
         }
+
         #endregion
     }
 }

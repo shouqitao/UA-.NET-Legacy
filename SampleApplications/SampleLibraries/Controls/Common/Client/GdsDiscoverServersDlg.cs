@@ -38,27 +38,24 @@ using System.Windows.Forms;
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Searches for the servers in a GDS.
     /// </summary>
-    public partial class GdsDiscoverServersDlg : Form
-    {
+    public partial class GdsDiscoverServersDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Constructs the form.
         /// </summary>
-        public GdsDiscoverServersDlg()
-        {
+        public GdsDiscoverServersDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
             ServersLV.SmallImageList = new ClientUtils().ImageList;
 
-            List<object> items = new  List<object>();
+            List<object> items = new List<object>();
 
-            foreach (object value in Enum.GetValues(typeof(Match)))
-            {
+            foreach (object value in Enum.GetValues(typeof(Match))) {
                 items.Add(value);
             }
 
@@ -72,23 +69,28 @@ namespace Opc.Ua.Client.Controls
             ApplicationUriCB.SelectedIndex = 0;
             ProductUriCB.SelectedIndex = 0;
         }
+
         #endregion
 
         #region Match Enumeration
-        private enum Match
-        {
+
+        private enum Match {
             StartsWith,
             IsExactly,
             EndsWith,
             Contains
         }
+
         #endregion
 
         #region Private Fields
+
         private ApplicationDescription m_application;
+
         #endregion
 
         #region Private Constants
+
         /// <summary>
         /// The identifier for the Directory Object.
         /// </summary>
@@ -108,35 +110,31 @@ namespace Opc.Ua.Client.Controls
         /// The identifier for the ApplicationElementType ObjectType.
         /// </summary>
         public const uint GdsId_ApplicationElementType = 572;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Shows the dialog.
         /// </summary>
-        public ApplicationDescription ShowDialog(ApplicationConfiguration configuration, bool showSearchPanel)
-        {
+        public ApplicationDescription ShowDialog(ApplicationConfiguration configuration, bool showSearchPanel) {
             List<string> urls = new List<string>();
 
-            foreach (EndpointDescription endpoint in configuration.ClientConfiguration.DiscoveryServers)
-            {
+            foreach (EndpointDescription endpoint in configuration.ClientConfiguration.DiscoveryServers) {
                 urls.Add(endpoint.EndpointUrl);
             }
 
-            if (urls.Count == 0)
-            {
+            if (urls.Count == 0) {
                 urls.Add("opc.tcp://localhost:48041/GdsServer");
             }
 
             ServerCTRL.Configuration = configuration;
             ServerCTRL.SetAvailableUrls(urls);
 
-            try
-            {
+            try {
                 ServerCTRL.Connect();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
 
@@ -144,36 +142,33 @@ namespace Opc.Ua.Client.Controls
             CancelBTN.Visible = true;
 
             BrowseCK.Checked = showSearchPanel;
-            BrowseCK.Checked = !showSearchPanel; 
+            BrowseCK.Checked = !showSearchPanel;
 
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return m_application;
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Adds the results to the control.
         /// </summary>
-        private void UpdateResults(ApplicationDescription[] descriptions)
-        {
+        private void UpdateResults(ApplicationDescription[] descriptions) {
             ServersLV.Items.Clear();
 
-            if (descriptions == null)
-            {
+            if (descriptions == null) {
                 return;
             }
 
-            for (int ii = 0; ii < descriptions.Length; ii++)
-            {
+            for (int ii = 0; ii < descriptions.Length; ii++) {
                 ApplicationDescription description = descriptions[ii];
 
-                if (description == null)
-                {
+                if (description == null) {
                     continue;
                 }
 
@@ -188,28 +183,23 @@ namespace Opc.Ua.Client.Controls
 
                 item.SubItems[1].Text = description.ApplicationType.ToString();
 
-                if (description.DiscoveryUrls == null)
-                {
+                if (description.DiscoveryUrls == null) {
                     continue;
                 }
-                
+
                 // collect the domains and protocols.
                 List<string> domains = new List<string>();
                 List<string> protocols = new List<string>();
 
-                foreach (string discoveryUrl in description.DiscoveryUrls)
-                {
+                foreach (string discoveryUrl in description.DiscoveryUrls) {
                     Uri url = Utils.ParseUri(discoveryUrl);
 
-                    if (url != null)
-                    {
-                        if (!domains.Contains(url.DnsSafeHost))
-                        {
+                    if (url != null) {
+                        if (!domains.Contains(url.DnsSafeHost)) {
                             domains.Add(url.DnsSafeHost);
                         }
 
-                        if (!protocols.Contains(url.Scheme))
-                        {
+                        if (!protocols.Contains(url.Scheme)) {
                             protocols.Add(url.Scheme);
                         }
                     }
@@ -218,10 +208,8 @@ namespace Opc.Ua.Client.Controls
                 // format the domains.
                 StringBuilder buffer = new StringBuilder();
 
-                foreach (string domain in domains)
-                {
-                    if (buffer.Length > 0)
-                    {
+                foreach (string domain in domains) {
+                    if (buffer.Length > 0) {
                         buffer.Append(", ");
                     }
 
@@ -233,10 +221,8 @@ namespace Opc.Ua.Client.Controls
                 // format the protocols.
                 buffer = new StringBuilder();
 
-                foreach (string protocol in protocols)
-                {
-                    if (buffer.Length > 0)
-                    {
+                foreach (string protocol in protocols) {
+                    if (buffer.Length > 0) {
                         buffer.Append(", ");
                     }
 
@@ -247,8 +233,7 @@ namespace Opc.Ua.Client.Controls
             }
 
             // adjust column widths.
-            for (int ii = 0; ii < ServersLV.Columns.Count; ii++)
-            {
+            for (int ii = 0; ii < ServersLV.Columns.Count; ii++) {
                 ServersLV.Columns[ii].Width = -2;
             }
         }
@@ -256,28 +241,22 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Adds wildcards to the filter.
         /// </summary>
-        private string ProcessFilter(ComboBox selection, TextBox filter)
-        {
-            if (String.IsNullOrEmpty(filter.Text))
-            {
+        private string ProcessFilter(ComboBox selection, TextBox filter) {
+            if (String.IsNullOrEmpty(filter.Text)) {
                 return String.Empty;
             }
-                    
-            string text = filter.Text;
-            Match match = (Match)selection.SelectedItem;
 
-            if (match == Match.Contains || match == Match.StartsWith)
-            {
-                if (!text.EndsWith("%"))
-                {
+            string text = filter.Text;
+            Match match = (Match) selection.SelectedItem;
+
+            if (match == Match.Contains || match == Match.StartsWith) {
+                if (!text.EndsWith("%")) {
                     text = text + "%";
                 }
             }
 
-            if (match == Match.Contains || match == Match.EndsWith)
-            {
-                if (!text.StartsWith("%"))
-                {
+            if (match == Match.Contains || match == Match.EndsWith) {
+                if (!text.StartsWith("%")) {
                     text = "%" + text;
                 }
             }
@@ -288,24 +267,21 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Searches the server for servers.
         /// </summary>
-        private void Search()
-        {
+        private void Search() {
             Session session = ServerCTRL.Session;
 
-            if (session == null)
-            {
+            if (session == null) {
                 return;
             }
 
-            NodeId elementId = null;            
+            NodeId elementId = null;
             ReferenceDescription reference = SystemElementBTN.SelectedReference;
 
-            if (reference != null && !reference.NodeId.IsAbsolute)
-            {
-                elementId = (NodeId)reference.NodeId;
+            if (reference != null && !reference.NodeId.IsAbsolute) {
+                elementId = (NodeId) reference.NodeId;
             }
 
-            ushort namespaceIndex = (ushort)session.NamespaceUris.GetIndex(Namespaces.OpcUaGds);
+            ushort namespaceIndex = (ushort) session.NamespaceUris.GetIndex(Namespaces.OpcUaGds);
 
             IList<object> outputArguments = session.Call(
                 new NodeId(GdsId_Directory, namespaceIndex),
@@ -316,10 +292,10 @@ namespace Opc.Ua.Client.Controls
                 ProcessFilter(ApplicationUriCB, ApplicationUriTB),
                 ProcessFilter(ProductUriCB, ProductUriTB));
 
-            if (outputArguments != null && outputArguments.Count == 1)
-            {
+            if (outputArguments != null && outputArguments.Count == 1) {
                 ExtensionObject[] extensions = outputArguments[0] as ExtensionObject[];
-                ApplicationDescription[] descriptions = (ApplicationDescription[])ExtensionObject.ToArray(extensions, typeof(ApplicationDescription));
+                ApplicationDescription[] descriptions =
+                    (ApplicationDescription[]) ExtensionObject.ToArray(extensions, typeof(ApplicationDescription));
                 UpdateResults(descriptions);
             }
         }
@@ -327,18 +303,12 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Reads the application description from the GDS.
         /// </summary>
-        private ApplicationDescription Read(NodeId nodeId)
-        {
+        private ApplicationDescription Read(NodeId nodeId) {
             NamespaceTable wellKnownNamespaceUris = new NamespaceTable();
             wellKnownNamespaceUris.Append(Namespaces.OpcUaGds);
 
-            string[] browsePaths = new string[] 
-            {
-                "1:ApplicationName",
-                "1:ApplicationType",
-                "1:ApplicationUri",
-                "1:ProductUri",
-                "1:GatewayServerUri",
+            string[] browsePaths = new string[] {
+                "1:ApplicationName", "1:ApplicationType", "1:ApplicationUri", "1:ProductUri", "1:GatewayServerUri",
                 "1:DiscoveryUrls"
             };
 
@@ -350,8 +320,7 @@ namespace Opc.Ua.Client.Controls
 
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            foreach (NodeId propertyId in propertyIds)
-            {
+            foreach (NodeId propertyId in propertyIds) {
                 ReadValueId nodeToRead = new ReadValueId();
                 nodeToRead.NodeId = propertyId;
                 nodeToRead.AttributeId = Attributes.Value;
@@ -375,162 +344,130 @@ namespace Opc.Ua.Client.Controls
             ApplicationDescription application = new ApplicationDescription();
 
             application.ApplicationName = results[0].GetValue<LocalizedText>(null);
-            application.ApplicationType = (ApplicationType)results[1].GetValue<int>((int)ApplicationType.Server);
+            application.ApplicationType = (ApplicationType) results[1].GetValue<int>((int) ApplicationType.Server);
             application.ApplicationUri = results[2].GetValue<string>(null);
             application.ProductUri = results[3].GetValue<string>(null);
             application.GatewayServerUri = results[4].GetValue<string>(null);
 
             string[] discoveryUrls = results[5].GetValue<string[]>(null);
 
-            if (discoveryUrls != null)
-            {
+            if (discoveryUrls != null) {
                 application.DiscoveryUrls = new StringCollection(discoveryUrls);
             }
 
             return application;
         }
+
         #endregion
 
         #region Event Handlers
-        private void SearchBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void SearchBTN_Click(object sender, EventArgs e) {
+            try {
                 Search();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void CloseBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void CloseBTN_Click(object sender, EventArgs e) {
+            try {
                 Close();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ServerCTRL_ConnectComplete(object sender, EventArgs e)
-        {
-            try
-            {
+        private void ServerCTRL_ConnectComplete(object sender, EventArgs e) {
+            try {
                 Session session = ServerCTRL.Session;
 
-                if (session != null)
-                {
-                    ushort namespaceIndex = (ushort)session.NamespaceUris.GetIndex(Opc.Ua.Namespaces.OpcUaGds);
+                if (session != null) {
+                    ushort namespaceIndex = (ushort) session.NamespaceUris.GetIndex(Opc.Ua.Namespaces.OpcUaGds);
                     NodeId rootId = new NodeId(GdsId_Directory_Applications, namespaceIndex);
-                    NodeId[] referenceTypeIds = new NodeId[] { Opc.Ua.ReferenceTypeIds.Organizes, Opc.Ua.ReferenceTypeIds.HasChild };
+                    NodeId[] referenceTypeIds =
+                        new NodeId[] {Opc.Ua.ReferenceTypeIds.Organizes, Opc.Ua.ReferenceTypeIds.HasChild};
 
                     BrowseCTRL.Initialize(session, rootId, referenceTypeIds);
                     SystemElementBTN.Session = session;
                     SystemElementBTN.RootId = rootId;
                     SystemElementBTN.ReferenceTypeIds = referenceTypeIds;
-                }
-                else
-                {
+                } else {
                     BrowseCTRL.ChangeSession(session);
                     SystemElementBTN.Session = session;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ServerCTRL_ReconnectComplete(object sender, EventArgs e)
-        {
-            try
-            {
+        private void ServerCTRL_ReconnectComplete(object sender, EventArgs e) {
+            try {
                 Session session = ServerCTRL.Session;
                 BrowseCTRL.ChangeSession(session);
                 SystemElementBTN.Session = session;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void BrowseCK_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BrowseCK_CheckedChanged(object sender, EventArgs e) {
+            try {
                 SearchPN.Visible = !BrowseCK.Checked;
                 SearchBTN.Enabled = !BrowseCK.Checked;
                 BrowseCTRL.Visible = BrowseCK.Checked;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void ServersLV_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (ServerCTRL.Session == null)
-                {
+        private void ServersLV_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
+                if (ServerCTRL.Session == null) {
                     return;
                 }
 
-                foreach (ListViewItem item in ServersLV.SelectedItems)
-                {
+                foreach (ListViewItem item in ServersLV.SelectedItems) {
                     m_application = item.Tag as ApplicationDescription;
-                    OkBTN.Enabled = m_application.ApplicationType == ApplicationType.Server || m_application.ApplicationType == ApplicationType.ClientAndServer;
+                    OkBTN.Enabled = m_application.ApplicationType == ApplicationType.Server ||
+                                    m_application.ApplicationType == ApplicationType.ClientAndServer;
                     return;
                 }
 
                 m_application = null;
                 OkBTN.Enabled = false;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void BrowseCTRL_AfterSelect(object sender, EventArgs e)
-        {
-            try
-            {         
-                if (ServerCTRL.Session == null)
-                {
+        private void BrowseCTRL_AfterSelect(object sender, EventArgs e) {
+            try {
+                if (ServerCTRL.Session == null) {
                     return;
                 }
 
-                ushort namespaceIndex = (ushort)ServerCTRL.Session.NamespaceUris.GetIndex(Opc.Ua.Namespaces.OpcUaGds);
+                ushort namespaceIndex = (ushort) ServerCTRL.Session.NamespaceUris.GetIndex(Opc.Ua.Namespaces.OpcUaGds);
                 NodeId typeId = new NodeId(GdsId_ApplicationElementType, namespaceIndex);
 
                 ReferenceDescription reference = BrowseCTRL.SelectedNode;
 
-                if (reference != null)
-                {
-                    if (reference.TypeDefinition == typeId)
-                    {
-                        m_application = Read((NodeId)reference.NodeId);
-                        OkBTN.Enabled = m_application.ApplicationType == ApplicationType.Server || m_application.ApplicationType == ApplicationType.ClientAndServer;
+                if (reference != null) {
+                    if (reference.TypeDefinition == typeId) {
+                        m_application = Read((NodeId) reference.NodeId);
+                        OkBTN.Enabled = m_application.ApplicationType == ApplicationType.Server ||
+                                        m_application.ApplicationType == ApplicationType.ClientAndServer;
                         return;
                     }
                 }
 
                 m_application = null;
                 OkBTN.Enabled = false;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
-        #endregion
 
+        #endregion
     }
 }

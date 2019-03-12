@@ -17,10 +17,8 @@
 using System;
 using System.ServiceModel;
 
-namespace Opc.Ua
-{
-    
-    #if OPCUA_USE_SYNCHRONOUS_ENDPOINTS
+namespace Opc.Ua {
+#if OPCUA_USE_SYNCHRONOUS_ENDPOINTS
     /// <summary>
 	/// The base interface for all services exposed by UA servers.
 	/// </summary>
@@ -32,20 +30,21 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>Response message.</returns>
-        [OperationContract(Action = Namespaces.OpcUaWsdl + "/InvokeService", ReplyAction = Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
+        [OperationContract(Action = Namespaces.OpcUaWsdl + "/InvokeService", ReplyAction =
+ Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
         InvokeServiceResponseMessage InvokeService(InvokeServiceMessage request);
     }
-    #else
+#else
     /// <summary>
     /// The base asynchronous interface for all services exposed by UA servers.
     /// </summary>
     [ServiceContract(Namespace = Namespaces.OpcUaWsdl)]
-    public interface IEndpointBase
-    {
+    public interface IEndpointBase {
         /// <summary>
         /// The operation contract for the InvokeService service.
         /// </summary>
-        [OperationContractAttribute(AsyncPattern = true, Action = Namespaces.OpcUaWsdl + "/InvokeService", ReplyAction = Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
+        [OperationContractAttribute(AsyncPattern = true, Action = Namespaces.OpcUaWsdl + "/InvokeService",
+            ReplyAction = Namespaces.OpcUaWsdl + "/InvokeServiceResponse")]
         IAsyncResult BeginInvokeService(InvokeServiceMessage request, AsyncCallback callback, object asyncState);
 
         /// <summary>
@@ -53,5 +52,5 @@ namespace Opc.Ua
         /// </summary>
         InvokeServiceResponseMessage EndInvokeService(IAsyncResult result);
     }
-    #endif
+#endif
 }

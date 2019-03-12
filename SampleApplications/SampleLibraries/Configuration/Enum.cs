@@ -32,47 +32,54 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     #region ServiceStatus Enum
+
     /// <summary>
     /// Represents the service status.
     /// </summary>
-    public enum ServiceStatus
-    {
+    public enum ServiceStatus {
         /// <summary>
         /// The service is stopped
         /// </summary>
         Stopped,
+
         /// <summary>
         /// The service is going to process a start request
         /// </summary>
         StartPending,
+
         /// <summary>
         /// The service is going to process a stop request
         /// </summary>
         StopPending,
+
         /// <summary>
         /// The service started
         /// </summary>
         Running,
+
         /// <summary>
         /// The service is going to process a continue request
         /// </summary>
         ContinuePending,
+
         /// <summary>
         /// The service is going to process a pause request
         /// </summary>
         PausePending,
+
         /// <summary>
         /// The service is paused
         /// </summary>
         Paused,
+
         /// <summary>
         /// Unknown status
         /// </summary>
         Unknown
     }
+
     #endregion
 
     #region internal
@@ -84,8 +91,7 @@ namespace Opc.Ua.Configuration
     /// system checks the access token of the calling process. 
     /// </summary>
     [Flags]
-    internal enum ServiceAccess : uint
-    {
+    internal enum ServiceAccess : uint {
         /// <summary>
         /// Required to call the QueryServiceConfig and 
         /// QueryServiceConfig2 functions to query the service configuration.
@@ -144,39 +150,39 @@ namespace Opc.Ua.Configuration
         /// Includes STANDARD_RIGHTS_REQUIRED in addition to all access rights in this table.
         /// </summary>
         AllAccess = (ACCESS_MASK.STANDARD_RIGHTS_REQUIRED |
-            QueryConfig |
-            ChangeConfig |
-            QueryStatus |
-            EnumerateDependents |
-            Start |
-            Stop |
-            PauseContinue |
-            Interrogate |
-            UserDefinedControl),
+                     QueryConfig |
+                     ChangeConfig |
+                     QueryStatus |
+                     EnumerateDependents |
+                     Start |
+                     Stop |
+                     PauseContinue |
+                     Interrogate |
+                     UserDefinedControl),
 
         /// <summary>
         /// Generic read
         /// </summary>
         GenericRead = ACCESS_MASK.STANDARD_RIGHTS_READ |
-            QueryConfig |
-            QueryStatus |
-            Interrogate |
-            EnumerateDependents,
+                      QueryConfig |
+                      QueryStatus |
+                      Interrogate |
+                      EnumerateDependents,
 
         /// <summary>
         /// Generic Write
         /// </summary>
         GenericWrite = ACCESS_MASK.STANDARD_RIGHTS_WRITE |
-            ChangeConfig,
+                       ChangeConfig,
 
         /// <summary>
         /// Generic Execute
         /// </summary>
         GenericExecute = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE |
-            Start |
-            Stop |
-            PauseContinue |
-            UserDefinedControl,
+                         Start |
+                         Stop |
+                         PauseContinue |
+                         UserDefinedControl,
 
         /// <summary>
         /// Required to call the QueryServiceObjectSecurity or 
@@ -213,8 +219,7 @@ namespace Opc.Ua.Configuration
     }
 
     [Flags]
-    internal enum ACCESS_MASK : uint
-    {
+    internal enum ACCESS_MASK : uint {
         DELETE = 0x00010000,
         READ_CONTROL = 0x00020000,
         WRITE_DAC = 0x00040000,
@@ -266,12 +271,12 @@ namespace Opc.Ua.Configuration
     #endregion
 
     #region ServiceType Enum
+
     /// <summary>
     /// Service types.
     /// </summary>
     [Flags]
-    internal enum ServiceType : uint
-    {
+    internal enum ServiceType : uint {
         /// <summary>
         /// Driver service.
         /// </summary>
@@ -306,8 +311,7 @@ namespace Opc.Ua.Configuration
     /// Severity of the error, and action taken, if this service fails 
     /// to start.
     /// </summary>
-    internal enum ServiceError
-    {
+    internal enum ServiceError {
         /// <summary>
         /// The startup program ignores the error and continues the startup
         /// operation.
@@ -336,7 +340,6 @@ namespace Opc.Ua.Configuration
         /// </summary>
         ErrorCritical = 0x00000003,
     }
-
 
     #endregion
 

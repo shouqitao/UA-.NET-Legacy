@@ -24,19 +24,17 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using System.Threading;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary> 
     /// The base class for all method nodes.
     /// </summary>
-    public class MethodState : BaseInstanceState
-    {
+    public class MethodState : BaseInstanceState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        public MethodState(NodeState parent) : base(NodeClass.Method, parent)
-        {
+        public MethodState(NodeState parent) : base(NodeClass.Method, parent) {
             m_executable = true;
             m_userExecutable = true;
         }
@@ -46,18 +44,18 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns>The new node.</returns>
-        public static NodeState Construct(NodeState parent)
-        {
+        public static NodeState Construct(NodeState parent) {
             return new MethodState(parent);
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             base.Initialize(context);
 
             Executable = true;
@@ -67,51 +65,38 @@ namespace Opc.Ua
         /// <summary>
         /// Initializes the instance from another instance.
         /// </summary>
-        protected override void Initialize(ISystemContext context, NodeState source)
-        {
+        protected override void Initialize(ISystemContext context, NodeState source) {
             MethodState method = source as MethodState;
 
-            if (method != null)
-            {
+            if (method != null) {
                 m_executable = method.m_executable;
                 m_userExecutable = method.m_userExecutable;
             }
-            
+
             base.Initialize(context, source);
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The identifier for the declaration of the method in the type model.
         /// </summary>
-        public NodeId MethodDeclarationId
-        {
-            get
-            {
-                return base.TypeDefinitionId;
-            }
+        public NodeId MethodDeclarationId {
+            get { return base.TypeDefinitionId; }
 
-            set
-            {
-                base.TypeDefinitionId = value;
-            }
+            set { base.TypeDefinitionId = value; }
         }
 
         /// <summary>
         /// Whether the method can be called.
         /// </summary>
-        public bool Executable
-        {
-            get
-            { 
-                return m_executable;  
-            }
-            
-            set
-            {
-                if (m_executable != value)
-                {
+        public bool Executable {
+            get { return m_executable; }
+
+            set {
+                if (m_executable != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -122,26 +107,22 @@ namespace Opc.Ua
         /// <summary>
         /// Whether the method can be called by the current user.
         /// </summary>
-        public bool UserExecutable
-        {
-            get
-            { 
-                return m_userExecutable;  
-            }
-            
-            set
-            {
-                if (m_userExecutable != value)
-                {
+        public bool UserExecutable {
+            get { return m_userExecutable; }
+
+            set {
+                if (m_userExecutable != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
                 m_userExecutable = value;
             }
         }
+
         #endregion
 
         #region Event Callbacks
+
         /// <summary>
         /// Raised when the Executable attribute is read.
         /// </summary>
@@ -171,22 +152,22 @@ namespace Opc.Ua
         /// Raised when the method is called.
         /// </summary>
         public GenericMethodCalledEventHandler2 OnCallMethod2;
+
         #endregion
 
         #region Serialization Functions
+
         /// <summary>
         /// Exports a copt of the node to a node table.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="node">The node.</param>
-        protected override void Export(ISystemContext context, Node node)
-        {
+        protected override void Export(ISystemContext context, Node node) {
             base.Export(context, node);
 
             MethodNode methodNode = node as MethodNode;
 
-            if (methodNode != null)
-            {
+            if (methodNode != null) {
                 methodNode.Executable = this.Executable;
                 methodNode.UserExecutable = this.UserExecutable;
             }
@@ -197,19 +178,16 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="encoder">The encoder wrapping the stream to write.</param>
-        public override void Save(ISystemContext context, XmlEncoder encoder)
-        {
+        public override void Save(ISystemContext context, XmlEncoder encoder) {
             base.Save(context, encoder);
 
             encoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (m_executable)
-            {
+            if (m_executable) {
                 encoder.WriteBoolean("Executable", m_executable);
             }
 
-            if (m_userExecutable)
-            {
+            if (m_userExecutable) {
                 encoder.WriteBoolean("UserExecutable", m_executable);
             }
 
@@ -221,19 +199,16 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="decoder">The decoder wrapping the stream to read.</param>
-        public override void Update(ISystemContext context, XmlDecoder decoder)
-        {
+        public override void Update(ISystemContext context, XmlDecoder decoder) {
             base.Update(context, decoder);
 
             decoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (decoder.Peek("Executable"))
-            {
+            if (decoder.Peek("Executable")) {
                 Executable = decoder.ReadBoolean("Executable");
             }
 
-            if (decoder.Peek("UserExecutable"))
-            {
+            if (decoder.Peek("UserExecutable")) {
                 UserExecutable = decoder.ReadBoolean("UserExecutable");
             }
 
@@ -245,20 +220,17 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <returns>A mask the specifies the available attributes.</returns>
-        public override AttributesToSave GetAttributesToSave(ISystemContext context)
-        {
+        public override AttributesToSave GetAttributesToSave(ISystemContext context) {
             AttributesToSave attributesToSave = base.GetAttributesToSave(context);
 
-            if (m_executable)
-            {
+            if (m_executable) {
                 attributesToSave |= AttributesToSave.Executable;
             }
 
-            if (m_userExecutable)
-            {
+            if (m_userExecutable) {
                 attributesToSave |= AttributesToSave.UserExecutable;
             }
-            
+
             return attributesToSave;
         }
 
@@ -268,17 +240,14 @@ namespace Opc.Ua
         /// <param name="context">The context user.</param>
         /// <param name="encoder">The encoder to write to.</param>
         /// <param name="attributesToSave">The masks indicating what attributes to write.</param>
-        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave)
-        {
+        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave) {
             base.Save(context, encoder, attributesToSave);
 
-            if ((attributesToSave & AttributesToSave.Executable) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.Executable) != 0) {
                 encoder.WriteBoolean(null, m_executable);
             }
 
-            if ((attributesToSave & AttributesToSave.UserExecutable) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.UserExecutable) != 0) {
                 encoder.WriteBoolean(null, m_userExecutable);
             }
         }
@@ -289,63 +258,54 @@ namespace Opc.Ua
         /// <param name="context">The context.</param>
         /// <param name="decoder">The decoder.</param>
         /// <param name="attibutesToLoad">The attributes to load.</param>
-        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad)
-        {
+        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad) {
             base.Update(context, decoder, attibutesToLoad);
 
-            if ((attibutesToLoad & AttributesToSave.Executable) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.Executable) != 0) {
                 m_executable = decoder.ReadBoolean(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.UserExecutable) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.UserExecutable) != 0) {
                 m_userExecutable = decoder.ReadBoolean(null);
             }
         }
+
         #endregion
 
         #region Read Support Functions
+
         /// <summary>
         /// Reads the value for any non-value attribute.
         /// </summary>
         protected override ServiceResult ReadNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            ref object value)
-        {
+            ref object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.Executable:
-                {
+            switch (attributeId) {
+                case Attributes.Executable: {
                     bool executable = m_executable;
 
-                    if (OnReadExecutable != null)
-                    {
+                    if (OnReadExecutable != null) {
                         result = OnReadExecutable(context, this, ref executable);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = executable;
                     }
 
                     return result;
                 }
 
-                case Attributes.UserExecutable:
-                {
+                case Attributes.UserExecutable: {
                     bool userExecutable = m_userExecutable;
 
-                    if (OnReadUserExecutable != null)
-                    {
+                    if (OnReadUserExecutable != null) {
                         result = OnReadUserExecutable(context, this, ref userExecutable);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = userExecutable;
                     }
 
@@ -355,73 +315,63 @@ namespace Opc.Ua
 
             return base.ReadNonValueAttribute(context, attributeId, ref value);
         }
+
         #endregion
 
         #region Write Support Functions
+
         /// <summary>
         /// Write the value for any non-value attribute.
         /// </summary>
         protected override ServiceResult WriteNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            object value)
-        {
+            object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.Executable:
-                {
+            switch (attributeId) {
+                case Attributes.Executable: {
                     bool? executableRef = value as bool?;
 
-                    if (executableRef == null)
-                    {
+                    if (executableRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.Executable) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.Executable) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     bool executable = executableRef.Value;
 
-                    if (OnWriteExecutable != null)
-                    {
+                    if (OnWriteExecutable != null) {
                         result = OnWriteExecutable(context, this, ref executable);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         Executable = executable;
                     }
 
                     return result;
                 }
 
-                case Attributes.UserExecutable:
-                {
+                case Attributes.UserExecutable: {
                     bool? userExecutableRef = value as bool?;
 
-                    if (userExecutableRef == null)
-                    {
+                    if (userExecutableRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.UserExecutable) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.UserExecutable) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     bool userExecutable = userExecutableRef.Value;
 
-                    if (OnWriteUserExecutable != null)
-                    {
+                    if (OnWriteUserExecutable != null) {
                         result = OnWriteUserExecutable(context, this, ref userExecutable);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         UserExecutable = userExecutable;
                     }
 
@@ -431,23 +381,19 @@ namespace Opc.Ua
 
             return base.WriteNonValueAttribute(context, attributeId, value);
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// The input arguments for the method.
         /// </summary>
-        public PropertyState<Argument[]> InputArguments
-        {
-            get
-            { 
-                return m_inputArguments;  
-            }
-            
-            set
-            {
-                if (!Object.ReferenceEquals(m_inputArguments, value))
-                {
+        public PropertyState<Argument[]> InputArguments {
+            get { return m_inputArguments; }
+
+            set {
+                if (!Object.ReferenceEquals(m_inputArguments, value)) {
                     ChangeMasks |= NodeStateChangeMasks.Children;
                 }
 
@@ -458,26 +404,22 @@ namespace Opc.Ua
         /// <summary>
         /// The output arguments for the method.
         /// </summary>
-        public PropertyState<Argument[]> OutputArguments
-        {
-            get
-            { 
-                return m_outputArguments;  
-            }
-            
-            set
-            {
-                if (!Object.ReferenceEquals(m_outputArguments, value))
-                {
+        public PropertyState<Argument[]> OutputArguments {
+            get { return m_outputArguments; }
+
+            set {
+                if (!Object.ReferenceEquals(m_outputArguments, value)) {
                     ChangeMasks |= NodeStateChangeMasks.Children;
                 }
 
                 m_outputArguments = value;
             }
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Populates a list with the children that belong to the node.
         /// </summary>
@@ -485,15 +427,12 @@ namespace Opc.Ua
         /// <param name="children">The list of children to populate.</param>
         public override void GetChildren(
             ISystemContext context,
-            IList<BaseInstanceState> children)
-        {
-            if (m_inputArguments != null)
-            {
+            IList<BaseInstanceState> children) {
+            if (m_inputArguments != null) {
                 children.Add(m_inputArguments);
             }
 
-            if (m_outputArguments != null)
-            {
+            if (m_outputArguments != null) {
                 children.Add(m_outputArguments);
             }
 
@@ -507,30 +446,21 @@ namespace Opc.Ua
             ISystemContext context,
             QualifiedName browseName,
             bool createOrReplace,
-            BaseInstanceState replacement)
-        {
-            if (QualifiedName.IsNull(browseName))
-            {
+            BaseInstanceState replacement) {
+            if (QualifiedName.IsNull(browseName)) {
                 return null;
             }
 
             BaseInstanceState instance = null;
 
-            switch (browseName.Name)
-            {
-                case BrowseNames.InputArguments:
-                {
-                    if (createOrReplace)
-                    {
-                        if (InputArguments == null)
-                        {
-                            if (replacement == null)
-                            {
+            switch (browseName.Name) {
+                case BrowseNames.InputArguments: {
+                    if (createOrReplace) {
+                        if (InputArguments == null) {
+                            if (replacement == null) {
                                 InputArguments = new PropertyState<Argument[]>(this);
-                            }
-                            else
-                            {
-                                InputArguments = (PropertyState<Argument[]>)replacement;
+                            } else {
+                                InputArguments = (PropertyState<Argument[]>) replacement;
                             }
                         }
                     }
@@ -539,19 +469,13 @@ namespace Opc.Ua
                     break;
                 }
 
-                case BrowseNames.OutputArguments:
-                {
-                    if (createOrReplace)
-                    {
-                        if (OutputArguments == null)
-                        {
-                            if (replacement == null)
-                            {
+                case BrowseNames.OutputArguments: {
+                    if (createOrReplace) {
+                        if (OutputArguments == null) {
+                            if (replacement == null) {
                                 OutputArguments = new PropertyState<Argument[]>(this);
-                            }
-                            else
-                            {
-                                OutputArguments = (PropertyState<Argument[]>)replacement;
+                            } else {
+                                OutputArguments = (PropertyState<Argument[]>) replacement;
                             }
                         }
                     }
@@ -561,16 +485,17 @@ namespace Opc.Ua
                 }
             }
 
-            if (instance != null)
-            {
+            if (instance != null) {
                 return instance;
             }
 
             return base.FindChild(context, browseName, createOrReplace, replacement);
         }
+
         #endregion
 
         #region Method Invocation
+
         /// <summary>
         /// Invokes the methods and returns the output parameters.
         /// </summary>
@@ -585,33 +510,28 @@ namespace Opc.Ua
             NodeId objectId,
             IList<Variant> inputArguments,
             IList<ServiceResult> argumentErrors,
-            IList<Variant> outputArguments)
-        {
+            IList<Variant> outputArguments) {
             // validate input arguments.
             List<object> inputs = new List<object>();
 
             // check for too few or too many arguments.
             int expectedCount = 0;
 
-            if (InputArguments != null && InputArguments.Value != null)
-            {
+            if (InputArguments != null && InputArguments.Value != null) {
                 expectedCount = InputArguments.Value.Length;
             }
 
-            if (expectedCount != inputArguments.Count)
-            {
+            if (expectedCount != inputArguments.Count) {
                 return StatusCodes.BadArgumentsMissing;
             }
-            
+
             // validate individual arguements.
             bool error = false;
 
-            for (int ii = 0; ii < inputArguments.Count; ii++)
-            {
+            for (int ii = 0; ii < inputArguments.Count; ii++) {
                 ServiceResult argumentError = ValidateInputArgument(context, inputArguments[ii], ii);
 
-                if (ServiceResult.IsBad(argumentError))
-                {
+                if (ServiceResult.IsBad(argumentError)) {
                     error = true;
                 }
 
@@ -620,22 +540,18 @@ namespace Opc.Ua
             }
 
             // return good - caller must check argument errors.
-            if (error)
-            {
+            if (error) {
                 return ServiceResult.Good;
             }
 
             // set output arguments to default values.
             List<object> outputs = new List<object>();
 
-            if (OutputArguments != null)
-            {
+            if (OutputArguments != null) {
                 IList<Argument> arguments = OutputArguments.Value;
 
-                if (arguments != null && arguments.Count > 0)
-                {
-                    for (int ii = 0; ii < arguments.Count; ii++)
-                    {
+                if (arguments != null && arguments.Count > 0) {
+                    for (int ii = 0; ii < arguments.Count; ii++) {
                         outputs.Add(GetArgumentDefaultValue(context, arguments[ii]));
                     }
                 }
@@ -644,20 +560,15 @@ namespace Opc.Ua
             // invoke method.
             ServiceResult result = null;
 
-            try
-            {
+            try {
                 result = Call(context, objectId, inputs, outputs);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 result = new ServiceResult(e);
             }
 
             // copy out arguments.
-            if (ServiceResult.IsGood(result))
-            {
-                for (int ii = 0; ii < outputs.Count; ii++)
-                {
+            if (ServiceResult.IsGood(result)) {
+                for (int ii = 0; ii < outputs.Count; ii++) {
                     outputArguments.Add(new Variant(outputs[ii]));
                 }
             }
@@ -671,8 +582,7 @@ namespace Opc.Ua
         protected virtual ServiceResult Call(
             ISystemContext context,
             IList<object> inputArguments,
-            IList<object> outputArguments)
-        {
+            IList<object> outputArguments) {
             return Call(context, null, inputArguments, outputArguments);
         }
 
@@ -688,20 +598,16 @@ namespace Opc.Ua
             ISystemContext context,
             NodeId objectId,
             IList<object> inputArguments,
-            IList<object> outputArguments)
-        {
-            if (OnCallMethod2 != null)
-            {
+            IList<object> outputArguments) {
+            if (OnCallMethod2 != null) {
                 return OnCallMethod2(context, this, objectId, inputArguments, outputArguments);
             }
 
-            if (OnCallMethod != null)
-            {
+            if (OnCallMethod != null) {
                 return OnCallMethod(context, this, inputArguments, outputArguments);
             }
 
-            if (Executable && UserExecutable)
-            {
+            if (Executable && UserExecutable) {
                 return StatusCodes.BadNotImplemented;
             }
 
@@ -718,17 +624,14 @@ namespace Opc.Ua
         protected ServiceResult ValidateInputArgument(
             ISystemContext context,
             Variant inputArgument,
-            int index)
-        {
-            if (InputArguments == null)
-            {
+            int index) {
+            if (InputArguments == null) {
                 return StatusCodes.BadInvalidArgument;
             }
 
             IList<Argument> arguments = InputArguments.Value;
 
-            if (arguments == null || index < 0 || index >= arguments.Count)
-            {
+            if (arguments == null || index < 0 || index >= arguments.Count) {
                 return StatusCodes.BadInvalidArgument;
             }
 
@@ -741,8 +644,7 @@ namespace Opc.Ua
                 context.NamespaceUris,
                 context.TypeTable);
 
-            if (typeInfo == null)
-            {
+            if (typeInfo == null) {
                 return StatusCodes.BadTypeMismatch;
             }
 
@@ -757,17 +659,19 @@ namespace Opc.Ua
         /// <returns>The default value.</returns>
         protected object GetArgumentDefaultValue(
             ISystemContext context,
-            Argument outputArgument)
-        {
+            Argument outputArgument) {
             return TypeInfo.GetDefaultValue(outputArgument.DataType, outputArgument.ValueRank, context.TypeTable);
         }
+
         #endregion
 
         #region Private Fields
+
         private bool m_executable;
         private bool m_userExecutable;
         private PropertyState<Argument[]> m_inputArguments;
         private PropertyState<Argument[]> m_outputArguments;
+
         #endregion
     }
 

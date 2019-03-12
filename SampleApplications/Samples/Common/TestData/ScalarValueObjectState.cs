@@ -34,18 +34,16 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace TestData
-{
-    public partial class ScalarValueObjectState
-    {
+namespace TestData {
+    public partial class ScalarValueObjectState {
         #region Initialization
+
         /// <summary>
         /// Initializes the object as a collection of counters which change value on read.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
-            
+
             InitializeVariable(context, BooleanValue, TestData.Variables.ScalarValueObjectType_BooleanValue);
             InitializeVariable(context, SByteValue, TestData.Variables.ScalarValueObjectType_SByteValue);
             InitializeVariable(context, ByteValue, TestData.Variables.ScalarValueObjectType_ByteValue);
@@ -63,9 +61,12 @@ namespace TestData
             InitializeVariable(context, ByteStringValue, TestData.Variables.ScalarValueObjectType_ByteStringValue);
             InitializeVariable(context, XmlElementValue, TestData.Variables.ScalarValueObjectType_XmlElementValue);
             InitializeVariable(context, NodeIdValue, TestData.Variables.ScalarValueObjectType_NodeIdValue);
-            InitializeVariable(context, ExpandedNodeIdValue, TestData.Variables.ScalarValueObjectType_ExpandedNodeIdValue);
-            InitializeVariable(context, QualifiedNameValue, TestData.Variables.ScalarValueObjectType_QualifiedNameValue);
-            InitializeVariable(context, LocalizedTextValue, TestData.Variables.ScalarValueObjectType_LocalizedTextValue);
+            InitializeVariable(context, ExpandedNodeIdValue,
+                TestData.Variables.ScalarValueObjectType_ExpandedNodeIdValue);
+            InitializeVariable(context, QualifiedNameValue,
+                TestData.Variables.ScalarValueObjectType_QualifiedNameValue);
+            InitializeVariable(context, LocalizedTextValue,
+                TestData.Variables.ScalarValueObjectType_LocalizedTextValue);
             InitializeVariable(context, StatusCodeValue, TestData.Variables.ScalarValueObjectType_StatusCodeValue);
             InitializeVariable(context, VariantValue, TestData.Variables.ScalarValueObjectType_VariantValue);
             InitializeVariable(context, EnumerationValue, TestData.Variables.ScalarValueObjectType_EnumerationValue);
@@ -74,9 +75,11 @@ namespace TestData
             InitializeVariable(context, IntegerValue, TestData.Variables.ScalarValueObjectType_IntegerValue);
             InitializeVariable(context, UIntegerValue, TestData.Variables.ScalarValueObjectType_UIntegerValue);
         }
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Handles the generate values method.
         /// </summary>
@@ -84,12 +87,10 @@ namespace TestData
             ISystemContext context,
             MethodState method,
             NodeId objectId,
-            uint count)
-        {
+            uint count) {
             TestDataSystem system = context.SystemHandle as TestDataSystem;
 
-            if (system == null)
-            {
+            if (system == null) {
                 return StatusCodes.BadOutOfService;
             }
 
@@ -123,7 +124,8 @@ namespace TestData
             GenerateValue(system, UIntegerValue);
 
             return base.OnGenerateValues(context, method, objectId, count);
-        }  
+        }
+
         #endregion
     }
 }

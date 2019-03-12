@@ -35,41 +35,34 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
-
 using Opc.Ua.Server;
 using Opc.Ua.Client.Controls;
 using Opc.Ua.Sample.Controls;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Sample
-{
-    static class Program
-    {
+namespace Opc.Ua.Sample {
+    static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             ApplicationInstance application = new ApplicationInstance();
             application.ApplicationName = "UA Sample Server";
-            application.ApplicationType   = ApplicationType.Server;
+            application.ApplicationType = ApplicationType.Server;
             application.ConfigSectionName = "Opc.Ua.SampleServer";
 
-            try
-            {
+            try {
                 // process and command line arguments.
-                if (application.ProcessCommandLine())
-                {
+                if (application.ProcessCommandLine()) {
                     return;
                 }
 
                 // check if running as a service.
-                if (!Environment.UserInteractive)
-                {
+                if (!Environment.UserInteractive) {
                     application.StartAsService(new SampleServer());
                     return;
                 }
@@ -89,9 +82,7 @@ namespace Opc.Ua.Sample
 
                 // run the application interactively.
                 Application.Run(new ServerForm(application));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 ExceptionDlg.Show(application.ApplicationName, e);
                 return;
             }

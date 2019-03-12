@@ -18,39 +18,35 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary> 
     /// The base class for all variable type nodes.
     /// </summary>
-    public abstract class BaseVariableTypeState : BaseTypeState
-    {
+    public abstract class BaseVariableTypeState : BaseTypeState {
         #region Constructors
+
         /// <summary>
         /// Initializes the instance with its defalt attribute values.
         /// </summary>
-        protected BaseVariableTypeState() : base(NodeClass.VariableType)
-        {
-        }
+        protected BaseVariableTypeState() : base(NodeClass.VariableType) { }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance from another instance.
         /// </summary>
-        protected override void Initialize(ISystemContext context, NodeState source)
-        {
+        protected override void Initialize(ISystemContext context, NodeState source) {
             BaseVariableTypeState type = source as BaseVariableTypeState;
 
-            if (type != null)
-            {
+            if (type != null) {
                 m_value = Utils.Clone(type.m_value);
                 m_dataType = type.m_dataType;
                 m_valueRank = type.m_valueRank;
                 m_arrayDimensions = null;
 
-                if (type.m_arrayDimensions != null)
-                {
+                if (type.m_arrayDimensions != null) {
                     m_arrayDimensions = new ReadOnlyList<uint>(type.m_arrayDimensions, true);
                 }
             }
@@ -63,27 +59,22 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the value to its default value if it is not valid.
         /// </summary>
-        protected virtual object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError)
-        {
+        protected virtual object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError) {
             return value;
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The value of the variable.
         /// </summary>
-        public object Value
-        {
-            get
-            {
-                return m_value;
-            }
+        public object Value {
+            get { return m_value; }
 
-            set
-            {
-                if (!Object.ReferenceEquals(m_value, value))
-                {
+            set {
+                if (!Object.ReferenceEquals(m_value, value)) {
                     ChangeMasks |= NodeStateChangeMasks.Value;
                 }
 
@@ -94,33 +85,20 @@ namespace Opc.Ua
         /// <summary>
         /// The value of the variable as a Variant.
         /// </summary>
-        public Variant WrappedValue
-        {
-            get 
-            { 
-                return new Variant(m_value); 
-            }
-            
-            set
-            {
-                Value = ExtractValueFromVariant(null, value.Value, false);
-            }
+        public Variant WrappedValue {
+            get { return new Variant(m_value); }
+
+            set { Value = ExtractValueFromVariant(null, value.Value, false); }
         }
 
         /// <summary>
         /// The data type for the variable value.
         /// </summary>
-        public NodeId DataType
-        {
-            get
-            {
-                return m_dataType;
-            }
+        public NodeId DataType {
+            get { return m_dataType; }
 
-            set
-            {
-                if (!Object.ReferenceEquals(m_dataType, value))
-                {
+            set {
+                if (!Object.ReferenceEquals(m_dataType, value)) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -131,17 +109,11 @@ namespace Opc.Ua
         /// <summary>
         /// The number of array dimensions permitted for the variable value.
         /// </summary>
-        public int ValueRank
-        {
-            get
-            {
-                return m_valueRank;
-            }
+        public int ValueRank {
+            get { return m_valueRank; }
 
-            set
-            {
-                if (m_valueRank != value)
-                {
+            set {
+                if (m_valueRank != value) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
@@ -152,26 +124,22 @@ namespace Opc.Ua
         /// <summary>
         /// The number of dimensions for an array values with one or more fixed dimensions.
         /// </summary>
-        public ReadOnlyList<uint> ArrayDimensions
-        {
-            get
-            {
-                return m_arrayDimensions;
-            }
+        public ReadOnlyList<uint> ArrayDimensions {
+            get { return m_arrayDimensions; }
 
-            set
-            {
-                if (!Object.ReferenceEquals(m_arrayDimensions, value))
-                {
+            set {
+                if (!Object.ReferenceEquals(m_arrayDimensions, value)) {
                     ChangeMasks |= NodeStateChangeMasks.NonValue;
                 }
 
                 m_arrayDimensions = value;
             }
         }
+
         #endregion
 
         #region Event Callbacks
+
         /// <summary>
         /// Raised when the Value attribute is read.
         /// </summary>
@@ -211,29 +179,28 @@ namespace Opc.Ua
         /// Raised when the ArrayDimensions attribute is written.
         /// </summary>
         public NodeAttributeEventHandler<IList<uint>> OnWriteArrayDimensions;
+
         #endregion
 
         #region Serialization Functions
+
         /// <summary>
         /// Exports a copy of the node to a node table.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="node">The node.</param>
-        protected override void Export(ISystemContext context, Node node)
-        {
+        protected override void Export(ISystemContext context, Node node) {
             base.Export(context, node);
 
             VariableTypeNode variableTypeNode = node as VariableTypeNode;
 
-            if (variableTypeNode != null)
-            {
+            if (variableTypeNode != null) {
                 variableTypeNode.Value = new Variant(Utils.Clone(this.Value));
                 variableTypeNode.DataType = this.DataType;
                 variableTypeNode.ValueRank = this.ValueRank;
                 variableTypeNode.ArrayDimensions = null;
 
-                if (this.ArrayDimensions != null)
-                {
+                if (this.ArrayDimensions != null) {
                     variableTypeNode.ArrayDimensions = new UInt32Collection(this.ArrayDimensions);
                 }
             }
@@ -244,29 +211,24 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="encoder">The encoder wrapping the stream to write.</param>
-        public override void Save(ISystemContext context, XmlEncoder encoder)
-        {
+        public override void Save(ISystemContext context, XmlEncoder encoder) {
             base.Save(context, encoder);
 
             encoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (m_value != null)
-            {
+            if (m_value != null) {
                 encoder.WriteVariant("Value", WrappedValue);
             }
 
-            if (!NodeId.IsNull(DataType))
-            {
+            if (!NodeId.IsNull(DataType)) {
                 encoder.WriteNodeId("DataType", DataType);
             }
 
-            if (ValueRank != ValueRanks.Any)
-            {
+            if (ValueRank != ValueRanks.Any) {
                 encoder.WriteInt32("ValueRank", ValueRank);
             }
 
-            if (ArrayDimensions != null)
-            {
+            if (ArrayDimensions != null) {
                 encoder.WriteString("ArrayDimensions", BaseVariableState.ArrayDimensionsToXml(ArrayDimensions));
             }
 
@@ -278,29 +240,24 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <param name="decoder">The decoder wrapping the stream to read.</param>
-        public override void Update(ISystemContext context, XmlDecoder decoder)
-        {
+        public override void Update(ISystemContext context, XmlDecoder decoder) {
             base.Update(context, decoder);
 
             decoder.PushNamespace(Namespaces.OpcUaXsd);
 
-            if (decoder.Peek("Value"))
-            {
+            if (decoder.Peek("Value")) {
                 WrappedValue = decoder.ReadVariant("Value");
             }
 
-            if (decoder.Peek("DataType"))
-            {
+            if (decoder.Peek("DataType")) {
                 DataType = decoder.ReadNodeId("DataType");
             }
 
-            if (decoder.Peek("ValueRank"))
-            {
+            if (decoder.Peek("ValueRank")) {
                 ValueRank = decoder.ReadInt32("ValueRank");
             }
 
-            if (decoder.Peek("ArrayDimensions"))
-            {
+            if (decoder.Peek("ArrayDimensions")) {
                 ArrayDimensions = BaseVariableState.ArrayDimensionsFromXml(decoder.ReadString("ArrayDimensions"));
             }
 
@@ -312,27 +269,22 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context for the system being accessed.</param>
         /// <returns>A mask the specifies the available attributes.</returns>
-        public override AttributesToSave GetAttributesToSave(ISystemContext context)
-        {
+        public override AttributesToSave GetAttributesToSave(ISystemContext context) {
             AttributesToSave attributesToSave = base.GetAttributesToSave(context);
 
-            if (WrappedValue != Variant.Null)
-            {
+            if (WrappedValue != Variant.Null) {
                 attributesToSave |= AttributesToSave.Value;
             }
 
-            if (!NodeId.IsNull(m_dataType))
-            {
+            if (!NodeId.IsNull(m_dataType)) {
                 attributesToSave |= AttributesToSave.DataType;
             }
 
-            if (m_valueRank != ValueRanks.Any)
-            {
+            if (m_valueRank != ValueRanks.Any) {
                 attributesToSave |= AttributesToSave.ValueRank;
             }
 
-            if (m_arrayDimensions != null)
-            {
+            if (m_arrayDimensions != null) {
                 attributesToSave |= AttributesToSave.ArrayDimensions;
             }
 
@@ -345,27 +297,22 @@ namespace Opc.Ua
         /// <param name="context">The context user.</param>
         /// <param name="encoder">The encoder to write to.</param>
         /// <param name="attributesToSave">The masks indicating what attributes to write.</param>
-        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave)
-        {
+        public override void Save(ISystemContext context, BinaryEncoder encoder, AttributesToSave attributesToSave) {
             base.Save(context, encoder, attributesToSave);
 
-            if ((attributesToSave & AttributesToSave.Value) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.Value) != 0) {
                 encoder.WriteVariant(null, WrappedValue);
             }
 
-            if ((attributesToSave & AttributesToSave.DataType) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.DataType) != 0) {
                 encoder.WriteNodeId(null, m_dataType);
             }
 
-            if ((attributesToSave & AttributesToSave.ValueRank) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.ValueRank) != 0) {
                 encoder.WriteInt32(null, m_valueRank);
             }
 
-            if ((attributesToSave & AttributesToSave.ArrayDimensions) != 0)
-            {
+            if ((attributesToSave & AttributesToSave.ArrayDimensions) != 0) {
                 encoder.WriteUInt32Array(null, m_arrayDimensions);
             }
         }
@@ -376,99 +323,82 @@ namespace Opc.Ua
         /// <param name="context">The context.</param>
         /// <param name="decoder">The decoder.</param>
         /// <param name="attibutesToLoad">The attributes to load.</param>
-        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad)
-        {
+        public override void Update(ISystemContext context, BinaryDecoder decoder, AttributesToSave attibutesToLoad) {
             base.Update(context, decoder, attibutesToLoad);
 
-            if ((attibutesToLoad & AttributesToSave.Value) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.Value) != 0) {
                 WrappedValue = decoder.ReadVariant(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.DataType) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.DataType) != 0) {
                 m_dataType = decoder.ReadNodeId(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.ValueRank) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.ValueRank) != 0) {
                 m_valueRank = decoder.ReadInt32(null);
             }
 
-            if ((attibutesToLoad & AttributesToSave.ArrayDimensions) != 0)
-            {
+            if ((attibutesToLoad & AttributesToSave.ArrayDimensions) != 0) {
                 UInt32Collection arrayDimensions = decoder.ReadUInt32Array(null);
 
-                if (arrayDimensions != null && arrayDimensions.Count > 0)
-                {
+                if (arrayDimensions != null && arrayDimensions.Count > 0) {
                     m_arrayDimensions = new ReadOnlyList<uint>(arrayDimensions);
-                }
-                else
-                {
+                } else {
                     m_arrayDimensions = null;
                 }
             }
         }
+
         #endregion
 
         #region Read Support Functions
+
         /// <summary>
         /// Reads the value for any non-value attribute.
         /// </summary>
         protected override ServiceResult ReadNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            ref object value)
-        {
+            ref object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.DataType:
-                {
+            switch (attributeId) {
+                case Attributes.DataType: {
                     NodeId dataType = m_dataType;
 
-                    if (OnReadDataType != null)
-                    {
+                    if (OnReadDataType != null) {
                         result = OnReadDataType(context, this, ref dataType);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = dataType;
                     }
 
                     return result;
                 }
 
-                case Attributes.ValueRank:
-                {
+                case Attributes.ValueRank: {
                     int valueRank = m_valueRank;
 
-                    if (OnReadValueRank != null)
-                    {
+                    if (OnReadValueRank != null) {
                         result = OnReadValueRank(context, this, ref valueRank);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = valueRank;
                     }
 
                     return result;
                 }
 
-                case Attributes.ArrayDimensions:
-                {
+                case Attributes.ArrayDimensions: {
                     IList<uint> arrayDimensions = m_arrayDimensions;
 
-                    if (OnReadArrayDimensions != null)
-                    {
+                    if (OnReadArrayDimensions != null) {
                         result = OnReadArrayDimensions(context, this, ref arrayDimensions);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         value = arrayDimensions;
                     }
 
@@ -487,8 +417,7 @@ namespace Opc.Ua
             NumericRange indexRange,
             QualifiedName dataEncoding,
             ref object value,
-            ref DateTime sourceTimestamp)
-        {  
+            ref DateTime sourceTimestamp) {
             value = m_value;
 
             ServiceResult result = ServiceResult.Good;
@@ -496,138 +425,114 @@ namespace Opc.Ua
             VariableCopyPolicy copyPolicy = VariableCopyPolicy.CopyOnRead;
 
             // use default behavoir.
-            if (OnSimpleReadValue != null)
-            {
+            if (OnSimpleReadValue != null) {
                 result = OnSimpleReadValue(
                     context,
                     this,
                     ref value);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
 
                 copyPolicy = VariableCopyPolicy.Never;
-            }
-            else
-            {
+            } else {
                 // check if a valid value exists.
-                if (value == null)
-                {
+                if (value == null) {
                     return StatusCodes.BadAttributeIdInvalid;
                 }
             }
-            
+
             // apply the index range and encoding.
             result = BaseVariableState.ApplyIndexRangeAndDataEncoding(context, indexRange, dataEncoding, ref value);
 
-            if (ServiceResult.IsBad(result))
-            {
+            if (ServiceResult.IsBad(result)) {
                 return result;
             }
 
             // copy returned value.
-            if (copyPolicy == VariableCopyPolicy.CopyOnRead)
-            {
+            if (copyPolicy == VariableCopyPolicy.CopyOnRead) {
                 value = Utils.Clone(value);
             }
 
             return result;
         }
+
         #endregion
 
         #region Write Support Functions
+
         /// <summary>
         /// Write the value for any non-value attribute.
         /// </summary>
         protected override ServiceResult WriteNonValueAttribute(
             ISystemContext context,
             uint attributeId,
-            object value)
-        {
+            object value) {
             ServiceResult result = null;
 
-            switch (attributeId)
-            {
-                case Attributes.DataType:
-                {
+            switch (attributeId) {
+                case Attributes.DataType: {
                     NodeId dataType = value as NodeId;
 
-                    if (dataType == null)
-                    {
+                    if (dataType == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.DataType) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.DataType) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
-                    if (OnWriteDataType != null)
-                    {
+                    if (OnWriteDataType != null) {
                         result = OnWriteDataType(context, this, ref dataType);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
+                    if (ServiceResult.IsGood(result)) {
                         DataType = dataType;
                     }
 
                     return result;
                 }
 
-                case Attributes.ValueRank:
-                {
+                case Attributes.ValueRank: {
                     int? valueRankRef = value as int?;
 
-                    if (valueRankRef == null)
-                    {
+                    if (valueRankRef == null) {
                         return StatusCodes.BadTypeMismatch;
                     }
 
-                    if ((WriteMask & AttributeWriteMask.ValueRank) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.ValueRank) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
                     int valueRank = valueRankRef.Value;
 
-                    if (OnWriteValueRank != null)
-                    {
+                    if (OnWriteValueRank != null) {
                         result = OnWriteValueRank(context, this, ref valueRank);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
-                       ValueRank = valueRank;
+                    if (ServiceResult.IsGood(result)) {
+                        ValueRank = valueRank;
                     }
 
                     return result;
                 }
 
-                case Attributes.ArrayDimensions:
-                {
+                case Attributes.ArrayDimensions: {
                     IList<uint> arrayDimensions = value as IList<uint>;
 
-                    if ((WriteMask & AttributeWriteMask.ArrayDimensions) == 0)
-                    {
+                    if ((WriteMask & AttributeWriteMask.ArrayDimensions) == 0) {
                         return StatusCodes.BadNotWritable;
                     }
 
-                    if (OnWriteArrayDimensions != null)
-                    {
+                    if (OnWriteArrayDimensions != null) {
                         result = OnWriteArrayDimensions(context, this, ref arrayDimensions);
                     }
 
-                    if (ServiceResult.IsGood(result))
-                    {
-                        if (arrayDimensions != null)
-                        {
+                    if (ServiceResult.IsGood(result)) {
+                        if (arrayDimensions != null) {
                             m_arrayDimensions = new ReadOnlyList<uint>(arrayDimensions);
-                        }
-                        else
-                        {
+                        } else {
                             ArrayDimensions = null;
                         }
                     }
@@ -647,24 +552,20 @@ namespace Opc.Ua
             NumericRange indexRange,
             object value,
             StatusCode statusCode,
-            DateTime sourceTimestamp)
-        {
+            DateTime sourceTimestamp) {
             ServiceResult result = null;
 
-            if ((WriteMask & AttributeWriteMask.ValueForVariableType) == 0)
-            {
+            if ((WriteMask & AttributeWriteMask.ValueForVariableType) == 0) {
                 return StatusCodes.BadNotWritable;
             }
 
             // ensure the source timestamp has a valid value.
-            if (sourceTimestamp == DateTime.MinValue)
-            {
+            if (sourceTimestamp == DateTime.MinValue) {
                 sourceTimestamp = DateTime.UtcNow;
             }
 
             // index range writes not supported.
-            if (indexRange != NumericRange.Empty)
-            {
+            if (indexRange != NumericRange.Empty) {
                 return StatusCodes.BadIndexRangeInvalid;
             }
 
@@ -676,21 +577,18 @@ namespace Opc.Ua
                 context.NamespaceUris,
                 context.TypeTable);
 
-            if (typeInfo == null || typeInfo == TypeInfo.Unknown)
-            {
+            if (typeInfo == null || typeInfo == TypeInfo.Unknown) {
                 return StatusCodes.BadTypeMismatch;
             }
 
             // check for simple write value handler.
-            if (OnSimpleWriteValue != null)
-            {
+            if (OnSimpleWriteValue != null) {
                 result = OnSimpleWriteValue(
                     context,
                     this,
                     ref value);
 
-                if (ServiceResult.IsBad(result))
-                {
+                if (ServiceResult.IsBad(result)) {
                     return result;
                 }
             }
@@ -700,82 +598,88 @@ namespace Opc.Ua
 
             return ServiceResult.Good;
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private object m_value;
         private NodeId m_dataType;
         private int m_valueRank;
         private ReadOnlyList<uint> m_arrayDimensions;
+
         #endregion
     }
 
     /// <summary> 
     /// A base class for all data variable type nodes.
     /// </summary>
-    public class BaseDataVariableTypeState : BaseVariableTypeState
-    {
+    public class BaseDataVariableTypeState : BaseVariableTypeState {
         #region Constructors
+
         /// <summary>
         /// Initializes the type with its defalt attribute values.
         /// </summary>
-        public BaseDataVariableTypeState()
-        {
-        }
+        public BaseDataVariableTypeState() { }
 
         /// <summary>
         /// Constructs an instance of a node.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns>The new node.</returns>
-        public static NodeState Construct(NodeState parent)
-        {
+        public static NodeState Construct(NodeState parent) {
             return new BaseDataVariableTypeState();
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
-            SuperTypeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.BaseVariableType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
-            NodeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.BaseDataVariableType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
-            BrowseName = Opc.Ua.QualifiedName.Create(Opc.Ua.BrowseNames.BaseDataVariableType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
-            DisplayName = new LocalizedText(Opc.Ua.BrowseNames.BaseDataVariableType, String.Empty, Opc.Ua.BrowseNames.BaseDataVariableType);
+        protected override void Initialize(ISystemContext context) {
+            SuperTypeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.BaseVariableType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
+            NodeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.BaseDataVariableType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
+            BrowseName = Opc.Ua.QualifiedName.Create(Opc.Ua.BrowseNames.BaseDataVariableType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
+            DisplayName = new LocalizedText(Opc.Ua.BrowseNames.BaseDataVariableType, String.Empty,
+                Opc.Ua.BrowseNames.BaseDataVariableType);
             Description = null;
             WriteMask = AttributeWriteMask.None;
             UserWriteMask = AttributeWriteMask.None;
             IsAbstract = false;
             Value = null;
-            DataType = Opc.Ua.NodeId.Create(Opc.Ua.DataTypes.BaseDataType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
+            DataType = Opc.Ua.NodeId.Create(Opc.Ua.DataTypes.BaseDataType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
             ValueRank = ValueRanks.Any;
             ArrayDimensions = null;
         }
+
         #endregion
     }
 
     /// <summary> 
     /// A typed base class for all data variable type nodes.
     /// </summary>
-    public class BaseDataVariableTypeState<T> : BaseDataVariableTypeState
-    {
+    public class BaseDataVariableTypeState<T> : BaseDataVariableTypeState {
         #region Constructors
+
         /// <summary>
         /// Initializes the type with its defalt attribute values.
         /// </summary>
-        public BaseDataVariableTypeState()
-        {
-        }
+        public BaseDataVariableTypeState() { }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             base.Initialize(context);
 
             Value = default(T);
@@ -786,97 +690,95 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the value to its default value if it is not valid.
         /// </summary>
-        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError)
-        {
+        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError) {
             return BaseVariableState.ExtractValueFromVariant<T>(context, value, throwOnError);
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The value of the variable.
         /// </summary>
-        public new T Value
-        {
-            get
-            {
-                return BaseVariableState.CheckTypeBeforeCast<T>(base.Value, true);
-            }
+        public new T Value {
+            get { return BaseVariableState.CheckTypeBeforeCast<T>(base.Value, true); }
 
-            set
-            {
-                base.Value = value;
-            }
+            set { base.Value = value; }
         }
+
         #endregion
     }
 
     /// <summary> 
     /// A base class for all property variable type nodes.
     /// </summary>
-    public class PropertyTypeState : BaseVariableTypeState
-    {
+    public class PropertyTypeState : BaseVariableTypeState {
         #region Constructors
+
         /// <summary>
         /// Initializes the type with its defalt attribute values.
         /// </summary>
-        public PropertyTypeState()
-        {
-        }
+        public PropertyTypeState() { }
 
         /// <summary>
         /// Constructs an instance of a node.
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns>The new node.</returns>
-        public static NodeState Construct(NodeState parent)
-        {
+        public static NodeState Construct(NodeState parent) {
             return new PropertyTypeState();
         }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
-            SuperTypeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.BaseVariableType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
-            NodeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.PropertyType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
-            BrowseName = Opc.Ua.QualifiedName.Create(Opc.Ua.BrowseNames.PropertyType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
-            DisplayName = new LocalizedText(Opc.Ua.BrowseNames.PropertyType, String.Empty, Opc.Ua.BrowseNames.PropertyType);
+        protected override void Initialize(ISystemContext context) {
+            SuperTypeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.BaseVariableType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
+            NodeId = Opc.Ua.NodeId.Create(Opc.Ua.VariableTypes.PropertyType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
+            BrowseName = Opc.Ua.QualifiedName.Create(Opc.Ua.BrowseNames.PropertyType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
+            DisplayName = new LocalizedText(Opc.Ua.BrowseNames.PropertyType, String.Empty,
+                Opc.Ua.BrowseNames.PropertyType);
             Description = null;
             WriteMask = AttributeWriteMask.None;
             UserWriteMask = AttributeWriteMask.None;
             IsAbstract = false;
             Value = null;
-            DataType = Opc.Ua.NodeId.Create(Opc.Ua.DataTypes.BaseDataType, Opc.Ua.Namespaces.OpcUa, context.NamespaceUris);
+            DataType = Opc.Ua.NodeId.Create(Opc.Ua.DataTypes.BaseDataType, Opc.Ua.Namespaces.OpcUa,
+                context.NamespaceUris);
             ValueRank = ValueRanks.Any;
             ArrayDimensions = null;
         }
+
         #endregion
     }
 
     /// <summary> 
     /// A typed base class for all property variable type nodes.
     /// </summary>
-    public class PropertyTypeState<T> : PropertyTypeState
-    {
+    public class PropertyTypeState<T> : PropertyTypeState {
         #region Constructors
+
         /// <summary>
         /// Initializes the type with its defalt attribute values.
         /// </summary>
-        public PropertyTypeState()
-        {
-        }
+        public PropertyTypeState() { }
+
         #endregion
 
         #region Initialization
+
         /// <summary>
         /// Initializes the instance with the default values.
         /// </summary>
-        protected override void Initialize(ISystemContext context)
-        {
+        protected override void Initialize(ISystemContext context) {
             base.Initialize(context);
 
             Value = default(T);
@@ -887,28 +789,23 @@ namespace Opc.Ua
         /// <summary>
         /// Sets the value to its default value if it is not valid.
         /// </summary>
-        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError)
-        {
+        protected override object ExtractValueFromVariant(ISystemContext context, object value, bool throwOnError) {
             return BaseVariableState.ExtractValueFromVariant<T>(context, value, throwOnError);
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// The value of the variable.
         /// </summary>
-        public new T Value
-        {
-            get
-            {
-                return BaseVariableState.CheckTypeBeforeCast<T>(base.Value, true);
-            }
+        public new T Value {
+            get { return BaseVariableState.CheckTypeBeforeCast<T>(base.Value, true); }
 
-            set
-            {
-                base.Value = value;
-            }
+            set { base.Value = value; }
         }
+
         #endregion
     }
 }

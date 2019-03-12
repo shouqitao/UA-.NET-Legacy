@@ -22,19 +22,17 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Provides access to an X509 CRL object.
     /// </summary>
-    public sealed class X509CRL : IDisposable
-    {
+    public sealed class X509CRL : IDisposable {
         #region Constructors
+
         /// <summary>
         /// Loads a CRL from a file.
         /// </summary>
-        public X509CRL(string filePath)
-        {
+        public X509CRL(string filePath) {
             RawData = File.ReadAllBytes(filePath);
             Initialize(RawData);
         }
@@ -42,27 +40,26 @@ namespace Opc.Ua
         /// <summary>
         /// Loads a CRL from a memory buffer.
         /// </summary>
-        public X509CRL(byte[] crl)
-        {
+        public X509CRL(byte[] crl) {
             RawData = crl;
             Initialize(RawData);
         }
+
         #endregion
 
         #region IDisposable Members
+
         /// <summary>
         /// The finializer implementation.
         /// </summary>
-        ~X509CRL()
-        {
+        ~X509CRL() {
             Dispose(false);
         }
 
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -70,13 +67,14 @@ namespace Opc.Ua
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        private void Dispose(bool disposing)
-        {
+        private void Dispose(bool disposing) {
             FreeUnmanagedPointers();
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// The subject name of the Issuer for the CRL.
         /// </summary>
@@ -96,16 +94,18 @@ namespace Opc.Ua
         /// The raw data for the CRL.
         /// </summary>
         public byte[] RawData { get; private set; }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Verifies the signature on the CRL.
         /// </summary>
-        public bool VerifySignature(X509Certificate2 issuer, bool throwOnError)
-        {
-            Win32.CERT_CONTEXT context = (Win32.CERT_CONTEXT)Marshal.PtrToStructure(issuer.Handle, typeof(Win32.CERT_CONTEXT));
-            Win32.CERT_INFO info = (Win32.CERT_INFO)Marshal.PtrToStructure(context.pCertInfo, typeof(Win32.CERT_INFO));
+        public bool VerifySignature(X509Certificate2 issuer, bool throwOnError) {
+            Win32.CERT_CONTEXT context =
+                (Win32.CERT_CONTEXT) Marshal.PtrToStructure(issuer.Handle, typeof(Win32.CERT_CONTEXT));
+            Win32.CERT_INFO info = (Win32.CERT_INFO) Marshal.PtrToStructure(context.pCertInfo, typeof(Win32.CERT_INFO));
 
             int bResult = Win32.CryptVerifyCertificateSignature(
                 IntPtr.Zero,
@@ -114,11 +114,10 @@ namespace Opc.Ua
                 m_bufferSize,
                 ref info.SubjectPublicKeyInfo);
 
-            if (bResult == 0)
-            {
-                if (throwOnError)
-                {
-                    throw Win32.GetLastError(StatusCodes.BadCertificateInvalid, "Could not get verify signature on CRL.");
+            if (bResult == 0) {
+                if (throwOnError) {
+                    throw Win32.GetLastError(StatusCodes.BadCertificateInvalid,
+                        "Could not get verify signature on CRL.");
                 }
 
                 return false;
@@ -131,27 +130,26 @@ namespace Opc.Ua
         /// <summary>
         /// Returns true the certificate is in the CRL.
         /// </summary>
-        public bool IsRevoked(X509Certificate2 certificate)
-        {
+        public bool IsRevoked(X509Certificate2 certificate) {
             IntPtr pData1 = IntPtr.Zero;
             IntPtr pData2 = IntPtr.Zero;
             int dwDataSize1 = 0;
-   
-            try
-            {
+
+            try {
                 // check that the issuer matches.
-                if (m_issuer == null || !Utils.CompareDistinguishedName(certificate.Issuer, m_issuer.Subject))
-                {
-                    throw new ServiceResultException(StatusCodes.BadCertificateInvalid, "Certificate was not created by the CRL issuer.");
+                if (m_issuer == null || !Utils.CompareDistinguishedName(certificate.Issuer, m_issuer.Subject)) {
+                    throw new ServiceResultException(StatusCodes.BadCertificateInvalid,
+                        "Certificate was not created by the CRL issuer.");
                 }
 
                 // get the cert info for the target certificate.
-                Win32.CERT_CONTEXT context = (Win32.CERT_CONTEXT)Marshal.PtrToStructure(certificate.Handle, typeof(Win32.CERT_CONTEXT));
-                
+                Win32.CERT_CONTEXT context =
+                    (Win32.CERT_CONTEXT) Marshal.PtrToStructure(certificate.Handle, typeof(Win32.CERT_CONTEXT));
+
                 // calculate amount of memory required.
                 int bResult = Win32.CryptDecodeObjectEx(
                     Win32.X509_ASN_ENCODING | Win32.PKCS_7_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT_CRL_TO_BE_SIGNED,
+                    (IntPtr) Win32.X509_CERT_CRL_TO_BE_SIGNED,
                     m_signedCrl.ToBeSigned.pbData,
                     m_signedCrl.ToBeSigned.cbData,
                     Win32.CRYPT_DECODE_NOCOPY_FLAG,
@@ -159,8 +157,7 @@ namespace Opc.Ua
                     pData1,
                     ref dwDataSize1);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw Win32.GetLastError(StatusCodes.BadDecodingError, "Could not get size for CRL_INFO.");
                 }
 
@@ -170,7 +167,7 @@ namespace Opc.Ua
                 // decode blob.
                 bResult = Win32.CryptDecodeObjectEx(
                     Win32.X509_ASN_ENCODING | Win32.PKCS_7_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT_CRL_TO_BE_SIGNED,
+                    (IntPtr) Win32.X509_CERT_CRL_TO_BE_SIGNED,
                     m_signedCrl.ToBeSigned.pbData,
                     m_signedCrl.ToBeSigned.cbData,
                     Win32.CRYPT_DECODE_NOCOPY_FLAG,
@@ -178,12 +175,11 @@ namespace Opc.Ua
                     pData1,
                     ref dwDataSize1);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw Win32.GetLastError(StatusCodes.BadDecodingError, "Could not decode CRL_INFO.");
                 }
 
-                IntPtr[] pCRLs = new IntPtr[] { pData1 };
+                IntPtr[] pCRLs = new IntPtr[] {pData1};
                 pData2 = Marshal.AllocHGlobal(IntPtr.Size * pCRLs.Length);
                 Marshal.Copy(pCRLs, 0, pData2, pCRLs.Length);
 
@@ -194,34 +190,30 @@ namespace Opc.Ua
                     pCRLs.Length,
                     pData2);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     return true;
                 }
-                
+
                 // not revoked.
                 return false;
-            }
-            finally
-            {
-                if (pData1 != IntPtr.Zero)
-                {
+            } finally {
+                if (pData1 != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData1);
                     pData1 = IntPtr.Zero;
                 }
 
-                if (pData2 != IntPtr.Zero)
-                {
+                if (pData2 != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData2);
-                    pData2 = IntPtr.Zero; 
+                    pData2 = IntPtr.Zero;
                 }
             }
         }
+
         #endregion
-        
+
         #region Private Methods
-        private void Initialize(byte[] crl)
-        {
+
+        private void Initialize(byte[] crl) {
             m_bufferSize = crl.Length;
             m_pBuffer = Marshal.AllocHGlobal(m_bufferSize);
             Marshal.Copy(crl, 0, m_pBuffer, m_bufferSize);
@@ -235,38 +227,36 @@ namespace Opc.Ua
             NextUpdateTime = Win32.Decode_FILETIME(info.NextUpdate);
         }
 
-        private void SaveUnmanagedPointer(IntPtr pData)
-        {
-            if (m_memoryToFree == null)
-            {
-                m_memoryToFree = new IntPtr[] { pData };
+        private void SaveUnmanagedPointer(IntPtr pData) {
+            if (m_memoryToFree == null) {
+                m_memoryToFree = new IntPtr[] {pData};
                 return;
             }
 
-            IntPtr[] memoryToFree = new IntPtr[m_memoryToFree.Length+1];
+            IntPtr[] memoryToFree = new IntPtr[m_memoryToFree.Length + 1];
             Array.Copy(m_memoryToFree, memoryToFree, m_memoryToFree.Length);
             memoryToFree[m_memoryToFree.Length] = pData;
             m_memoryToFree = memoryToFree;
         }
 
-        private void FreeUnmanagedPointers()
-        {
-            if (m_memoryToFree != null)
-            {
-                for (int ii = 0; ii < m_memoryToFree.Length; ii++)
-                {
+        private void FreeUnmanagedPointers() {
+            if (m_memoryToFree != null) {
+                for (int ii = 0; ii < m_memoryToFree.Length; ii++) {
                     Marshal.FreeHGlobal(m_memoryToFree[ii]);
                 }
             }
         }
+
         #endregion
 
         #region Private Fields
+
         private IntPtr m_pBuffer;
         private int m_bufferSize;
         private Win32.CERT_SIGNED_CONTENT_INFO m_signedCrl;
         private X509Certificate2 m_issuer;
         private IntPtr[] m_memoryToFree;
-        #endregion    
+
+        #endregion
     }
 }

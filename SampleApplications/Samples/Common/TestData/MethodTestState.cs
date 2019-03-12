@@ -34,16 +34,14 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace TestData
-{
-    public partial class MethodTestState
-    {
+namespace TestData {
+    public partial class MethodTestState {
         #region Initialization
+
         /// <summary>
         /// Initializes the object as a collection of counters which change value on read.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
 
             this.ScalarMethod1.OnCall = OnScalarValue1;
@@ -57,8 +55,9 @@ namespace TestData
             this.UserArrayMethod1.OnCall = OnUserArrayValue1;
             this.UserArrayMethod2.OnCall = OnUserArrayValue2;
         }
+
         #endregion
-        
+
         private ServiceResult OnScalarValue1(
             ISystemContext context,
             MethodState method,
@@ -84,8 +83,7 @@ namespace TestData
             ref long int64Out,
             ref ulong uInt64Out,
             ref float floatOut,
-            ref double doubleOut)
-        {
+            ref double doubleOut) {
             booleanOut = booleanIn;
             sByteOut = sByteIn;
             byteOut = byteIn;
@@ -100,7 +98,7 @@ namespace TestData
 
             return ServiceResult.Good;
         }
-        
+
         private ServiceResult OnScalarValue2(
             ISystemContext context,
             MethodState method,
@@ -124,8 +122,7 @@ namespace TestData
             ref ExpandedNodeId expandedNodeIdOut,
             ref QualifiedName qualifiedNameOut,
             ref LocalizedText localizedTextOut,
-            ref StatusCode statusCodeOut)
-        {
+            ref StatusCode statusCodeOut) {
             stringOut = stringIn;
             dateTimeOut = dateTimeIn;
             guidOut = guidIn;
@@ -149,8 +146,7 @@ namespace TestData
             ExtensionObject structureIn,
             ref object variantOut,
             ref int enumerationOut,
-            ref ExtensionObject structureOut)
-        {
+            ref ExtensionObject structureOut) {
             variantOut = variantIn;
             enumerationOut = enumerationIn;
             structureOut = structureIn;
@@ -183,8 +179,7 @@ namespace TestData
             ref long[] int64Out,
             ref ulong[] uInt64Out,
             ref float[] floatOut,
-            ref double[] doubleOut)
-        {
+            ref double[] doubleOut) {
             booleanOut = booleanIn;
             sByteOut = sByteIn;
             byteOut = byteIn;
@@ -199,7 +194,7 @@ namespace TestData
 
             return ServiceResult.Good;
         }
-                
+
         private ServiceResult OnArrayValue2(
             ISystemContext context,
             MethodState method,
@@ -223,8 +218,7 @@ namespace TestData
             ref ExpandedNodeId[] expandedNodeIdOut,
             ref QualifiedName[] qualifiedNameOut,
             ref LocalizedText[] localizedTextOut,
-            ref StatusCode[] statusCodeOut)
-        {
+            ref StatusCode[] statusCodeOut) {
             stringOut = stringIn;
             dateTimeOut = dateTimeIn;
             guidOut = guidIn;
@@ -239,7 +233,7 @@ namespace TestData
             return ServiceResult.Good;
         }
 
-        private ServiceResult OnArrayValue3(       
+        private ServiceResult OnArrayValue3(
             ISystemContext context,
             MethodState method,
             NodeId objectId,
@@ -248,15 +242,14 @@ namespace TestData
             ExtensionObject[] structureIn,
             ref Variant[] variantOut,
             ref int[] enumerationOut,
-            ref ExtensionObject[] structureOut)
-        {
+            ref ExtensionObject[] structureOut) {
             variantOut = variantIn;
             enumerationOut = enumerationIn;
             structureOut = structureIn;
 
             return ServiceResult.Good;
-        }        
-                
+        }
+
         private ServiceResult OnUserScalarValue1(
             ISystemContext context,
             MethodState method,
@@ -284,8 +277,7 @@ namespace TestData
             ref ulong uInt64Out,
             ref float floatOut,
             ref double doubleOut,
-            ref string stringOut)
-        {
+            ref string stringOut) {
             booleanOut = booleanIn;
             sByteOut = sByteIn;
             byteOut = byteIn;
@@ -301,7 +293,7 @@ namespace TestData
 
             return ServiceResult.Good;
         }
-        
+
         private ServiceResult OnUserScalarValue2(
             ISystemContext context,
             MethodState method,
@@ -325,8 +317,7 @@ namespace TestData
             ref QualifiedName qualifiedNameOut,
             ref LocalizedText localizedTextOut,
             ref StatusCode statusCodeOut,
-            ref object variantOut)
-        {
+            ref object variantOut) {
             dateTimeOut = dateTimeIn;
             guidOut = guidIn;
             byteStringOut = byteStringIn;
@@ -368,8 +359,7 @@ namespace TestData
             ref ulong[] uInt64Out,
             ref float[] floatOut,
             ref double[] doubleOut,
-            ref string[] stringOut)
-        {
+            ref string[] stringOut) {
             booleanOut = booleanIn;
             sByteOut = sByteIn;
             byteOut = byteIn;
@@ -385,7 +375,7 @@ namespace TestData
 
             return ServiceResult.Good;
         }
-                
+
         private ServiceResult OnUserArrayValue2(
             ISystemContext context,
             MethodState method,
@@ -409,8 +399,7 @@ namespace TestData
             ref QualifiedName[] qualifiedNameOut,
             ref LocalizedText[] localizedTextOut,
             ref StatusCode[] statusCodeOut,
-            ref Variant[] variantOut)
-        {
+            ref Variant[] variantOut) {
             dateTimeOut = dateTimeIn;
             guidOut = guidIn;
             byteStringOut = byteStringIn;

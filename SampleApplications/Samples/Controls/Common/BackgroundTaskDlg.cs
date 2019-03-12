@@ -35,27 +35,21 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class BackgroundTaskDlg : Form
-    {
-        public BackgroundTaskDlg()
-        {
+namespace Opc.Ua.Sample.Controls {
+    public partial class BackgroundTaskDlg : Form {
+        public BackgroundTaskDlg() {
             InitializeComponent();
 
             OkBTN.Enabled = false;
         }
 
-        public int Progress
-        {
-            get { return ProgressCTRL.Value;  }
-            
-            set 
-            { 
+        public int Progress {
+            get { return ProgressCTRL.Value; }
+
+            set {
                 ProgressCTRL.Value = value;
 
-                if (value == ProgressCTRL.Maximum)
-                {
+                if (value == ProgressCTRL.Maximum) {
                     OkBTN.Enabled = true;
                     DialogResult = DialogResult.OK;
                 }

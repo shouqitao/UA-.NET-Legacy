@@ -25,54 +25,48 @@ using System.Threading;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Bindings
-{
+namespace Opc.Ua.Bindings {
     /// <summary>
     /// Stores the results of an asynchronous operation.
     /// </summary>
-    public class TcpAsyncOperation<T> : IAsyncResult, IDisposable
-    {
+    public class TcpAsyncOperation<T> : IAsyncResult, IDisposable {
         #region Constructors
+
         /// <summary>
         /// Initializes the object with a callback
         /// </summary>
-        public TcpAsyncOperation(int timeout, AsyncCallback callback, object asyncState)
-        {               
-            m_callback    = callback;
-            m_asyncState  = asyncState;
+        public TcpAsyncOperation(int timeout, AsyncCallback callback, object asyncState) {
+            m_callback = callback;
+            m_asyncState = asyncState;
             m_synchronous = false;
-            m_completed   = false;
+            m_completed = false;
 
-            if (timeout > 0 && timeout != Int32.MaxValue)
-            {
+            if (timeout > 0 && timeout != Int32.MaxValue) {
                 m_timer = new Timer(new TimerCallback(OnTimeout), null, timeout, Timeout.Infinite);
             }
         }
+
         #endregion
-        
+
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing) 
-            {
-                lock (m_lock)
-                {
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                lock (m_lock) {
                     Utils.SilentDispose(m_timer);
                     m_timer = null;
 
-                    if (m_event != null)
-                    {
+                    if (m_event != null) {
                         m_event.Set();
                         m_event.Close();
                         m_event = null;
@@ -80,115 +74,96 @@ namespace Opc.Ua.Bindings
                 }
             }
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Complete(T response)
-        {
+        public bool Complete(T response) {
             return InternalComplete(true, response);
         }
-        
+
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Complete(bool doNotBlock, T response)
-        {
+        public bool Complete(bool doNotBlock, T response) {
             return InternalComplete(doNotBlock, response);
         }
-        
+
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Fault(ServiceResult error)
-        {
+        public bool Fault(ServiceResult error) {
             return InternalComplete(true, error);
         }
-        
+
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Fault(bool doNotBlock, ServiceResult error)
-        {
+        public bool Fault(bool doNotBlock, ServiceResult error) {
             return InternalComplete(doNotBlock, error);
         }
-        
+
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Fault(uint code, string format, params object[] args)
-        {
+        public bool Fault(uint code, string format, params object[] args) {
             return InternalComplete(true, ServiceResult.Create(code, format, args));
         }
-        
+
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Fault(bool doNotBlock, uint code, string format, params object[] args)
-        {
+        public bool Fault(bool doNotBlock, uint code, string format, params object[] args) {
             return InternalComplete(doNotBlock, ServiceResult.Create(code, format, args));
         }
 
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Fault(Exception e, uint defaultCode, string format, params object[] args)
-        {
+        public bool Fault(Exception e, uint defaultCode, string format, params object[] args) {
             return InternalComplete(true, ServiceResult.Create(e, defaultCode, format, args));
         }
 
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        public bool Fault(bool doNotBlock, Exception e, uint defaultCode, string format, params object[] args)
-        {
+        public bool Fault(bool doNotBlock, Exception e, uint defaultCode, string format, params object[] args) {
             return InternalComplete(doNotBlock, ServiceResult.Create(e, defaultCode, format, args));
         }
 
         /// <summary>
         /// The response returned from the server.
         /// </summary>
-        public T End(int timeout)
-        {
+        public T End(int timeout) {
             // check if the request has already completed.
             bool mustWait = false;
 
-            lock (m_lock)
-            {
+            lock (m_lock) {
                 mustWait = !m_completed;
 
-                if (mustWait)
-                {
+                if (mustWait) {
                     m_event = new ManualResetEvent(false);
                 }
             }
 
             // wait for completion.
-            if (mustWait)
-            {
-                try
-                {
-                    if (!m_event.WaitOne(timeout, false))
-                    {
+            if (mustWait) {
+                try {
+                    if (!m_event.WaitOne(timeout, false)) {
                         throw new ServiceResultException(StatusCodes.BadRequestInterrupted);
                     }
-                }
-                finally
-                {
+                } finally {
                     // release the wait event.
-                    lock (m_lock)
-                    {
-                        if (m_event != null)
-                        {
-                            try
-                            {
+                    lock (m_lock) {
+                        if (m_event != null) {
+                            try {
                                 m_event.Close();
                                 m_event = null;
-                            }
-                            catch (Exception)
-                            {
+                            } catch (Exception) {
                                 // ignore 
                             }
                         }
@@ -197,10 +172,8 @@ namespace Opc.Ua.Bindings
             }
 
             // return the response.
-            lock (m_lock)
-            {
-                if (m_error != null)
-                {
+            lock (m_lock) {
+                if (m_error != null) {
                     throw new ServiceResultException(m_error);
                 }
 
@@ -211,45 +184,36 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Stores additional state information associated with the operation.
         /// </summary>
-        public IDictionary<string,object> Properties
-        {
-            get
-            {                
-                lock (m_lock)
-                {
-                    if (m_properties == null)
-                    {
-                        m_properties = new Dictionary<string,object>();
+        public IDictionary<string, object> Properties {
+            get {
+                lock (m_lock) {
+                    if (m_properties == null) {
+                        m_properties = new Dictionary<string, object>();
                     }
 
                     return m_properties;
                 }
             }
         }
+
         #endregion
 
         #region IAsyncResult Members
+
         /// <summary cref="IAsyncResult.AsyncState" />
-        public object AsyncState
-        {
-            get 
-            {
-                lock (m_lock)
-                {
+        public object AsyncState {
+            get {
+                lock (m_lock) {
                     return m_asyncState;
                 }
             }
         }
-        
+
         /// <summary cref="IAsyncResult.AsyncWaitHandle" />
-        public WaitHandle AsyncWaitHandle
-        {
-            get 
-            {
-                lock (m_lock)
-                {
-                    if (m_event == null)
-                    {
+        public WaitHandle AsyncWaitHandle {
+            get {
+                lock (m_lock) {
+                    if (m_event == null) {
                         m_event = new ManualResetEvent(m_completed);
                     }
 
@@ -257,119 +221,96 @@ namespace Opc.Ua.Bindings
                 }
             }
         }
-        
+
         /// <summary cref="IAsyncResult.CompletedSynchronously" />
-        public bool CompletedSynchronously
-        {
-            get 
-            {
-                lock (m_lock)
-                {
+        public bool CompletedSynchronously {
+            get {
+                lock (m_lock) {
                     return m_synchronous;
                 }
             }
         }
-        
+
         /// <summary cref="IAsyncResult.IsCompleted" />
-        public bool IsCompleted
-        {
-            get 
-            {
-                lock (m_lock)
-                {
+        public bool IsCompleted {
+            get {
+                lock (m_lock) {
                     return m_completed;
                 }
             }
         }
+
         #endregion
-        
+
         #region Private Methods
+
         /// <summary>
         /// Called when the operation times out.
         /// </summary>
-        private void OnTimeout(object state)
-        {
+        private void OnTimeout(object state) {
             InternalComplete(false, new ServiceResult(StatusCodes.BadRequestTimeout));
         }
 
         /// <summary>
         /// Called when an asynchronous operation completes.
         /// </summary>
-        protected virtual bool InternalComplete(bool doNotBlock, object result)
-        {
-            lock (m_lock)
-            {
+        protected virtual bool InternalComplete(bool doNotBlock, object result) {
+            lock (m_lock) {
                 // ignore multiple calls (i.e. a timeout after a response or vise versa).
-                if (m_completed)
-                {
+                if (m_completed) {
                     return false;
                 }
 
-                if (result is T)
-                {
-                    m_response = (T)result;
-                }
-                else
-                {
+                if (result is T) {
+                    m_response = (T) result;
+                } else {
                     m_error = result as ServiceResult;
                 }
 
                 m_completed = true;
 
-                if (m_timer != null)
-                {
+                if (m_timer != null) {
                     m_timer.Dispose();
                     m_timer = null;
                 }
 
-                if (m_event != null)
-                {
+                if (m_event != null) {
                     m_event.Set();
                 }
             }
 
-            if (m_callback != null)
-            {
-                if (doNotBlock)
-                {
+            if (m_callback != null) {
+                if (doNotBlock) {
                     ThreadPool.QueueUserWorkItem(InvokeCallback);
-                }
-                else
-                {
-                    try
-                    {
+                } else {
+                    try {
                         m_callback(this);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Utils.Trace(e, "TcpClientChannel: Unexpected error invoking AsyncCallback.");
                     }
                 }
             }
-                    
+
             return true;
         }
 
         /// <summary>
         /// Invokes the callback from a seperate thread.
         /// </summary>
-        private void InvokeCallback(object state)
-        {
-            if (m_callback != null)
-            {
-                try
-                {
+        private void InvokeCallback(object state) {
+            if (m_callback != null) {
+                try {
                     m_callback(this);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Utils.Trace(e, "TcpClientChannel: Unexpected error invoking AsyncCallback.");
                 }
             }
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private object m_lock = new object();
         private AsyncCallback m_callback;
         private object m_asyncState;
@@ -379,7 +320,8 @@ namespace Opc.Ua.Bindings
         private T m_response;
         private ServiceResult m_error;
         private Timer m_timer;
-        private Dictionary<string,object> m_properties;
+        private Dictionary<string, object> m_properties;
+
         #endregion
     }
 }

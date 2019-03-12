@@ -31,8 +31,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace Opc.Ua.Server
-{        
+namespace Opc.Ua.Server {
 #if LEGACY_CORENODEMANAGER
     /// <summary>
     /// An interface to read the attribute values for a node.
@@ -147,7 +146,7 @@ namespace Opc.Ua.Server
         public RequestHandle(object handle, int index)
         {
             m_handle = handle;
-            m_index  = index;
+            m_index = index;
         }
         #endregion
         

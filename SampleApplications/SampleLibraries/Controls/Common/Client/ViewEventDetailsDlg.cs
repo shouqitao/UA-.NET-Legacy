@@ -34,36 +34,35 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays all fields associated with an event notification.
     /// </summary>
-    public partial class ViewEventDetailsDlg : Form
-    {
+    public partial class ViewEventDetailsDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public ViewEventDetailsDlg()
-        {
+        public ViewEventDetailsDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Shows all fields for the current condition.
         /// </summary>
-        public bool ShowDialog(FilterDeclaration filter, VariantCollection fields)
-        {
+        public bool ShowDialog(FilterDeclaration filter, VariantCollection fields) {
             // fill in dialog.
-            for (int ii = 0; ii < filter.Fields.Count; ii++)
-            {
+            for (int ii = 0; ii < filter.Fields.Count; ii++) {
                 InstanceDeclaration instance = filter.Fields[ii].InstanceDeclaration;
                 ListViewItem item = new ListViewItem(instance.DisplayPath);
                 item.SubItems.Add(instance.DataTypeDisplayText);
@@ -71,15 +70,13 @@ namespace Opc.Ua.Client.Controls
                 string text = null;
 
                 // check for missing fields.
-                if (fields.Count <= ii+1 || fields[ii+1].Value == null)
-                {
+                if (fields.Count <= ii + 1 || fields[ii + 1].Value == null) {
                     text = String.Empty;
                 }
 
                 // use default string format.
-                else
-                {
-                    text = fields[ii+1].ToString();
+                else {
+                    text = fields[ii + 1].ToString();
                 }
 
                 item.SubItems.Add(text);
@@ -88,19 +85,18 @@ namespace Opc.Ua.Client.Controls
             }
 
             // adjust columns.
-            for (int ii = 0; ii < FieldsLV.Columns.Count; ii++)
-            {
+            for (int ii = 0; ii < FieldsLV.Columns.Count; ii++) {
                 FieldsLV.Columns[ii].Width = -2;
             }
 
             // display the dialog.
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
             return true;
         }
+
         #endregion
     }
 }

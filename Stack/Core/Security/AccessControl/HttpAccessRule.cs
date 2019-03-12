@@ -22,21 +22,19 @@ using System.Text;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// An access rule for an HTTP URL used by a WCF service.
     /// </summary>
-    [DataContract(Namespace=Namespaces.OpcUaConfig)]
-    public class HttpAccessRule
-    {
+    [DataContract(Namespace = Namespaces.OpcUaConfig)]
+    public class HttpAccessRule {
         #region Public Properties
+
         /// <summary>
         /// The access right affected by the rule.
         /// </summary>
         [DataMember(Order = 0)]
-        public string UrlPrefix
-        {
+        public string UrlPrefix {
             get { return m_urlPrefix; }
             set { m_urlPrefix = value; }
         }
@@ -45,9 +43,8 @@ namespace Opc.Ua.Configuration
         /// The access right affected by the rule.
         /// </summary>
         [DataMember(Order = 1)]
-        public ApplicationAccessRight Right
-        {
-            get { return m_right;  }
+        public ApplicationAccessRight Right {
+            get { return m_right; }
             set { m_right = value; }
         }
 
@@ -55,45 +52,41 @@ namespace Opc.Ua.Configuration
         /// The name of the NT account principal which the access rule applies to.
         /// </summary>
         [DataMember(Order = 3)]
-        public String IdentityName
-        {
-            get { return m_identityName;  }
+        public String IdentityName {
+            get { return m_identityName; }
             set { m_identityName = value; }
         }
+
         #endregion
-        
+
         #region WIN32 Declarations
-        private enum HTTP_SERVICE_CONFIG_QUERY_TYPE : int
-        {
-	        HttpServiceConfigQueryExact = 0,
-	        HttpServiceConfigQueryNext  = 1
+
+        private enum HTTP_SERVICE_CONFIG_QUERY_TYPE : int {
+            HttpServiceConfigQueryExact = 0,
+            HttpServiceConfigQueryNext = 1
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct HTTP_SERVICE_CONFIG_URLACL_KEY
-        {
+        private struct HTTP_SERVICE_CONFIG_URLACL_KEY {
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pUrlPrefix;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct HTTP_SERVICE_CONFIG_URLACL_QUERY
-        {
-            public HTTP_SERVICE_CONFIG_QUERY_TYPE  QueryDesc;
-            public HTTP_SERVICE_CONFIG_URLACL_KEY  KeyDesc;
-            public int                             dwToken;
+        private struct HTTP_SERVICE_CONFIG_URLACL_QUERY {
+            public HTTP_SERVICE_CONFIG_QUERY_TYPE QueryDesc;
+            public HTTP_SERVICE_CONFIG_URLACL_KEY KeyDesc;
+            public int dwToken;
         }
 
-        private struct HTTP_SERVICE_CONFIG_SSL_QUERY
-        {
+        private struct HTTP_SERVICE_CONFIG_SSL_QUERY {
             public HTTP_SERVICE_CONFIG_QUERY_TYPE QueryDesc;
             public HTTP_SERVICE_CONFIG_SSL_KEY KeyDesc;
             public int dwToken;
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct sockaddr_in
-        {
+        private struct sockaddr_in {
             public short sin_family;
             public ushort sin_port;
             public uint sin_addr;
@@ -101,90 +94,91 @@ namespace Opc.Ua.Configuration
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct HTTP_SERVICE_CONFIG_SSL_KEY 
-        {
+        private struct HTTP_SERVICE_CONFIG_SSL_KEY {
             public IntPtr pIpPort;
         }
-        
+
         const Int16 AF_INET = 2;
         const Int16 AF_INET6 = 23;
 
         [StructLayout(LayoutKind.Sequential)]
-        struct SOCKADDR_IN
-        {
+        struct SOCKADDR_IN {
             public Int16 family;
             public UInt16 port;
+
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4, ArraySubType = UnmanagedType.U1)]
             public Byte[] addr;
+
             public Int32 nothing;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct SOCKADDR_IN6
-        {
+        struct SOCKADDR_IN6 {
             public Int16 family;
             public UInt16 port;
             public Int32 flowInfo;
+
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.U1)]
             public Byte[] addr;
+
             public Int32 scopeID;
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
-        private struct HTTP_SERVICE_CONFIG_SSL_PARAM
-        {
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct HTTP_SERVICE_CONFIG_SSL_PARAM {
             public int SslHashLength;
             public IntPtr pSslHash;
             public Guid AppId;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pSslCertStoreName;
+
             public uint DefaultCertCheckMode;
             public int DefaultRevocationFreshnessTime;
             public int DefaultRevocationUrlRetrievalTimeout;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pDefaultSslCtlIdentifier;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pDefaultSslCtlStoreName;
+
             public uint DefaultFlags;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct HTTP_SERVICE_CONFIG_SSL_SET 
-        {
-            public HTTP_SERVICE_CONFIG_SSL_KEY   KeyDesc;
+        private struct HTTP_SERVICE_CONFIG_SSL_SET {
+            public HTTP_SERVICE_CONFIG_SSL_KEY KeyDesc;
             public HTTP_SERVICE_CONFIG_SSL_PARAM ParamDesc;
-        } 
+        }
 
-        private enum HttpError : int
-        {
-	        NO_ERROR				  = 0,
-	        ERROR_FILE_NOT_FOUND	  = 2,
-	        ERROR_INVALID_DATA		  = 13,
-	        ERROR_HANDLE_EOF		  = 38,
-	        ERROR_INVALID_PARAMETER   = 87,
+        private enum HttpError : int {
+            NO_ERROR = 0,
+            ERROR_FILE_NOT_FOUND = 2,
+            ERROR_INVALID_DATA = 13,
+            ERROR_HANDLE_EOF = 38,
+            ERROR_INVALID_PARAMETER = 87,
             ERROR_INSUFFICIENT_BUFFER = 122,
-            ERROR_ALREADY_EXISTS      = 183,
-            ERROR_NO_MORE_ITEMS       = 259,
-	        ERROR_INVALID_DLL		  = 1154,
-            ERROR_NOT_FOUND           = 1168
+            ERROR_ALREADY_EXISTS = 183,
+            ERROR_NO_MORE_ITEMS = 259,
+            ERROR_INVALID_DLL = 1154,
+            ERROR_NOT_FOUND = 1168
         }
 
         private const int HTTP_SERVICE_CONFIG_SSL_FLAG_USE_DS_MAPPER = 0x00000001;
         private const int HTTP_SERVICE_CONFIG_SSL_FLAG_NEGOTIATE_CLIENT_CERT = 0x00000002;
         private const int HTTP_SERVICE_CONFIG_SSL_FLAG_NO_RAW_FILTER = 0x00000004;
 
-		private enum HTTP_SERVICE_CONFIG_ID : int
-		{
-			HttpServiceConfigIPListenList = 0,
-			HttpServiceConfigSSLCertInfo  = 1,
-			HttpServiceConfigUrlAclInfo   = 2
-		}
+        private enum HTTP_SERVICE_CONFIG_ID : int {
+            HttpServiceConfigIPListenList = 0,
+            HttpServiceConfigSSLCertInfo = 1,
+            HttpServiceConfigUrlAclInfo = 2
+        }
 
         /// <summary>
         /// Declares the native methods used by the class.
         /// </summary>
-        private static class NativeMethods
-        {
+        private static class NativeMethods {
             [DllImport("Httpapi.dll", SetLastError = true)]
             public static extern HttpError HttpQueryServiceConfiguration(
                 IntPtr ServiceHandle,
@@ -225,58 +219,52 @@ namespace Opc.Ua.Configuration
             [DllImport("Httpapi.dll", SetLastError = true)]
             public static extern HttpError HttpTerminate(
                 HttpInitFlag flags,
-                IntPtr reserved); 
+                IntPtr reserved);
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct HTTP_SERVICE_CONFIG_URLACL_PARAM 
-        {
+        private struct HTTP_SERVICE_CONFIG_URLACL_PARAM {
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pStringSecurityDescriptor;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct HTTP_SERVICE_CONFIG_URLACL_SET 
-        {
-            public HTTP_SERVICE_CONFIG_URLACL_KEY     KeyDesc;
-            public HTTP_SERVICE_CONFIG_URLACL_PARAM   ParamDesc;
+        private struct HTTP_SERVICE_CONFIG_URLACL_SET {
+            public HTTP_SERVICE_CONFIG_URLACL_KEY KeyDesc;
+            public HTTP_SERVICE_CONFIG_URLACL_PARAM ParamDesc;
         }
-        
-		private enum HttpInitFlag : int
-		{
-			HTTP_INITIALIZE_SERVER = 1,
-			HTTP_INITIALIZE_CONFIG = 2
-		}
 
-        [StructLayout(LayoutKind.Sequential, Pack=2)]
-        private struct HTTPAPI_VERSION
-        {
-	        public HTTPAPI_VERSION(ushort majorVersion, ushort minorVersion)
-	        {
-		        major = majorVersion;
-		        minor = minorVersion;
-	        }
+        private enum HttpInitFlag : int {
+            HTTP_INITIALIZE_SERVER = 1,
+            HTTP_INITIALIZE_CONFIG = 2
+        }
 
-	        public ushort major;
-	        public ushort minor;
-        }       
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        private struct HTTPAPI_VERSION {
+            public HTTPAPI_VERSION(ushort majorVersion, ushort minorVersion) {
+                major = majorVersion;
+                minor = minorVersion;
+            }
+
+            public ushort major;
+            public ushort minor;
+        }
+
         #endregion
 
         /// <summary>
         /// Fetches the current SSL certificate configuration.
         /// </summary>
-        public static List<SslCertificateBinding> GetSslCertificateBindings()
-        {
+        public static List<SslCertificateBinding> GetSslCertificateBindings() {
             List<SslCertificateBinding> bindings = new List<SslCertificateBinding>();
 
             // initialize library.
             HttpError error = NativeMethods.HttpInitialize(
-                new HTTPAPI_VERSION(1,0), 
-                HttpInitFlag.HTTP_INITIALIZE_CONFIG, 
+                new HTTPAPI_VERSION(1, 0),
+                HttpInitFlag.HTTP_INITIALIZE_CONFIG,
                 IntPtr.Zero);
-            
-            if (error != HttpError.NO_ERROR)
-            {
+
+            if (error != HttpError.NO_ERROR) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadUnexpectedError,
                     "Could not initialize HTTP library.\r\nError={0}",
@@ -294,11 +282,9 @@ namespace Opc.Ua.Configuration
 
             IntPtr pOutput = IntPtr.Zero;
 
-            try
-            {
+            try {
                 // loop through each record.
-                for (query.dwToken = 0; error == HttpError.NO_ERROR; query.dwToken++)
-                {
+                for (query.dwToken = 0; error == HttpError.NO_ERROR; query.dwToken++) {
                     // get the size of buffer to allocate.
                     Marshal.StructureToPtr(query, pInput, true);
 
@@ -314,13 +300,11 @@ namespace Opc.Ua.Configuration
                         out requiredBufferLength,
                         IntPtr.Zero);
 
-                    if (error == HttpError.ERROR_NO_MORE_ITEMS)
-                    {
+                    if (error == HttpError.ERROR_NO_MORE_ITEMS) {
                         break;
                     }
 
-                    if (error != HttpError.ERROR_INSUFFICIENT_BUFFER)
-                    {
+                    if (error != HttpError.ERROR_INSUFFICIENT_BUFFER) {
                         throw ServiceResultException.Create(
                             StatusCodes.BadUnexpectedError,
                             "Could not read SSL configuration information.\r\nError={0}",
@@ -342,34 +326,35 @@ namespace Opc.Ua.Configuration
                         out requiredBufferLength,
                         IntPtr.Zero);
 
-                    if (error != HttpError.NO_ERROR)
-                    {
+                    if (error != HttpError.NO_ERROR) {
                         throw ServiceResultException.Create(
                             StatusCodes.BadUnexpectedError,
                             "Could not read SSL configuration information.\r\nError={0}",
                             error);
                     }
 
-                    HTTP_SERVICE_CONFIG_SSL_SET sslSet = (HTTP_SERVICE_CONFIG_SSL_SET)Marshal.PtrToStructure(pOutput, typeof(HTTP_SERVICE_CONFIG_SSL_SET));
+                    HTTP_SERVICE_CONFIG_SSL_SET sslSet =
+                        (HTTP_SERVICE_CONFIG_SSL_SET) Marshal.PtrToStructure(pOutput,
+                            typeof(HTTP_SERVICE_CONFIG_SSL_SET));
 
                     short family = Marshal.ReadInt16(sslSet.KeyDesc.pIpPort);
                     SslCertificateBinding binding = new SslCertificateBinding();
 
-                    if (family == AF_INET)
-                    {
-                        SOCKADDR_IN inet = (SOCKADDR_IN)Marshal.PtrToStructure(sslSet.KeyDesc.pIpPort, typeof(SOCKADDR_IN));
+                    if (family == AF_INET) {
+                        SOCKADDR_IN inet =
+                            (SOCKADDR_IN) Marshal.PtrToStructure(sslSet.KeyDesc.pIpPort, typeof(SOCKADDR_IN));
                         binding.IPAddress = new IPAddress(inet.addr);
                         binding.Port = inet.port;
                     }
 
-                    if (family == AF_INET6)
-                    {
-                        SOCKADDR_IN6 inet = (SOCKADDR_IN6)Marshal.PtrToStructure(sslSet.KeyDesc.pIpPort, typeof(SOCKADDR_IN6));
+                    if (family == AF_INET6) {
+                        SOCKADDR_IN6 inet =
+                            (SOCKADDR_IN6) Marshal.PtrToStructure(sslSet.KeyDesc.pIpPort, typeof(SOCKADDR_IN6));
                         binding.IPAddress = new IPAddress(inet.addr, inet.scopeID);
                         binding.Port = inet.port;
                     }
 
-                    binding.Port = (ushort)(((binding.Port & 0xFF00) >> 8) | ((binding.Port & 0x00FF) << 8));
+                    binding.Port = (ushort) (((binding.Port & 0xFF00) >> 8) | ((binding.Port & 0x00FF) << 8));
 
                     byte[] bytes = new byte[sslSet.ParamDesc.SslHashLength];
                     Marshal.Copy(sslSet.ParamDesc.pSslHash, bytes, 0, bytes.Length);
@@ -379,7 +364,8 @@ namespace Opc.Ua.Configuration
                     binding.StoreName = sslSet.ParamDesc.pSslCertStoreName;
                     binding.DefaultCertCheckMode = sslSet.ParamDesc.DefaultCertCheckMode;
                     binding.DefaultRevocationFreshnessTime = sslSet.ParamDesc.DefaultRevocationFreshnessTime;
-                    binding.DefaultRevocationUrlRetrievalTimeout = sslSet.ParamDesc.DefaultRevocationUrlRetrievalTimeout;
+                    binding.DefaultRevocationUrlRetrievalTimeout =
+                        sslSet.ParamDesc.DefaultRevocationUrlRetrievalTimeout;
                     binding.DefaultSslCtlIdentifier = sslSet.ParamDesc.pDefaultSslCtlIdentifier;
                     binding.DefaultSslCtlStoreName = sslSet.ParamDesc.pDefaultSslCtlStoreName;
                     binding.DefaultFlags = sslSet.ParamDesc.DefaultFlags;
@@ -389,17 +375,13 @@ namespace Opc.Ua.Configuration
                     Marshal.FreeHGlobal(pOutput);
                     pOutput = IntPtr.Zero;
                 }
-            }
-            finally
-            {
-                if (pInput != IntPtr.Zero)
-                {
+            } finally {
+                if (pInput != IntPtr.Zero) {
                     Marshal.DestroyStructure(pInput, typeof(HTTP_SERVICE_CONFIG_SSL_QUERY));
                     Marshal.FreeHGlobal(pInput);
                 }
 
-                if (pOutput != IntPtr.Zero)
-                {
+                if (pOutput != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pOutput);
                 }
 
@@ -412,33 +394,27 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Serializes an IPAddress. 
         /// </summary>
-        private static IntPtr ToIntPtr(IPAddress address, ushort port)
-        {
+        private static IntPtr ToIntPtr(IPAddress address, ushort port) {
             IntPtr pAddress = IntPtr.Zero;
 
-            if (address == null)
-            {
+            if (address == null) {
                 return pAddress;
             }
-            
-            if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-            {
+
+            if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
                 SOCKADDR_IN inet = new SOCKADDR_IN();
                 inet.family = AF_INET;
                 inet.addr = address.GetAddressBytes();
-                inet.port = (ushort)(((port & 0xFF00) >> 8) | ((port & 0x00FF) << 8));
+                inet.port = (ushort) (((port & 0xFF00) >> 8) | ((port & 0x00FF) << 8));
 
                 pAddress = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SOCKADDR_IN)));
                 Marshal.StructureToPtr(inet, pAddress, false);
-            }
-
-            else if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
-            {
+            } else if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6) {
                 SOCKADDR_IN6 inet = new SOCKADDR_IN6();
                 inet.family = AF_INET6;
                 inet.addr = address.GetAddressBytes();
-                inet.port = (ushort)(((port & 0xFF00) >> 8) | ((port & 0x00FF) << 8));
-                inet.scopeID = (int)address.ScopeId;
+                inet.port = (ushort) (((port & 0xFF00) >> 8) | ((port & 0x00FF) << 8));
+                inet.scopeID = (int) address.ScopeId;
 
                 pAddress = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SOCKADDR_IN6)));
                 Marshal.StructureToPtr(inet, pAddress, false);
@@ -450,18 +426,16 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Creates a new SSL certificate binding.
         /// </summary>
-        public static void SetSslCertificateBinding(SslCertificateBinding binding)
-        {
+        public static void SetSslCertificateBinding(SslCertificateBinding binding) {
             if (binding == null) throw new ArgumentNullException("binding");
 
             // initialize library.
             HttpError error = NativeMethods.HttpInitialize(
-                new HTTPAPI_VERSION(1,0), 
-                HttpInitFlag.HTTP_INITIALIZE_CONFIG, 
+                new HTTPAPI_VERSION(1, 0),
+                HttpInitFlag.HTTP_INITIALIZE_CONFIG,
                 IntPtr.Zero);
-            
-            if (error != HttpError.NO_ERROR)
-            {
+
+            if (error != HttpError.NO_ERROR) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadUnexpectedError,
                     "Could not initialize HTTP library.\r\nError={0}",
@@ -472,14 +446,13 @@ namespace Opc.Ua.Configuration
             IntPtr pThumprint = IntPtr.Zero;
             IntPtr pConfigInfo = IntPtr.Zero;
 
-            try
-            {
+            try {
                 pAddress = ToIntPtr(binding.IPAddress, binding.Port);
 
                 byte[] thumbprint = Utils.FromHexString(binding.Thumbprint);
                 pThumprint = Marshal.AllocCoTaskMem(thumbprint.Length);
                 Marshal.Copy(thumbprint, 0, pThumprint, thumbprint.Length);
-                
+
                 HTTP_SERVICE_CONFIG_SSL_SET configSslSet = new HTTP_SERVICE_CONFIG_SSL_SET();
 
                 configSslSet.KeyDesc.pIpPort = pAddress;
@@ -490,7 +463,8 @@ namespace Opc.Ua.Configuration
                 configSslSet.ParamDesc.DefaultCertCheckMode = binding.DefaultCertCheckMode;
                 configSslSet.ParamDesc.DefaultFlags = binding.DefaultFlags;
                 configSslSet.ParamDesc.DefaultRevocationFreshnessTime = binding.DefaultRevocationFreshnessTime;
-                configSslSet.ParamDesc.DefaultRevocationUrlRetrievalTimeout = binding.DefaultRevocationUrlRetrievalTimeout;
+                configSslSet.ParamDesc.DefaultRevocationUrlRetrievalTimeout =
+                    binding.DefaultRevocationUrlRetrievalTimeout;
                 configSslSet.ParamDesc.pDefaultSslCtlIdentifier = binding.DefaultSslCtlIdentifier;
                 configSslSet.ParamDesc.pDefaultSslCtlStoreName = binding.DefaultSslCtlStoreName;
 
@@ -505,8 +479,7 @@ namespace Opc.Ua.Configuration
                     size,
                     IntPtr.Zero);
 
-                if (error == HttpError.ERROR_ALREADY_EXISTS)
-                {
+                if (error == HttpError.ERROR_ALREADY_EXISTS) {
                     error = NativeMethods.HttpDeleteServiceConfiguration(
                         IntPtr.Zero,
                         HTTP_SERVICE_CONFIG_ID.HttpServiceConfigSSLCertInfo,
@@ -514,8 +487,7 @@ namespace Opc.Ua.Configuration
                         size,
                         IntPtr.Zero);
 
-                    if (error != HttpError.NO_ERROR)
-                    {
+                    if (error != HttpError.NO_ERROR) {
                         throw ServiceResultException.Create(
                             StatusCodes.BadUnexpectedError,
                             "Could not delete existing SSL certificate binding.\r\nError={0}",
@@ -530,28 +502,22 @@ namespace Opc.Ua.Configuration
                         IntPtr.Zero);
                 }
 
-                if (error != HttpError.NO_ERROR)
-                {
+                if (error != HttpError.NO_ERROR) {
                     throw ServiceResultException.Create(
                         StatusCodes.BadUnexpectedError,
                         "Could not create SSL certificate binding.\r\nError={0}",
                         error);
                 }
-            }
-            finally
-            {
-                if (pConfigInfo != IntPtr.Zero)
-                {
+            } finally {
+                if (pConfigInfo != IntPtr.Zero) {
                     Marshal.FreeCoTaskMem(pConfigInfo);
                 }
 
-                if (pAddress != IntPtr.Zero)
-                {
+                if (pAddress != IntPtr.Zero) {
                     Marshal.FreeCoTaskMem(pAddress);
                 }
 
-                if (pThumprint != IntPtr.Zero)
-                {
+                if (pThumprint != IntPtr.Zero) {
                     Marshal.FreeCoTaskMem(pThumprint);
                 }
 
@@ -562,8 +528,7 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Deletes a new SSL certificate binding.
         /// </summary>
-        public static void DeleteSslCertificateBinding(IPAddress address, ushort port)
-        {
+        public static void DeleteSslCertificateBinding(IPAddress address, ushort port) {
             if (address == null) throw new ArgumentNullException("address");
 
             // initialize library.
@@ -572,8 +537,7 @@ namespace Opc.Ua.Configuration
                 HttpInitFlag.HTTP_INITIALIZE_CONFIG,
                 IntPtr.Zero);
 
-            if (error != HttpError.NO_ERROR)
-            {
+            if (error != HttpError.NO_ERROR) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadUnexpectedError,
                     "Could not initialize HTTP library.\r\nError={0}",
@@ -583,8 +547,7 @@ namespace Opc.Ua.Configuration
             IntPtr pAddress = IntPtr.Zero;
             IntPtr pConfigInfo = IntPtr.Zero;
 
-            try
-            {
+            try {
                 pAddress = ToIntPtr(address, port);
 
                 HTTP_SERVICE_CONFIG_SSL_SET configSslSet = new HTTP_SERVICE_CONFIG_SSL_SET();
@@ -601,23 +564,18 @@ namespace Opc.Ua.Configuration
                     size,
                     IntPtr.Zero);
 
-                if (error != HttpError.NO_ERROR)
-                {
+                if (error != HttpError.NO_ERROR) {
                     throw ServiceResultException.Create(
                         StatusCodes.BadUnexpectedError,
                         "Could not delete existing SSL certificate binding.\r\nError={0}",
                         error);
                 }
-            }
-            finally
-            {
-                if (pConfigInfo != IntPtr.Zero)
-                {
+            } finally {
+                if (pConfigInfo != IntPtr.Zero) {
                     Marshal.FreeCoTaskMem(pConfigInfo);
                 }
 
-                if (pAddress != IntPtr.Zero)
-                {
+                if (pAddress != IntPtr.Zero) {
                     Marshal.FreeCoTaskMem(pAddress);
                 }
 
@@ -626,20 +584,19 @@ namespace Opc.Ua.Configuration
         }
 
         #region Static Methods
+
         /// <summary>
         /// Gets the application access rules for the specified URL.
         /// </summary>
-        public static IList<HttpAccessRule> GetAccessRules(string url)
-        {  
+        public static IList<HttpAccessRule> GetAccessRules(string url) {
             List<HttpAccessRule> accessRules = new List<HttpAccessRule>();
-            
+
             HttpError error = NativeMethods.HttpInitialize(
                 new HTTPAPI_VERSION(1, 0),
                 HttpInitFlag.HTTP_INITIALIZE_CONFIG,
                 IntPtr.Zero);
 
-            if (error != HttpError.NO_ERROR)
-            {
+            if (error != HttpError.NO_ERROR) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadUnexpectedError,
                     "Could not initialize HTTP library.\r\nError={0}",
@@ -647,28 +604,25 @@ namespace Opc.Ua.Configuration
             }
 
             HTTP_SERVICE_CONFIG_URLACL_QUERY query = new HTTP_SERVICE_CONFIG_URLACL_QUERY();
-                        
+
             query.QueryDesc = HTTP_SERVICE_CONFIG_QUERY_TYPE.HttpServiceConfigQueryNext;
 
-            if (!String.IsNullOrEmpty(url))
-            {
+            if (!String.IsNullOrEmpty(url)) {
                 query.QueryDesc = HTTP_SERVICE_CONFIG_QUERY_TYPE.HttpServiceConfigQueryExact;
                 query.KeyDesc.pUrlPrefix = url;
             }
-            
+
             IntPtr pInput = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(HTTP_SERVICE_CONFIG_URLACL_QUERY)));
             NativeMethods.ZeroMemory(pInput, Marshal.SizeOf(typeof(HTTP_SERVICE_CONFIG_URLACL_QUERY)));
 
             IntPtr pOutput = IntPtr.Zero;
 
-            try
-            {
-                for (query.dwToken = 0; error == HttpError.NO_ERROR; query.dwToken++)
-                {                    
+            try {
+                for (query.dwToken = 0; error == HttpError.NO_ERROR; query.dwToken++) {
                     Marshal.StructureToPtr(query, pInput, true);
 
                     int requiredBufferLength = 0;
-                                        
+
                     error = NativeMethods.HttpQueryServiceConfiguration(
                         IntPtr.Zero,
                         HTTP_SERVICE_CONFIG_ID.HttpServiceConfigUrlAclInfo,
@@ -678,22 +632,18 @@ namespace Opc.Ua.Configuration
                         requiredBufferLength,
                         out requiredBufferLength,
                         IntPtr.Zero);
-                    
-                    if (error == HttpError.ERROR_NO_MORE_ITEMS)
-                    {
+
+                    if (error == HttpError.ERROR_NO_MORE_ITEMS) {
                         break;
                     }
-                    
-                    if (!String.IsNullOrEmpty(url))
-                    {
-                        if (error == HttpError.ERROR_FILE_NOT_FOUND)
-                        {
+
+                    if (!String.IsNullOrEmpty(url)) {
+                        if (error == HttpError.ERROR_FILE_NOT_FOUND) {
                             break;
                         }
                     }
 
-                    if (error != HttpError.ERROR_INSUFFICIENT_BUFFER)
-                    {
+                    if (error != HttpError.ERROR_INSUFFICIENT_BUFFER) {
                         throw ServiceResultException.Create(
                             StatusCodes.BadUnexpectedError,
                             "Could not read access rules for HTTP url.\r\nError={1}, Url={0}",
@@ -713,64 +663,56 @@ namespace Opc.Ua.Configuration
                         requiredBufferLength,
                         out requiredBufferLength,
                         IntPtr.Zero);
-                    
-                    if (error != HttpError.NO_ERROR)
-                    {
+
+                    if (error != HttpError.NO_ERROR) {
                         throw ServiceResultException.Create(
                             StatusCodes.BadUnexpectedError,
                             "Could not read access rules for HTTP url.\r\nError={1}, Url={0}",
                             url,
                             error);
                     }
-                    
-                    HTTP_SERVICE_CONFIG_URLACL_SET result =  (HTTP_SERVICE_CONFIG_URLACL_SET)Marshal.PtrToStructure(
-                        pOutput, 
+
+                    HTTP_SERVICE_CONFIG_URLACL_SET result = (HTTP_SERVICE_CONFIG_URLACL_SET) Marshal.PtrToStructure(
+                        pOutput,
                         typeof(HTTP_SERVICE_CONFIG_URLACL_SET));
-                    
+
                     // parse the SDDL and update the access list.
                     ParseSddl(result.KeyDesc.pUrlPrefix, result.ParamDesc.pStringSecurityDescriptor, accessRules);
-                    
+
                     Marshal.FreeHGlobal(pOutput);
                     pOutput = IntPtr.Zero;
 
                     // all done if requesting the results for a single url.
-                    if (!String.IsNullOrEmpty(url))
-                    {
+                    if (!String.IsNullOrEmpty(url)) {
                         break;
                     }
                 }
-            }
-            finally
-            {
-                if (pInput != IntPtr.Zero)
-                {
+            } finally {
+                if (pInput != IntPtr.Zero) {
                     Marshal.DestroyStructure(pInput, typeof(HTTP_SERVICE_CONFIG_URLACL_QUERY));
                     Marshal.FreeHGlobal(pInput);
                 }
 
-                if (pOutput != IntPtr.Zero)
-                {
+                if (pOutput != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pOutput);
                 }
 
                 NativeMethods.HttpTerminate(HttpInitFlag.HTTP_INITIALIZE_CONFIG, IntPtr.Zero);
-            }            
+            }
 
             return accessRules;
         }
-        
+
         /// <summary>
         /// Sets the application access rules for the specified URL. 
         /// </summary>
-        public static void SetAccessRules(string url, IList<HttpAccessRule> rules, bool replaceExisting)
-        {
+        public static void SetAccessRules(string url, IList<HttpAccessRule> rules, bool replaceExisting) {
             HttpError error = NativeMethods.HttpInitialize(
                 new HTTPAPI_VERSION(1, 0),
                 HttpInitFlag.HTTP_INITIALIZE_CONFIG,
                 IntPtr.Zero);
 
-            if (error != HttpError.NO_ERROR)
-            {
+            if (error != HttpError.NO_ERROR) {
                 throw ServiceResultException.Create(
                     StatusCodes.BadUnexpectedError,
                     "Could not initialize HTTP library.\r\nError={0}",
@@ -778,12 +720,10 @@ namespace Opc.Ua.Configuration
             }
 
             // fetch existing rules if not replacing them.
-            if (!replaceExisting)
-            {
+            if (!replaceExisting) {
                 IList<HttpAccessRule> existingRules = GetAccessRules(url);
 
-                if (existingRules.Count > 0)
-                {                
+                if (existingRules.Count > 0) {
                     List<HttpAccessRule> mergedRules = new List<HttpAccessRule>(existingRules);
                     mergedRules.AddRange(rules);
                     rules = mergedRules;
@@ -794,12 +734,11 @@ namespace Opc.Ua.Configuration
 
             update.KeyDesc.pUrlPrefix = url;
             update.ParamDesc.pStringSecurityDescriptor = FormatSddl(rules);
-            
+
             IntPtr pStruct = IntPtr.Zero;
             int updateSize = Marshal.SizeOf(typeof(HTTP_SERVICE_CONFIG_URLACL_SET));
 
-            try
-            {
+            try {
                 pStruct = Marshal.AllocHGlobal(updateSize);
                 NativeMethods.ZeroMemory(pStruct, updateSize);
 
@@ -811,18 +750,16 @@ namespace Opc.Ua.Configuration
                     pStruct,
                     updateSize,
                     IntPtr.Zero);
-                       
-                if (error != HttpError.ERROR_FILE_NOT_FOUND && error != HttpError.NO_ERROR)
-                {
+
+                if (error != HttpError.ERROR_FILE_NOT_FOUND && error != HttpError.NO_ERROR) {
                     throw ServiceResultException.Create(
                         StatusCodes.BadUnexpectedError,
                         "Could not delete existing access rules for HTTP url.\r\nError={1}, Url={0}",
                         url,
                         error);
                 }
-                
-                if (rules.Count > 0)
-                {
+
+                if (rules.Count > 0) {
                     error = NativeMethods.HttpSetServiceConfiguration(
                         IntPtr.Zero,
                         HTTP_SERVICE_CONFIG_ID.HttpServiceConfigUrlAclInfo,
@@ -830,20 +767,16 @@ namespace Opc.Ua.Configuration
                         updateSize,
                         IntPtr.Zero);
 
-                    if (error != HttpError.NO_ERROR)
-                    {
+                    if (error != HttpError.NO_ERROR) {
                         throw ServiceResultException.Create(
                             StatusCodes.BadUnexpectedError,
                             "Could not set the access rules for HTTP url.\r\nError={1}, Url={0}",
                             url,
                             error);
-                    }        
+                    }
                 }
-            }
-            finally
-            {
-                if (pStruct != IntPtr.Zero)
-                {
+            } finally {
+                if (pStruct != IntPtr.Zero) {
                     Marshal.DestroyStructure(pStruct, typeof(HTTP_SERVICE_CONFIG_URLACL_SET));
                     Marshal.FreeHGlobal(pStruct);
                 }
@@ -851,12 +784,11 @@ namespace Opc.Ua.Configuration
                 NativeMethods.HttpTerminate(HttpInitFlag.HTTP_INITIALIZE_CONFIG, IntPtr.Zero);
             }
         }
-        
+
         /// <summary>
         /// Sets the application access rules for the specified URL (replaces the hostname with a wildcard). 
         /// </summary>
-        public static void SetAccessRules(Uri url, IList<ApplicationAccessRule> accessRules, bool replaceExisting)
-        {
+        public static void SetAccessRules(Uri url, IList<ApplicationAccessRule> accessRules, bool replaceExisting) {
             StringBuilder wildcard = new StringBuilder();
 
             wildcard.Append(url.Scheme);
@@ -866,29 +798,25 @@ namespace Opc.Ua.Configuration
 
             List<HttpAccessRule> httpRules = new List<HttpAccessRule>();
 
-            foreach (ApplicationAccessRule accessRule in accessRules)
-            {
+            foreach (ApplicationAccessRule accessRule in accessRules) {
                 // urls do not support deny rules.
-                if (accessRule.RuleType == AccessControlType.Deny)
-                {
+                if (accessRule.RuleType == AccessControlType.Deny) {
                     continue;
                 }
-                
+
                 string identityName = accessRule.IdentityName;
 
-                if (accessRule.IdentityName.StartsWith("S-"))
-                {
-                    identityName = ApplicationAccessRule.SidToAccountName(accessRule.IdentityName); 
+                if (accessRule.IdentityName.StartsWith("S-")) {
+                    identityName = ApplicationAccessRule.SidToAccountName(accessRule.IdentityName);
 
-                    if (identityName == null)
-                    {
+                    if (identityName == null) {
                         Utils.Trace("Could not translate SID: {0}", accessRule.IdentityName);
                         continue;
                     }
                 }
 
                 HttpAccessRule httpRule = new HttpAccessRule();
-                
+
                 httpRule.Right = accessRule.Right;
                 httpRule.IdentityName = identityName;
 
@@ -897,53 +825,47 @@ namespace Opc.Ua.Configuration
 
             SetAccessRules(wildcard.ToString(), httpRules, replaceExisting);
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Extracts the access rules from the SDDL string.
         /// </summary>
-        private static void ParseSddl(string url, string sddl, List<HttpAccessRule> accessRules)
-        {
+        private static void ParseSddl(string url, string sddl, List<HttpAccessRule> accessRules) {
             IList<AccessControlEntity> entities = AccessControlEntity.Parse(sddl);
 
-            for (int ii = 0; ii < entities.Count; ii++)
-            {
+            for (int ii = 0; ii < entities.Count; ii++) {
                 AccessControlEntity entity = entities[ii];
 
-                if (entity.AccessType != "A")
-                {
+                if (entity.AccessType != "A") {
                     continue;
                 }
 
                 ApplicationAccessRight rights = ApplicationAccessRight.None;
 
-                switch (entity.Rights)
-                {
-                    case "GA":                 
-                    case "GXGW":             
-                    case "GWGX":
-                    {
+                switch (entity.Rights) {
+                    case "GA":
+                    case "GXGW":
+                    case "GWGX": {
                         rights = ApplicationAccessRight.Configure;
                         break;
                     }
-                   
-                    case "GX":  
-                    {
+
+                    case "GX": {
                         rights = ApplicationAccessRight.Run;
                         break;
                     }
                 }
-                
-                if (rights == ApplicationAccessRight.None)
-                {
+
+                if (rights == ApplicationAccessRight.None) {
                     continue;
                 }
 
                 string accountName = ApplicationAccessRule.SidToAccountName(entity.AccountSid);
 
-                if (String.IsNullOrEmpty(accountName))
-                {
+                if (String.IsNullOrEmpty(accountName)) {
                     continue;
                 }
 
@@ -956,141 +878,130 @@ namespace Opc.Ua.Configuration
                 accessRules.Add(rule);
             }
         }
-        
+
         /// <summary>
         /// Extracts the access rules from the SDDL string.
         /// </summary>
-        private static string FormatSddl(IList<HttpAccessRule> accessRules)
-        {
+        private static string FormatSddl(IList<HttpAccessRule> accessRules) {
             StringBuilder builder = new StringBuilder();
             builder.Append("D:");
 
-            for (int ii = 0; ii < accessRules.Count; ii++)
-            {
-                builder.Append("(");  // start of ACE
+            for (int ii = 0; ii < accessRules.Count; ii++) {
+                builder.Append("("); // start of ACE
                 builder.Append("A;"); // access type
-                builder.Append(";");  // flags
+                builder.Append(";"); // flags
 
-                switch (accessRules[ii].Right)
-                {
-                    case ApplicationAccessRight.Configure:
-                    {
-                        builder.Append("GXGW;");  // rights
+                switch (accessRules[ii].Right) {
+                    case ApplicationAccessRight.Configure: {
+                        builder.Append("GXGW;"); // rights
                         break;
                     }
-                        
+
                     case ApplicationAccessRight.Run:
-                    case ApplicationAccessRight.Update:
-                    {
-                        builder.Append("GX;");  // rights
+                    case ApplicationAccessRight.Update: {
+                        builder.Append("GX;"); // rights
                         break;
                     }
                 }
-                
+
                 builder.Append(";"); // object guid
                 builder.Append(";"); // inherited object guid
-                
-                string sid = ApplicationAccessRule.AccountNameToSid(accessRules[ii].IdentityName); 
-                builder.Append(sid);                
+
+                string sid = ApplicationAccessRule.AccountNameToSid(accessRules[ii].IdentityName);
+                builder.Append(sid);
 
                 builder.Append(')'); // end of ace.
             }
 
             return builder.ToString();
         }
+
         #endregion
 
         #region Private Fields
+
         private string m_urlPrefix;
         private ApplicationAccessRight m_right;
         private string m_identityName;
+
         #endregion
     }
 
     #region AccessControlEntity Class
+
     /// <summary>
     /// A class that stores the components of ACE within a DACL.
     /// </summary>
-    public class AccessControlEntity
-    {
+    public class AccessControlEntity {
         /// <summary>
         /// The access type granted by the ACE.
         /// </summary>
-        public string AccessType
-        {
-            get { return m_accessType;  }
+        public string AccessType {
+            get { return m_accessType; }
             set { m_accessType = value; }
         }
-        
+
         /// <summary>
         /// Any flags associated with the ACE.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags")]
-        public string Flags
-        {
-            get { return m_flags;  }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId =
+            "Flags")]
+        public string Flags {
+            get { return m_flags; }
             set { m_flags = value; }
         }
-        
+
         /// <summary>
         /// The rights allowed/restricted by the ACE.
         /// </summary>
-        public string Rights
-        {
-            get { return m_rights;  }
+        public string Rights {
+            get { return m_rights; }
             set { m_rights = value; }
         }
-        
+
         /// <summary>
         /// The object associated with the ACE.
         /// </summary>
-        public string ObjectGuid
-        {
-            get { return m_objectGuid;  }
+        public string ObjectGuid {
+            get { return m_objectGuid; }
             set { m_objectGuid = value; }
         }
-        
+
         /// <summary>
         /// The inherited object associated with the ACE.
         /// </summary>
-        public string InheritObjectGuid
-        {
-            get { return m_inheritObjectGuid;  }
+        public string InheritObjectGuid {
+            get { return m_inheritObjectGuid; }
             set { m_inheritObjectGuid = value; }
         }
-        
+
         /// <summary>
         /// The SID for the account which is affected by the ACE.
         /// </summary>
-        public string AccountSid
-        {
-            get { return m_accountSid;  }
+        public string AccountSid {
+            get { return m_accountSid; }
             set { m_accountSid = value; }
-        }        
-        
+        }
+
         /// <summary>
         /// Extracts a list of ACEs from a SDDL string.
         /// </summary>
-        public static IList<AccessControlEntity> Parse(string sddl)
-        {
+        public static IList<AccessControlEntity> Parse(string sddl) {
             List<AccessControlEntity> entities = new List<AccessControlEntity>();
 
-            if (!sddl.StartsWith("D:", StringComparison.Ordinal))
-            {
+            if (!sddl.StartsWith("D:", StringComparison.Ordinal)) {
                 throw new ArgumentException(Utils.Format("Could not parse SDDL string: {0}", sddl));
             }
 
-            sddl = sddl.Substring(2, sddl.Length-2);
+            sddl = sddl.Substring(2, sddl.Length - 2);
 
             string[] aces = sddl.Split('(', ')');
 
-            for (int ii = 0; ii < aces.Length; ii++)
-            {
-                if (String.IsNullOrEmpty(aces[ii]))
-                {
+            for (int ii = 0; ii < aces.Length; ii++) {
+                if (String.IsNullOrEmpty(aces[ii])) {
                     continue;
                 }
-                
+
                 AccessControlEntity entity = new AccessControlEntity();
                 entity.Initialize(aces[ii]);
                 entities.Add(entity);
@@ -1102,15 +1013,13 @@ namespace Opc.Ua.Configuration
         /// <summary>
         /// Extracts a single ACE from a SDDL string fragment.
         /// </summary>
-        public void Initialize(string sddl)
-        {
+        public void Initialize(string sddl) {
             string[] fields = sddl.Split(';');
 
-            if (fields.Length != 6)
-            {
+            if (fields.Length != 6) {
                 throw new ArgumentException(Utils.Format("Could not parse SDDL ACE string: {0}", sddl));
             }
-            
+
             m_accessType = fields[0];
             m_flags = fields[1];
             m_rights = fields[2];
@@ -1126,14 +1035,15 @@ namespace Opc.Ua.Configuration
         private string m_inheritObjectGuid;
         private string m_accountSid;
     }
+
     #endregion
 
     #region SslCertificateBinding Class
+
     /// <summary>
     /// Stores the details of an SSL certification configuration binding.
     /// </summary>
-    public class SslCertificateBinding
-    {
+    public class SslCertificateBinding {
         /// <summary>
         /// The IP Address.
         /// </summary>
@@ -1189,5 +1099,6 @@ namespace Opc.Ua.Configuration
         /// </summary>
         public uint DefaultFlags { get; set; }
     }
+
     #endregion
 }

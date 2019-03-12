@@ -31,17 +31,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-
 using Opc.Ua.Client;
 
-namespace Opc.Ua.ServerTest
-{    
+namespace Opc.Ua.ServerTest {
     /// <summary>
     /// Browses all of the nodes in the hierarchies.
     /// </summary>
-    internal class SubscribeTest : TestBase
-    {
+    internal class SubscribeTest : TestBase {
         #region Constructors
+
         /// <summary>
         /// Creates the test object.
         /// </summary>
@@ -51,9 +49,8 @@ namespace Opc.Ua.ServerTest
             ReportMessageEventHandler reportMessage,
             ReportProgressEventHandler reportProgress,
             TestBase template)
-        : 
-            base("Subscribe", session, configuration, reportMessage, reportProgress, template)
-        {
+            :
+            base("Subscribe", session, configuration, reportMessage, reportProgress, template) {
             m_subscriptions = new List<Subscription>();
             m_errorEvent = new ManualResetEvent(false);
             m_acknowledgements = new SubscriptionAcknowledgementCollection();
@@ -61,37 +58,33 @@ namespace Opc.Ua.ServerTest
             m_idealTimingError = 400;
             m_maximumTimingError = 500;
         }
+
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Runs the test
         /// </summary>
-        public override bool Run(ServerTestCase testcase, int iteration)
-        {
+        public override bool Run(ServerTestCase testcase, int iteration) {
             Iteration = iteration;
 
             // do secondary test.
-            switch (testcase.Name)
-            {
-                case "PublishingInterval":
-                {
-                    if (!DoPublishingIntervalTest())
-                    {
-                        Log("WARNING: Re-doing PublishingInterval test to check if random timing glitches were the cause of failure.");
+            switch (testcase.Name) {
+                case "PublishingInterval": {
+                    if (!DoPublishingIntervalTest()) {
+                        Log(
+                            "WARNING: Re-doing PublishingInterval test to check if random timing glitches were the cause of failure.");
                         return DoPublishingIntervalTest();
                     }
 
                     return true;
                 }
 
-                case "CreateItems":
-                {
+                case "CreateItems": {
                     // need fetch nodes used for the test if not already available.
-                    if (AvailableNodes.Count == 0)
-                    {
-                        if (!GetNodesInHierarchy())
-                        {
+                    if (AvailableNodes.Count == 0) {
+                        if (!GetNodesInHierarchy()) {
                             return false;
                         }
                     }
@@ -99,58 +92,55 @@ namespace Opc.Ua.ServerTest
                     return DoCreateItemsTest();
                 }
 
-                default:
-                {
-                    if (!DoKeepAliveTest())
-                    {
-                        Log("WARNING: Re-doing KeepAlive test to check if random timing glitches were the cause of failure.");
+                default: {
+                    if (!DoKeepAliveTest()) {
+                        Log(
+                            "WARNING: Re-doing KeepAlive test to check if random timing glitches were the cause of failure.");
                         return DoKeepAliveTest();
                     }
 
                     return true;
                 }
             }
-        }        
+        }
+
         #endregion
-        
+
         #region Test Methods
+
         /// <summary>
         /// Reads an verifies all of the nodes.
         /// </summary>
-        private bool DoKeepAliveTest()
-        {
+        private bool DoKeepAliveTest() {
             // follow tree from each starting node.
             bool success = true;
-                     
-            Log("Starting KeepAliveTest. PipelineDepth = {0}, OutstandingRequests = {1}", m_publishPipelineDepth, m_outstandingPublishRequests);
-            
-            double increment = MaxProgress/8;
-            double position  = 0;
+
+            Log("Starting KeepAliveTest. PipelineDepth = {0}, OutstandingRequests = {1}", m_publishPipelineDepth,
+                m_outstandingPublishRequests);
+
+            double increment = MaxProgress / 8;
+            double position = 0;
             ReportProgress(position);
 
             // create subscription.
             Interlocked.Exchange(ref m_publishCount, 0);
             Interlocked.Exchange(ref m_stopped, 0);
-                        
-            for (int ii = 1000; ii <= 10000; ii += 1000)
-            {
-                try
-                {
+
+            for (int ii = 1000; ii <= 10000; ii += 1000) {
+                try {
                     CreateSubscription(
                         ii,
-                        (uint)(60000/ii),
+                        (uint) (60000 / ii),
                         2,
                         0,
                         true,
                         0);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     success = false;
                     Log(e, "KeepAliveTest Failed while creating subsciptions.");
                 }
             }
-            
+
             position += increment;
             ReportProgress(position);
             Log("Created {0} subscriptions.", m_subscriptions.Count);
@@ -159,33 +149,29 @@ namespace Opc.Ua.ServerTest
 
             bool publishingEnabled = true;
 
-            for (int ii = 0; ii < 6; ii++)
-            {
-                if (m_errorEvent.WaitOne(5000, false))
-                {
+            for (int ii = 0; ii < 6; ii++) {
+                if (m_errorEvent.WaitOne(5000, false)) {
                     success = false;
                     Log("KeepAliveTest exiting because of an error during publishing.", null);
                     break;
                 }
 
                 Log("{0} publish responses received. Publishing Enabled = {1}", m_publishCount, publishingEnabled);
-                
+
                 // toggle publishing enabled.
                 publishingEnabled = !publishingEnabled;
 
-                if (!SetPublishingEnabled(publishingEnabled))
-                {
+                if (!SetPublishingEnabled(publishingEnabled)) {
                     success = false;
                     break;
                 }
-                
+
                 position += increment;
                 ReportProgress(position);
             }
 
             // delete.
-            if (!DeleteSubscriptions())
-            {
+            if (!DeleteSubscriptions()) {
                 success = false;
             }
 
@@ -194,18 +180,13 @@ namespace Opc.Ua.ServerTest
             Log("Deleted subscriptions.");
 
             // verify test results.
-            lock (m_subscriptions)
-            {
-                if (success)
-                {
-                    for (int ii = 0; ii < m_subscriptions.Count; ii++)
-                    {
+            lock (m_subscriptions) {
+                if (success) {
+                    for (int ii = 0; ii < m_subscriptions.Count; ii++) {
                         Subscription subscription = m_subscriptions[ii];
 
-                        lock (subscription)
-                        {
-                            if (!VerifyKeepAliveTestResults(subscription))
-                            {
+                        lock (subscription) {
+                            if (!VerifyKeepAliveTestResults(subscription)) {
                                 success = false;
                             }
                         }
@@ -220,44 +201,40 @@ namespace Opc.Ua.ServerTest
 
             return success;
         }
-        
+
         /// <summary>
         /// Reads an verifies all of the nodes.
         /// </summary>
-        private bool DoPublishingIntervalTest()
-        {
+        private bool DoPublishingIntervalTest() {
             // follow tree from each starting node.
             bool success = true;
-                     
-            Log("Starting PublishingIntervalTest. PipelineDepth = {0}, OutstandingRequests = {1}", m_publishPipelineDepth, m_outstandingPublishRequests);
-            
-            double increment = MaxProgress/6;
-            double position  = 0;
+
+            Log("Starting PublishingIntervalTest. PipelineDepth = {0}, OutstandingRequests = {1}",
+                m_publishPipelineDepth, m_outstandingPublishRequests);
+
+            double increment = MaxProgress / 6;
+            double position = 0;
             ReportProgress(position);
 
             // create subscription.
             Interlocked.Exchange(ref m_publishCount, 0);
             Interlocked.Exchange(ref m_stopped, 0);
-                        
-            for (int ii = 0; ii < 10; ii++)
-            {
-                try
-                {
+
+            for (int ii = 0; ii < 10; ii++) {
+                try {
                     CreateSubscription(
                         1000,
                         60,
-                        (uint)(ii%6)+2,
+                        (uint) (ii % 6) + 2,
                         0,
                         true,
                         0);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     success = false;
                     Log(e, "KeepAliveTest Failed while creating subsciptions.");
                 }
             }
-            
+
             position += increment;
             ReportProgress(position);
             Log("Created {0} subscriptions.", m_subscriptions.Count);
@@ -266,42 +243,36 @@ namespace Opc.Ua.ServerTest
 
             double publishingInterval = 1000;
 
-            for (int ii = 0; ii < 3; ii++)
-            {
-                if (m_errorEvent.WaitOne(10000, false))
-                {
+            for (int ii = 0; ii < 3; ii++) {
+                if (m_errorEvent.WaitOne(10000, false)) {
                     success = false;
                     Log("KeepAliveTest exiting because of an error during publishing.", null);
                     break;
                 }
 
                 Log("{0} publish responses received. Publishing Interval = {1}", m_publishCount, publishingInterval);
-                
+
                 // change publishing interval.
-                publishingInterval = (publishingInterval == 1000)?2000:1000;
-                
+                publishingInterval = (publishingInterval == 1000) ? 2000 : 1000;
+
                 List<Subscription> subscriptions = new List<Subscription>();
 
-                lock (m_subscriptions)
-                {
+                lock (m_subscriptions) {
                     subscriptions = new List<Subscription>(m_subscriptions);
                 }
 
-                for (int jj = 0; jj < subscriptions.Count; jj++)
-                {
-                    if (!ModifySubscription(subscriptions[jj], publishingInterval))
-                    {
+                for (int jj = 0; jj < subscriptions.Count; jj++) {
+                    if (!ModifySubscription(subscriptions[jj], publishingInterval)) {
                         success = false;
                     }
                 }
-            
+
                 position += increment;
                 ReportProgress(position);
             }
 
             // delete.
-            if (!DeleteSubscriptions())
-            {
+            if (!DeleteSubscriptions()) {
                 success = false;
             }
 
@@ -310,18 +281,13 @@ namespace Opc.Ua.ServerTest
             Log("Deleted subscriptions.");
 
             // verify test results.
-            lock (m_subscriptions)
-            {
-                if (success)
-                {
-                    for (int ii = 0; ii < m_subscriptions.Count; ii++)
-                    {
+            lock (m_subscriptions) {
+                if (success) {
+                    for (int ii = 0; ii < m_subscriptions.Count; ii++) {
                         Subscription subscription = m_subscriptions[ii];
 
-                        lock (subscription)
-                        {
-                            if (!VerifyKeepAliveTestResults(subscription))
-                            {
+                        lock (subscription) {
+                            if (!VerifyKeepAliveTestResults(subscription)) {
                                 success = false;
                             }
                         }
@@ -340,15 +306,17 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Creates subscription, adds items and verifies that the initial update arrives.
         /// </summary>
-        private bool DoCreateItemsTest()
-        {
+        private bool DoCreateItemsTest() {
             // follow tree from each starting node.
             bool success = true;
-                     
-            double increment = MaxProgress/AvailableNodes.Count;
-            double position  = 0;
 
-            Log("Starting CreateItemsTest for {0} Nodes ({1}% Coverage). PipelineDepth = {2}, OutstandingRequests = {3}", AvailableNodes.Values.Count, Configuration.Coverage, m_publishPipelineDepth, m_outstandingPublishRequests);
+            double increment = MaxProgress / AvailableNodes.Count;
+            double position = 0;
+
+            Log(
+                "Starting CreateItemsTest for {0} Nodes ({1}% Coverage). PipelineDepth = {2}, OutstandingRequests = {3}",
+                AvailableNodes.Values.Count, Configuration.Coverage, m_publishPipelineDepth,
+                m_outstandingPublishRequests);
 
             // create subscription.
             Interlocked.Exchange(ref m_publishCount, 0);
@@ -356,42 +324,36 @@ namespace Opc.Ua.ServerTest
 
             m_errorEvent.Reset();
 
-            if (!CreateSubscription(1000, 100, 10, 0, true, 0))
-            {
+            if (!CreateSubscription(1000, 100, 10, 0, true, 0)) {
                 return false;
             }
 
             uint[] attributeIds = Attributes.GetIdentifiers();
-            
+
             int nodes = 0;
             int operations = 0;
-            
+
             MonitoredItemCreateRequestCollection itemsToCreate = new MonitoredItemCreateRequestCollection();
 
             int counter = 0;
 
-            foreach (Node node in AvailableNodes.Values)
-            {         
-                if (!CheckCoverage(ref counter))
-                {
+            foreach (Node node in AvailableNodes.Values) {
+                if (!CheckCoverage(ref counter)) {
                     continue;
                 }
-                         
+
                 nodes++;
 
                 AddMonitoredItems(node, itemsToCreate, attributeIds);
 
                 // process batch.
-                if (itemsToCreate.Count > BlockSize)
-                {
+                if (itemsToCreate.Count > BlockSize) {
                     operations += itemsToCreate.Count;
 
-                    if (!Subscribe(m_subscriptions[0], itemsToCreate))
-                    {
+                    if (!Subscribe(m_subscriptions[0], itemsToCreate)) {
                         Log("WARNING: CreateItemsTest failed. Trying it again do check for random timing errors.");
 
-                        if (!Subscribe(m_subscriptions[0], itemsToCreate))
-                        {
+                        if (!Subscribe(m_subscriptions[0], itemsToCreate)) {
                             success = false;
                             break;
                         }
@@ -399,8 +361,7 @@ namespace Opc.Ua.ServerTest
 
                     itemsToCreate.Clear();
 
-                    if (nodes > AvailableNodes.Count/5)
-                    {
+                    if (nodes > AvailableNodes.Count / 5) {
                         Log("Subscribed to {0} attribute values for {1} nodes.", operations, nodes);
                         nodes = 0;
                         operations = 0;
@@ -409,61 +370,51 @@ namespace Opc.Ua.ServerTest
 
                 position += increment;
                 ReportProgress(position);
-            }   
-         
+            }
+
             // process final batch.
-            if (success)
-            {
-                if (itemsToCreate.Count > 0)
-                {
+            if (success) {
+                if (itemsToCreate.Count > 0) {
                     operations += itemsToCreate.Count;
 
-                    if (!Subscribe(m_subscriptions[0], itemsToCreate))
-                    {
+                    if (!Subscribe(m_subscriptions[0], itemsToCreate)) {
                         Log("WARNING: CreateItemsTest failed. Trying it again do check for random timing errors.");
 
-                        if (!Subscribe(m_subscriptions[0], itemsToCreate))
-                        {
+                        if (!Subscribe(m_subscriptions[0], itemsToCreate)) {
                             success = false;
                         }
                     }
 
-                    if (success)
-                    {
+                    if (success) {
                         Log("Subscribed to {0} attribute values for {1} nodes.", operations, nodes);
                     }
                 }
             }
 
             // delete subscriptions.
-            if (!DeleteSubscriptions())
-            {
+            if (!DeleteSubscriptions()) {
                 success = false;
             }
 
             Interlocked.CompareExchange(ref m_stopped, 1, 0);
             Log("Deleted subscriptions.");
 
-            lock (m_subscriptions)
-            {
+            lock (m_subscriptions) {
                 m_subscriptions.Clear();
             }
 
             return success;
         }
-        
+
         /// <summary>
         /// Adds the MonitoredItems to the request collection.
         /// </summary>
         private void AddMonitoredItems(
-            Node node, 
-            MonitoredItemCreateRequestCollection itemsToCreate, 
-            params uint[] attributeIds)
-        {
-            if (attributeIds != null)
-            {
-                for (int ii = 0; ii < attributeIds.Length; ii++)
-                {
+            Node node,
+            MonitoredItemCreateRequestCollection itemsToCreate,
+            params uint[] attributeIds) {
+            if (attributeIds != null) {
+                for (int ii = 0; ii < attributeIds.Length; ii++) {
                     MonitoredItemCreateRequest request = new MonitoredItemCreateRequest();
 
                     request.ItemToMonitor.NodeId = node.NodeId;
@@ -484,118 +435,93 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Adds the items to subscription. Verifies the initial update.
         /// </summary>
-        private bool Subscribe(Subscription subscription, MonitoredItemCreateRequestCollection itemsToCreate)
-        {
+        private bool Subscribe(Subscription subscription, MonitoredItemCreateRequestCollection itemsToCreate) {
             bool success = true;
 
-            try
-            {
+            try {
                 List<MonitoredItem> monitoredItems = new List<MonitoredItem>();
 
-                if (!CreateMonitoredItems(subscription, itemsToCreate, monitoredItems))
-                {
+                if (!CreateMonitoredItems(subscription, itemsToCreate, monitoredItems)) {
                     success = false;
                 }
 
-                if (success)
-                {
-                    if (!WaitForUpdates(subscription, monitoredItems, false))
-                    {
+                if (success) {
+                    if (!WaitForUpdates(subscription, monitoredItems, false)) {
                         success = false;
                     }
                 }
 
-                if (success)
-                {
-                    if (!ToogleDisabledState(subscription, monitoredItems))
-                    {
-                        success = false;
-                    }
-                }
-                
-                if (success)
-                {
-                    if (!WaitForUpdates(subscription, monitoredItems, true))
-                    {
+                if (success) {
+                    if (!ToogleDisabledState(subscription, monitoredItems)) {
                         success = false;
                     }
                 }
 
-                if (!DeleteMonitoredItems(subscription, monitoredItems))
-                {
+                if (success) {
+                    if (!WaitForUpdates(subscription, monitoredItems, true)) {
+                        success = false;
+                    }
+                }
+
+                if (!DeleteMonitoredItems(subscription, monitoredItems)) {
                     success = false;
                 }
 
-                lock (subscription)
-                {
+                lock (subscription) {
                     subscription.NotificationMessages.Clear();
                     subscription.ReceiveTimes.Clear();
                 }
 
                 return success;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log(e, "Error during subscribe test.");
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Waits for updates.
         /// </summary>
-        private bool WaitForUpdates(Subscription subscription, List<MonitoredItem> monitoredItems, bool afterDisable)
-        {
+        private bool WaitForUpdates(Subscription subscription, List<MonitoredItem> monitoredItems, bool afterDisable) {
             bool success = true;
 
-            DateTime deadline = DateTime.UtcNow.AddMilliseconds((double)(subscription.PublishingInterval*3 + m_maximumTimingError));
-            
-            do
-            {
-                int count = 0; 
+            DateTime deadline =
+                DateTime.UtcNow.AddMilliseconds((double) (subscription.PublishingInterval * 3 + m_maximumTimingError));
 
-                lock (subscription)
-                {
-                    for (int ii = 0; ii < subscription.NotificationMessages.Count; ii++)
-                    {
-                        for (int jj = 0; jj < subscription.NotificationMessages[ii].NotificationData.Count; jj++)
-                        {
+            do {
+                int count = 0;
+
+                lock (subscription) {
+                    for (int ii = 0; ii < subscription.NotificationMessages.Count; ii++) {
+                        for (int jj = 0; jj < subscription.NotificationMessages[ii].NotificationData.Count; jj++) {
                             ExtensionObject extension = subscription.NotificationMessages[ii].NotificationData[jj];
                             DataChangeNotification notification = extension.Body as DataChangeNotification;
-                                            
-                            if (notification != null)
-                            {
+
+                            if (notification != null) {
                                 count += notification.MonitoredItems.Count;
                             }
                         }
                     }
                 }
 
-                if (count == monitoredItems.Count)
-                {
+                if (count == monitoredItems.Count) {
                     break;
                 }
 
-                if (m_errorEvent.WaitOne(100, false))
-                {
+                if (m_errorEvent.WaitOne(100, false)) {
                     success = false;
                     break;
                 }
 
-                if (subscription.Failed)
-                {
+                if (subscription.Failed) {
                     success = false;
                     break;
                 }
-            }
-            while(deadline > DateTime.UtcNow);
+            } while (deadline > DateTime.UtcNow);
 
-            if (success)
-            {
-                lock (subscription)
-                {
-                    if (!VerifyInitialDataChange(subscription, monitoredItems, afterDisable))
-                    {
+            if (success) {
+                lock (subscription) {
+                    if (!VerifyInitialDataChange(subscription, monitoredItems, afterDisable)) {
                         success = false;
                     }
                 }
@@ -607,17 +533,14 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Toggles the monitoring mode for the items.
         /// </summary>
-        private bool ToogleDisabledState(Subscription subscription, List<MonitoredItem> monitoredItems)
-        {
+        private bool ToogleDisabledState(Subscription subscription, List<MonitoredItem> monitoredItems) {
             UInt32Collection monitoredItemIds = new UInt32Collection();
 
-            lock (subscription)
-            {
+            lock (subscription) {
                 subscription.NotificationMessages.Clear();
                 subscription.ReceiveTimes.Clear();
 
-                for (int ii = 0; ii < monitoredItems.Count; ii++)
-                {
+                for (int ii = 0; ii < monitoredItems.Count; ii++) {
                     monitoredItemIds.Add(monitoredItems[ii].MonitoredItemId);
                     monitoredItems[ii].Value = null;
                 }
@@ -636,15 +559,12 @@ namespace Opc.Ua.ServerTest
 
             ClientBase.ValidateResponse(results, monitoredItemIds);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, monitoredItemIds);
-            
-            lock (subscription)
-            {
-                for (int ii = 0; ii < results.Count; ii++)
-                {
-                    if (StatusCode.IsBad(results[ii]))
-                    {
+
+            lock (subscription) {
+                for (int ii = 0; ii < results.Count; ii++) {
+                    if (StatusCode.IsBad(results[ii])) {
                         Log(
-                            "Error disabling MonitoredItem. ClientHandle = {0}, Node = {1}, Attribute = {2}, StatusCode = {3}", 
+                            "Error disabling MonitoredItem. ClientHandle = {0}, Node = {1}, Attribute = {2}, StatusCode = {3}",
                             monitoredItems[ii].MonitoredItemId,
                             monitoredItems[ii].Node,
                             Attributes.GetBrowseName(monitoredItems[ii].AttributeId),
@@ -665,15 +585,12 @@ namespace Opc.Ua.ServerTest
 
             ClientBase.ValidateResponse(results, monitoredItemIds);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, monitoredItemIds);
-            
-            lock (subscription)
-            {
-                for (int ii = 0; ii < results.Count; ii++)
-                {
-                    if (StatusCode.IsBad(results[ii]))
-                    {
+
+            lock (subscription) {
+                for (int ii = 0; ii < results.Count; ii++) {
+                    if (StatusCode.IsBad(results[ii])) {
                         Log(
-                            "Error enabling MonitoredItem. ClientHandle = {0}, Node = {1}, Attribute = {2}, StatusCode = {3}", 
+                            "Error enabling MonitoredItem. ClientHandle = {0}, Node = {1}, Attribute = {2}, StatusCode = {3}",
                             monitoredItems[ii].MonitoredItemId,
                             monitoredItems[ii].Node,
                             Attributes.GetBrowseName(monitoredItems[ii].AttributeId),
@@ -693,31 +610,28 @@ namespace Opc.Ua.ServerTest
         /// Verifies that the initial data change was received.
         /// </summary>
         private bool VerifyInitialDataChange(
-            Subscription subscription, 
+            Subscription subscription,
             IList<MonitoredItem> monitoredItems,
-            bool afterDisable)
-        {
+            bool afterDisable) {
             // build list of notifications.
             int totalCount = 0;
-            Dictionary<uint,MonitoredItem> updatedItems = new Dictionary<uint,MonitoredItem>();
+            Dictionary<uint, MonitoredItem> updatedItems = new Dictionary<uint, MonitoredItem>();
 
-            for (int ii = 0; ii < subscription.NotificationMessages.Count; ii++)
-            {
+            for (int ii = 0; ii < subscription.NotificationMessages.Count; ii++) {
                 NotificationMessage message = subscription.NotificationMessages[ii];
-                                
-                for (int jj = 0; jj < message.NotificationData.Count; jj++)
-                {
+
+                for (int jj = 0; jj < message.NotificationData.Count; jj++) {
                     ExtensionObject extension = message.NotificationData[jj];
 
                     // extract notification.
-                    DataChangeNotification notification = ExtensionObject.ToEncodeable(extension) as DataChangeNotification;
-                                    
-                    if (notification == null)
-                    {
+                    DataChangeNotification notification =
+                        ExtensionObject.ToEncodeable(extension) as DataChangeNotification;
+
+                    if (notification == null) {
                         Log("Null notification returned from server. Extension = {0}", extension);
                         return false;
                     }
-                    
+
                     /*
                     Log(
                         "Verifying NotificationMessages={0}, RcvTime={1:HH:mm:ss}, PublishTime={2:HH:mm:ss}, ExpectedCount={3}, ActualCount={4}", 
@@ -729,8 +643,8 @@ namespace Opc.Ua.ServerTest
                     */
 
                     // verify data change.
-                    if (!VerifyInitialDataChange(subscription, notification, subscription.ReceiveTimes[ii], monitoredItems, ref totalCount, updatedItems))
-                    {
+                    if (!VerifyInitialDataChange(subscription, notification, subscription.ReceiveTimes[ii],
+                        monitoredItems, ref totalCount, updatedItems)) {
                         Log(
                             "Expected {0} publishes (AfterDisable={1}). Verified {2}, Processed = {3}",
                             monitoredItems.Count,
@@ -741,19 +655,18 @@ namespace Opc.Ua.ServerTest
                         return false;
                     }
                 }
-            }            
-            
+            }
+
             // check for missing publish requests.
-            if (monitoredItems.Count != totalCount)
-            {               
+            if (monitoredItems.Count != totalCount) {
                 Log(
-                    "Expected {0} publishes (AfterDisable={1}). Received {2}, UniqueNotifications = {3}, FirstNode {4}, NodeId = {5}", 
-                    monitoredItems.Count, 
+                    "Expected {0} publishes (AfterDisable={1}). Received {2}, UniqueNotifications = {3}, FirstNode {4}, NodeId = {5}",
+                    monitoredItems.Count,
                     afterDisable,
-                    totalCount, 
+                    totalCount,
                     updatedItems.Count,
-                    (monitoredItems.Count > 0)?monitoredItems[0].Node:null,
-                    (monitoredItems.Count > 0)?monitoredItems[0].Node.NodeId:null);
+                    (monitoredItems.Count > 0) ? monitoredItems[0].Node : null,
+                    (monitoredItems.Count > 0) ? monitoredItems[0].Node.NodeId : null);
 
                 return false;
             }
@@ -761,12 +674,10 @@ namespace Opc.Ua.ServerTest
             // check attribute consistency.
             bool success = true;
 
-            for (int ii = 0; ii < monitoredItems.Count; ii++)
-            {
-                if (!VerifyAttributeConsistency(monitoredItems[ii].Node))
-                {
+            for (int ii = 0; ii < monitoredItems.Count; ii++) {
+                if (!VerifyAttributeConsistency(monitoredItems[ii].Node)) {
                     success = false;
-                    continue; 
+                    continue;
                 }
             }
 
@@ -782,17 +693,15 @@ namespace Opc.Ua.ServerTest
             DateTime receiveTime,
             IList<MonitoredItem> monitoredItems,
             ref int totalCount,
-            Dictionary<uint,MonitoredItem> updatedItems)
-        {
+            Dictionary<uint, MonitoredItem> updatedItems) {
             bool success = true;
             bool errorReported = false;
 
             // determine the maximum requested diagnostics.
             uint diagnosticsMask = 0;
             DiagnosticInfoCollection diagnosticInfos = notification.DiagnosticInfos;
-       
-            for (int ii = 0; ii < notification.MonitoredItems.Count; ii++)
-            {
+
+            for (int ii = 0; ii < notification.MonitoredItems.Count; ii++) {
                 totalCount++;
 
                 MonitoredItemNotification update = notification.MonitoredItems[ii];
@@ -800,16 +709,13 @@ namespace Opc.Ua.ServerTest
                 // find matching item.
                 MonitoredItem monitoredItem = null;
 
-                for (int jj = 0; jj < monitoredItems.Count; jj++)
-                {
-                    monitoredItem =  monitoredItems[jj];
+                for (int jj = 0; jj < monitoredItems.Count; jj++) {
+                    monitoredItem = monitoredItems[jj];
 
-                    if (update.ClientHandle == monitoredItem.ClientHandle)
-                    {
+                    if (update.ClientHandle == monitoredItem.ClientHandle) {
                         MonitoredItem existingItem = null;
 
-                        if (updatedItems.TryGetValue(update.ClientHandle, out existingItem))
-                        {
+                        if (updatedItems.TryGetValue(update.ClientHandle, out existingItem)) {
                             Log(
                                 "Unexpected notification returned from server for MonitoredItem. ClientHandle = {0}, Node = {1}, Attribute = {2}, NewValue = {3}, OldValue={4}",
                                 update.ClientHandle,
@@ -826,8 +732,7 @@ namespace Opc.Ua.ServerTest
                     monitoredItem = null;
                 }
 
-                if (monitoredItem == null)
-                {
+                if (monitoredItem == null) {
                     Log(
                         "Unexpected notification returned from server for Node. ClientHandle = {0}, Value = {1}",
                         update.ClientHandle,
@@ -836,9 +741,8 @@ namespace Opc.Ua.ServerTest
                     success = false;
                     break;
                 }
-                
-                if (monitoredItem.Value != null)
-                {
+
+                if (monitoredItem.Value != null) {
                     Log(
                         "Duplicate notification for MonitoredItem for Node {0}. NodeId = {1}, AttributeId = {2}",
                         monitoredItem.Node,
@@ -851,12 +755,10 @@ namespace Opc.Ua.ServerTest
 
                 double initialDelay = CalculateInterval(monitoredItem.UpdateTime, receiveTime);
 
-                if (initialDelay > subscription.PublishingInterval + m_idealTimingError)
-                {
-                    bool fatal = initialDelay > subscription.PublishingInterval*2;
+                if (initialDelay > subscription.PublishingInterval + m_idealTimingError) {
+                    bool fatal = initialDelay > subscription.PublishingInterval * 2;
 
-                    if (!errorReported)
-                    {
+                    if (!errorReported) {
                         Log(
                             "{0}: Late notification for MonitoredItem for Node {1}. NodeId = {2}, AttributeId = {3}, Delay = {4}ms, MaxDelay = {5}ms",
                             "TIMING ERROR",
@@ -869,31 +771,27 @@ namespace Opc.Ua.ServerTest
                         errorReported = true;
                     }
 
-                    if (fatal)
-                    {
+                    if (fatal) {
                         success = false;
                         break;
                     }
                 }
-                
+
                 monitoredItem.Value = update.Value;
-                
+
                 // verify timestamps.
-                if (!VerifyTimestamps(monitoredItem.Node, monitoredItem.AttributeId, monitoredItem.TimestampsToReturn, update.Value))
-                {
+                if (!VerifyTimestamps(monitoredItem.Node, monitoredItem.AttributeId, monitoredItem.TimestampsToReturn,
+                    update.Value)) {
                     success = false;
                     break;
                 }
-                    
+
                 // check if diagnostics could exist.
-                if (update.Value.StatusCode != StatusCodes.Good)
-                {
+                if (update.Value.StatusCode != StatusCodes.Good) {
                     diagnosticsMask |= monitoredItem.DiagnosticsMasks;
 
-                    if ((monitoredItem.DiagnosticsMasks & (uint)DiagnosticsMasks.OperationAll) != 0)
-                    {
-                        if (diagnosticInfos == null || diagnosticInfos.Count < ii || diagnosticInfos[ii] == null)
-                        {
+                    if ((monitoredItem.DiagnosticsMasks & (uint) DiagnosticsMasks.OperationAll) != 0) {
+                        if (diagnosticInfos == null || diagnosticInfos.Count < ii || diagnosticInfos[ii] == null) {
                             Log(
                                 "Missing DiagnosticInfo for MonitoredItem for Node {0}. NodeId = {1}, AttributeId = {2}",
                                 monitoredItem.Node,
@@ -907,30 +805,25 @@ namespace Opc.Ua.ServerTest
                 }
 
                 // verify error.
-                if (StatusCode.IsBad(update.Value.StatusCode))
-                {
-                    if (!VerifyBadAttribute(monitoredItem.Node, monitoredItem.AttributeId, update.Value.StatusCode))
-                    {
+                if (StatusCode.IsBad(update.Value.StatusCode)) {
+                    if (!VerifyBadAttribute(monitoredItem.Node, monitoredItem.AttributeId, update.Value.StatusCode)) {
                         success = false;
-                        break;                   
+                        break;
                     }
 
                     continue;
                 }
-                    
+
                 // verify success.
-                if (!VerifyGoodAttribute(monitoredItem.Node, monitoredItem.AttributeId, update.Value))
-                {
+                if (!VerifyGoodAttribute(monitoredItem.Node, monitoredItem.AttributeId, update.Value)) {
                     success = false;
-                    break;                 
+                    break;
                 }
             }
 
             // check for unnecessary diagnostics.
-            if ((diagnosticsMask & (uint)DiagnosticsMasks.OperationAll) == 0)
-            {
-                if (diagnosticInfos != null && diagnosticInfos.Count > 0)
-                {
+            if ((diagnosticsMask & (uint) DiagnosticsMasks.OperationAll) == 0) {
+                if (diagnosticInfos != null && diagnosticInfos.Count > 0) {
                     Log("Returned non-empty DiagnosticInfos array during Publish.");
                     return false;
                 }
@@ -943,12 +836,10 @@ namespace Opc.Ua.ServerTest
         /// Creates the monitored items.
         /// </summary>
         private bool CreateMonitoredItems(
-            Subscription subscription, 
+            Subscription subscription,
             MonitoredItemCreateRequestCollection itemsToCreate,
-            List<MonitoredItem> monitoredItems)
-        {   
-            try
-            {
+            List<MonitoredItem> monitoredItems) {
+            try {
                 RequestHeader requestHeader = new RequestHeader();
                 requestHeader.ReturnDiagnostics = 0;
 
@@ -965,35 +856,30 @@ namespace Opc.Ua.ServerTest
 
                 ClientBase.ValidateResponse(results, itemsToCreate);
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, itemsToCreate);
-                                
-                if (diagnosticInfos != null && diagnosticInfos.Count > 0)
-                {
+
+                if (diagnosticInfos != null && diagnosticInfos.Count > 0) {
                     Log("Returned non-empty DiagnosticInfos array during CreateMonitoredItems.");
                     return false;
                 }
 
                 bool success = true;
                 DateTime updateTime = responseHeader.Timestamp;
-                
-                for (int ii = 0; ii < itemsToCreate.Count; ii++)
-                {
+
+                for (int ii = 0; ii < itemsToCreate.Count; ii++) {
                     MonitoredItemCreateRequest request = itemsToCreate[ii];
                     MonitoredItemCreateResult result = results[ii];
-                    Node node = (Node)request.Handle;
+                    Node node = (Node) request.Handle;
 
-                    if (StatusCode.IsBad(result.StatusCode))
-                    {
-                        if (!VerifyBadAttribute(node, request.ItemToMonitor.AttributeId, result.StatusCode))
-                        {
+                    if (StatusCode.IsBad(result.StatusCode)) {
+                        if (!VerifyBadAttribute(node, request.ItemToMonitor.AttributeId, result.StatusCode)) {
                             success = false;
                         }
 
                         continue;
                     }
-                    
+
                     // check if attribute is not supposed to be valid for node.
-                    if (!Attributes.IsValid(node.NodeClass, request.ItemToMonitor.AttributeId))
-                    {
+                    if (!Attributes.IsValid(node.NodeClass, request.ItemToMonitor.AttributeId)) {
                         Log(
                             "CreateMonitoredItem accepted for invalid attribute Node '{0}'. NodeId = {1}, NodeClass = {2}, Attribute = {3}",
                             node,
@@ -1006,10 +892,8 @@ namespace Opc.Ua.ServerTest
                     }
 
                     // check filter result.
-                    if (request.RequestedParameters.Filter == null)
-                    {
-                        if (!ExtensionObject.IsNull(result.FilterResult))
-                        {
+                    if (request.RequestedParameters.Filter == null) {
+                        if (!ExtensionObject.IsNull(result.FilterResult)) {
                             Log(
                                 "Server returned a non-null filter result for Node '{0}', NodeId = {1}, AttributeId = {2}, FilterResult = {3}",
                                 node,
@@ -1023,7 +907,7 @@ namespace Opc.Ua.ServerTest
                     }
 
                     MonitoredItem monitoredItem = new MonitoredItem();
-                    
+
                     monitoredItem.MonitoredItemId = result.MonitoredItemId;
                     monitoredItem.Node = node;
                     monitoredItem.TimestampsToReturn = TimestampsToReturn.Both;
@@ -1034,37 +918,33 @@ namespace Opc.Ua.ServerTest
                     monitoredItem.SamplingInterval = result.RevisedSamplingInterval;
                     monitoredItem.QueueSize = result.RevisedQueueSize;
                     monitoredItem.DiscardOldest = request.RequestedParameters.DiscardOldest;
-                    monitoredItem.Filter = ExtensionObject.ToEncodeable(request.RequestedParameters.Filter) as MonitoringFilter;
+                    monitoredItem.Filter =
+                        ExtensionObject.ToEncodeable(request.RequestedParameters.Filter) as MonitoringFilter;
                     monitoredItem.UpdateTime = updateTime;
-                    
+
                     monitoredItems.Add(monitoredItem);
                 }
-                
-                return success;              
-            }
-            catch (Exception e)
-            {
+
+                return success;
+            } catch (Exception e) {
                 Log(e, "CreateMonitoredItems Failed.");
                 return false;
-            } 
+            }
         }
-        
+
         /// <summary>
         /// Deletes the monitored items.
         /// </summary>
         private bool DeleteMonitoredItems(
-            Subscription subscription, 
-            List<MonitoredItem> monitoredItems)
-        {   
-            try
-            {
+            Subscription subscription,
+            List<MonitoredItem> monitoredItems) {
+            try {
                 RequestHeader requestHeader = new RequestHeader();
                 requestHeader.ReturnDiagnostics = 0;
 
                 UInt32Collection monitoredItemIds = new UInt32Collection();
-                
-                for (int ii = 0; ii < monitoredItems.Count; ii++)
-                {
+
+                for (int ii = 0; ii < monitoredItems.Count; ii++) {
                     monitoredItemIds.Add(monitoredItems[ii].MonitoredItemId);
                 }
 
@@ -1080,19 +960,16 @@ namespace Opc.Ua.ServerTest
 
                 ClientBase.ValidateResponse(results, monitoredItemIds);
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, monitoredItemIds);
-                                
-                if (diagnosticInfos != null && diagnosticInfos.Count > 0)
-                {
+
+                if (diagnosticInfos != null && diagnosticInfos.Count > 0) {
                     Log("Returned non-empty DiagnosticInfos array during DeleteMonitoredItems.");
                     return false;
                 }
 
                 bool success = true;
-                
-                for (int ii = 0; ii < monitoredItems.Count; ii++)
-                {
-                    if (StatusCode.IsBad(results[ii]))
-                    {
+
+                for (int ii = 0; ii < monitoredItems.Count; ii++) {
+                    if (StatusCode.IsBad(results[ii])) {
                         Log(
                             "Delete monitored item failed for Node '{0}', NodeId = {1}, AttributeId = {2}, StatusCode = {3}",
                             monitoredItems[ii].Node,
@@ -1104,28 +981,23 @@ namespace Opc.Ua.ServerTest
                         continue;
                     }
                 }
-                
-                return success;              
-            }
-            catch (Exception e)
-            {
+
+                return success;
+            } catch (Exception e) {
                 Log(e, "DeleteMonitoredItems Failed.");
                 return false;
-            } 
+            }
         }
 
         /// <summary>
         /// Verifies the keep alive results for the subscription.
         /// </summary>
-        private bool VerifyKeepAliveTestResults(Subscription subscription)
-        {
-            if (subscription.Failed)
-            {
+        private bool VerifyKeepAliveTestResults(Subscription subscription) {
+            if (subscription.Failed) {
                 return false;
             }
 
-            if (subscription.MissingSequenceNumbers.Count > 0)
-            {
+            if (subscription.MissingSequenceNumbers.Count > 0) {
                 Log(
                     "Missing messages for subscription. SubscriptionId = {0}, Last = {1}, Missing = {2}",
                     subscription.SubscriptionId,
@@ -1135,10 +1007,9 @@ namespace Opc.Ua.ServerTest
                 return false;
             }
 
-            if (subscription.NextExpectedSequenceNumber != subscription.LastReceivedSequenceNumber+1)
-            {
+            if (subscription.NextExpectedSequenceNumber != subscription.LastReceivedSequenceNumber + 1) {
                 Log(
-                    "Missing messages for subscription. SubscriptionId = {0}, Actual = {1}, Expected = {2}", 
+                    "Missing messages for subscription. SubscriptionId = {0}, Actual = {1}, Expected = {2}",
                     subscription.SubscriptionId,
                     subscription.LastReceivedSequenceNumber,
                     subscription.NextExpectedSequenceNumber);
@@ -1146,10 +1017,9 @@ namespace Opc.Ua.ServerTest
                 return false;
             }
 
-            if (subscription.NotificationMessages.Count > 0)
-            {
+            if (subscription.NotificationMessages.Count > 0) {
                 Log(
-                    "Received unexpected notification messages for subscription {0}. Count = {1}", 
+                    "Received unexpected notification messages for subscription {0}. Count = {1}",
                     subscription.SubscriptionId,
                     subscription.NotificationMessages.Count);
 
@@ -1158,10 +1028,8 @@ namespace Opc.Ua.ServerTest
 
             bool success = true;
 
-            for (int ii = 0; ii < subscription.States.Count; ii++)
-            {
-                if (!VerifyKeepAliveTestResults(subscription, subscription.States[ii], ii == 0))
-                {
+            for (int ii = 0; ii < subscription.States.Count; ii++) {
+                if (!VerifyKeepAliveTestResults(subscription, subscription.States[ii], ii == 0)) {
                     success = false;
                 }
             }
@@ -1172,30 +1040,27 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Verifies the keep alive test results.
         /// </summary>
-        private bool VerifyKeepAliveTestResults(Subscription subscription, PublishingState state, bool isFirst)
-        {
-            double keepAlivePeriod = state.KeepAliveCount*state.PublishingInterval;
+        private bool VerifyKeepAliveTestResults(Subscription subscription, PublishingState state, bool isFirst) {
+            double keepAlivePeriod = state.KeepAliveCount * state.PublishingInterval;
             double elaspedTime = CalculateInterval(state.Start, state.End);
-            double referencePeriod = (state.KeepAliveMode)?keepAlivePeriod:state.PublishingInterval;
+            double referencePeriod = (state.KeepAliveMode) ? keepAlivePeriod : state.PublishingInterval;
 
             bool success = true;
             DateTime start = state.Start;
 
-            for (int ii = 0; ii < state.KeepAlives.Count; ii++)
-            {
+            for (int ii = 0; ii < state.KeepAlives.Count; ii++) {
                 double referencePeriodToUse = referencePeriod;
 
                 // the first keep alive comes with the first publishing interval.
-                if (isFirst && ii == 0)
-                {
+                if (isFirst && ii == 0) {
                     referencePeriodToUse = state.PublishingInterval;
                 }
 
                 double delta = CalculateInterval(start, state.KeepAlives[ii]);
 
-                if (Math.Abs(referencePeriodToUse - delta) > m_idealTimingError && delta > m_idealTimingError)
-                {
-                    bool fatal = Math.Abs(referencePeriodToUse - delta) > (referencePeriodToUse + (double)((isFirst)?500:0));
+                if (Math.Abs(referencePeriodToUse - delta) > m_idealTimingError && delta > m_idealTimingError) {
+                    bool fatal = Math.Abs(referencePeriodToUse - delta) >
+                                 (referencePeriodToUse + (double) ((isFirst) ? 500 : 0));
 
                     Log(
                         "{0}: Notification received at the wrong time for subscription {1}. Index = {2}, Expected = {3}ms, Actual = {4}ms",
@@ -1205,41 +1070,36 @@ namespace Opc.Ua.ServerTest
                         referencePeriodToUse,
                         delta);
 
-                    if (fatal)
-                    {
+                    if (fatal) {
                         success = false;
                     }
-                }             
+                }
 
                 start = state.KeepAlives[ii];
             }
 
-            if ((Math.Truncate(elaspedTime/keepAlivePeriod) > state.KeepAlives.Count))
-            {
+            if ((Math.Truncate(elaspedTime / keepAlivePeriod) > state.KeepAlives.Count)) {
                 double[] deltas = new double[state.KeepAlives.Count];
 
-                for (int ii = 0; ii < state.KeepAlives.Count-1; ii++)
-                {
+                for (int ii = 0; ii < state.KeepAlives.Count - 1; ii++) {
                     deltas[ii] = CalculateInterval(state.KeepAlives[ii], state.KeepAlives[ii + 1]);
                 }
 
                 double timingError = Math.Abs((state.KeepAlives.Count + 1) * keepAlivePeriod - elaspedTime);
 
                 // check if the keep alive is an exact multiple of the elapsed time.
-                if (timingError > m_idealTimingError && timingError > state.PublishingInterval)
-                {
-                    bool fatal = Math.Truncate(elaspedTime/keepAlivePeriod) > state.KeepAlives.Count+1;
+                if (timingError > m_idealTimingError && timingError > state.PublishingInterval) {
+                    bool fatal = Math.Truncate(elaspedTime / keepAlivePeriod) > state.KeepAlives.Count + 1;
 
                     Log(
                         "{0}: Keep alives not received for subscription {1}. , Expected = {2}, Actual = {3}, TimingError={4}",
                         "TIMING ERROR",
                         subscription.SubscriptionId,
-                        Math.Truncate(elaspedTime/keepAlivePeriod),
+                        Math.Truncate(elaspedTime / keepAlivePeriod),
                         state.KeepAlives.Count,
                         timingError);
 
-                    if (fatal)
-                    {
+                    if (fatal) {
                         success = false;
                     }
                 }
@@ -1247,11 +1107,12 @@ namespace Opc.Ua.ServerTest
 
             return success;
         }
+
         #endregion
 
         #region Setup/Control Functions
-        private class MonitoredItem
-        {
+
+        private class MonitoredItem {
             public uint MonitoredItemId;
             public uint DiagnosticsMasks;
             public TimestampsToReturn TimestampsToReturn;
@@ -1270,26 +1131,21 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Deletes all of the active subscriptions.
         /// </summary>
-        private bool DeleteSubscriptions()
-        {   
-            try
-            {
+        private bool DeleteSubscriptions() {
+            try {
                 UInt32Collection subscriptionIds = new UInt32Collection();
 
-                lock (m_subscriptions)
-                {
-                    for (int ii = 0; ii < m_subscriptions.Count; ii++)
-                    {
+                lock (m_subscriptions) {
+                    for (int ii = 0; ii < m_subscriptions.Count; ii++) {
                         Subscription subscription = m_subscriptions[ii];
 
-                        lock (subscription)
-                        {
+                        lock (subscription) {
                             subscriptionIds.Add(subscription.SubscriptionId);
                             subscription.Deleted = true;
                         }
                     }
                 }
-                    
+
                 RequestHeader requestHeader = new RequestHeader();
                 requestHeader.ReturnDiagnostics = 0;
 
@@ -1304,21 +1160,17 @@ namespace Opc.Ua.ServerTest
 
                 ClientBase.ValidateResponse(results, subscriptionIds);
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, subscriptionIds);
-                                
-                if (diagnosticInfos != null && diagnosticInfos.Count > 0)
-                {
+
+                if (diagnosticInfos != null && diagnosticInfos.Count > 0) {
                     Log("Returned non-empty DiagnosticInfos array during DeleteSubscriptions.");
                     return false;
                 }
 
                 bool success = true;
 
-                lock (m_subscriptions)
-                {
-                    for (int ii = 0; ii < m_subscriptions.Count; ii++)
-                    {
-                        if (StatusCode.IsBad(results[ii]))
-                        {
+                lock (m_subscriptions) {
+                    for (int ii = 0; ii < m_subscriptions.Count; ii++) {
+                        if (StatusCode.IsBad(results[ii])) {
                             Log(
                                 "Unexpected error deleting subscription {0}. StatusCode = {1}",
                                 subscriptionIds[ii],
@@ -1329,8 +1181,7 @@ namespace Opc.Ua.ServerTest
 
                         Subscription subscription = m_subscriptions[ii];
 
-                        lock (subscription)
-                        {
+                        lock (subscription) {
                             subscription.States[subscription.States.Count - 1].End = responseHeader.Timestamp;
                         }
                     }
@@ -1340,32 +1191,26 @@ namespace Opc.Ua.ServerTest
                 Thread.Sleep(1000);
 
                 return success;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log(e, "DeleteSubscriptions Failed.");
                 return false;
-            } 
+            }
         }
-        
+
         /// <summary>
         /// Sets the publishing enable state for the subscriptions.
         /// </summary>
-        private bool SetPublishingEnabled(bool enabled)
-        {   
-            try
-            {
+        private bool SetPublishingEnabled(bool enabled) {
+            try {
                 UInt32Collection subscriptionIds = new UInt32Collection();
 
-                lock (m_subscriptions)
-                {
-                    for (int ii = 0; ii < m_subscriptions.Count; ii++)
-                    {
+                lock (m_subscriptions) {
+                    for (int ii = 0; ii < m_subscriptions.Count; ii++) {
                         subscriptionIds.Add(m_subscriptions[ii].SubscriptionId);
                         m_subscriptions[ii].PublishingEnabled = enabled;
                     }
                 }
-                    
+
                 RequestHeader requestHeader = new RequestHeader();
                 requestHeader.ReturnDiagnostics = 0;
 
@@ -1381,21 +1226,18 @@ namespace Opc.Ua.ServerTest
 
                 ClientBase.ValidateResponse(results, subscriptionIds);
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, subscriptionIds);
-                                
-                if (diagnosticInfos != null && diagnosticInfos.Count > 0)
-                {
+
+                if (diagnosticInfos != null && diagnosticInfos.Count > 0) {
                     Log("Returned non-empty DiagnosticInfos array during SetPublishingMode.");
                     return false;
                 }
 
                 bool success = true;
-                
-                for  (int ii = 0; ii < results.Count; ii++)
-                {
-                    if (StatusCode.IsBad(results[ii]))
-                    {
+
+                for (int ii = 0; ii < results.Count; ii++) {
+                    if (StatusCode.IsBad(results[ii])) {
                         Log(
-                            "Unexpected error setting publish enable state for subscription {0}. StatusCode = {1}", 
+                            "Unexpected error setting publish enable state for subscription {0}. StatusCode = {1}",
                             subscriptionIds[ii],
                             subscriptionIds);
 
@@ -1404,25 +1246,21 @@ namespace Opc.Ua.ServerTest
                 }
 
                 return success;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log(e, "SetPublishingMode Failed.");
                 return false;
-            } 
+            }
         }
 
         /// <summary>
         /// Sets the publishing enable state for the subscriptions.
         /// </summary>
-        private bool ModifySubscription(Subscription subscription, double publishingInterval)
-        {   
-            try
-            {        
+        private bool ModifySubscription(Subscription subscription, double publishingInterval) {
+            try {
                 double revisedPublishingInterval;
                 uint revisedLifetimeCount;
                 uint revisedKeepAliveCount;
-          
+
                 RequestHeader requestHeader = new RequestHeader();
                 requestHeader.ReturnDiagnostics = 0;
 
@@ -1439,13 +1277,13 @@ namespace Opc.Ua.ServerTest
                     out revisedPublishingInterval,
                     out revisedLifetimeCount,
                     out revisedKeepAliveCount);
-                
+
                 double elapsedTime = (DateTime.UtcNow - start).TotalMilliseconds;
 
-                if (elapsedTime > 300)
-                {
-                    Log("WARNING: ModifySubscription took {0}ms. Timing errors may occur.", (DateTime.UtcNow - start).TotalMilliseconds);
-                }               
+                if (elapsedTime > 300) {
+                    Log("WARNING: ModifySubscription took {0}ms. Timing errors may occur.",
+                        (DateTime.UtcNow - start).TotalMilliseconds);
+                }
 
                 PublishingState state = new PublishingState();
 
@@ -1454,22 +1292,19 @@ namespace Opc.Ua.ServerTest
                 state.Start = responseHeader.Timestamp;
                 state.KeepAliveMode = true;
 
-                lock (subscription)
-                {
+                lock (subscription) {
                     subscription.PublishingInterval = revisedPublishingInterval;
                     subscription.KeepAliveCount = revisedKeepAliveCount;
                     subscription.LifetimeCount = revisedLifetimeCount;
-                    subscription.States[subscription.States.Count-1].End = state.Start;
+                    subscription.States[subscription.States.Count - 1].End = state.Start;
                     subscription.States.Add(state);
                 }
 
                 return true;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log(e, "Error modifying state of subscription {0}.", subscription.SubscriptionId);
                 return false;
-            } 
+            }
         }
 
         /// <summary>
@@ -1481,15 +1316,13 @@ namespace Opc.Ua.ServerTest
             uint keepAliveCount,
             uint maxNotificationsPerPublish,
             bool publishingEnabled,
-            byte priority)
-        {            
-            try
-            {
+            byte priority) {
+            try {
                 uint subscriptionId;
                 double revisedPublishingInterval;
                 uint revisedLifetimeCount;
                 uint revisedKeepAliveCount;
-                
+
                 Subscription subscription = new Subscription();
 
                 subscription.MaxNotificationsPerPublish = maxNotificationsPerPublish;
@@ -1497,9 +1330,8 @@ namespace Opc.Ua.ServerTest
                 subscription.Priority = priority;
                 subscription.NextExpectedSequenceNumber = 1;
                 subscription.StaticData = true;
-                
-                lock (m_subscriptions)
-                {
+
+                lock (m_subscriptions) {
                     m_subscriptions.Add(subscription);
                 }
 
@@ -1520,23 +1352,21 @@ namespace Opc.Ua.ServerTest
 
                 double elapsedTime = (DateTime.UtcNow - start).TotalMilliseconds;
 
-                if (elapsedTime > 300)
-                {
-                    Log("WARNING: CreateSubscription took {0}ms. Timing errors may occur.", (DateTime.UtcNow - start).TotalMilliseconds);
+                if (elapsedTime > 300) {
+                    Log("WARNING: CreateSubscription took {0}ms. Timing errors may occur.",
+                        (DateTime.UtcNow - start).TotalMilliseconds);
                 }
-                
+
                 subscription.SubscriptionId = subscriptionId;
                 subscription.PublishingInterval = revisedPublishingInterval;
                 subscription.LifetimeCount = revisedLifetimeCount;
                 subscription.KeepAliveCount = revisedKeepAliveCount;
 
-                while (m_outstandingPublishRequests < m_publishPipelineDepth)
-                {
+                while (m_outstandingPublishRequests < m_publishPipelineDepth) {
                     BeginPublish();
                 }
-                                
-                lock (subscription)
-                {
+
+                lock (subscription) {
                     PublishingState state = new PublishingState();
 
                     state.KeepAliveCount = subscription.KeepAliveCount;
@@ -1548,9 +1378,7 @@ namespace Opc.Ua.ServerTest
                 }
 
                 return true;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log(e, "Error creating subscription.", null);
                 return false;
             }
@@ -1689,8 +1517,7 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Sends a publish request.
         /// </summary>
-        private void BeginPublish()
-        {
+        private void BeginPublish() {
             PublishCallbackData callbackData = new PublishCallbackData();
 
             callbackData.Session = Session;
@@ -1715,16 +1542,13 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Called when a publish request completes.
         /// </summary>
-        private void OnPublishComplete(IAsyncResult result)
-        {
-            PublishCallbackData callbackData = (PublishCallbackData)result.AsyncState;
+        private void OnPublishComplete(IAsyncResult result) {
+            PublishCallbackData callbackData = (PublishCallbackData) result.AsyncState;
 
-            try
-            {                
+            try {
                 Interlocked.Decrement(ref m_outstandingPublishRequests);
 
-                if (Object.ReferenceEquals(callbackData.Session, Session))
-                {
+                if (Object.ReferenceEquals(callbackData.Session, Session)) {
                     Interlocked.Increment(ref m_publishCount);
                 }
 
@@ -1747,9 +1571,8 @@ namespace Opc.Ua.ServerTest
 
                 ClientBase.ValidateResponse(results, callbackData.Acknowledgements);
                 ClientBase.ValidateDiagnosticInfos(diagnosticInfos, callbackData.Acknowledgements);
-                                
-                if (diagnosticInfos != null && diagnosticInfos.Count > 0)
-                {
+
+                if (diagnosticInfos != null && diagnosticInfos.Count > 0) {
                     HaltTestOnError(null, "Returned non-empty DiagnosticInfos array during Publish.", null);
                     return;
                 }
@@ -1757,13 +1580,11 @@ namespace Opc.Ua.ServerTest
                 // find subscription.
                 Subscription subscription = Find(subscriptionId);
 
-                if (subscription == null || subscription.Deleted)
-                {
+                if (subscription == null || subscription.Deleted) {
                     return;
                 }
-                
-                lock (subscription)
-                {
+
+                lock (subscription) {
                     VerifyPublishResponse(
                         responseHeader,
                         subscription,
@@ -1773,38 +1594,31 @@ namespace Opc.Ua.ServerTest
                         results,
                         diagnosticInfos);
                 }
-                
+
                 // send a new request.
                 bool notsent = true;
 
-                if (m_stopped == 0 && Object.ReferenceEquals(callbackData.Session, Session))
-                {
-                    if (m_outstandingPublishRequests < m_publishPipelineDepth)
-                    {
+                if (m_stopped == 0 && Object.ReferenceEquals(callbackData.Session, Session)) {
+                    if (m_outstandingPublishRequests < m_publishPipelineDepth) {
                         BeginPublish();
                         notsent = false;
                     }
                 }
 
-                if (notsent)
-                {
-                    Utils.Trace("Publish not sent. Count={0}, Pipeline={1}, Stopped={2}", m_outstandingPublishRequests, m_publishPipelineDepth, m_stopped);
+                if (notsent) {
+                    Utils.Trace("Publish not sent. Count={0}, Pipeline={1}, Stopped={2}", m_outstandingPublishRequests,
+                        m_publishPipelineDepth, m_stopped);
                 }
-            }
-            catch (ServiceResultException e)
-            {
-                if (e.StatusCode == StatusCodes.BadNoSubscription)
-                {
+            } catch (ServiceResultException e) {
+                if (e.StatusCode == StatusCodes.BadNoSubscription) {
                     return;
                 }
-            
-                if (e.StatusCode == StatusCodes.BadTimeout)
-                {
-                    if (!Object.ReferenceEquals(callbackData.Session, Session))
-                    {
+
+                if (e.StatusCode == StatusCodes.BadTimeout) {
+                    if (!Object.ReferenceEquals(callbackData.Session, Session)) {
                         return;
                     }
-                    
+
                     Log(
                         "WARNING: Publish timeout. Count={0}, Pipeline={1}, SentTime={2:HH:mm:ss}, RecvTime={3:HH:mm:ss}",
                         m_outstandingPublishRequests,
@@ -1812,8 +1626,7 @@ namespace Opc.Ua.ServerTest
                         callbackData.Timestamp,
                         DateTime.UtcNow);
 
-                    if (m_outstandingPublishRequests < m_publishPipelineDepth)
-                    {
+                    if (m_outstandingPublishRequests < m_publishPipelineDepth) {
                         BeginPublish();
                     }
 
@@ -1821,27 +1634,25 @@ namespace Opc.Ua.ServerTest
                 }
 
                 HaltTestOnError(e, "Fatal error during publish.", null);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 HaltTestOnError(e, "Fatal error during publish.", null);
             }
         }
 #endif
+
         #endregion
 
         /// <summary>
         /// Stores the state of a subscription.
         /// </summary>
-        private class Subscription
-        {
+        private class Subscription {
             public uint SubscriptionId;
             public double PublishingInterval;
             public uint LifetimeCount;
             public uint KeepAliveCount;
             public uint MaxNotificationsPerPublish;
             public bool PublishingEnabled;
-            public byte Priority;           
+            public byte Priority;
             public bool Failed;
             public bool Deleted;
             public bool StaticData;
@@ -1854,8 +1665,7 @@ namespace Opc.Ua.ServerTest
             public List<NotificationMessage> NotificationMessages = new List<NotificationMessage>();
         }
 
-        private class PublishingState
-        {
+        private class PublishingState {
             public DateTime Start;
             public DateTime End;
             public double PublishingInterval;
@@ -1864,8 +1674,7 @@ namespace Opc.Ua.ServerTest
             public List<DateTime> KeepAlives = new List<DateTime>();
         }
 
-        private class PublishCallbackData
-        {
+        private class PublishCallbackData {
             public Session Session;
             public SubscriptionAcknowledgementCollection Acknowledgements;
             public DateTime Timestamp;
@@ -1881,8 +1690,7 @@ namespace Opc.Ua.ServerTest
             bool moreNotifications,
             NotificationMessage notificationMessage,
             StatusCodeCollection results,
-            DiagnosticInfoCollection diagnosticInfos)
-        {
+            DiagnosticInfoCollection diagnosticInfos) {
             /*
             Utils.Trace(
                 "PublishReceived: SubId={0} SeqNo={1}, PublishTime={2:mm:ss.fff}, Time={3:mm:ss.fff}",
@@ -1893,8 +1701,7 @@ namespace Opc.Ua.ServerTest
             */
 
             // check if there is an odd delay.
-            if (responseHeader.Timestamp > notificationMessage.PublishTime.AddMilliseconds(100))
-            {
+            if (responseHeader.Timestamp > notificationMessage.PublishTime.AddMilliseconds(100)) {
                 Log(
                     "WARNING. Unexpected delay between PublishTime and ResponseTime. SeqNo={0}, PublishTime={1:HH:mm:ss.fff}, ResponseTime={2:HH:mm:ss.fff}",
                     notificationMessage.SequenceNumber,
@@ -1905,13 +1712,11 @@ namespace Opc.Ua.ServerTest
             // save results.
             subscription.AvailableSequenceNumbers = availableSequenceNumbers;
 
-            if (notificationMessage.NotificationData.Count == 0)
-            {
+            if (notificationMessage.NotificationData.Count == 0) {
                 // keep alives do not increment the sequence number.
-                if (subscription.NextExpectedSequenceNumber != notificationMessage.SequenceNumber)
-                {
+                if (subscription.NextExpectedSequenceNumber != notificationMessage.SequenceNumber) {
                     Log(
-                        "Incorrect sequence number for keep alive. SubscriptionId = {0}, Actual = {1}, Expected = {2}", 
+                        "Incorrect sequence number for keep alive. SubscriptionId = {0}, Actual = {1}, Expected = {2}",
                         subscription.SubscriptionId,
                         notificationMessage.SequenceNumber,
                         subscription.NextExpectedSequenceNumber);
@@ -1925,27 +1730,19 @@ namespace Opc.Ua.ServerTest
                 DateTime start = subscription.States[subscription.States.Count - 1].Start;
 
                 // check if this is an old request being processed late.
-                if (start > timestamp && subscription.States.Count > 1)
-                {
+                if (start > timestamp && subscription.States.Count > 1) {
                     subscription.States[subscription.States.Count - 2].KeepAlives.Add(timestamp);
-                }
-                else
-                {
+                } else {
                     subscription.States[subscription.States.Count - 1].KeepAlives.Add(timestamp);
                 }
-            }
-            else
-            {
+            } else {
                 // check for replays.
-                if (subscription.NextExpectedSequenceNumber > notificationMessage.SequenceNumber)
-                {
+                if (subscription.NextExpectedSequenceNumber > notificationMessage.SequenceNumber) {
                     // check for out of order responses.
                     bool found = false;
 
-                    for (int ii = 0; ii < subscription.MissingSequenceNumbers.Count; ii++)
-                    {
-                        if (subscription.MissingSequenceNumbers[ii] == notificationMessage.SequenceNumber)
-                        {
+                    for (int ii = 0; ii < subscription.MissingSequenceNumbers.Count; ii++) {
+                        if (subscription.MissingSequenceNumbers[ii] == notificationMessage.SequenceNumber) {
                             subscription.MissingSequenceNumbers.RemoveAt(ii);
                             found = true;
                             break;
@@ -1953,8 +1750,7 @@ namespace Opc.Ua.ServerTest
                     }
 
                     // oops - duplicate.
-                    if (!found)
-                    {
+                    if (!found) {
                         Log(
                             "Duplicate sequence number for message. SubscriptionId = {0}, Actual = {1}, Expected = {2}",
                             subscription.SubscriptionId,
@@ -1965,38 +1761,33 @@ namespace Opc.Ua.ServerTest
                         return false;
                     }
                 }
-                
+
                 // increment message counter.
-                if (notificationMessage.SequenceNumber >= subscription.NextExpectedSequenceNumber)
-                {
-                    for (uint ii = subscription.NextExpectedSequenceNumber; ii < notificationMessage.SequenceNumber; ii++)
-                    {
-                        if (!subscription.MissingSequenceNumbers.Contains(ii))
-                        {
+                if (notificationMessage.SequenceNumber >= subscription.NextExpectedSequenceNumber) {
+                    for (uint ii = subscription.NextExpectedSequenceNumber;
+                        ii < notificationMessage.SequenceNumber;
+                        ii++) {
+                        if (!subscription.MissingSequenceNumbers.Contains(ii)) {
                             subscription.MissingSequenceNumbers.Add(ii);
                         }
                     }
 
-                    subscription.NextExpectedSequenceNumber = notificationMessage.SequenceNumber+1;
+                    subscription.NextExpectedSequenceNumber = notificationMessage.SequenceNumber + 1;
                 }
-                                                        
+
                 // save the largest received message number (gap exist because of client side threading issues).
-                if (subscription.LastReceivedSequenceNumber < notificationMessage.SequenceNumber)
-                {
+                if (subscription.LastReceivedSequenceNumber < notificationMessage.SequenceNumber) {
                     subscription.LastReceivedSequenceNumber = notificationMessage.SequenceNumber;
                 }
 
                 // save the message.                
                 DateTime timestamp = responseHeader.Timestamp;
-                DateTime start = subscription.States[subscription.States.Count-1].Start;
+                DateTime start = subscription.States[subscription.States.Count - 1].Start;
 
                 // check if this is an old request being processed late.
-                if (start > timestamp && subscription.States.Count > 1)
-                {
+                if (start > timestamp && subscription.States.Count > 1) {
                     subscription.States[subscription.States.Count - 2].KeepAlives.Add(timestamp);
-                }
-                else
-                {
+                } else {
                     subscription.States[subscription.States.Count - 1].KeepAlives.Add(timestamp);
                 }
 
@@ -2004,8 +1795,7 @@ namespace Opc.Ua.ServerTest
                 subscription.ReceiveTimes.Add(responseHeader.Timestamp);
 
                 // change to keep alive mode.
-                if (subscription.StaticData)
-                {
+                if (subscription.StaticData) {
                     PublishingState state = new PublishingState();
 
                     state.KeepAliveCount = subscription.KeepAliveCount;
@@ -2013,7 +1803,7 @@ namespace Opc.Ua.ServerTest
                     state.Start = timestamp;
                     state.KeepAliveMode = true;
 
-                    subscription.States[subscription.States.Count-1].End = state.Start;
+                    subscription.States[subscription.States.Count - 1].End = state.Start;
                     subscription.States.Add(state);
                 }
 
@@ -2027,25 +1817,17 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Halts the test after an error occurred.
         /// </summary>
-        private void HaltTestOnError(Exception e, string format, params object[] args)
-        {
-            if (Interlocked.CompareExchange(ref m_stopped, 1, 0) == 0)
-            {
-                try
-                {
+        private void HaltTestOnError(Exception e, string format, params object[] args) {
+            if (Interlocked.CompareExchange(ref m_stopped, 1, 0) == 0) {
+                try {
                     m_errorEvent.Set();
 
-                    if (e != null)
-                    {
+                    if (e != null) {
                         Log(e, format, args);
-                    }
-                    else
-                    {
+                    } else {
                         Log(format, args);
                     }
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     // guard against stray publish reponses during debugging.
                 }
             }
@@ -2054,14 +1836,10 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Finds the subscription.
         /// </summary>
-        private Subscription Find(uint subscriptionId)
-        {
-            lock (m_subscriptions)
-            {
-                for (int ii = 0; ii <  m_subscriptions.Count; ii++)
-                {
-                    if (m_subscriptions[ii].SubscriptionId == subscriptionId)
-                    {
+        private Subscription Find(uint subscriptionId) {
+            lock (m_subscriptions) {
+                for (int ii = 0; ii < m_subscriptions.Count; ii++) {
+                    if (m_subscriptions[ii].SubscriptionId == subscriptionId) {
                         return m_subscriptions[ii];
                     }
                 }
@@ -2070,14 +1848,12 @@ namespace Opc.Ua.ServerTest
                 return null;
             }
         }
-        
+
         /// <summary>
         /// Save the acknowledgement to send to the server with the publish.
         /// </summary>
-        private void SaveAcknowledgement(uint subscriptionId, uint sequenceNumber)
-        {
-            lock (m_acknowledgements)
-            {
+        private void SaveAcknowledgement(uint subscriptionId, uint sequenceNumber) {
+            lock (m_acknowledgements) {
                 SubscriptionAcknowledgement acknowledgement = new SubscriptionAcknowledgement();
 
                 acknowledgement.SubscriptionId = subscriptionId;
@@ -2085,26 +1861,26 @@ namespace Opc.Ua.ServerTest
 
                 m_acknowledgements.Add(acknowledgement);
             }
-        }        
+        }
 
         /// <summary>
         /// Returns the acknowledgements to send to the server with the publish.
         /// </summary>
-        private SubscriptionAcknowledgementCollection GetAcknowledgements()
-        {
-            lock (m_acknowledgements)
-            {
+        private SubscriptionAcknowledgementCollection GetAcknowledgements() {
+            lock (m_acknowledgements) {
                 SubscriptionAcknowledgementCollection acknowledgements = new SubscriptionAcknowledgementCollection();
                 acknowledgements.AddRange(m_acknowledgements);
                 m_acknowledgements.Clear();
                 return acknowledgements;
             }
         }
-        
+
         #region Verification Methods
+
         #endregion
 
         #region Private Fields
+
         private List<Subscription> m_subscriptions;
         private ManualResetEvent m_errorEvent;
         private SubscriptionAcknowledgementCollection m_acknowledgements;
@@ -2115,6 +1891,7 @@ namespace Opc.Ua.ServerTest
         private int m_outstandingPublishRequests;
         private int m_publishPipelineDepth;
         private uint m_lastClientHandle = 1000;
+
         #endregion
     }
 }

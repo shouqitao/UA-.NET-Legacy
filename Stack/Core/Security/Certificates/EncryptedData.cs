@@ -20,19 +20,17 @@ using System.Xml;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Stores a block of encypted data.
     /// </summary>
-    public class EncryptedData
-    {
+    public class EncryptedData {
         #region Private Members
+
         /// <summary>
         /// The algorithm used to encrypt the data.
         /// </summary>
-        public string Algorithm
-        {
+        public string Algorithm {
             get { return m_algorithm; }
             set { m_algorithm = value; }
         }
@@ -40,16 +38,18 @@ namespace Opc.Ua
         /// <summary>
         /// The encrypted data.
         /// </summary>
-        public byte[] Data
-        {
+        public byte[] Data {
             get { return m_data; }
             set { m_data = value; }
         }
+
         #endregion
 
         #region Private Members
+
         private string m_algorithm;
         private byte[] m_data;
+
         #endregion
     }
 }

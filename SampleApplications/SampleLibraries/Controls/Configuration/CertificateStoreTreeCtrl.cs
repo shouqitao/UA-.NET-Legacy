@@ -44,37 +44,35 @@ using System.Management.Instrumentation;
 using System.Runtime.InteropServices;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the use to select a store from a list stores on a machine.
     /// </summary>
-    public partial class CertificateStoreTreeCtrl : Opc.Ua.Client.Controls.BaseTreeCtrl
-    {
+    public partial class CertificateStoreTreeCtrl : Opc.Ua.Client.Controls.BaseTreeCtrl {
         #region Constructors
+
         /// <summary>
         /// Initializes the control.
         /// </summary>
-        public CertificateStoreTreeCtrl()
-        {
+        public CertificateStoreTreeCtrl() {
             InitializeComponent();
         }
+
         #endregion
 
         #region Private Fields
+
         private CertificateListCtrl m_certificateListCtrl;
 
-        private enum ContainerInfoType
-        {
+        private enum ContainerInfoType {
             Root,
             TopLevelStore,
             Service,
             User,
-            Store            
+            Store
         }
 
-        private class ContainerInfo
-        {
+        private class ContainerInfo {
             public ContainerInfoType Type;
             public string DisplayName;
             public CertificateStoreIdentifier Store;
@@ -84,14 +82,12 @@ namespace Opc.Ua.Client.Controls
             public ServiceController Service;
             public AccountInfo Account;
 
-            public ContainerInfo(ContainerInfoType type, string displayName)
-            {
+            public ContainerInfo(ContainerInfoType type, string displayName) {
                 Type = type;
                 DisplayName = displayName;
             }
 
-            public ContainerInfo(ContainerInfoType type, CertificateStoreIdentifier store)
-            {
+            public ContainerInfo(ContainerInfoType type, CertificateStoreIdentifier store) {
                 Type = type;
                 DisplayName = store.ToString();
                 Store = store;
@@ -100,48 +96,43 @@ namespace Opc.Ua.Client.Controls
             /// <summary>
             /// Returns the display string for the object.
             /// </summary>
-            public override string ToString()
-            {
+            public override string ToString() {
                 return DisplayName;
             }
 
             /// <summary>
             /// Returns a store for the container.
             /// </summary>
-            public CertificateStoreIdentifier GetCertificateStore()
-            {
-                if (this.Store != null)
-                {
+            public CertificateStoreIdentifier GetCertificateStore() {
+                if (this.Store != null) {
                     return this.Store;
                 }
 
-                if (this.CertificateStore != null)
-                {
+                if (this.CertificateStore != null) {
                     CertificateStoreIdentifier store = new CertificateStoreIdentifier();
 
                     store.StoreType = CertificateStoreType.Windows;
                     store.StorePath = this.CertificateStore.Format();
-                    
+
                     return store;
                 }
 
                 return null;
             }
         }
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Returns the currently selected store.
         /// </summary>
-        public CertificateStoreIdentifier SelectedStore
-        {
-            get
-            {
+        public CertificateStoreIdentifier SelectedStore {
+            get {
                 ContainerInfo info = SelectedTag as ContainerInfo;
 
-                if (info == null)
-                {
+                if (info == null) {
                     return null;
                 }
 
@@ -152,8 +143,7 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// A control that can be used to display the contents of a certificate store.
         /// </summary>
-        public CertificateListCtrl CertificateListCtrl
-        {
+        public CertificateListCtrl CertificateListCtrl {
             get { return m_certificateListCtrl; }
             set { m_certificateListCtrl = value; }
         }
@@ -161,25 +151,24 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Provides the configuration to use when displaying the control.
         /// </summary>
-        public void Initialize()
-        {
+        public void Initialize() {
             NodesTV.Nodes.Clear();
             TreeNode node = AddNode(null, new ContainerInfo(ContainerInfoType.Root, System.Net.Dns.GetHostName()));
             node.Nodes.Add(new TreeNode());
             node.Expand();
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Updates the controls after a node is selected.
         /// </summary>
-        protected override void SelectNode()
-        {
+        protected override void SelectNode() {
             base.SelectNode();
-            
-            if (m_certificateListCtrl != null)
-            {
+
+            if (m_certificateListCtrl != null) {
                 m_certificateListCtrl.Initialize(SelectedStore, null);
             }
         }
@@ -187,23 +176,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Fetches the children before expanding a node.
         /// </summary>
-        protected override bool BeforeExpand(TreeNode clickedNode)
-        {
-            if (clickedNode == null)
-            {
+        protected override bool BeforeExpand(TreeNode clickedNode) {
+            if (clickedNode == null) {
                 return false;
             }
 
             // check for a dummy placeholder node.
-            if (clickedNode.Nodes.Count == 1 && clickedNode.Nodes[0].Tag == null)
-            {
-                try
-                {
+            if (clickedNode.Nodes.Count == 1 && clickedNode.Nodes[0].Tag == null) {
+                try {
                     this.Cursor = Cursors.WaitCursor;
                     FetchChildren(clickedNode);
-                }
-                finally
-                {
+                } finally {
                     this.Cursor = Cursors.Default;
                 }
             }
@@ -214,22 +197,18 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Enables the menu items.
         /// </summary>
-        protected override void EnableMenuItems(TreeNode clickedNode)
-        {
+        protected override void EnableMenuItems(TreeNode clickedNode) {
             base.EnableMenuItems(clickedNode);
 
             ContainerInfo info = clickedNode.Tag as ContainerInfo;
 
-            if (info != null)
-            {
+            if (info != null) {
                 CopyMI.Enabled = true;
 
-                if (info.Type == ContainerInfoType.Store)
-                {
+                if (info.Type == ContainerInfoType.Store) {
                     IDataObject clipboardData = Clipboard.GetDataObject();
 
-                    if (clipboardData.GetDataPresent(DataFormats.Text))
-                    {
+                    if (clipboardData.GetDataPresent(DataFormats.Text)) {
                         PasteMI.Enabled = true;
                     }
                 }
@@ -239,14 +218,12 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Updates the properties of a node in the view.
         /// </summary>
-        protected override void UpdateNode(TreeNode treeNode, object item, string text, string icon)
-        {
+        protected override void UpdateNode(TreeNode treeNode, object item, string text, string icon) {
             base.UpdateNode(treeNode, item, text, icon);
 
             ContainerInfo info = item as ContainerInfo;
 
-            if (info != null)
-            {
+            if (info != null) {
                 SetIcon(treeNode, info);
             }
         }
@@ -254,12 +231,10 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the data to drag.
         /// </summary>
-        protected override object GetDataToDrag(TreeNode node)
-        {
+        protected override object GetDataToDrag(TreeNode node) {
             ContainerInfo info = node.Tag as ContainerInfo;
 
-            if (info == null)
-            {
+            if (info == null) {
                 return null;
             }
 
@@ -269,20 +244,17 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Handles a drag enter event.
         /// </summary>
-        protected override void NodesTV_DragEnter(object sender, DragEventArgs e)
-        {
+        protected override void NodesTV_DragEnter(object sender, DragEventArgs e) {
             e.Effect = DragDropEffects.Copy;
         }
 
         /// <summary>
         /// Handles a drag over event.
         /// </summary>
-        protected override void NodesTV_DragOver(object sender, DragEventArgs e)
-        {
+        protected override void NodesTV_DragOver(object sender, DragEventArgs e) {
             TreeNode node = NodesTV.GetNodeAt(PointToClient(new Point(e.X, e.Y)));
 
-            if (node == null)
-            {
+            if (node == null) {
                 e.Effect = DragDropEffects.None;
                 return;
             }
@@ -293,48 +265,38 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Handles a drop event.
         /// </summary>
-        protected override void NodesTV_DragDrop(object sender, DragEventArgs e)
-        {
-            try
-            {
+        protected override void NodesTV_DragDrop(object sender, DragEventArgs e) {
+            try {
                 TreeNode node = NodesTV.GetNodeAt(PointToClient(new Point(e.X, e.Y)));
 
-                if (node == null)
-                {
+                if (node == null) {
                     return;
                 }
 
                 ContainerInfo info = node.Tag as ContainerInfo;
 
-                if (info == null)
-                {
+                if (info == null) {
                     return;
                 }
 
-                if (info.Type == ContainerInfoType.Store)
-                {
+                if (info.Type == ContainerInfoType.Store) {
                     CertificateStoreIdentifier id = info.GetCertificateStore();
 
-                    if (id == null)
-                    {
+                    if (id == null) {
                         return;
                     }
 
                     object[] certificates = e.Data.GetData(typeof(object[])) as object[];
 
-                    if (certificates == null)
-                    {
+                    if (certificates == null) {
                         return;
                     }
 
-                    using (ICertificateStore store = id.OpenStore())
-                    {
-                        for (int ii = 0; ii < certificates.Length; ii++)
-                        {
+                    using (ICertificateStore store = id.OpenStore()) {
+                        for (int ii = 0; ii < certificates.Length; ii++) {
                             X509Certificate2 certificate = certificates[ii] as X509Certificate2;
 
-                            if (certificate != null)
-                            {
+                            if (certificate != null) {
                                 store.Add(certificate);
                             }
                         }
@@ -343,89 +305,79 @@ namespace Opc.Ua.Client.Controls
                     NodesTV.SelectedNode = node;
                     return;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Updates the children of a node.
         /// </summary>
-        private void FetchChildren(TreeNode parent)
-        {
+        private void FetchChildren(TreeNode parent) {
             // get rid of existing children.
             parent.Nodes.Clear();
 
             // check for a valid node.
             ContainerInfo info = parent.Tag as ContainerInfo;
-            
-            if (info == null)
-            {
+
+            if (info == null) {
                 return;
             }
 
             // the node type is used to determine what children exist.
-            switch (info.Type)
-            {
-                case ContainerInfoType.Root:
-                {  
+            switch (info.Type) {
+                case ContainerInfoType.Root: {
                     ContainerInfo childInfo = new ContainerInfo(ContainerInfoType.TopLevelStore, "Local Machine");
-                    childInfo.StoreType = WindowsStoreType.LocalMachine;                    
+                    childInfo.StoreType = WindowsStoreType.LocalMachine;
                     AddNode(parent, childInfo);
-                    
+
                     childInfo = new ContainerInfo(ContainerInfoType.TopLevelStore, "Current User");
-                    childInfo.StoreType = WindowsStoreType.CurrentUser;                    
+                    childInfo.StoreType = WindowsStoreType.CurrentUser;
                     AddNode(parent, childInfo);
-                    
+
                     childInfo = new ContainerInfo(ContainerInfoType.TopLevelStore, "Services");
-                    childInfo.StoreType = WindowsStoreType.Service;                    
+                    childInfo.StoreType = WindowsStoreType.Service;
                     AddNode(parent, childInfo);
-                    
+
                     childInfo = new ContainerInfo(ContainerInfoType.TopLevelStore, "Users");
-                    childInfo.StoreType = WindowsStoreType.User;                    
+                    childInfo.StoreType = WindowsStoreType.User;
                     AddNode(parent, childInfo);
                     break;
                 }
 
-                case ContainerInfoType.TopLevelStore:
-                {  
-                    if (info.StoreType == WindowsStoreType.Service)
-                    {
-                        foreach (ServiceController service in ServiceController.GetServices())
-                        {        
+                case ContainerInfoType.TopLevelStore: {
+                    if (info.StoreType == WindowsStoreType.Service) {
+                        foreach (ServiceController service in ServiceController.GetServices()) {
                             ContainerInfo childInfo = new ContainerInfo(ContainerInfoType.Service, service.DisplayName);
                             childInfo.StoreType = WindowsStoreType.Service;
                             childInfo.Service = service;
                             AddNode(parent, childInfo);
-                        }                     
+                        }
 
                         break;
                     }
-                    
-                    if (info.StoreType == WindowsStoreType.User)
-                    {
+
+                    if (info.StoreType == WindowsStoreType.User) {
                         IList<AccountInfo> users = AccountInfo.Query(null);
 
-                        foreach (AccountInfo user in users)
-                        {        
-                            if (user.SidType == AccountSidType.User)
-                            {
+                        foreach (AccountInfo user in users) {
+                            if (user.SidType == AccountSidType.User) {
                                 ContainerInfo childInfo = new ContainerInfo(ContainerInfoType.User, user.Name);
                                 childInfo.StoreType = WindowsStoreType.User;
                                 childInfo.Account = user;
                                 AddNode(parent, childInfo);
                             }
-                        }                     
+                        }
 
                         break;
                     }
-                    
-                    foreach (WindowsCertificateStore store in WindowsCertificateStore.EnumerateStores(info.StoreType, null, null))
-                    {
+
+                    foreach (WindowsCertificateStore store in WindowsCertificateStore.EnumerateStores(info.StoreType,
+                        null, null)) {
                         ContainerInfo childInfo = new ContainerInfo(ContainerInfoType.Store, store.DisplayName);
                         childInfo.StoreType = info.StoreType;
                         childInfo.CertificateStore = store;
@@ -434,16 +386,14 @@ namespace Opc.Ua.Client.Controls
 
                     break;
                 }
-                    
-                case ContainerInfoType.Service:
-                {  
-                    if (info.Service == null)
-                    {
+
+                case ContainerInfoType.Service: {
+                    if (info.Service == null) {
                         break;
                     }
 
-                    foreach (WindowsCertificateStore store in WindowsCertificateStore.EnumerateStores(info.StoreType, null, info.Service.ServiceName))
-                    {
+                    foreach (WindowsCertificateStore store in WindowsCertificateStore.EnumerateStores(info.StoreType,
+                        null, info.Service.ServiceName)) {
                         ContainerInfo childInfo = new ContainerInfo(ContainerInfoType.Store, store.DisplayName);
                         childInfo.StoreType = info.StoreType;
                         childInfo.CertificateStore = store;
@@ -452,16 +402,14 @@ namespace Opc.Ua.Client.Controls
 
                     break;
                 }
-                    
-                case ContainerInfoType.User:
-                {  
-                    if (info.Account == null)
-                    {
+
+                case ContainerInfoType.User: {
+                    if (info.Account == null) {
                         break;
                     }
 
-                    foreach (WindowsCertificateStore store in WindowsCertificateStore.EnumerateStores(info.StoreType, null, info.Account.Sid))
-                    {
+                    foreach (WindowsCertificateStore store in WindowsCertificateStore.EnumerateStores(info.StoreType,
+                        null, info.Account.Sid)) {
                         ContainerInfo childInfo = new ContainerInfo(ContainerInfoType.Store, store.DisplayName);
                         childInfo.StoreType = info.StoreType;
                         childInfo.CertificateStore = store;
@@ -473,63 +421,52 @@ namespace Opc.Ua.Client.Controls
             }
 
             // add a dummy child to show the + sign.
-            foreach (TreeNode child in parent.Nodes)
-            {
+            foreach (TreeNode child in parent.Nodes) {
                 child.Nodes.Add(new TreeNode());
             }
         }
-        
+
         /// <summary>
         /// Sets the icon for the tree node.
         /// </summary>
-        private void SetIcon(TreeNode treeNode, ContainerInfo info)
-        {
-            switch (info.Type)
-            {
-                case ContainerInfoType.Root:
-                {
+        private void SetIcon(TreeNode treeNode, ContainerInfo info) {
+            switch (info.Type) {
+                case ContainerInfoType.Root: {
                     treeNode.ImageKey = GuiUtils.Icons.Desktop;
                     treeNode.SelectedImageKey = GuiUtils.Icons.Desktop;
                     break;
-                }      
+                }
 
-                case ContainerInfoType.Service:
-                {
+                case ContainerInfoType.Service: {
                     treeNode.ImageKey = GuiUtils.Icons.Service;
                     treeNode.SelectedImageKey = GuiUtils.Icons.Service;
                     break;
                 }
 
-                case ContainerInfoType.User:
-                {
+                case ContainerInfoType.User: {
                     treeNode.ImageKey = GuiUtils.Icons.SingleUser;
                     treeNode.SelectedImageKey = GuiUtils.Icons.SingleUser;
                     break;
                 }
 
-                case ContainerInfoType.Store:
-                {
+                case ContainerInfoType.Store: {
                     treeNode.ImageKey = GuiUtils.Icons.CertificateStore;
                     treeNode.SelectedImageKey = GuiUtils.Icons.CertificateStore;
                     break;
                 }
 
-                case ContainerInfoType.TopLevelStore:
-                {
+                case ContainerInfoType.TopLevelStore: {
                     treeNode.ImageKey = GuiUtils.Icons.CertificateStore;
                     treeNode.SelectedImageKey = GuiUtils.Icons.CertificateStore;
 
-                    switch (info.StoreType)
-                    {
-                        case WindowsStoreType.User:
-                        {
+                    switch (info.StoreType) {
+                        case WindowsStoreType.User: {
                             treeNode.ImageKey = GuiUtils.Icons.Users;
                             treeNode.SelectedImageKey = GuiUtils.Icons.Users;
                             break;
                         }
 
-                        case WindowsStoreType.Service:
-                        {
+                        case WindowsStoreType.Service: {
                             treeNode.ImageKey = GuiUtils.Icons.ServiceGroup;
                             treeNode.SelectedImageKey = GuiUtils.Icons.ServiceGroup;
                             break;
@@ -539,33 +476,30 @@ namespace Opc.Ua.Client.Controls
                     break;
                 }
 
-                default:
-                {
+                default: {
                     treeNode.ImageKey = GuiUtils.Icons.Folder;
                     treeNode.SelectedImageKey = GuiUtils.Icons.SelectedFolder;
                     break;
                 }
             }
         }
+
         #endregion
 
         #region Event Handler
-        private void CopyMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void CopyMI_Click(object sender, EventArgs e) {
+            try {
                 TreeNode node = NodesTV.SelectedNode;
 
                 // check if valid store selected.
                 ContainerInfo info = node.Tag as ContainerInfo;
 
-                if (info == null)
-                {
+                if (info == null) {
                     return;
                 }
 
-                if (info.Type != ContainerInfoType.Store || node.Parent == null)
-                {
+                if (info.Type != ContainerInfoType.Store || node.Parent == null) {
                     return;
                 }
 
@@ -574,32 +508,24 @@ namespace Opc.Ua.Client.Controls
                 StringBuilder builder = new StringBuilder();
                 XmlWriter writer = XmlWriter.Create(builder);
 
-                try
-                {
+                try {
                     DataContractSerializer serializer = new DataContractSerializer(typeof(CertificateStoreIdentifier));
                     serializer.WriteObject(writer, store);
-                }
-                finally
-                {
+                } finally {
                     writer.Close();
                 }
 
                 ClipboardHack.SetData(DataFormats.Text, builder.ToString());
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void PasteMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string xml = (string)ClipboardHack.GetData(DataFormats.Text);
+        private void PasteMI_Click(object sender, EventArgs e) {
+            try {
+                string xml = (string) ClipboardHack.GetData(DataFormats.Text);
 
-                if (String.IsNullOrEmpty(xml))
-                {
+                if (String.IsNullOrEmpty(xml)) {
                     return;
                 }
 
@@ -607,22 +533,18 @@ namespace Opc.Ua.Client.Controls
                 ContainerInfo info = NodesTV.SelectedNode.Tag as ContainerInfo;
 
                 // check if pasting into a store.
-                if (info.Type == ContainerInfoType.Store)
-                {
+                if (info.Type == ContainerInfoType.Store) {
                     CertificateIdentifier id = null;
 
-                    using (XmlTextReader reader = new XmlTextReader(new StringReader(xml)))
-                    {
+                    using (XmlTextReader reader = new XmlTextReader(new StringReader(xml))) {
                         DataContractSerializer serializer = new DataContractSerializer(typeof(CertificateIdentifier));
-                        id = (CertificateIdentifier)serializer.ReadObject(reader, false);
+                        id = (CertificateIdentifier) serializer.ReadObject(reader, false);
                     }
 
-                    if (id.Certificate != null)
-                    {
+                    if (id.Certificate != null) {
                         CertificateStoreIdentifier storeId = info.GetCertificateStore();
 
-                        using (ICertificateStore store = storeId.OpenStore())
-                        {
+                        using (ICertificateStore store = storeId.OpenStore()) {
                             store.Add(id.Certificate);
                         }
                     }
@@ -630,12 +552,11 @@ namespace Opc.Ua.Client.Controls
                     SelectNode();
                     return;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

@@ -36,73 +36,64 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Displays a list of nodes.
     /// </summary>
-    public partial class NodeListCtrl : Opc.Ua.Client.Controls.BaseListCtrl
-    {
+    public partial class NodeListCtrl : Opc.Ua.Client.Controls.BaseListCtrl {
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeListCtrl"/> class.
         /// </summary>
-        public NodeListCtrl()
-        {
+        public NodeListCtrl() {
             InitializeComponent();
-			SetColumns(m_ColumnNames);
+            SetColumns(m_ColumnNames);
         }
 
         #region Private Fields
+
         private Session m_session;
         private BrowseListCtrl m_referencesCTRL;
         private AttributeListCtrl m_attributesCTRL;
-       
-		// The columns to display in the control.		
-		private readonly object[][] m_ColumnNames = new object[][]
-		{
-			new object[] { "Name",  HorizontalAlignment.Left, null },  
-			new object[] { "ID",    HorizontalAlignment.Left,   null }
-		};
-		#endregion
+
+        // The columns to display in the control.		
+        private readonly object[][] m_ColumnNames = new object[][] {
+            new object[] {"Name", HorizontalAlignment.Left, null}, new object[] {"ID", HorizontalAlignment.Left, null}
+        };
+
+        #endregion
 
         /// <summary>
         /// The control that displays the non-hierarchial references for the selected node.
         /// </summary>
-        public BrowseListCtrl ReferencesCTRL
-        {
-            get { return m_referencesCTRL;  }
+        public BrowseListCtrl ReferencesCTRL {
+            get { return m_referencesCTRL; }
             set { m_referencesCTRL = value; }
         }
 
         /// <summary>
         /// The control that displays the attributes/properties for the selected node.
         /// </summary>
-        public AttributeListCtrl AttributesCTRL
-        {
-            get { return m_attributesCTRL;  }
+        public AttributeListCtrl AttributesCTRL {
+            get { return m_attributesCTRL; }
             set { m_attributesCTRL = value; }
         }
-            
+
         /// <summary>
         /// Initializes the control with a set of items.
         /// </summary>
-        public void Initialize(Session session, IList<NodeId> nodeIds)
-        {
+        public void Initialize(Session session, IList<NodeId> nodeIds) {
             ItemsLV.Items.Clear();
             m_session = session;
 
-            if (m_session == null || nodeIds == null || nodeIds.Count == 0)
-            {
+            if (m_session == null || nodeIds == null || nodeIds.Count == 0) {
                 AdjustColumns();
                 return;
             }
 
-            for (int ii = 0; ii < nodeIds.Count; ii++)
-            {
+            for (int ii = 0; ii < nodeIds.Count; ii++) {
                 ILocalNode node = m_session.NodeCache.Find(nodeIds[ii]) as ILocalNode;
 
-                if (node == null)
-                {
+                if (node == null) {
                     continue;
                 }
 
@@ -111,16 +102,14 @@ namespace Opc.Ua.Client.Controls
 
             AdjustColumns();
         }
-        
+
         /// <summary>
         /// Adds a node to the control.
         /// </summary>
-        public void Add(NodeId nodeId)
-        {
+        public void Add(NodeId nodeId) {
             ILocalNode node = m_session.NodeCache.Find(nodeId) as ILocalNode;
 
-            if (node != null)
-            {
+            if (node != null) {
                 AddItem(node);
                 AdjustColumns();
             }
@@ -129,12 +118,10 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Returns the list of nodes in the control.
         /// </summary>
-        public IList<ILocalNode> GetNodeList()
-        {
+        public IList<ILocalNode> GetNodeList() {
             List<ILocalNode> items = new List<ILocalNode>(ItemsLV.Items.Count);
-            
-            for (int ii  = 0; ii < ItemsLV.Items.Count; ii++)
-            {
+
+            for (int ii = 0; ii < ItemsLV.Items.Count; ii++) {
                 items.Add(ItemsLV.Items[ii].Tag as ILocalNode);
             }
 
@@ -142,108 +129,91 @@ namespace Opc.Ua.Client.Controls
         }
 
         #region Overridden Methods
+
         /// <see cref="BaseListCtrl.SelectItems" />
-        protected override void SelectItems()
-        {
+        protected override void SelectItems() {
             base.SelectItems();
 
             ILocalNode node = GetSelectedTag(0) as ILocalNode;
 
-            if (node == null)
-            {
+            if (node == null) {
                 return;
             }
 
             // update attributes control.
-            if (AttributesCTRL != null)
-            {
+            if (AttributesCTRL != null) {
                 AttributesCTRL.Initialize(m_session, node.NodeId);
             }
 
             // update references control.
-            if (ReferencesCTRL != null)
-            {
+            if (ReferencesCTRL != null) {
                 ReferencesCTRL.Initialize(m_session, node.NodeId);
             }
         }
 
         /// <see cref="Opc.Ua.Client.Controls.BaseListCtrl.EnableMenuItems" />
-		protected override void EnableMenuItems(ListViewItem clickedItem)
-		{
+        protected override void EnableMenuItems(ListViewItem clickedItem) {
             DeleteMI.Enabled = ItemsLV.SelectedItems.Count > 0;
-		}
+        }
 
         /// <see cref="Opc.Ua.Client.Controls.BaseListCtrl.UpdateItem(ListViewItem,object)" />
-        protected override void UpdateItem(ListViewItem listItem, object item)
-        {
+        protected override void UpdateItem(ListViewItem listItem, object item) {
             ILocalNode node = item as ILocalNode;
 
-			if (node == null)
-			{
-				base.UpdateItem(listItem, item);
-				return;
-			}
+            if (node == null) {
+                base.UpdateItem(listItem, item);
+                return;
+            }
 
-			listItem.SubItems[0].Text = Utils.Format("{0}", node.DisplayName);
-			listItem.SubItems[1].Text = Utils.Format("{0}", node.NodeId);
-            
+            listItem.SubItems[0].Text = Utils.Format("{0}", node.DisplayName);
+            listItem.SubItems[1].Text = Utils.Format("{0}", node.NodeId);
+
             listItem.ImageKey = GuiUtils.GetTargetIcon(m_session, node.NodeClass, node.TypeDefinitionId);
-			listItem.Tag = item;
+            listItem.Tag = item;
         }
 
         /// <summary>
         /// Handles a drop event.
         /// </summary>
-        protected override void ItemsLV_DragDrop(object sender, DragEventArgs e)
-        {            
-            try
-            {
+        protected override void ItemsLV_DragDrop(object sender, DragEventArgs e) {
+            try {
                 ReferenceDescription reference = e.Data.GetData(typeof(ReferenceDescription)) as ReferenceDescription;
 
-                if (reference == null)
-                {
+                if (reference == null) {
                     return;
                 }
 
                 ILocalNode node = m_session.NodeCache.Find(reference.NodeId) as ILocalNode;
 
-                if (node == null)
-                {
+                if (node == null) {
                     return;
                 }
 
                 AddItem(node);
 
-                AdjustColumns();                    
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+                AdjustColumns();
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
 
-        private void DeleteMI_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void DeleteMI_Click(object sender, EventArgs e) {
+            try {
                 List<ListViewItem> items = new List<ListViewItem>(ItemsLV.SelectedItems.Count);
-                
-                for (int ii  = 0; ii < ItemsLV.SelectedItems.Count; ii++)
-                {
+
+                for (int ii = 0; ii < ItemsLV.SelectedItems.Count; ii++) {
                     items.Add(ItemsLV.SelectedItems[ii]);
                 }
 
-                for (int ii  = 0; ii < items.Count; ii++)
-                {
+                for (int ii = 0; ii < items.Count; ii++) {
                     items[ii].Remove();
                 }
 
                 AdjustColumns();
-			}
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
     }

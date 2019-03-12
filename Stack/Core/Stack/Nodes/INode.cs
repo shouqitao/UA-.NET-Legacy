@@ -16,13 +16,11 @@
 
 using System.Collections.Generic;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// An interface to an object that describes a node.
     /// </summary>
-    public interface INode
-    {
+    public interface INode {
         /// <summary>
         /// The node identifier.
         /// </summary>
@@ -34,7 +32,7 @@ namespace Opc.Ua
         /// </summary>
         /// <value>The node class.</value>
         NodeClass NodeClass { get; }
-        
+
         /// <summary>
         /// The locale independent browse name.
         /// </summary>
@@ -53,12 +51,11 @@ namespace Opc.Ua
         /// <value>The type definition identifier.</value>
         ExpandedNodeId TypeDefinitionId { get; }
     }
-    
+
     /// <summary>
     /// An interface to an object that describes a node local to the server.
     /// </summary>
-    public interface ILocalNode : INode
-    {
+    public interface ILocalNode : INode {
         /// <summary>
         /// A synchronization object that can be used to safely access the node.
         /// </summary>
@@ -150,23 +147,21 @@ namespace Opc.Ua
         /// <returns>The result of Write operation</returns>
         ServiceResult Write(uint attributeId, DataValue value);
     }
-        
+
     /// <summary>
     /// An interface to an object that describes an ObjectType node.
     /// </summary>
-    public interface IObjectType : ILocalNode
-    {
+    public interface IObjectType : ILocalNode {
         /// <summary>
         /// Whether the type is an abstract type.
         /// </summary>
         bool IsAbstract { get; set; }
-    }        
+    }
 
     /// <summary>
     /// An interface to an object that describes an Object node.
     /// </summary>
-    public interface IObject : ILocalNode
-    {
+    public interface IObject : ILocalNode {
         /// <summary>
         /// Whether the object supports events.
         /// </summary>
@@ -176,8 +171,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that describes either a Variable or a VariableType node.
     /// </summary>
-    public interface IVariableBase : ILocalNode
-    {
+    public interface IVariableBase : ILocalNode {
         /// <summary>
         /// The value attribute.
         /// </summary>
@@ -206,8 +200,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that describes a VariableType node.
     /// </summary>
-    public interface IVariableType : IVariableBase
-    {
+    public interface IVariableType : IVariableBase {
         /// <summary>
         /// Whether the type is an abstract type.
         /// </summary>
@@ -217,8 +210,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that describes a Variable node.
     /// </summary>
-    public interface IVariable : IVariableBase
-    {
+    public interface IVariable : IVariableBase {
         /// <summary>
         /// The type of access supported by variable.
         /// </summary>
@@ -247,8 +239,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that describes a DataType node.
     /// </summary>
-    public interface IMethod : ILocalNode
-    {
+    public interface IMethod : ILocalNode {
         /// <summary>
         /// Whether the method is currently executable.
         /// </summary>
@@ -265,8 +256,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that describes a DataType node.
     /// </summary>
-    public interface IDataType : ILocalNode
-    {
+    public interface IDataType : ILocalNode {
         /// <summary>
         /// Whether the type is an abstract type.
         /// </summary>
@@ -279,8 +269,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that describes a ReferenceType node.
     /// </summary>
-    public interface IReferenceType : ILocalNode
-    {
+    public interface IReferenceType : ILocalNode {
         /// <summary>
         /// Whether the type is an abstract type.
         /// </summary>
@@ -305,8 +294,7 @@ namespace Opc.Ua
     /// <summary>
     /// An interface to an object that describes a View node.
     /// </summary>
-    public interface IView : ILocalNode
-    {
+    public interface IView : ILocalNode {
         /// <summary>
         /// Whether the view supports events.
         /// </summary>

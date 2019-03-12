@@ -22,24 +22,21 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// Creates a manages certificates.
     /// </summary>
-    public class CertificateFactory
-    {
+    public class CertificateFactory {
         #region Public Methods
+
         /// <summary>
         /// Creates a certificate from a buffer with DER encoded certificate.
         /// </summary>
         /// <param name="encodedData">The encoded data.</param>
         /// <param name="useCache">if set to <c>true</c> the copy of the certificate in the cache is used.</param>
         /// <returns>The certificate.</returns>
-        public static X509Certificate2 Create(byte[] encodedData, bool useCache)
-        {
-            if (useCache)
-            {
+        public static X509Certificate2 Create(byte[] encodedData, bool useCache) {
+            if (useCache) {
                 return Load(new X509Certificate2(encodedData), false);
             }
 
@@ -56,42 +53,38 @@ namespace Opc.Ua
         /// This function is necessary because all private keys used for cryptography operations must be in a key conatiner. 
         /// Private keys stored in a PFX file have no key conatiner by default.
         /// </remarks>
-        public static X509Certificate2 Load(X509Certificate2 certificate, bool ensurePrivateKeyAccessible)
-        {
-            if (certificate == null)
-            {
+        public static X509Certificate2 Load(X509Certificate2 certificate, bool ensurePrivateKeyAccessible) {
+            if (certificate == null) {
                 return null;
             }
 
-            lock (m_certificates)
-            {
+            lock (m_certificates) {
                 X509Certificate2 cachedCertificate = null;
 
                 // check for existing cached certificate.
-                if (m_certificates.TryGetValue(certificate.Thumbprint, out cachedCertificate))
-                {
+                if (m_certificates.TryGetValue(certificate.Thumbprint, out cachedCertificate)) {
                     return cachedCertificate;
                 }
 
                 // nothing more to do if no private key or dont care about accessibility.
-                if (!certificate.HasPrivateKey || !ensurePrivateKeyAccessible)
-                {
+                if (!certificate.HasPrivateKey || !ensurePrivateKeyAccessible) {
                     return certificate;
                 }
 
-                #if !SILVERLIGHT
+#if !SILVERLIGHT
                 // ensure private key is accessible.
-                System.Security.Cryptography.RSACryptoServiceProvider key = certificate.PrivateKey as System.Security.Cryptography.RSACryptoServiceProvider;
+                System.Security.Cryptography.RSACryptoServiceProvider key =
+                    certificate.PrivateKey as System.Security.Cryptography.RSACryptoServiceProvider;
 
                 StringBuilder rootDir = new StringBuilder();
                 rootDir.Append(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData));
                 rootDir.Append("\\Microsoft\\Crypto\\RSA\\MachineKeys\\");
 
                 // chcek if the private key is in the machine store.
-                if (!System.IO.File.Exists(rootDir.ToString() + key.CspKeyContainerInfo.UniqueKeyContainerName))
-                {
+                if (!System.IO.File.Exists(rootDir.ToString() + key.CspKeyContainerInfo.UniqueKeyContainerName)) {
                     byte[] bytes = certificate.Export(X509ContentType.Pkcs12, String.Empty);
-                    certificate = new X509Certificate2(bytes, String.Empty, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
+                    certificate = new X509Certificate2(bytes, String.Empty,
+                        X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
                     m_certificates[certificate.Thumbprint] = certificate;
 
                     key = certificate.PrivateKey as System.Security.Cryptography.RSACryptoServiceProvider;
@@ -99,15 +92,15 @@ namespace Opc.Ua
                     // update the cache.
                     m_certificates[certificate.Thumbprint] = certificate;
 
-                    if (m_certificates.Count > 100)
-                    {
-                        Utils.Trace("WARNING - Process certificate cache has {0} certificates in it.", m_certificates.Count);
+                    if (m_certificates.Count > 100) {
+                        Utils.Trace("WARNING - Process certificate cache has {0} certificates in it.",
+                            m_certificates.Count);
                     }
 
                     // save the key container so it can be deleted later.
                     m_temporaryKeyContainers.Add(certificate);
                 }
-                #endif
+#endif
             }
 
             return certificate;
@@ -116,34 +109,27 @@ namespace Opc.Ua
         /// <summary>
         /// Cleans up temporary key containers created by the application.
         /// </summary>
-        public static void Cleanup()
-        {
-            #if !SILVERLIGHT
-            lock (m_certificates)
-            {
-                foreach (X509Certificate2 certificate in m_temporaryKeyContainers)
-                {
-                    try
-                    {
+        public static void Cleanup() {
+#if !SILVERLIGHT
+            lock (m_certificates) {
+                foreach (X509Certificate2 certificate in m_temporaryKeyContainers) {
+                    try {
                         DeleteKeyContainer(certificate);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Utils.Trace(e, "Could not delete key container.");
                     }
                 }
             }
-            #endif
+#endif
         }
 
         private static Dictionary<string, X509Certificate2> m_certificates = new Dictionary<string, X509Certificate2>();
         private static List<X509Certificate2> m_temporaryKeyContainers = new List<X509Certificate2>();
-        
+
         /// <summary>
         /// Creates an instance from a certificate with zero or more supporting certificates.
         /// </summary>
-        public static X509Certificate2 Create(params X509Certificate2[] certificates)
-        {
+        public static X509Certificate2 Create(params X509Certificate2[] certificates) {
             return certificates[0];
         }
 
@@ -163,26 +149,25 @@ namespace Opc.Ua
             string subjectName,
             IList<String> domainNames,
             ushort keySize,
-            ushort lifetimeInMonths)
-        {
+            ushort lifetimeInMonths) {
             return CreateCertificate(
-                null, 
-                null, 
-                null, 
-                applicationUri, 
-                applicationName, 
-                subjectName, 
-                domainNames, 
-                keySize, 
+                null,
+                null,
+                null,
+                applicationUri,
+                applicationName,
+                subjectName,
+                domainNames,
+                keySize,
                 DateTime.MinValue,
                 lifetimeInMonths,
                 0,
                 false,
                 false,
-                null, 
+                null,
                 null);
         }
-        
+
         /// <summary>
         /// Creates a self signed application instance certificate.
         /// </summary>
@@ -203,23 +188,22 @@ namespace Opc.Ua
             string subjectName,
             IList<String> domainNames,
             ushort keySize,
-            ushort lifetimeInMonths)
-        {
+            ushort lifetimeInMonths) {
             return CreateCertificate(
-                storeType, 
-                storePath, 
-                null, 
-                applicationUri, 
-                applicationName, 
-                subjectName, 
-                domainNames, 
+                storeType,
+                storePath,
+                null,
+                applicationUri,
+                applicationName,
+                subjectName,
+                domainNames,
                 keySize,
                 DateTime.MinValue,
                 lifetimeInMonths,
-                (ushort)256,
+                (ushort) 256,
                 false,
-                false, 
-                null, 
+                false,
+                null,
                 null);
         }
 
@@ -238,24 +222,23 @@ namespace Opc.Ua
             ushort lifetimeInMonths,
             bool isCA,
             string issuerKeyFilePath,
-            string issuerKeyFilePassword)
-        {
+            string issuerKeyFilePassword) {
             return CreateCertificate(
-                 storeType,
-                 storePath,
-                 password,
-                 applicationUri,
-                 applicationName,
-                 subjectName,
-                 domainNames,
-                 keySize,
-                 DateTime.MinValue,
-                 lifetimeInMonths,
-                 0,
-                 isCA,
-                 false,
-                 issuerKeyFilePath,
-                 issuerKeyFilePassword);
+                storeType,
+                storePath,
+                password,
+                applicationUri,
+                applicationName,
+                subjectName,
+                domainNames,
+                keySize,
+                DateTime.MinValue,
+                lifetimeInMonths,
+                0,
+                isCA,
+                false,
+                issuerKeyFilePath,
+                issuerKeyFilePassword);
         }
 
         /// <summary>
@@ -280,8 +263,7 @@ namespace Opc.Ua
             IList<String> domainNames,
             ushort keySize,
             ushort lifetimeInMonths,
-            ushort algorithm)
-        {
+            ushort algorithm) {
             return CreateCertificate(
                 storeType,
                 storePath,
@@ -337,19 +319,17 @@ namespace Opc.Ua
             bool usePEMFormat,
             string issuerKeyFilePath,
             string issuerKeyFilePassword,
-            ushort algorithm = 0)
-        {
+            ushort algorithm = 0) {
 #if !SILVERLIGHT
-            X509Certificate2 certificate  = null;
+            X509Certificate2 certificate = null;
 
             // use the proxy if create a certificate in a directory store.
-            if (storeType == CertificateStoreType.Directory)
-            {
+            if (storeType == CertificateStoreType.Directory) {
                 string executablePath = GetCertificateGeneratorPath();
 
-                if (String.IsNullOrEmpty(executablePath))
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "The CertificateGenerator utility is not installed.");
+                if (String.IsNullOrEmpty(executablePath)) {
+                    throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                        "The CertificateGenerator utility is not installed.");
                 }
 
                 certificate = Opc.Ua.CertificateFactory.CreateCertificateViaProxy(
@@ -372,19 +352,18 @@ namespace Opc.Ua
                 return certificate;
             }
 
-            if (isCA)
-            {
+            if (isCA) {
                 throw new NotSupportedException("Cannot create a CA certificate in a Windows store at this time.");
             }
 
-            if (!String.IsNullOrEmpty(password))
-            {
-                throw new NotSupportedException("Cannot add password when creating a certificate in a Windows store at this time.");
+            if (!String.IsNullOrEmpty(password)) {
+                throw new NotSupportedException(
+                    "Cannot add password when creating a certificate in a Windows store at this time.");
             }
 
-            if (!String.IsNullOrEmpty(issuerKeyFilePath))
-            {
-                throw new NotSupportedException("Cannot use a CA certificate to create a certificate in a Windows store at this time.");
+            if (!String.IsNullOrEmpty(issuerKeyFilePath)) {
+                throw new NotSupportedException(
+                    "Cannot use a CA certificate to create a certificate in a Windows store at this time.");
             }
 
             // set default values.
@@ -406,18 +385,14 @@ namespace Opc.Ua
                 keySize,
                 lifetimeInMonths,
                 algorithm);
-            
+
             // add it to the store.
-            if (!String.IsNullOrEmpty(storePath))
-            {
+            if (!String.IsNullOrEmpty(storePath)) {
                 ICertificateStore store = null;
 
-                if (storeType == CertificateStoreType.Windows)
-                {
+                if (storeType == CertificateStoreType.Windows) {
                     store = new Opc.Ua.WindowsCertificateStore();
-                }
-                else
-                {
+                } else {
                     store = new Opc.Ua.DirectoryCertificateStore();
                 }
 
@@ -426,40 +401,36 @@ namespace Opc.Ua
             }
 
             return certificate;
-            #else
+#else
             throw new NotSupportedException("Cannot create a CA certificate in a Windows store at this time.");
-            #endif
+#endif
         }
 
         /// <summary>
         /// Returns the path to the CertificateGenerator utility.
         /// </summary>
-        private static string GetCertificateGeneratorPath()
-        {
+        private static string GetCertificateGeneratorPath() {
             string executablePath = null;
 
             //first check on the same folder as the current executable
-            executablePath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "Opc.Ua.CertificateGenerator.exe");
+            executablePath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory),
+                "Opc.Ua.CertificateGenerator.exe");
             executablePath = Utils.GetAbsoluteFilePath(executablePath, false, false, false);
 
-            if (executablePath != null)
-            {
+            if (executablePath != null) {
                 return executablePath;
             }
 
             // recursively go up the tree looking for /Bin directories.
-            if (executablePath == null)
-            {
+            if (executablePath == null) {
                 DirectoryInfo dirInfo = new DirectoryInfo(Environment.CurrentDirectory);
 
-                while (dirInfo != null)
-                {
+                while (dirInfo != null) {
                     executablePath = dirInfo.FullName;
                     executablePath += "\\Bin\\Opc.Ua.CertificateGenerator.exe";
                     executablePath = Utils.GetAbsoluteFilePath(executablePath, false, false, false);
 
-                    if (executablePath != null)
-                    {
+                    if (executablePath != null) {
                         return executablePath;
                     }
 
@@ -472,13 +443,11 @@ namespace Opc.Ua
             string relativePath = @"\OPC Foundation\UA\v1.0\Bin\Opc.Ua.CertificateGenerator.exe";
             executablePath = Utils.GetAbsoluteFilePath(commonFilesDir + relativePath, false, false, false);
 
-            if (executablePath == null)
-            {
+            if (executablePath == null) {
                 // try the x86 directory.
                 int index = commonFilesDir.LastIndexOf('\\', commonFilesDir.Length - 2);
 
-                if (index != -1)
-                {
+                if (index != -1) {
                     string root = commonFilesDir.Substring(0, index);
                     root += " (x86)";
                     root += commonFilesDir.Substring(index);
@@ -491,7 +460,7 @@ namespace Opc.Ua
             return executablePath;
         }
 
-        #if !SILVERLIGHT
+#if !SILVERLIGHT
         /// <summary>
         /// Creates the certificate via a proxy instead of calling the CryptoAPI directly.
         /// </summary>
@@ -526,22 +495,21 @@ namespace Opc.Ua
             bool isCA,
             bool usePEMFormat,
             string issuerKeyFilePath,
-            string issuerKeyFilePassword)
-        {
+            string issuerKeyFilePassword) {
             // check if the proxy exists.
             FileInfo filePath = new FileInfo(executablePath);
 
-            if (!filePath.Exists)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "Cannnot find the Opc.Ua.CertificateGenerator utility: {0}", executablePath);
+            if (!filePath.Exists) {
+                throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                    "Cannnot find the Opc.Ua.CertificateGenerator utility: {0}", executablePath);
             }
-            
+
             // expand any strings.
             storePath = Utils.GetAbsoluteDirectoryPath(storePath, true, false, true);
 
-            if (storePath == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadInvalidArgument, "Certificate store does not exist: {0}", storePath);
+            if (storePath == null) {
+                throw ServiceResultException.Create(StatusCodes.BadInvalidArgument,
+                    "Certificate store does not exist: {0}", storePath);
             }
 
             // set default values.
@@ -558,47 +526,37 @@ namespace Opc.Ua
 
             string tempFile = Path.GetTempFileName();
 
-            try
-            {
+            try {
                 StreamWriter writer = new StreamWriter(tempFile);
 
                 writer.WriteLine("-cmd issue", storePath);
 
-                if (!String.IsNullOrEmpty(storePath))
-                {
+                if (!String.IsNullOrEmpty(storePath)) {
                     writer.WriteLine("-storePath {0}", storePath);
                 }
 
-                if (!String.IsNullOrEmpty(applicationName))
-                {
+                if (!String.IsNullOrEmpty(applicationName)) {
                     writer.WriteLine("-applicationName {0} ", applicationName);
                 }
 
-                if (!String.IsNullOrEmpty(subjectName))
-                {
+                if (!String.IsNullOrEmpty(subjectName)) {
                     writer.WriteLine("-subjectName {0}", subjectName);
                 }
 
-                if (!String.IsNullOrEmpty(password))
-                {
+                if (!String.IsNullOrEmpty(password)) {
                     writer.WriteLine("-password {0}", password);
                 }
 
-                if (!isCA)
-                {
-                    if (!String.IsNullOrEmpty(applicationUri))
-                    {
+                if (!isCA) {
+                    if (!String.IsNullOrEmpty(applicationUri)) {
                         writer.WriteLine("-applicationUri {0}", applicationUri);
                     }
 
-                    if (domainNames != null && domainNames.Count > 0)
-                    {
+                    if (domainNames != null && domainNames.Count > 0) {
                         StringBuilder buffer = new StringBuilder();
 
-                        for (int ii = 0; ii < domainNames.Count; ii++)
-                        {
-                            if (buffer.Length > 0)
-                            {
+                        for (int ii = 0; ii < domainNames.Count; ii++) {
+                            if (buffer.Length > 0) {
                                 buffer.Append(",");
                             }
 
@@ -611,31 +569,26 @@ namespace Opc.Ua
 
                 writer.WriteLine("-keySize {0}", keySize);
 
-                if (startTime > DateTime.MinValue)
-                {
+                if (startTime > DateTime.MinValue) {
                     writer.WriteLine("-startTime {0}", startTime.Ticks - new DateTime(1601, 1, 1).Ticks);
                 }
 
                 writer.WriteLine("-lifetimeInMonths {0}", lifetimeInMonths);
                 writer.WriteLine("-hashSize {0}", hashSizeInBits);
 
-                if (isCA)
-                {
+                if (isCA) {
                     writer.WriteLine("-ca true");
                 }
 
-                if (usePEMFormat)
-                {
+                if (usePEMFormat) {
                     writer.WriteLine("-pem true");
                 }
 
-                if (!String.IsNullOrEmpty(issuerKeyFilePath))
-                {
+                if (!String.IsNullOrEmpty(issuerKeyFilePath)) {
                     writer.WriteLine("-issuerKeyFilePath {0}", issuerKeyFilePath);
                 }
 
-                if (!String.IsNullOrEmpty(issuerKeyFilePassword))
-                {
+                if (!String.IsNullOrEmpty(issuerKeyFilePassword)) {
                     writer.WriteLine("-issuerKeyPassword {0}", issuerKeyFilePassword);
                 }
 
@@ -661,34 +614,26 @@ namespace Opc.Ua
 
                 StreamReader reader = new StreamReader(tempFile);
 
-                try
-                {
-                    while ((result = reader.ReadLine()) != null)
-                    {
-                        if (String.IsNullOrEmpty(result))
-                        {
+                try {
+                    while ((result = reader.ReadLine()) != null) {
+                        if (String.IsNullOrEmpty(result)) {
                             continue;
                         }
 
-                        if (result.StartsWith("-cmd"))
-                        {
+                        if (result.StartsWith("-cmd")) {
                             throw new ServiceResultException("Input file was not processed properly.");
                         }
 
-                        if (result.StartsWith("-thumbprint"))
-                        {
+                        if (result.StartsWith("-thumbprint")) {
                             thumbprint = result.Substring("-thumbprint".Length).Trim();
                             break;
                         }
 
-                        if (result.StartsWith("-error"))
-                        {
+                        if (result.StartsWith("-error")) {
                             throw new ServiceResultException(result);
                         }
                     }
-                }
-                finally
-                {
+                } finally {
                     reader.Close();
                 }
 
@@ -699,16 +644,13 @@ namespace Opc.Ua
                 store.Close();
 
                 return certificate;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 throw new ServiceResultException("Could not create a certificate via a proxy: " + e.Message, e);
-            }
-            finally
-            {
-                if (tempFile != null)
-                {
-                    try { File.Delete(tempFile); } catch {}
+            } finally {
+                if (tempFile != null) {
+                    try {
+                        File.Delete(tempFile);
+                    } catch { }
                 }
             }
         }
@@ -720,31 +662,29 @@ namespace Opc.Ua
             string storePath,
             X509Certificate2 certificate,
             string issuerKeyFilePath,
-            string issuerKeyFilePassword)
-        {
+            string issuerKeyFilePassword) {
             string executablePath = GetCertificateGeneratorPath();
 
             // check if the proxy exists.
             FileInfo filePath = new FileInfo(executablePath);
 
-            if (!filePath.Exists)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadConfigurationError, "Cannnot find the Opc.Ua.CertificateGenerator utility: {0}", executablePath);
+            if (!filePath.Exists) {
+                throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
+                    "Cannnot find the Opc.Ua.CertificateGenerator utility: {0}", executablePath);
             }
 
             // expand any strings.
             storePath = Utils.GetAbsoluteDirectoryPath(storePath, true, false, true);
 
-            if (storePath == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadInvalidArgument, "Certificate store does not exist: {0}", storePath);
+            if (storePath == null) {
+                throw ServiceResultException.Create(StatusCodes.BadInvalidArgument,
+                    "Certificate store does not exist: {0}", storePath);
             }
 
             string certificateFile = Path.GetTempFileName();
             string tempFile = Path.GetTempFileName();
 
-            try
-            {
+            try {
                 // write the certificate to a temp file.
                 File.WriteAllBytes(certificateFile, certificate.RawData);
 
@@ -753,23 +693,19 @@ namespace Opc.Ua
 
                 writer.WriteLine("-cmd revoke", storePath);
 
-                if (!String.IsNullOrEmpty(storePath))
-                {
+                if (!String.IsNullOrEmpty(storePath)) {
                     writer.WriteLine("-storePath {0}", storePath);
                 }
 
-                if (!String.IsNullOrEmpty(certificateFile))
-                {
+                if (!String.IsNullOrEmpty(certificateFile)) {
                     writer.WriteLine("-publicKeyFilePath {0}", certificateFile);
                 }
 
-                if (!String.IsNullOrEmpty(issuerKeyFilePath))
-                {
+                if (!String.IsNullOrEmpty(issuerKeyFilePath)) {
                     writer.WriteLine("-issuerKeyFilePath {0}", issuerKeyFilePath);
                 }
 
-                if (!String.IsNullOrEmpty(issuerKeyFilePassword))
-                {
+                if (!String.IsNullOrEmpty(issuerKeyFilePassword)) {
                     writer.WriteLine("-issuerKeyPassword {0}", issuerKeyFilePassword);
                 }
 
@@ -795,53 +731,41 @@ namespace Opc.Ua
 
                 StreamReader reader = new StreamReader(tempFile);
 
-                try
-                {
-                    while ((result = reader.ReadLine()) != null)
-                    {
-                        if (String.IsNullOrEmpty(result))
-                        {
+                try {
+                    while ((result = reader.ReadLine()) != null) {
+                        if (String.IsNullOrEmpty(result)) {
                             continue;
                         }
 
-                        if (result.StartsWith("-cmd"))
-                        {
+                        if (result.StartsWith("-cmd")) {
                             throw new ServiceResultException("Input file was not processed properly.");
                         }
 
-                        if (result.StartsWith("-thumbprint"))
-                        {
+                        if (result.StartsWith("-thumbprint")) {
                             thumbprint = result.Substring("-thumbprint".Length).Trim();
                             break;
                         }
 
-                        if (result.StartsWith("-error"))
-                        {
+                        if (result.StartsWith("-error")) {
                             throw new ServiceResultException(result);
                         }
                     }
-                }
-                finally
-                {
+                } finally {
                     reader.Close();
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 throw new ServiceResultException("Could not revoke a certificate via a proxy: " + e.Message, e);
-            }
-            finally
-            {
-                if (certificateFile != null)
-                {
-                    try { File.Delete(certificateFile); }
-                    catch { }
+            } finally {
+                if (certificateFile != null) {
+                    try {
+                        File.Delete(certificateFile);
+                    } catch { }
                 }
 
-                if (tempFile != null)
-                {
-                    try { File.Delete(tempFile); }
-                    catch { }
+                if (tempFile != null) {
+                    try {
+                        File.Delete(tempFile);
+                    } catch { }
                 }
             }
         }
@@ -858,8 +782,7 @@ namespace Opc.Ua
             IList<string> hostNames,
             string organization,
             ushort keySize,
-            ushort lifetimeInYears)
-        {
+            ushort lifetimeInYears) {
             X509Certificate2 certificate = CreateCertificate(
                 CertificateStoreType.Windows,
                 storeLocation.ToString() + "\\" + storeName,
@@ -868,7 +791,7 @@ namespace Opc.Ua
                 null,
                 hostNames,
                 keySize,
-                (ushort)(lifetimeInYears * 12));
+                (ushort) (lifetimeInYears * 12));
 
             return certificate;
         }
@@ -882,8 +805,7 @@ namespace Opc.Ua
         internal static void AddCertificateToWindowsStore(
             bool useMachineStore,
             string storeName,
-            X509Certificate2 certificate)
-        {
+            X509Certificate2 certificate) {
             IntPtr hPfxStore = IntPtr.Zero;
             IntPtr hWindowsStore = IntPtr.Zero;
             IntPtr pName = IntPtr.Zero;
@@ -891,10 +813,9 @@ namespace Opc.Ua
             IntPtr pNewContext = IntPtr.Zero;
             CRYPT_DATA_BLOB tPfxData = new CRYPT_DATA_BLOB();
 
-            try
-            {
-                byte[] pfxData = certificate.Export(X509ContentType.Pkcs12, (string)null);
-                tPfxData.pbData = (IntPtr)Marshal.AllocHGlobal(pfxData.Length);
+            try {
+                byte[] pfxData = certificate.Export(X509ContentType.Pkcs12, (string) null);
+                tPfxData.pbData = (IntPtr) Marshal.AllocHGlobal(pfxData.Length);
                 tPfxData.cbData = pfxData.Length;
                 Marshal.Copy(pfxData, 0, tPfxData.pbData, pfxData.Length);
 
@@ -904,16 +825,15 @@ namespace Opc.Ua
                     null,
                     GetFlags(useMachineStore, CRYPT_EXPORTABLE, CRYPT_MACHINE_KEYSET, CRYPT_USER_KEYSET));
 
-                if (hPfxStore == IntPtr.Zero)
-                {
+                if (hPfxStore == IntPtr.Zero) {
                     hPfxStore = NativeMethods.PFXImportCertStore(
                         ref tPfxData,
                         String.Empty,
                         GetFlags(useMachineStore, CRYPT_EXPORTABLE, CRYPT_MACHINE_KEYSET, CRYPT_USER_KEYSET));
 
-                    if (hPfxStore == IntPtr.Zero)
-                    {
-                        Throw("Could not import the certificate to a PKCS#12 store. Error={0:X8} Subject={1}", Marshal.GetLastWin32Error(), certificate.Subject);
+                    if (hPfxStore == IntPtr.Zero) {
+                        Throw("Could not import the certificate to a PKCS#12 store. Error={0:X8} Subject={1}",
+                            Marshal.GetLastWin32Error(), certificate.Subject);
                     }
                 }
 
@@ -921,22 +841,20 @@ namespace Opc.Ua
 
                 // open the store.
                 hWindowsStore = NativeMethods.CertOpenStore(
-                   (IntPtr)CERT_STORE_PROV_SYSTEM,
-                   0,
-                   IntPtr.Zero,
-                   GetFlags(useMachineStore, 0,CERT_SYSTEM_STORE_LOCAL_MACHINE, CERT_SYSTEM_STORE_CURRENT_USER),
-                   pName);
+                    (IntPtr) CERT_STORE_PROV_SYSTEM,
+                    0,
+                    IntPtr.Zero,
+                    GetFlags(useMachineStore, 0, CERT_SYSTEM_STORE_LOCAL_MACHINE, CERT_SYSTEM_STORE_CURRENT_USER),
+                    pName);
 
-                if (hWindowsStore == IntPtr.Zero)
-                {
+                if (hWindowsStore == IntPtr.Zero) {
                     Throw("Could not open the windows certificate store. Error={0:X8}", Marshal.GetLastWin32Error());
                 }
 
                 // Find the certificates in the system store. 
                 pContext = NativeMethods.CertEnumCertificatesInStore(hPfxStore, IntPtr.Zero);
 
-                while (pContext != IntPtr.Zero)
-                {
+                while (pContext != IntPtr.Zero) {
                     // add back into store.
                     int bResult = NativeMethods.CertAddCertificateContextToStore(
                         hWindowsStore,
@@ -944,9 +862,9 @@ namespace Opc.Ua
                         CERT_STORE_ADD_REPLACE_EXISTING,
                         ref pNewContext);
 
-                    if (bResult == 0)
-                    {
-                        Throw("Could not add the certificate to the windows store. Error={0:X8}", Marshal.GetLastWin32Error());
+                    if (bResult == 0) {
+                        Throw("Could not add the certificate to the windows store. Error={0:X8}",
+                            Marshal.GetLastWin32Error());
                     }
 
                     NativeMethods.CertFreeCertificateContext(pNewContext);
@@ -955,45 +873,40 @@ namespace Opc.Ua
                     // get next certificate.
                     pContext = NativeMethods.CertEnumCertificatesInStore(hPfxStore, pContext);
                 }
-            }
-            finally
-            {
-                if (pName != IntPtr.Zero)
-                {
+            } finally {
+                if (pName != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pName);
                 }
 
-                if (pContext != IntPtr.Zero)
-                {
+                if (pContext != IntPtr.Zero) {
                     NativeMethods.CertFreeCertificateContext(pContext);
                 }
 
-                if (pNewContext != IntPtr.Zero)
-                {
+                if (pNewContext != IntPtr.Zero) {
                     NativeMethods.CertFreeCertificateContext(pNewContext);
                 }
 
-                if (tPfxData.pbData != IntPtr.Zero)
-                {
+                if (tPfxData.pbData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(tPfxData.pbData);
                 }
 
-                if (hWindowsStore != IntPtr.Zero)
-                {
+                if (hWindowsStore != IntPtr.Zero) {
                     NativeMethods.CertCloseStore(hWindowsStore, 0);
                 }
 
-                if (hPfxStore != IntPtr.Zero)
-                {
+                if (hPfxStore != IntPtr.Zero) {
                     NativeMethods.CertCloseStore(hPfxStore, 0);
                 }
             }
         }
-        #endif
+#endif
+
         #endregion
-        
-        #if !SILVERLIGHT
+
+#if !SILVERLIGHT
+
         #region PInvoke Declarations
+
         private const string KEY_CONTAINER_NAME = "UASDKDefaultKeyContainer3";
         private const string MS_STRONG_PROV_W = "Microsoft Strong Cryptographic Provider";
         private const string DEFAULT_CRYPTO_PROVIDER = MS_STRONG_PROV_W;
@@ -1001,14 +914,14 @@ namespace Opc.Ua
         private const int PKCS_7_ASN_ENCODING = 0x00010000;
         private const int CRYPT_DECODE_ALLOC_FLAG = 0x8000;
         private const int CRYPT_DECODE_NOCOPY_FLAG = 0x1;
-        
+
         private const int AT_KEYEXCHANGE = 1;
         private const int AT_SIGNATURE = 2;
-        
+
         private const int REPORT_NO_PRIVATE_KEY = 0x0001;
         private const int REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY = 0x0002;
         private const int EXPORT_PRIVATE_KEYS = 0x0004;
-                
+
         private const int CERT_SET_KEY_PROV_HANDLE_PROP_ID = 0x00000001;
         private const int CERT_SET_KEY_CONTEXT_PROP_ID = 0x00000001;
 
@@ -1028,13 +941,13 @@ namespace Opc.Ua
         private const int CERT_NAME_STR_CRLF_FLAG = 0x08000000;
         private const int CERT_NAME_STR_COMMA_FLAG = 0x04000000;
         private const int CERT_NAME_STR_REVERSE_FLAG = 0x02000000;
-        
+
         private const int CERT_NAME_STR_DISABLE_IE4_UTF8_FLAG = 0x00010000;
         private const int CERT_NAME_STR_ENABLE_T61_UNICODE_FLAG = 0x00020000;
         private const int CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG = 0x00040000;
-        
+
         // dwFlags definitions for CryptAcquireContext
-        private const int CRYPT_VERIFYCONTEXT = unchecked((int)0xF0000000);
+        private const int CRYPT_VERIFYCONTEXT = unchecked((int) 0xF0000000);
         private const int CRYPT_NEWKEYSET = 0x00000008;
         private const int CRYPT_DELETEKEYSET = 0x00000010;
         private const int CRYPT_MACHINE_KEYSET = 0x00000020;
@@ -1091,23 +1004,35 @@ namespace Opc.Ua
         private const int CERT_STORE_OPEN_EXISTING_FLAG = 0x00004000;
         private const int CERT_STORE_CREATE_NEW_FLAG = 0x00002000;
         private const int CERT_STORE_MAXIMUM_ALLOWED_FLAG = 0x00001000;
-        
+
         // Location of the system store:
         private const int CERT_SYSTEM_STORE_LOCATION_SHIFT = 16;
 
         //  Registry: HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE
         private const int CERT_SYSTEM_STORE_CURRENT_USER_ID = 1;
+
         private const int CERT_SYSTEM_STORE_LOCAL_MACHINE_ID = 2;
+
         //  Registry: HKEY_LOCAL_MACHINE\Software\Microsoft\Cryptography\Services
         private const int CERT_SYSTEM_STORE_CURRENT_SERVICE_ID = 4;
+
         private const int CERT_SYSTEM_STORE_SERVICES_ID = 5;
+
         //  Registry: HKEY_USERS
         private const int CERT_SYSTEM_STORE_USERS_ID = 6;
 
-        private const int CERT_SYSTEM_STORE_CURRENT_USER = (CERT_SYSTEM_STORE_CURRENT_USER_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
-        private const int CERT_SYSTEM_STORE_LOCAL_MACHINE = (CERT_SYSTEM_STORE_LOCAL_MACHINE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
-        private const int CERT_SYSTEM_STORE_CURRENT_SERVICE = (CERT_SYSTEM_STORE_CURRENT_SERVICE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
-        private const int CERT_SYSTEM_STORE_SERVICES = (CERT_SYSTEM_STORE_SERVICES_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
+        private const int CERT_SYSTEM_STORE_CURRENT_USER =
+            (CERT_SYSTEM_STORE_CURRENT_USER_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
+
+        private const int CERT_SYSTEM_STORE_LOCAL_MACHINE =
+            (CERT_SYSTEM_STORE_LOCAL_MACHINE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
+
+        private const int CERT_SYSTEM_STORE_CURRENT_SERVICE =
+            (CERT_SYSTEM_STORE_CURRENT_SERVICE_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
+
+        private const int CERT_SYSTEM_STORE_SERVICES =
+            (CERT_SYSTEM_STORE_SERVICES_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
+
         private const int CERT_SYSTEM_STORE_USERS = (CERT_SYSTEM_STORE_USERS_ID << CERT_SYSTEM_STORE_LOCATION_SHIFT);
 
         //+--------------------------------"2.5.29.7"-----------------------------------------
@@ -1116,7 +1041,9 @@ namespace Opc.Ua
         private const string szOID_AUTHORITY_KEY_IDENTIFIER = "2.5.29.1";
         private const string szOID_KEY_ATTRIBUTES = "2.5.29.2";
         private const string szOID_CERT_POLICIES_95 = "2.5.29.3";
+
         private const string szOID_KEY_USAGE_RESTRICTION = "2.5.29.4";
+
         // private const string szOID_SUBJECT_ALT_NAME = "2.5.29.7";
         private const string szOID_ISSUER_ALT_NAME = "2.5.29.8";
         private const string szOID_BASIC_CONSTRAINTS = "2.5.29.10";
@@ -1135,9 +1062,9 @@ namespace Opc.Ua
         private const string szOID_REASON_CODE_HOLD = "2.5.29.23";
         private const string szOID_CRL_DIST_POINTS = "2.5.29.31";
         private const string szOID_ENHANCED_KEY_USAGE = "2.5.29.37";
-        
+
         private const string szOID_RSA_RSA = "1.2.840.113549.1.1.1";
-                
+
         //+-------------------------------------------------------------------------
         //  Enhanced Key Usage (Purpose) Object Identifiers
         //--------------------------------------------------------------------------
@@ -1194,30 +1121,30 @@ namespace Opc.Ua
         //+-------------------------------------------------------------------------
         // Certificate comparison functions
         //--------------------------------------------------------------------------
-        private const int  CERT_COMPARE_MASK = 0xFFFF;
-        private const int  CERT_COMPARE_SHIFT = 16;
-        private const int  CERT_COMPARE_ANY = 0;
-        private const int  CERT_COMPARE_SHA1_HASH = 1;
-        private const int  CERT_COMPARE_NAME = 2;
-        private const int  CERT_COMPARE_ATTR = 3;
-        private const int  CERT_COMPARE_MD5_HASH = 4;
-        private const int  CERT_COMPARE_PROPERTY = 5;
-        private const int  CERT_COMPARE_PUBLIC_KEY = 6;
-        private const int  CERT_COMPARE_HASH = CERT_COMPARE_SHA1_HASH;
-        private const int  CERT_COMPARE_NAME_STR_A = 7;
-        private const int  CERT_COMPARE_NAME_STR_W = 8;
-        private const int  CERT_COMPARE_KEY_SPEC = 9;
-        private const int  CERT_COMPARE_ENHKEY_USAGE = 10;
-        private const int  CERT_COMPARE_CTL_USAGE = CERT_COMPARE_ENHKEY_USAGE;
-        private const int  CERT_COMPARE_SUBJECT_CERT = 11;
-        private const int  CERT_COMPARE_ISSUER_OF = 12;
-        private const int  CERT_COMPARE_EXISTING = 13;
-        private const int  CERT_COMPARE_SIGNATURE_HASH = 14;
-        private const int  CERT_COMPARE_KEY_IDENTIFIER = 15;
-        private const int  CERT_COMPARE_CERT_ID = 16;
-        private const int  CERT_COMPARE_CROSS_CERT_DIST_POINTS = 17;
-        private const int  CERT_COMPARE_PUBKEY_MD5_HASH = 18;
-        
+        private const int CERT_COMPARE_MASK = 0xFFFF;
+        private const int CERT_COMPARE_SHIFT = 16;
+        private const int CERT_COMPARE_ANY = 0;
+        private const int CERT_COMPARE_SHA1_HASH = 1;
+        private const int CERT_COMPARE_NAME = 2;
+        private const int CERT_COMPARE_ATTR = 3;
+        private const int CERT_COMPARE_MD5_HASH = 4;
+        private const int CERT_COMPARE_PROPERTY = 5;
+        private const int CERT_COMPARE_PUBLIC_KEY = 6;
+        private const int CERT_COMPARE_HASH = CERT_COMPARE_SHA1_HASH;
+        private const int CERT_COMPARE_NAME_STR_A = 7;
+        private const int CERT_COMPARE_NAME_STR_W = 8;
+        private const int CERT_COMPARE_KEY_SPEC = 9;
+        private const int CERT_COMPARE_ENHKEY_USAGE = 10;
+        private const int CERT_COMPARE_CTL_USAGE = CERT_COMPARE_ENHKEY_USAGE;
+        private const int CERT_COMPARE_SUBJECT_CERT = 11;
+        private const int CERT_COMPARE_ISSUER_OF = 12;
+        private const int CERT_COMPARE_EXISTING = 13;
+        private const int CERT_COMPARE_SIGNATURE_HASH = 14;
+        private const int CERT_COMPARE_KEY_IDENTIFIER = 15;
+        private const int CERT_COMPARE_CERT_ID = 16;
+        private const int CERT_COMPARE_CROSS_CERT_DIST_POINTS = 17;
+        private const int CERT_COMPARE_PUBKEY_MD5_HASH = 18;
+
         //+-------------------------------------------------------------------------
         //  Certificate Information Flags
         //--------------------------------------------------------------------------
@@ -1240,34 +1167,47 @@ namespace Opc.Ua
         //   - comparison function
         //   - certificate information flag
         //--------------------------------------------------------------------------
-        private const int  CERT_FIND_ANY = (CERT_COMPARE_ANY << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_SHA1_HASH = (CERT_COMPARE_SHA1_HASH << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_MD5_HASH = (CERT_COMPARE_MD5_HASH << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_SIGNATURE_HASH = (CERT_COMPARE_SIGNATURE_HASH << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_KEY_IDENTIFIER = (CERT_COMPARE_KEY_IDENTIFIER << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_HASH = CERT_FIND_SHA1_HASH;
-        private const int  CERT_FIND_PROPERTY = (CERT_COMPARE_PROPERTY << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_PUBLIC_KEY = (CERT_COMPARE_PUBLIC_KEY << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_SUBJECT_NAME = (CERT_COMPARE_NAME << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
-        private const int  CERT_FIND_SUBJECT_ATTR = (CERT_COMPARE_ATTR << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
-        private const int  CERT_FIND_ISSUER_NAME = (CERT_COMPARE_NAME << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
-        private const int  CERT_FIND_ISSUER_ATTR = (CERT_COMPARE_ATTR << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
-        private const int  CERT_FIND_SUBJECT_STR_A = (CERT_COMPARE_NAME_STR_A << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
-        private const int  CERT_FIND_SUBJECT_STR_W = (CERT_COMPARE_NAME_STR_W << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
-        private const int  CERT_FIND_SUBJECT_STR = CERT_FIND_SUBJECT_STR_W;
-        private const int  CERT_FIND_ISSUER_STR_A = (CERT_COMPARE_NAME_STR_A << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
-        private const int  CERT_FIND_ISSUER_STR_W = (CERT_COMPARE_NAME_STR_W << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
-        private const int  CERT_FIND_ISSUER_STR = CERT_FIND_ISSUER_STR_W;
-        private const int  CERT_FIND_KEY_SPEC = (CERT_COMPARE_KEY_SPEC << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_ENHKEY_USAGE = (CERT_COMPARE_ENHKEY_USAGE << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_CTL_USAGE = CERT_FIND_ENHKEY_USAGE;
-        private const int  CERT_FIND_SUBJECT_CERT = (CERT_COMPARE_SUBJECT_CERT << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_ISSUER_OF = (CERT_COMPARE_ISSUER_OF << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_EXISTING = (CERT_COMPARE_EXISTING << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_CERT_ID = (CERT_COMPARE_CERT_ID << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_CROSS_CERT_DIST_POINTS = (CERT_COMPARE_CROSS_CERT_DIST_POINTS << CERT_COMPARE_SHIFT);
-        private const int  CERT_FIND_PUBKEY_MD5_HASH  = (CERT_COMPARE_PUBKEY_MD5_HASH << CERT_COMPARE_SHIFT);
-        
+        private const int CERT_FIND_ANY = (CERT_COMPARE_ANY << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_SHA1_HASH = (CERT_COMPARE_SHA1_HASH << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_MD5_HASH = (CERT_COMPARE_MD5_HASH << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_SIGNATURE_HASH = (CERT_COMPARE_SIGNATURE_HASH << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_KEY_IDENTIFIER = (CERT_COMPARE_KEY_IDENTIFIER << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_HASH = CERT_FIND_SHA1_HASH;
+        private const int CERT_FIND_PROPERTY = (CERT_COMPARE_PROPERTY << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_PUBLIC_KEY = (CERT_COMPARE_PUBLIC_KEY << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_SUBJECT_NAME = (CERT_COMPARE_NAME << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
+        private const int CERT_FIND_SUBJECT_ATTR = (CERT_COMPARE_ATTR << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
+        private const int CERT_FIND_ISSUER_NAME = (CERT_COMPARE_NAME << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
+        private const int CERT_FIND_ISSUER_ATTR = (CERT_COMPARE_ATTR << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
+
+        private const int CERT_FIND_SUBJECT_STR_A =
+            (CERT_COMPARE_NAME_STR_A << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
+
+        private const int CERT_FIND_SUBJECT_STR_W =
+            (CERT_COMPARE_NAME_STR_W << CERT_COMPARE_SHIFT | CERT_INFO_SUBJECT_FLAG);
+
+        private const int CERT_FIND_SUBJECT_STR = CERT_FIND_SUBJECT_STR_W;
+
+        private const int CERT_FIND_ISSUER_STR_A =
+            (CERT_COMPARE_NAME_STR_A << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
+
+        private const int CERT_FIND_ISSUER_STR_W =
+            (CERT_COMPARE_NAME_STR_W << CERT_COMPARE_SHIFT | CERT_INFO_ISSUER_FLAG);
+
+        private const int CERT_FIND_ISSUER_STR = CERT_FIND_ISSUER_STR_W;
+        private const int CERT_FIND_KEY_SPEC = (CERT_COMPARE_KEY_SPEC << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_ENHKEY_USAGE = (CERT_COMPARE_ENHKEY_USAGE << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_CTL_USAGE = CERT_FIND_ENHKEY_USAGE;
+        private const int CERT_FIND_SUBJECT_CERT = (CERT_COMPARE_SUBJECT_CERT << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_ISSUER_OF = (CERT_COMPARE_ISSUER_OF << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_EXISTING = (CERT_COMPARE_EXISTING << CERT_COMPARE_SHIFT);
+        private const int CERT_FIND_CERT_ID = (CERT_COMPARE_CERT_ID << CERT_COMPARE_SHIFT);
+
+        private const int CERT_FIND_CROSS_CERT_DIST_POINTS =
+            (CERT_COMPARE_CROSS_CERT_DIST_POINTS << CERT_COMPARE_SHIFT);
+
+        private const int CERT_FIND_PUBKEY_MD5_HASH = (CERT_COMPARE_PUBKEY_MD5_HASH << CERT_COMPARE_SHIFT);
+
         // Byte[0]
         private const int CERT_DIGITAL_SIGNATURE_KEY_USAGE = 0x80;
         private const int CERT_NON_REPUDIATION_KEY_USAGE = 0x40;
@@ -1277,7 +1217,9 @@ namespace Opc.Ua
         private const int CERT_KEY_CERT_SIGN_KEY_USAGE = 0x04;
         private const int CERT_OFFLINE_CRL_SIGN_KEY_USAGE = 0x02;
         private const int CERT_CRL_SIGN_KEY_USAGE = 0x02;
+
         private const int CERT_ENCIPHER_ONLY_KEY_USAGE = 0x01;
+
         // Byte[1]
         private const int CERT_DECIPHER_ONLY_KEY_USAGE = 0x80;
 
@@ -1337,11 +1279,11 @@ namespace Opc.Ua
         private const int ALG_SID_TEK = 11;
 
         // KP_MODE
-        private const int CRYPT_MODE_CBCI = 6;       // ANSI CBC Interleaved
-        private const int CRYPT_MODE_CFBP = 7;       // ANSI CFB Pipelined
-        private const int CRYPT_MODE_OFBP = 8;       // ANSI OFB Pipelined
-        private const int CRYPT_MODE_CBCOFM = 9;       // ANSI CBC + OF Masking
-        private const int CRYPT_MODE_CBCOFMI = 10;      // ANSI CBC + OFM Interleaved
+        private const int CRYPT_MODE_CBCI = 6; // ANSI CBC Interleaved
+        private const int CRYPT_MODE_CFBP = 7; // ANSI CFB Pipelined
+        private const int CRYPT_MODE_OFBP = 8; // ANSI OFB Pipelined
+        private const int CRYPT_MODE_CBCOFM = 9; // ANSI CBC + OF Masking
+        private const int CRYPT_MODE_CBCOFMI = 10; // ANSI CBC + OFM Interleaved
 
         // RC2 sub-ids
         private const int ALG_SID_RC2 = 2;
@@ -1395,42 +1337,49 @@ namespace Opc.Ua
         private const int CALG_RSA_SIGN = (ALG_CLASS_SIGNATURE | ALG_TYPE_RSA | ALG_SID_RSA_ANY);
         private const int CALG_DSS_SIGN = (ALG_CLASS_SIGNATURE | ALG_TYPE_DSS | ALG_SID_DSS_ANY);
         private const int CALG_NO_SIGN = (ALG_CLASS_SIGNATURE | ALG_TYPE_ANY | ALG_SID_ANY);
-        private const int CALG_RSA_KEYX = (ALG_CLASS_KEY_EXCHANGE|ALG_TYPE_RSA|ALG_SID_RSA_ANY);
-        private const int CALG_DES = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_DES);
-        private const int CALG_3DES_112 = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_3DES_112);
-        private const int CALG_3DES = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_3DES);
-        private const int CALG_DESX = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_DESX);
-        private const int CALG_RC2 = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_RC2);
-        private const int CALG_RC4 = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_STREAM|ALG_SID_RC4);
-        private const int CALG_SEAL = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_STREAM|ALG_SID_SEAL);
-        private const int CALG_DH_SF = (ALG_CLASS_KEY_EXCHANGE|ALG_TYPE_DH|ALG_SID_DH_SANDF);
-        private const int CALG_DH_EPHEM = (ALG_CLASS_KEY_EXCHANGE|ALG_TYPE_DH|ALG_SID_DH_EPHEM);
-        private const int CALG_AGREEDKEY_ANY = (ALG_CLASS_KEY_EXCHANGE|ALG_TYPE_DH|ALG_SID_AGREED_KEY_ANY);
-        private const int CALG_KEA_KEYX = (ALG_CLASS_KEY_EXCHANGE|ALG_TYPE_DH|ALG_SID_KEA);
-        private const int CALG_HUGHES_MD5 = (ALG_CLASS_KEY_EXCHANGE|ALG_TYPE_ANY|ALG_SID_MD5);
-        private const int CALG_SKIPJACK = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_SKIPJACK);
-        private const int CALG_TEK = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_TEK);
-        private const int CALG_CYLINK_MEK = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_CYLINK_MEK);
+        private const int CALG_RSA_KEYX = (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_RSA | ALG_SID_RSA_ANY);
+        private const int CALG_DES = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_DES);
+        private const int CALG_3DES_112 = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_3DES_112);
+        private const int CALG_3DES = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_3DES);
+        private const int CALG_DESX = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_DESX);
+        private const int CALG_RC2 = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_RC2);
+        private const int CALG_RC4 = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_STREAM | ALG_SID_RC4);
+        private const int CALG_SEAL = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_STREAM | ALG_SID_SEAL);
+        private const int CALG_DH_SF = (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_SANDF);
+        private const int CALG_DH_EPHEM = (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_EPHEM);
+        private const int CALG_AGREEDKEY_ANY = (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_AGREED_KEY_ANY);
+        private const int CALG_KEA_KEYX = (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_KEA);
+        private const int CALG_HUGHES_MD5 = (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_ANY | ALG_SID_MD5);
+        private const int CALG_SKIPJACK = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_SKIPJACK);
+        private const int CALG_TEK = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_TEK);
+        private const int CALG_CYLINK_MEK = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_CYLINK_MEK);
         private const int CALG_SSL3_SHAMD5 = (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_SSL3SHAMD5);
-        private const int CALG_SSL3_MASTER = (ALG_CLASS_MSG_ENCRYPT|ALG_TYPE_SECURECHANNEL|ALG_SID_SSL3_MASTER);
-        private const int CALG_SCHANNEL_MASTER_HASH = (ALG_CLASS_MSG_ENCRYPT|ALG_TYPE_SECURECHANNEL|ALG_SID_SCHANNEL_MASTER_HASH);
-        private const int CALG_SCHANNEL_MAC_KEY = (ALG_CLASS_MSG_ENCRYPT|ALG_TYPE_SECURECHANNEL|ALG_SID_SCHANNEL_MAC_KEY);
-        private const int CALG_SCHANNEL_ENC_KEY = (ALG_CLASS_MSG_ENCRYPT|ALG_TYPE_SECURECHANNEL|ALG_SID_SCHANNEL_ENC_KEY);
-        private const int CALG_PCT1_MASTER = (ALG_CLASS_MSG_ENCRYPT|ALG_TYPE_SECURECHANNEL|ALG_SID_PCT1_MASTER);
-        private const int CALG_SSL2_MASTER = (ALG_CLASS_MSG_ENCRYPT|ALG_TYPE_SECURECHANNEL|ALG_SID_SSL2_MASTER);
-        private const int CALG_TLS1_MASTER = (ALG_CLASS_MSG_ENCRYPT|ALG_TYPE_SECURECHANNEL|ALG_SID_TLS1_MASTER);
-        private const int CALG_RC5 = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_RC5);
+        private const int CALG_SSL3_MASTER = (ALG_CLASS_MSG_ENCRYPT | ALG_TYPE_SECURECHANNEL | ALG_SID_SSL3_MASTER);
+
+        private const int CALG_SCHANNEL_MASTER_HASH =
+            (ALG_CLASS_MSG_ENCRYPT | ALG_TYPE_SECURECHANNEL | ALG_SID_SCHANNEL_MASTER_HASH);
+
+        private const int CALG_SCHANNEL_MAC_KEY =
+            (ALG_CLASS_MSG_ENCRYPT | ALG_TYPE_SECURECHANNEL | ALG_SID_SCHANNEL_MAC_KEY);
+
+        private const int CALG_SCHANNEL_ENC_KEY =
+            (ALG_CLASS_MSG_ENCRYPT | ALG_TYPE_SECURECHANNEL | ALG_SID_SCHANNEL_ENC_KEY);
+
+        private const int CALG_PCT1_MASTER = (ALG_CLASS_MSG_ENCRYPT | ALG_TYPE_SECURECHANNEL | ALG_SID_PCT1_MASTER);
+        private const int CALG_SSL2_MASTER = (ALG_CLASS_MSG_ENCRYPT | ALG_TYPE_SECURECHANNEL | ALG_SID_SSL2_MASTER);
+        private const int CALG_TLS1_MASTER = (ALG_CLASS_MSG_ENCRYPT | ALG_TYPE_SECURECHANNEL | ALG_SID_TLS1_MASTER);
+        private const int CALG_RC5 = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_RC5);
         private const int CALG_HMAC = (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_HMAC);
         private const int CALG_TLS1PRF = (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_TLS1PRF);
         private const int CALG_HASH_REPLACE_OWF = (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_HASH_REPLACE_OWF);
-        private const int CALG_AES_128 = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_AES_128);
-        private const int CALG_AES_192 = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_AES_192);
-        private const int CALG_AES_256 = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_AES_256);
-        private const int CALG_AES = (ALG_CLASS_DATA_ENCRYPT|ALG_TYPE_BLOCK|ALG_SID_AES);
+        private const int CALG_AES_128 = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_AES_128);
+        private const int CALG_AES_192 = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_AES_192);
+        private const int CALG_AES_256 = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_AES_256);
+        private const int CALG_AES = (ALG_CLASS_DATA_ENCRYPT | ALG_TYPE_BLOCK | ALG_SID_AES);
         private const int CALG_SHA_256 = (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_SHA_256);
         private const int CALG_SHA_384 = (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_SHA_384);
         private const int CALG_SHA_512 = (ALG_CLASS_HASH | ALG_TYPE_ANY | ALG_SID_SHA_512);
-        
+
         //+-------------------------------------------------------------------------
         // Add certificate/CRL, encoded, context or element disposition values.
         //--------------------------------------------------------------------------
@@ -1441,7 +1390,7 @@ namespace Opc.Ua
         private const int CERT_STORE_ADD_REPLACE_EXISTING_INHERIT_PROPERTIES = 5;
         private const int CERT_STORE_ADD_NEWER = 6;
         private const int CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES = 7;
-                
+
         //+-------------------------------------------------------------------------
         //  Certificate, CRL and CTL property IDs
         //
@@ -1482,8 +1431,7 @@ namespace Opc.Ua
         private const int CERT_EXTENDED_ERROR_INFO_PROP_ID = 30;
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct SYSTEMTIME
-        {
+        private struct SYSTEMTIME {
             public ushort wYear;
             public ushort wMonth;
             public ushort wDayOfWeek;
@@ -1496,114 +1444,107 @@ namespace Opc.Ua
 
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_NAME_BLOB
-        {
+        private struct CERT_NAME_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRYPT_OBJID_BLOB
-        {
+        private struct CRYPT_OBJID_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
-        private struct CRYPT_DATA_BLOB
-        {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+            "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        private struct CRYPT_DATA_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRYPT_INTEGER_BLOB
-        {
+        private struct CRYPT_INTEGER_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRYPT_BIT_BLOB
-        {
+        private struct CRYPT_BIT_BLOB {
             public int cbData;
             public IntPtr pbData;
             public int cUnusedBits;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_EXTENSION
-        {
+        private struct CERT_EXTENSION {
             [MarshalAs(UnmanagedType.LPStr)]
             public string pszObjId;
+
             public int fCritical;
             public CRYPT_OBJID_BLOB Value;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_EXTENSIONS
-        {
+        private struct CERT_EXTENSIONS {
             public int cExtension;
             public IntPtr rgExtension;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_AUTHORITY_KEY_ID_INFO
-        {
+        private struct CERT_AUTHORITY_KEY_ID_INFO {
             public CRYPT_DATA_BLOB KeyId;
             public CERT_NAME_BLOB CertIssuer;
             public CRYPT_INTEGER_BLOB CertSerialNumber;
         };
-        
+
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_AUTHORITY_KEY_ID2_INFO
-        {
-            public CRYPT_DATA_BLOB    KeyId;
+        private struct CERT_AUTHORITY_KEY_ID2_INFO {
+            public CRYPT_DATA_BLOB KeyId;
             public CERT_ALT_NAME_INFO AuthorityCertIssuer;
             public CRYPT_INTEGER_BLOB AuthorityCertSerialNumber;
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_BASIC_CONSTRAINTS2_INFO
-        {
+        private struct CERT_BASIC_CONSTRAINTS2_INFO {
             public int fCA;
             public int fPathLenConstraint;
             public int dwPathLenConstraint;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
-        private struct CERT_ENHKEY_USAGE
-        {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+            "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        private struct CERT_ENHKEY_USAGE {
             public int cUsageIdentifier;
             public IntPtr rgpszUsageIdentifier;
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
-        private struct CERT_ALT_NAME_ENTRY_UNION
-        {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+            "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        private struct CERT_ALT_NAME_ENTRY_UNION {
             /*
             [FieldOffset(0)]
             public IntPtr pOtherName;         // 1
             [FieldOffset(0)]
             public IntPtr pwszRfc822Name;     // 2  (encoded IA5)
             */
-            
+
             [FieldOffset(0)]
-            public IntPtr pwszDNSName;        // 3  (encoded IA5)
-            
+            public IntPtr pwszDNSName; // 3  (encoded IA5)
+
             /*
             [FieldOffset(0)]
             public CERT_NAME_BLOB DirectoryName;      // 5
             */
-            
+
             [FieldOffset(0)]
-            public IntPtr pwszURL;            // 7  (encoded IA5)
+            public IntPtr pwszURL; // 7  (encoded IA5)
+
             [FieldOffset(0)]
-            public CRYPT_DATA_BLOB IPAddress;          // 8  (Octet String)
-            
+            public CRYPT_DATA_BLOB IPAddress; // 8  (Octet String)
+
             /*
             [FieldOffset(0)]
             public IntPtr pszRegisteredID;    // 9  (Object Identifer)
@@ -1611,41 +1552,39 @@ namespace Opc.Ua
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_ALT_NAME_ENTRY
-        {
-            public int  dwAltNameChoice;
+        private struct CERT_ALT_NAME_ENTRY {
+            public int dwAltNameChoice;
             public CERT_ALT_NAME_ENTRY_UNION Value;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_ALT_NAME_INFO
-        {
+        private struct CERT_ALT_NAME_INFO {
             public int cAltEntry;
             public IntPtr rgAltEntry;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRYPT_ALGORITHM_IDENTIFIER
-        {
+        private struct CRYPT_ALGORITHM_IDENTIFIER {
             [MarshalAs(UnmanagedType.LPStr)]
             public string pszObjId;
+
             public CRYPT_OBJID_BLOB Parameters;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_PUBLIC_KEY_INFO
-        {
+        private struct CERT_PUBLIC_KEY_INFO {
             public CRYPT_ALGORITHM_IDENTIFIER Algorithm;
             public CRYPT_BIT_BLOB PublicKey;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRYPT_KEY_PROV_INFO
-        {
+        private struct CRYPT_KEY_PROV_INFO {
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pwszContainerName;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public string pwszProvName;
+
             public int dwProvType;
             public int dwFlags;
             public int cProvParam;
@@ -1654,16 +1593,14 @@ namespace Opc.Ua
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_SIGNED_CONTENT_INFO
-        {
+        private struct CERT_SIGNED_CONTENT_INFO {
             public CRYPT_DATA_BLOB ToBeSigned;
             public CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
             public CRYPT_BIT_BLOB Signature;
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRL_INFO
-        {
+        private struct CRL_INFO {
             public int dwVersion;
             public CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
             public CERT_NAME_BLOB Issuer;
@@ -1676,8 +1613,7 @@ namespace Opc.Ua
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRL_ENTRY
-        {
+        private struct CRL_ENTRY {
             public CRYPT_INTEGER_BLOB SerialNumber;
             public System.Runtime.InteropServices.ComTypes.FILETIME RevocationDate;
             public int cExtension;
@@ -1685,8 +1621,7 @@ namespace Opc.Ua
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_INFO
-        {
+        private struct CERT_INFO {
             public int dwVersion;
             public CRYPT_INTEGER_BLOB SerialNumber;
             public CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
@@ -1702,8 +1637,7 @@ namespace Opc.Ua
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CERT_CONTEXT
-        {
+        private struct CERT_CONTEXT {
             public int dwCertEncodingType;
             public IntPtr pbCertEncoded;
             public int cbCertEncoded;
@@ -1720,12 +1654,11 @@ namespace Opc.Ua
         private const int CERT_ALT_NAME_URL = 7;
         private const int CERT_ALT_NAME_IP_ADDRESS = 8;
         private const int CERT_ALT_NAME_REGISTERED_ID = 9;
-  
+
         /// <summary>
         /// Declares the native methods used by the class.
         /// </summary>
-        private static class NativeMethods
-        {
+        private static class NativeMethods {
             [DllImport("Kernel32.dll")]
             public static extern void GetSystemTime(ref SYSTEMTIME lpSystemTime);
 
@@ -1741,16 +1674,14 @@ namespace Opc.Ua
             public static extern int PFXExportCertStoreEx(
                 IntPtr hStore,
                 ref CRYPT_DATA_BLOB pPFX,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string szPassword,
+                [MarshalAs(UnmanagedType.LPWStr)] string szPassword,
                 IntPtr pvReserved,
                 int dwFlags);
 
             [DllImport("Crypt32.dll", SetLastError = true)]
             public static extern IntPtr PFXImportCertStore(
                 ref CRYPT_DATA_BLOB pPFX,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string szPassword,
+                [MarshalAs(UnmanagedType.LPWStr)] string szPassword,
                 int dwFlags);
 
             [DllImport("Crypt32.dll", SetLastError = true)]
@@ -1784,14 +1715,14 @@ namespace Opc.Ua
                 IntPtr pCertContext,
                 int dwAddDisposition,
                 ref IntPtr ppStoreContext);
-            
+
             [DllImport("Crypt32.dll")]
             public static extern int CertAddCertificateLinkToStore(
                 IntPtr hCertStore,
                 IntPtr pCertContext,
                 int dwAddDisposition,
                 ref IntPtr ppStoreContext);
-            
+
             [DllImport("Crypt32.dll")]
             public static extern int CertFreeCertificateContext(IntPtr pCertContext);
 
@@ -1818,7 +1749,7 @@ namespace Opc.Ua
                 int Algid,
                 int dwFlags,
                 ref IntPtr phKey);
-            
+
             [DllImport("Advapi32.dll")]
             public static extern int CryptDestroyKey(IntPtr hKey);
 
@@ -1827,8 +1758,7 @@ namespace Opc.Ua
                 IntPtr hCryptProv,
                 int dwKeySpec,
                 int dwCertEncodingType,
-                [MarshalAs(UnmanagedType.LPStr)]
-                string pszPublicKeyObjId,
+                [MarshalAs(UnmanagedType.LPStr)] string pszPublicKeyObjId,
                 int dwFlags,
                 IntPtr pvAuxInfo,
                 IntPtr pInfo,
@@ -1847,8 +1777,7 @@ namespace Opc.Ua
             [DllImport("Crypt32.dll")]
             public static extern int CertStrToNameW(
                 int dwCertEncodingType,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string pszX500,
+                [MarshalAs(UnmanagedType.LPWStr)] string pszX500,
                 int dwStrType,
                 IntPtr pvReserved,
                 IntPtr pbEncoded,
@@ -1863,13 +1792,11 @@ namespace Opc.Ua
                 IntPtr psz,
                 int csz);
 
-            [DllImport("Advapi32.dll", SetLastError=true)]
+            [DllImport("Advapi32.dll", SetLastError = true)]
             public static extern int CryptAcquireContextW(
                 ref IntPtr phProv,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string szContainer,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string szProvider,
+                [MarshalAs(UnmanagedType.LPWStr)] string szContainer,
+                [MarshalAs(UnmanagedType.LPWStr)] string szProvider,
                 int dwProvType,
                 int dwFlags);
 
@@ -1878,11 +1805,10 @@ namespace Opc.Ua
                 IntPtr hProv,
                 int dwFlags);
 
-            [DllImport("Crypt32.dll", BestFitMapping=false, ThrowOnUnmappableChar=true)]
+            [DllImport("Crypt32.dll", BestFitMapping = false, ThrowOnUnmappableChar = true)]
             public static extern int CryptEncodeObjectEx(
                 int dwCertEncodingType,
-                [MarshalAs(UnmanagedType.LPStr)]
-                string lpszStructType,
+                [MarshalAs(UnmanagedType.LPStr)] string lpszStructType,
                 IntPtr pvStructInfo,
                 int dwFlags,
                 IntPtr pEncodePara,
@@ -1892,8 +1818,7 @@ namespace Opc.Ua
             [DllImport("Crypt32.dll", BestFitMapping = false, ThrowOnUnmappableChar = true, SetLastError = true)]
             public static extern int CryptDecodeObjectEx(
                 int dwCertEncodingType,
-                [MarshalAs(UnmanagedType.LPStr)]
-                string lpszStructType,
+                [MarshalAs(UnmanagedType.LPStr)] string lpszStructType,
                 IntPtr pbEncoded,
                 int cbEncoded,
                 int dwFlags,
@@ -1921,8 +1846,7 @@ namespace Opc.Ua
             public static extern int CryptGetProvParam(
                 IntPtr hProv,
                 int dwParam,
-                [MarshalAs(UnmanagedType.LPStr)]
-                StringBuilder pbData,
+                [MarshalAs(UnmanagedType.LPStr)] StringBuilder pbData,
                 ref int dwDataLen,
                 int dwFlags);
 
@@ -1940,8 +1864,7 @@ namespace Opc.Ua
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CRYPT_ENCODE_PARA
-        {
+        private struct CRYPT_ENCODE_PARA {
             public int cbSize;
             public IntPtr pfnAlloc;
             public IntPtr pfnFree;
@@ -1950,12 +1873,14 @@ namespace Opc.Ua
         private const int CERT_STORE_PROV_MEMORY = 2;
         private const int CERT_STORE_PROV_SYSTEM_W = 10;
         private const int CERT_STORE_PROV_SYSTEM = CERT_STORE_PROV_SYSTEM_W;
-                
+
         private const int CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001;
         private const int CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002;
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Sets the parameters to suitable defaults.
         /// </summary>
@@ -1965,46 +1890,38 @@ namespace Opc.Ua
             ref string subjectName,
             ref IList<String> domainNames,
             ref ushort keySize,
-            ref ushort lifetimeInMonths)
-        {
+            ref ushort lifetimeInMonths) {
             // enforce minimum keysize.
-            if (keySize < 2048)
-            {
+            if (keySize < 2048) {
                 keySize = 2048;
             }
 
-            if (keySize%1024 != 0)
-            {
+            if (keySize % 1024 != 0) {
                 throw new ArgumentNullException("keySize", "KeySize must be a multiple of 1024.");
             }
 
             // enforce minimum lifetime.
-            if (lifetimeInMonths < 1)
-            {
+            if (lifetimeInMonths < 1) {
                 lifetimeInMonths = 1;
             }
 
             // parse the subject name if specified.
             List<string> subjectNameEntries = null;
 
-            if (!String.IsNullOrEmpty(subjectName))
-            {
+            if (!String.IsNullOrEmpty(subjectName)) {
                 subjectNameEntries = Utils.ParseDistinguishedName(subjectName);
             }
 
             // check the application name.
-            if (String.IsNullOrEmpty(applicationName))
-            {
-                if (subjectNameEntries == null)
-                {
-                    throw new ArgumentNullException("applicationName", "Must specify a applicationName or a subjectName.");
+            if (String.IsNullOrEmpty(applicationName)) {
+                if (subjectNameEntries == null) {
+                    throw new ArgumentNullException("applicationName",
+                        "Must specify a applicationName or a subjectName.");
                 }
 
                 // use the common name as the application name.
-                for (int ii = 0; ii < subjectNameEntries.Count; ii++)
-                {
-                    if (subjectNameEntries[ii].StartsWith("CN="))
-                    {
+                for (int ii = 0; ii < subjectNameEntries.Count; ii++) {
+                    if (subjectNameEntries[ii].StartsWith("CN=")) {
                         applicationName = subjectNameEntries[ii].Substring(3).Trim();
                         break;
                     }
@@ -2014,12 +1931,10 @@ namespace Opc.Ua
             // remove special characters from name.
             StringBuilder buffer = new StringBuilder();
 
-            for (int ii = 0; ii < applicationName.Length; ii++)
-            {
+            for (int ii = 0; ii < applicationName.Length; ii++) {
                 char ch = applicationName[ii];
 
-                if (Char.IsControl(ch) || ch == '/' || ch == ',' || ch == ';')
-                {
+                if (Char.IsControl(ch) || ch == '/' || ch == ',' || ch == ';') {
                     ch = '+';
                 }
 
@@ -2029,15 +1944,13 @@ namespace Opc.Ua
             applicationName = buffer.ToString();
 
             // ensure at least one host name.
-            if (domainNames == null || domainNames.Count == 0)
-            {
+            if (domainNames == null || domainNames.Count == 0) {
                 domainNames = new List<string>();
                 domainNames.Add(System.Net.Dns.GetHostName());
             }
 
             // create the application uri.
-            if (String.IsNullOrEmpty(applicationUri))
-            {
+            if (String.IsNullOrEmpty(applicationUri)) {
                 StringBuilder builder = new StringBuilder();
 
                 builder.Append("urn:");
@@ -2047,17 +1960,15 @@ namespace Opc.Ua
 
                 applicationUri = builder.ToString();
             }
-            
+
             Uri uri = Utils.ParseUri(applicationUri);
 
-            if (uri == null)
-            {
+            if (uri == null) {
                 throw new ArgumentNullException("applicationUri", "Must specify a valid URL.");
             }
 
             // create the subject name,
-            if (String.IsNullOrEmpty(subjectName))
-            {
+            if (String.IsNullOrEmpty(subjectName)) {
                 subjectName = Utils.Format("CN={0}/DC={1}", applicationName, domainNames[0]);
             }
         }
@@ -2065,24 +1976,19 @@ namespace Opc.Ua
         /// <summary>
         /// Combines the flags for use in an operation.
         /// </summary>
-        private static int GetFlags(bool useMachineStore, params int[] choices)
-        {
+        private static int GetFlags(bool useMachineStore, params int[] choices) {
             int flags = 0;
 
-            if (choices != null)
-            {
-                if (choices.Length > 0)
-                {
+            if (choices != null) {
+                if (choices.Length > 0) {
                     flags |= choices[0];
                 }
 
-                if (useMachineStore && choices.Length > 1)
-                {
+                if (useMachineStore && choices.Length > 1) {
                     flags |= choices[1];
                 }
 
-                if (!useMachineStore && choices.Length > 2)
-                {
+                if (!useMachineStore && choices.Length > 2) {
                     flags |= choices[2];
                 }
             }
@@ -2093,20 +1999,17 @@ namespace Opc.Ua
         /// <summary>
         /// Combines the flags for use in an operation.
         /// </summary>
-        private static void Throw(string format, params object[] args)
-        {
+        private static void Throw(string format, params object[] args) {
             throw ServiceResultException.Create(StatusCodes.BadUnexpectedError, format, args);
         }
 
         /// <summary>
         /// Calculates the public key identifier.
         /// </summary>
-        private static CRYPT_DATA_BLOB GetPublicKeyIdentifier(IntPtr hProvider, ref CRYPT_DATA_BLOB publicKeyId)
-        {
+        private static CRYPT_DATA_BLOB GetPublicKeyIdentifier(IntPtr hProvider, ref CRYPT_DATA_BLOB publicKeyId) {
             IntPtr pPublicKeyInfo = IntPtr.Zero;
 
-            try
-            {
+            try {
                 // determine the size of the public key info structure.
                 int dwKeySize = 0;
 
@@ -2120,9 +2023,9 @@ namespace Opc.Ua
                     IntPtr.Zero,
                     ref dwKeySize);
 
-                if (bResult == 0)
-                {
-                    Throw("Cannot get size of the public key info structure. Error={0:X8}", Marshal.GetLastWin32Error());
+                if (bResult == 0) {
+                    Throw("Cannot get size of the public key info structure. Error={0:X8}",
+                        Marshal.GetLastWin32Error());
                 }
 
                 pPublicKeyInfo = Marshal.AllocHGlobal(dwKeySize);
@@ -2138,14 +2041,13 @@ namespace Opc.Ua
                     pPublicKeyInfo,
                     ref dwKeySize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     Throw("Cannot get export the public key info structure. Error={0:X8}", Marshal.GetLastWin32Error());
                 }
 
                 // calculate the SHA1 hash of the public key info.
                 publicKeyId.cbData = 20;
-                publicKeyId.pbData = (IntPtr)Marshal.AllocHGlobal(publicKeyId.cbData);
+                publicKeyId.pbData = (IntPtr) Marshal.AllocHGlobal(publicKeyId.cbData);
 
                 bResult = NativeMethods.CryptHashPublicKeyInfo(
                     hProvider,
@@ -2156,18 +2058,15 @@ namespace Opc.Ua
                     publicKeyId.pbData,
                     ref publicKeyId.cbData);
 
-                if (bResult == 0)
-                {
-                    Throw("Cannot calculate the hash for the public key info structure. Error={0:X8}", Marshal.GetLastWin32Error());
+                if (bResult == 0) {
+                    Throw("Cannot calculate the hash for the public key info structure. Error={0:X8}",
+                        Marshal.GetLastWin32Error());
                 }
 
                 // return the hash.
                 return publicKeyId;
-            }
-            finally
-            {
-                if (pPublicKeyInfo != IntPtr.Zero)
-                {
+            } finally {
+                if (pPublicKeyInfo != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pPublicKeyInfo);
                 }
             }
@@ -2186,8 +2085,7 @@ namespace Opc.Ua
             IList<string> hostNames,
             ushort keySize,
             ushort lifetimeInMonths,
-            ushort algorithm = 0)
-        {
+            ushort algorithm = 0) {
             IntPtr hKey = IntPtr.Zero;
             IntPtr pKpi = IntPtr.Zero;
             IntPtr pThumbprint = IntPtr.Zero;
@@ -2205,8 +2103,7 @@ namespace Opc.Ua
             GCHandle hSubjectNameBlob = new GCHandle();
             GCHandle hFriendlyName = new GCHandle();
 
-            try
-            {
+            try {
                 // create a new key pair.
                 int bResult = NativeMethods.CryptGenKey(
                     hProvider,
@@ -2214,8 +2111,7 @@ namespace Opc.Ua
                     CRYPT_EXPORTABLE | (keySize << 16),
                     ref hKey);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     Throw("Could not generate a new key pair. Error={0:X8}", Marshal.GetLastWin32Error());
                 }
 
@@ -2275,10 +2171,11 @@ namespace Opc.Ua
 
                 // set the expiration date.
                 DateTime validTo = DateTime.UtcNow.AddMonths(lifetimeInMonths);
-                System.Runtime.InteropServices.ComTypes.FILETIME ftValidTo = new System.Runtime.InteropServices.ComTypes.FILETIME();
-                ulong ticks = (ulong)(validTo.Ticks - new DateTime(1601, 1, 1).Ticks);
-                ftValidTo.dwHighDateTime = (int)((0xFFFFFFFF00000000 & (ulong)ticks) >> 32);
-                ftValidTo.dwLowDateTime = (int)((ulong)ticks & 0x00000000FFFFFFFF);
+                System.Runtime.InteropServices.ComTypes.FILETIME ftValidTo =
+                    new System.Runtime.InteropServices.ComTypes.FILETIME();
+                ulong ticks = (ulong) (validTo.Ticks - new DateTime(1601, 1, 1).Ticks);
+                ftValidTo.dwHighDateTime = (int) ((0xFFFFFFFF00000000 & (ulong) ticks) >> 32);
+                ftValidTo.dwLowDateTime = (int) ((ulong) ticks & 0x00000000FFFFFFFF);
 
                 NativeMethods.FileTimeToSystemTime(ref ftValidTo, ref stValidTo);
 
@@ -2291,12 +2188,9 @@ namespace Opc.Ua
                 kpi.dwFlags = CERT_SET_KEY_CONTEXT_PROP_ID;
                 kpi.dwKeySpec = AT_KEYEXCHANGE;
 
-                if (useMachineStore)
-                {
+                if (useMachineStore) {
                     kpi.dwFlags |= CRYPT_MACHINE_KEYSET;
-                }
-                else
-                {
+                } else {
                     kpi.dwFlags |= CRYPT_USER_KEYSET;
                 }
 
@@ -2307,8 +2201,7 @@ namespace Opc.Ua
                 hExtensionList = GCHandle.Alloc(extensions, GCHandleType.Pinned);
                 hSubjectNameBlob = GCHandle.Alloc(subjectNameBlob, GCHandleType.Pinned);
 
-                if (algorithm == 1)
-                {
+                if (algorithm == 1) {
                     CRYPT_ALGORITHM_IDENTIFIER algorithmID = new CRYPT_ALGORITHM_IDENTIFIER();
                     algorithmID.pszObjId = "1.2.840.113549.1.1.11"; //SHA256
 
@@ -2317,31 +2210,28 @@ namespace Opc.Ua
 
                     //create the certificate
                     pContext = NativeMethods.CertCreateSelfSignCertificate(
-                         hProvider,
-                         hSubjectNameBlob.AddrOfPinnedObject(),
-                         0,
-                         pKpi,
-                         pAlgorithmId,
-                         IntPtr.Zero,
-                         hValidTo.AddrOfPinnedObject(),
-                         hExtensionList.AddrOfPinnedObject());
-                }
-                else
-                {
+                        hProvider,
+                        hSubjectNameBlob.AddrOfPinnedObject(),
+                        0,
+                        pKpi,
+                        pAlgorithmId,
+                        IntPtr.Zero,
+                        hValidTo.AddrOfPinnedObject(),
+                        hExtensionList.AddrOfPinnedObject());
+                } else {
                     // (default) create the certificate.
                     pContext = NativeMethods.CertCreateSelfSignCertificate(
-                    hProvider,
-                    hSubjectNameBlob.AddrOfPinnedObject(),
-                    0,
-                    pKpi,
-                    IntPtr.Zero,
-                    IntPtr.Zero,
-                    hValidTo.AddrOfPinnedObject(),
-                    hExtensionList.AddrOfPinnedObject());
+                        hProvider,
+                        hSubjectNameBlob.AddrOfPinnedObject(),
+                        0,
+                        pKpi,
+                        IntPtr.Zero,
+                        IntPtr.Zero,
+                        hValidTo.AddrOfPinnedObject(),
+                        hExtensionList.AddrOfPinnedObject());
                 }
 
-                if (pContext == IntPtr.Zero)
-                {
+                if (pContext == IntPtr.Zero) {
                     Throw("Could not create self-signed certificate. Error={0:X8}", Marshal.GetLastWin32Error());
                 }
 
@@ -2355,9 +2245,9 @@ namespace Opc.Ua
                     pThumbprint,
                     ref dwThumbprintSize);
 
-                if (bResult == 0)
-                {
-                    Throw("Could not get the thumbprint of the new certificate. Error={0:X8}", Marshal.GetLastWin32Error());
+                if (bResult == 0) {
+                    Throw("Could not get the thumbprint of the new certificate. Error={0:X8}",
+                        Marshal.GetLastWin32Error());
                 }
 
                 byte[] bytes = new byte[dwThumbprintSize];
@@ -2366,7 +2256,7 @@ namespace Opc.Ua
 
                 // set the friendly name.
                 friendlyName.pbData = Marshal.StringToHGlobalUni(applicationName);
-                friendlyName.cbData = (applicationName.Length+1)*Marshal.SizeOf(typeof(ushort));
+                friendlyName.cbData = (applicationName.Length + 1) * Marshal.SizeOf(typeof(ushort));
                 hFriendlyName = GCHandle.Alloc(friendlyName, GCHandleType.Pinned);
 
                 bResult = NativeMethods.CertSetCertificateContextProperty(
@@ -2375,9 +2265,9 @@ namespace Opc.Ua
                     0,
                     hFriendlyName.AddrOfPinnedObject());
 
-                if (bResult == 0)
-                {
-                    Throw("Could not set the friendly name for the certificate. Error={0:X8}", Marshal.GetLastWin32Error());
+                if (bResult == 0) {
+                    Throw("Could not set the friendly name for the certificate. Error={0:X8}",
+                        Marshal.GetLastWin32Error());
                 }
 
                 // add into store.
@@ -2387,37 +2277,29 @@ namespace Opc.Ua
                     CERT_STORE_ADD_REPLACE_EXISTING,
                     ref pNewContext);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     Throw("Could not add the certificate to the store. Error={0:X8}", Marshal.GetLastWin32Error());
                 }
 
                 return thumbprint;
-            }
-            finally
-            {
-                if (pContext != IntPtr.Zero)
-                {
+            } finally {
+                if (pContext != IntPtr.Zero) {
                     NativeMethods.CertFreeCertificateContext(pContext);
                 }
 
-                if (pNewContext != IntPtr.Zero)
-                {
+                if (pNewContext != IntPtr.Zero) {
                     NativeMethods.CertFreeCertificateContext(pNewContext);
                 }
 
-                if (friendlyName.pbData != IntPtr.Zero)
-                {
+                if (friendlyName.pbData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(friendlyName.pbData);
                 }
 
-                if (pThumbprint != IntPtr.Zero)
-                {
+                if (pThumbprint != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pThumbprint);
                 }
 
-                if (pAlgorithmId != IntPtr.Zero)
-                {
+                if (pAlgorithmId != IntPtr.Zero) {
                     Marshal.DestroyStructure(pAlgorithmId, typeof(CRYPT_ALGORITHM_IDENTIFIER));
                     Marshal.FreeHGlobal(pAlgorithmId);
                 }
@@ -2427,8 +2309,7 @@ namespace Opc.Ua
                 if (hSubjectNameBlob.IsAllocated) hSubjectNameBlob.Free();
                 if (hFriendlyName.IsAllocated) hFriendlyName.Free();
 
-                if (pKpi != IntPtr.Zero)
-                {
+                if (pKpi != IntPtr.Zero) {
                     Marshal.DestroyStructure(pKpi, typeof(CRYPT_KEY_PROV_INFO));
                     Marshal.FreeHGlobal(pKpi);
                 }
@@ -2436,13 +2317,11 @@ namespace Opc.Ua
                 DeleteExtensions(ref extensions.rgExtension, extensions.cExtension);
                 DeleteX500Name(ref subjectNameBlob);
 
-                if (publicKeyId.pbData != IntPtr.Zero)
-                {
+                if (publicKeyId.pbData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(publicKeyId.pbData);
                 }
 
-                if (hKey != IntPtr.Zero)
-                {
+                if (hKey != IntPtr.Zero) {
                     NativeMethods.CryptDestroyKey(hKey);
                 }
             }
@@ -2459,8 +2338,7 @@ namespace Opc.Ua
             IList<string> hostNames,
             ushort keySize,
             ushort lifetimeInMonths,
-            ushort algorithm = 0)
-        {
+            ushort algorithm = 0) {
             IntPtr hProvider = IntPtr.Zero;
             IntPtr hMemoryStore = IntPtr.Zero;
             IntPtr hPfxStore = IntPtr.Zero;
@@ -2470,8 +2348,7 @@ namespace Opc.Ua
             IntPtr pNewContext = IntPtr.Zero;
             CRYPT_DATA_BLOB tPfxData = new CRYPT_DATA_BLOB();
 
-            try
-            {
+            try {
                 // create a container for the keys.
                 int bResult = NativeMethods.CryptAcquireContextW(
                     ref hProvider,
@@ -2480,8 +2357,7 @@ namespace Opc.Ua
                     PROV_RSA_FULL,
                     CRYPT_MACHINE_KEYSET);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     bResult = NativeMethods.CryptAcquireContextW(
                         ref hProvider,
                         KEY_CONTAINER_NAME,
@@ -2489,22 +2365,21 @@ namespace Opc.Ua
                         PROV_RSA_FULL,
                         CRYPT_NEWKEYSET | CRYPT_MACHINE_KEYSET);
 
-                    if (bResult == 0)
-                    {
-                        Throw("Could not create a container for the new key pair. Error={0:X8}", Marshal.GetLastWin32Error());
+                    if (bResult == 0) {
+                        Throw("Could not create a container for the new key pair. Error={0:X8}",
+                            Marshal.GetLastWin32Error());
                     }
                 }
 
                 // create memory store to hold the new certificate.
                 hMemoryStore = NativeMethods.CertOpenStore(
-                    (IntPtr)CERT_STORE_PROV_MEMORY,
+                    (IntPtr) CERT_STORE_PROV_MEMORY,
                     0,
                     IntPtr.Zero,
                     0,
                     IntPtr.Zero);
 
-                if (hMemoryStore == IntPtr.Zero)
-                {
+                if (hMemoryStore == IntPtr.Zero) {
                     Throw("Could not create a temporary memory store. Error={0:X8}", Marshal.GetLastWin32Error());
                 }
 
@@ -2529,12 +2404,12 @@ namespace Opc.Ua
                     IntPtr.Zero,
                     EXPORT_PRIVATE_KEYS | REPORT_NO_PRIVATE_KEY | REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY);
 
-                if (bResult == 0)
-                {
-                    Throw("Could not determine the size of the PKCS#12 blob. Error={0:X8}", Marshal.GetLastWin32Error());
+                if (bResult == 0) {
+                    Throw("Could not determine the size of the PKCS#12 blob. Error={0:X8}",
+                        Marshal.GetLastWin32Error());
                 }
 
-                tPfxData.pbData = (IntPtr)Marshal.AllocHGlobal(tPfxData.cbData);
+                tPfxData.pbData = (IntPtr) Marshal.AllocHGlobal(tPfxData.cbData);
 
                 // export the PKCS#12 blob.
                 bResult = NativeMethods.PFXExportCertStoreEx(
@@ -2544,9 +2419,9 @@ namespace Opc.Ua
                     IntPtr.Zero,
                     EXPORT_PRIVATE_KEYS | REPORT_NO_PRIVATE_KEY | REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY);
 
-                if (bResult == 0)
-                {
-                    Throw("Could not export the certificate to a PKCS#12 blob. Error={0:X8}", Marshal.GetLastWin32Error());
+                if (bResult == 0) {
+                    Throw("Could not export the certificate to a PKCS#12 blob. Error={0:X8}",
+                        Marshal.GetLastWin32Error());
                 }
 
                 // create certificate.
@@ -2555,45 +2430,36 @@ namespace Opc.Ua
 
                 X509Certificate2 certificate = new X509Certificate2(
                     bytes,
-                    (string)null,
+                    (string) null,
                     X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
 
                 return certificate;
-            }
-            finally
-            {
-                if (pName != IntPtr.Zero)
-                {
+            } finally {
+                if (pName != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pName);
                 }
 
-                if (pContext != IntPtr.Zero)
-                {
+                if (pContext != IntPtr.Zero) {
                     NativeMethods.CertFreeCertificateContext(pContext);
                 }
 
-                if (pNewContext != IntPtr.Zero)
-                {
+                if (pNewContext != IntPtr.Zero) {
                     NativeMethods.CertFreeCertificateContext(pNewContext);
                 }
 
-                if (tPfxData.pbData != IntPtr.Zero)
-                {
+                if (tPfxData.pbData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(tPfxData.pbData);
                 }
 
-                if (hWindowsStore != IntPtr.Zero)
-                {
+                if (hWindowsStore != IntPtr.Zero) {
                     NativeMethods.CertCloseStore(hWindowsStore, 0);
                 }
 
-                if (hPfxStore != IntPtr.Zero)
-                {
+                if (hPfxStore != IntPtr.Zero) {
                     NativeMethods.CertCloseStore(hPfxStore, 0);
                 }
 
-                if (hMemoryStore != IntPtr.Zero)
-                {
+                if (hMemoryStore != IntPtr.Zero) {
                     NativeMethods.CertCloseStore(hMemoryStore, 0);
                 }
 
@@ -2605,9 +2471,9 @@ namespace Opc.Ua
                     PROV_RSA_FULL,
                     CRYPT_DELETEKEYSET | CRYPT_MACHINE_KEYSET);
 
-                if (bResult == 0)
-                {
-                    Utils.Trace("Could not delete the container used for the key pair. Error={0:X8}", Marshal.GetLastWin32Error());
+                if (bResult == 0) {
+                    Utils.Trace("Could not delete the container used for the key pair. Error={0:X8}",
+                        Marshal.GetLastWin32Error());
                 }
             }
         }
@@ -2615,35 +2481,29 @@ namespace Opc.Ua
         /// <summary>
         /// Changes the delimiter used to seperate fields in a subject name.
         /// </summary>
-        private static string ChangeSubjectNameDelimiter(string name, char delimiter)
-        {
+        private static string ChangeSubjectNameDelimiter(string name, char delimiter) {
             StringBuilder buffer = new StringBuilder();
             List<string> elements = Utils.ParseDistinguishedName(name);
 
-            for (int ii = 0; ii < elements.Count; ii++)
-            {
+            for (int ii = 0; ii < elements.Count; ii++) {
                 string element = elements[ii];
 
-                if (buffer.Length > 0)
-                {
+                if (buffer.Length > 0) {
                     buffer.Append(delimiter);
                 }
 
-                if (element.IndexOf(delimiter) != -1)
-                {
+                if (element.IndexOf(delimiter) != -1) {
                     int index = element.IndexOf('=');
 
-                    buffer.Append(element.Substring(0, index+1));
+                    buffer.Append(element.Substring(0, index + 1));
 
-                    if (element.Length > index+1 && element[index+1] != '"')
-                    {
+                    if (element.Length > index + 1 && element[index + 1] != '"') {
                         buffer.Append('"');
                     }
 
-                    buffer.Append(element.Substring(index+1));
+                    buffer.Append(element.Substring(index + 1));
 
-                    if (element.Length > 0 && element[element.Length-1] != '"')
-                    {
+                    if (element.Length > 0 && element[element.Length - 1] != '"') {
                         buffer.Append('"');
                     }
 
@@ -2657,46 +2517,42 @@ namespace Opc.Ua
         }
 
         // Encodes an X500 name in a CrytoAPI compatible blob
-        private static void CreateX500Name(string name, ref CERT_NAME_BLOB pName)
-        {
+        private static void CreateX500Name(string name, ref CERT_NAME_BLOB pName) {
             int dwSize = 0;
             IntPtr pBuffer = IntPtr.Zero;
 
-            try
-            {
+            try {
                 // reconstruct name using comma as delimeter.
                 name = ChangeSubjectNameDelimiter(name, ',');
-                            
-                int bResult = NativeMethods.CertStrToNameW(
-	                X509_ASN_ENCODING,
-	                name,
-	                CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-	                IntPtr.Zero,
-	                IntPtr.Zero,
-	                ref dwSize,
-	                IntPtr.Zero);
 
-                if (bResult == 0)
-                {
+                int bResult = NativeMethods.CertStrToNameW(
+                    X509_ASN_ENCODING,
+                    name,
+                    CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    ref dwSize,
+                    IntPtr.Zero);
+
+                if (bResult == 0) {
                     throw ServiceResultException.Create(
                         StatusCodes.BadEncodingError,
                         "Could not get size of X500 name blob. Name={0}",
                         name);
                 }
-                
+
                 pBuffer = Marshal.AllocHGlobal(dwSize);
 
                 bResult = NativeMethods.CertStrToNameW(
-	                X509_ASN_ENCODING,
-	                name,
-	                CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-	                IntPtr.Zero,
-	                pBuffer,
-	                ref dwSize,
-	                IntPtr.Zero);
+                    X509_ASN_ENCODING,
+                    name,
+                    CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+                    IntPtr.Zero,
+                    pBuffer,
+                    ref dwSize,
+                    IntPtr.Zero);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw ServiceResultException.Create(
                         StatusCodes.BadEncodingError,
                         "Could not create  X500 name blob. Name={0}",
@@ -2706,82 +2562,71 @@ namespace Opc.Ua
                 pName.pbData = pBuffer;
                 pName.cbData = dwSize;
                 pBuffer = IntPtr.Zero;
-            }
-            finally
-            {
-                if (pBuffer != IntPtr.Zero)
-                {
+            } finally {
+                if (pBuffer != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pBuffer);
                 }
             }
         }
 
         // frees the memory used by a X500 name blob.
-        private static void DeleteX500Name(ref CERT_NAME_BLOB pName)
-        {
-	        Marshal.FreeHGlobal(pName.pbData);
-	        pName.pbData = IntPtr.Zero;
-	        pName.cbData = 0;
+        private static void DeleteX500Name(ref CERT_NAME_BLOB pName) {
+            Marshal.FreeHGlobal(pName.pbData);
+            pName.pbData = IntPtr.Zero;
+            pName.cbData = 0;
         }
 
         // creates the basic constraints extension.
-        private static void CreateSubjectKeyIdentifierExtension(ref CERT_EXTENSION pExtension, ref CRYPT_DATA_BLOB pKeyId)
-        {
-	        pExtension.pszObjId  = szOID_SUBJECT_KEY_IDENTIFIER;
-	        pExtension.fCritical = 0;
+        private static void CreateSubjectKeyIdentifierExtension(ref CERT_EXTENSION pExtension,
+            ref CRYPT_DATA_BLOB pKeyId) {
+            pExtension.pszObjId = szOID_SUBJECT_KEY_IDENTIFIER;
+            pExtension.fCritical = 0;
 
             GCHandle hKey = GCHandle.Alloc(pKeyId, GCHandleType.Pinned);
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
 
-            try
-            {
-	            // calculate amount of memory required.
+            try {
+                // calculate amount of memory required.
                 int bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_SUBJECT_KEY_IDENTIFIER,
-		            hKey.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-	                IntPtr.Zero,
-		            ref dwDataSize);
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_SUBJECT_KEY_IDENTIFIER,
+                    hKey.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not get size for subject key info extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not get size for subject key info extension.");
+                }
 
-	            // allocate memory.
-	            pData = Marshal.AllocHGlobal(dwDataSize);
+                // allocate memory.
+                pData = Marshal.AllocHGlobal(dwDataSize);
 
-	            // encode blob.
+                // encode blob.
                 bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_SUBJECT_KEY_IDENTIFIER,
-		            hKey.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-		            pData,
-		            ref dwDataSize);
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_SUBJECT_KEY_IDENTIFIER,
+                    hKey.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    pData,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
+                if (bResult == 0) {
                     throw new InvalidOperationException("Could not create for subject key info extension.");
-	            }
+                }
 
                 pExtension.Value.cbData = dwDataSize;
                 pExtension.Value.pbData = pData;
                 pData = IntPtr.Zero;
-            }
-            finally
-            {
-                if (pData != IntPtr.Zero)
-                {
+            } finally {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
 
-                if (hKey.IsAllocated)
-                {
+                if (hKey.IsAllocated) {
                     hKey.Free();
                 }
             }
@@ -2790,306 +2635,271 @@ namespace Opc.Ua
         // creates the basic constraints extension.
         static void CreateAuthorityKeyIdentifierExtension(
             ref CERT_EXTENSION pExtension,
-            ref CRYPT_DATA_BLOB pKeyId)
-        {
-	        // set the certificate as a non-CA certificate.
+            ref CRYPT_DATA_BLOB pKeyId) {
+            // set the certificate as a non-CA certificate.
             CERT_AUTHORITY_KEY_ID2_INFO keyInfo = new CERT_AUTHORITY_KEY_ID2_INFO();
 
-	        keyInfo.KeyId.cbData = pKeyId.cbData;
-	        keyInfo.KeyId.pbData = pKeyId.pbData;
+            keyInfo.KeyId.cbData = pKeyId.cbData;
+            keyInfo.KeyId.pbData = pKeyId.pbData;
 
-	        pExtension.pszObjId  = szOID_AUTHORITY_KEY_IDENTIFIER2;
-	        pExtension.fCritical = 0;
-            
+            pExtension.pszObjId = szOID_AUTHORITY_KEY_IDENTIFIER2;
+            pExtension.fCritical = 0;
+
             GCHandle hKeyInfo = GCHandle.Alloc(keyInfo, GCHandleType.Pinned);
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
 
-            try
-            {
-	            // calculate amount of memory required.
+            try {
+                // calculate amount of memory required.
                 int bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_AUTHORITY_KEY_IDENTIFIER2, // X509_AUTHORITY_KEY_ID,
-		            hKeyInfo.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-	                IntPtr.Zero,
-		            ref dwDataSize);
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_AUTHORITY_KEY_IDENTIFIER2, // X509_AUTHORITY_KEY_ID,
+                    hKeyInfo.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not get size for basic constraints extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not get size for basic constraints extension.");
+                }
 
-	            // allocate memory.
-	            pData = Marshal.AllocHGlobal(dwDataSize);
+                // allocate memory.
+                pData = Marshal.AllocHGlobal(dwDataSize);
 
-	            // encode blob.
+                // encode blob.
                 bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_AUTHORITY_KEY_IDENTIFIER2, // X509_AUTHORITY_KEY_ID,
-		            hKeyInfo.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-		            pData,
-		            ref dwDataSize);
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_AUTHORITY_KEY_IDENTIFIER2, // X509_AUTHORITY_KEY_ID,
+                    hKeyInfo.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    pData,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not create for basic constraints extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not create for basic constraints extension.");
+                }
 
                 pExtension.Value.cbData = dwDataSize;
                 pExtension.Value.pbData = pData;
                 pData = IntPtr.Zero;
-            }
-            finally
-            {
-                if (pData != IntPtr.Zero)
-                {
+            } finally {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
 
-                if (hKeyInfo.IsAllocated)
-                {
+                if (hKeyInfo.IsAllocated) {
                     hKeyInfo.Free();
                 }
             }
         }
 
         // creates the basic constraints extension.
-        static void CreateBasicConstraintsExtension(ref CERT_EXTENSION pExtension, bool isCA)
-        {
-	        // set the certificate as a non-CA certificate.
-	        CERT_BASIC_CONSTRAINTS2_INFO constraints;
+        static void CreateBasicConstraintsExtension(ref CERT_EXTENSION pExtension, bool isCA) {
+            // set the certificate as a non-CA certificate.
+            CERT_BASIC_CONSTRAINTS2_INFO constraints;
 
-	        constraints.fCA = (isCA)?1:0;
-	        constraints.fPathLenConstraint = 0;
-	        constraints.dwPathLenConstraint = 0;
+            constraints.fCA = (isCA) ? 1 : 0;
+            constraints.fPathLenConstraint = 0;
+            constraints.dwPathLenConstraint = 0;
 
-	        pExtension.pszObjId  = szOID_BASIC_CONSTRAINTS2;
-	        pExtension.fCritical = 1;
-            
+            pExtension.pszObjId = szOID_BASIC_CONSTRAINTS2;
+            pExtension.fCritical = 1;
+
             GCHandle hConstraints = GCHandle.Alloc(constraints, GCHandleType.Pinned);
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
 
-            try
-            {
-	            // calculate amount of memory required.
-	            int bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_BASIC_CONSTRAINTS2, // X509_BASIC_CONSTRAINTS2,
-		            hConstraints.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-	                IntPtr.Zero,
-		            ref dwDataSize);
+            try {
+                // calculate amount of memory required.
+                int bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_BASIC_CONSTRAINTS2, // X509_BASIC_CONSTRAINTS2,
+                    hConstraints.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not get size for basic constraints extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not get size for basic constraints extension.");
+                }
 
-	            // allocate memory.
-	            pData = Marshal.AllocHGlobal(dwDataSize);
+                // allocate memory.
+                pData = Marshal.AllocHGlobal(dwDataSize);
 
-	            // encode blob.
-	            bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_BASIC_CONSTRAINTS2, // X509_BASIC_CONSTRAINTS2,
-		            hConstraints.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-		            pData,
-		            ref dwDataSize);
+                // encode blob.
+                bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_BASIC_CONSTRAINTS2, // X509_BASIC_CONSTRAINTS2,
+                    hConstraints.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    pData,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not create for basic constraints extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not create for basic constraints extension.");
+                }
 
                 pExtension.Value.cbData = dwDataSize;
                 pExtension.Value.pbData = pData;
                 pData = IntPtr.Zero;
-            }
-            finally
-            {
-                if (pData != IntPtr.Zero)
-                {
+            } finally {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
 
-                if (hConstraints.IsAllocated)
-                {
+                if (hConstraints.IsAllocated) {
                     hConstraints.Free();
                 }
             }
         }
 
         // creates the key usage constraints extension.
-        static void CreateKeyUsageExtension(ref CERT_EXTENSION pExtension, bool isCA)
-        {
-	        // build list of allowed key uses
-	        int allowedUses = 0;
+        static void CreateKeyUsageExtension(ref CERT_EXTENSION pExtension, bool isCA) {
+            // build list of allowed key uses
+            int allowedUses = 0;
 
-	        if (isCA)
-	        {
-		        allowedUses |= CERT_KEY_CERT_SIGN_KEY_USAGE;
-		        allowedUses |= CERT_OFFLINE_CRL_SIGN_KEY_USAGE;
-		        allowedUses |= CERT_CRL_SIGN_KEY_USAGE;
-		        allowedUses |= CERT_NON_REPUDIATION_KEY_USAGE;
-	        }
-	        else
-	        {
-		        allowedUses |= CERT_DATA_ENCIPHERMENT_KEY_USAGE;
-		        allowedUses |= CERT_DIGITAL_SIGNATURE_KEY_USAGE;
-		        allowedUses |= CERT_KEY_ENCIPHERMENT_KEY_USAGE;
-		        allowedUses |= CERT_NON_REPUDIATION_KEY_USAGE;
-		        allowedUses |= CERT_KEY_CERT_SIGN_KEY_USAGE;
-	        }
-            
+            if (isCA) {
+                allowedUses |= CERT_KEY_CERT_SIGN_KEY_USAGE;
+                allowedUses |= CERT_OFFLINE_CRL_SIGN_KEY_USAGE;
+                allowedUses |= CERT_CRL_SIGN_KEY_USAGE;
+                allowedUses |= CERT_NON_REPUDIATION_KEY_USAGE;
+            } else {
+                allowedUses |= CERT_DATA_ENCIPHERMENT_KEY_USAGE;
+                allowedUses |= CERT_DIGITAL_SIGNATURE_KEY_USAGE;
+                allowedUses |= CERT_KEY_ENCIPHERMENT_KEY_USAGE;
+                allowedUses |= CERT_NON_REPUDIATION_KEY_USAGE;
+                allowedUses |= CERT_KEY_CERT_SIGN_KEY_USAGE;
+            }
+
             GCHandle hAllowedUses = GCHandle.Alloc(allowedUses, GCHandleType.Pinned);
 
-	        CRYPT_BIT_BLOB usage;
+            CRYPT_BIT_BLOB usage;
 
-	        usage.cbData = 1;
-	        usage.pbData = hAllowedUses.AddrOfPinnedObject();
-	        usage.cUnusedBits = 0;
+            usage.cbData = 1;
+            usage.pbData = hAllowedUses.AddrOfPinnedObject();
+            usage.cUnusedBits = 0;
 
-	        // initialize extension.
-	        pExtension.pszObjId  = szOID_KEY_USAGE;
-	        pExtension.fCritical = 1;
-            
+            // initialize extension.
+            pExtension.pszObjId = szOID_KEY_USAGE;
+            pExtension.fCritical = 1;
+
             GCHandle hUsage = GCHandle.Alloc(usage, GCHandleType.Pinned);
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
 
-            try
-            {
-	            // calculate amount of memory required.
-	            int bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_KEY_USAGE, // X509_KEY_USAGE,
-		            hUsage.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-	                IntPtr.Zero,
-		            ref dwDataSize);
+            try {
+                // calculate amount of memory required.
+                int bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_KEY_USAGE, // X509_KEY_USAGE,
+                    hUsage.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not get size for key usage extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not get size for key usage extension.");
+                }
 
-	            // allocate memory.
-	            pData = Marshal.AllocHGlobal(dwDataSize);
+                // allocate memory.
+                pData = Marshal.AllocHGlobal(dwDataSize);
 
-	            // encode blob.
-	            bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_KEY_USAGE, // X509_KEY_USAGE,
-		            hUsage.AddrOfPinnedObject(),
-		            0,
-		            IntPtr.Zero,
-		            pData,
-		            ref dwDataSize);
+                // encode blob.
+                bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_KEY_USAGE, // X509_KEY_USAGE,
+                    hUsage.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    pData,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not create key usage extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not create key usage extension.");
+                }
 
                 pExtension.Value.cbData = dwDataSize;
                 pExtension.Value.pbData = pData;
                 pData = IntPtr.Zero;
-            }
-            finally
-            {
-                if (pData != IntPtr.Zero)
-                {
+            } finally {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
 
-                if (hAllowedUses.IsAllocated)
-                {
+                if (hAllowedUses.IsAllocated) {
                     hAllowedUses.Free();
                 }
 
-                if (hUsage.IsAllocated)
-                {
+                if (hUsage.IsAllocated) {
                     hUsage.Free();
                 }
             }
         }
 
         // creates the extended key usage extension
-        static void CreateExtendedKeyUsageExtension(ref CERT_EXTENSION pExtension)
-        {
-	        // build list of allowed key uses
+        static void CreateExtendedKeyUsageExtension(ref CERT_EXTENSION pExtension) {
+            // build list of allowed key uses
             IntPtr[] allowedUses = new IntPtr[2];
 
-	        allowedUses[0] = Marshal.StringToHGlobalAnsi(szOID_PKIX_KP_SERVER_AUTH);
-	        allowedUses[1] = Marshal.StringToHGlobalAnsi(szOID_PKIX_KP_CLIENT_AUTH);
+            allowedUses[0] = Marshal.StringToHGlobalAnsi(szOID_PKIX_KP_SERVER_AUTH);
+            allowedUses[1] = Marshal.StringToHGlobalAnsi(szOID_PKIX_KP_CLIENT_AUTH);
 
             CERT_ENHKEY_USAGE usage;
 
-	        usage.cUsageIdentifier = 2;
-	        usage.rgpszUsageIdentifier = Marshal.AllocHGlobal(IntPtr.Size*2);
+            usage.cUsageIdentifier = 2;
+            usage.rgpszUsageIdentifier = Marshal.AllocHGlobal(IntPtr.Size * 2);
             Marshal.Copy(allowedUses, 0, usage.rgpszUsageIdentifier, allowedUses.Length);
 
-	        // initialize extension.
-	        pExtension.pszObjId  = szOID_ENHANCED_KEY_USAGE;
-	        pExtension.fCritical = 1;
-            
+            // initialize extension.
+            pExtension.pszObjId = szOID_ENHANCED_KEY_USAGE;
+            pExtension.fCritical = 1;
+
             GCHandle hUsage = GCHandle.Alloc(usage, GCHandleType.Pinned);
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
 
-            try
-            {
-	            // calculate amount of memory required.
-	            int bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_ENHANCED_KEY_USAGE, // X509_ENHANCED_KEY_USAGE,
-	                hUsage.AddrOfPinnedObject(),
-	                0,
-	                IntPtr.Zero,
-	                IntPtr.Zero,
-	                ref dwDataSize);
+            try {
+                // calculate amount of memory required.
+                int bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_ENHANCED_KEY_USAGE, // X509_ENHANCED_KEY_USAGE,
+                    hUsage.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not get size for extended key usage extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not get size for extended key usage extension.");
+                }
 
-	            // allocate memory.
-	            pData = Marshal.AllocHGlobal(dwDataSize);
+                // allocate memory.
+                pData = Marshal.AllocHGlobal(dwDataSize);
 
-	            // encode blob.
-	            bResult = NativeMethods.CryptEncodeObjectEx(
-		            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		            szOID_ENHANCED_KEY_USAGE, // X509_ENHANCED_KEY_USAGE,
-	                hUsage.AddrOfPinnedObject(),
-	                0,
-	                IntPtr.Zero,
-	                pData,
-	                ref dwDataSize);
+                // encode blob.
+                bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_ENHANCED_KEY_USAGE, // X509_ENHANCED_KEY_USAGE,
+                    hUsage.AddrOfPinnedObject(),
+                    0,
+                    IntPtr.Zero,
+                    pData,
+                    ref dwDataSize);
 
-	            if (bResult == 0)
-	            {
-		            throw new InvalidOperationException("Could not create extended key usage extension.");
-	            }
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not create extended key usage extension.");
+                }
 
                 pExtension.Value.cbData = dwDataSize;
                 pExtension.Value.pbData = pData;
                 pData = IntPtr.Zero;
-            }
-            finally
-            {
-                if (pData != IntPtr.Zero)
-                {
+            } finally {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
 
@@ -3097,230 +2907,203 @@ namespace Opc.Ua
                 Marshal.FreeHGlobal(allowedUses[1]);
                 Marshal.FreeHGlobal(usage.rgpszUsageIdentifier);
 
-                if (hUsage.IsAllocated)
-                {
+                if (hUsage.IsAllocated) {
                     hUsage.Free();
                 }
             }
         }
 
         // allocates a copy of an array of bytes.
-        static IntPtr AllocBytes(byte[] bytes)
-        {
-	        if (bytes == null)
-	        {
-		        return IntPtr.Zero;
-	        }
+        static IntPtr AllocBytes(byte[] bytes) {
+            if (bytes == null) {
+                return IntPtr.Zero;
+            }
 
-	        IntPtr pCopy = (IntPtr)Marshal.AllocHGlobal(bytes.Length);
+            IntPtr pCopy = (IntPtr) Marshal.AllocHGlobal(bytes.Length);
             Marshal.Copy(bytes, 0, pCopy, bytes.Length);
 
-	        return pCopy;
+            return pCopy;
         }
 
         // creates the alternate name extension for the certificate.
         static void CreateSubjectAltNameExtension(
-	        string applicationUri,
-	        IList<string> hostNames,
-	        ref CERT_EXTENSION pExtension)
-        {
-	        int count = hostNames.Count + 1;
-            
-	        // initialize extension.
-	        pExtension.pszObjId  = szOID_SUBJECT_ALT_NAME2;
-	        pExtension.fCritical = 0;
-        
+            string applicationUri,
+            IList<string> hostNames,
+            ref CERT_EXTENSION pExtension) {
+            int count = hostNames.Count + 1;
+
+            // initialize extension.
+            pExtension.pszObjId = szOID_SUBJECT_ALT_NAME2;
+            pExtension.fCritical = 0;
+
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
 
-	        // build list of alternate names.
+            // build list of alternate names.
             IntPtr pAlternateNames = IntPtr.Zero;
-	        IntPtr pEntries = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CERT_ALT_NAME_ENTRY))*count);
+            IntPtr pEntries = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CERT_ALT_NAME_ENTRY)) * count);
 
-	        // create structure to encode.
+            // create structure to encode.
 
-	        try
-	        {
-		        // set application uri.
+            try {
+                // set application uri.
                 CERT_ALT_NAME_ENTRY pEntry = new CERT_ALT_NAME_ENTRY();
 
-		        pEntry.dwAltNameChoice = CERT_ALT_NAME_URL;
-		        pEntry.Value.pwszURL = Marshal.StringToHGlobalUni(applicationUri);
+                pEntry.dwAltNameChoice = CERT_ALT_NAME_URL;
+                pEntry.Value.pwszURL = Marshal.StringToHGlobalUni(applicationUri);
 
                 Marshal.StructureToPtr(pEntry, pEntries, false);
                 IntPtr pPos = new IntPtr(pEntries.ToInt64() + Marshal.SizeOf(typeof(CERT_ALT_NAME_ENTRY)));
 
-		        for (int ii = 0; ii < hostNames.Count; ii++)
-		        {
-			        System.Net.IPAddress ipAddress = null;
+                for (int ii = 0; ii < hostNames.Count; ii++) {
+                    System.Net.IPAddress ipAddress = null;
 
-			        // check for ip address.
-			        if (System.Net.IPAddress.TryParse(hostNames[ii], out ipAddress))
-			        {
-				        byte[] bytes = ipAddress.GetAddressBytes();
+                    // check for ip address.
+                    if (System.Net.IPAddress.TryParse(hostNames[ii], out ipAddress)) {
+                        byte[] bytes = ipAddress.GetAddressBytes();
 
-				        pEntry.dwAltNameChoice  = CERT_ALT_NAME_IP_ADDRESS;
-				        pEntry.Value.IPAddress.cbData = bytes.Length;
-				        pEntry.Value.IPAddress.pbData = AllocBytes(bytes);
-			        }
+                        pEntry.dwAltNameChoice = CERT_ALT_NAME_IP_ADDRESS;
+                        pEntry.Value.IPAddress.cbData = bytes.Length;
+                        pEntry.Value.IPAddress.pbData = AllocBytes(bytes);
+                    }
 
-			        // treat as DNS host name.
-			        else
-			        {
-				        pEntry.dwAltNameChoice = CERT_ALT_NAME_DNS_NAME;
-				        pEntry.Value.pwszDNSName = Marshal.StringToHGlobalUni(hostNames[ii]);
-			        }
+                    // treat as DNS host name.
+                    else {
+                        pEntry.dwAltNameChoice = CERT_ALT_NAME_DNS_NAME;
+                        pEntry.Value.pwszDNSName = Marshal.StringToHGlobalUni(hostNames[ii]);
+                    }
 
                     Marshal.StructureToPtr(pEntry, pPos, false);
                     pPos = new IntPtr(pPos.ToInt64() + Marshal.SizeOf(typeof(CERT_ALT_NAME_ENTRY)));
-		        }
-        		
-	            CERT_ALT_NAME_INFO alternateNames = new CERT_ALT_NAME_INFO();
+                }
 
-	            alternateNames.cAltEntry  = count;
-	            alternateNames.rgAltEntry = pEntries;
+                CERT_ALT_NAME_INFO alternateNames = new CERT_ALT_NAME_INFO();
+
+                alternateNames.cAltEntry = count;
+                alternateNames.rgAltEntry = pEntries;
 
                 pAlternateNames = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CERT_ALT_NAME_INFO)));
                 Marshal.StructureToPtr(alternateNames, pAlternateNames, false);
 
-		        // calculate amount of memory required.
-		        int bResult = NativeMethods.CryptEncodeObjectEx(
-			        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			        szOID_SUBJECT_ALT_NAME2, // X509_ALTERNATE_NAME,
-			        pAlternateNames,
-	                0,
-	                IntPtr.Zero,
-	                IntPtr.Zero,
-	                ref dwDataSize);
-                                               
-                if (bResult == 0)
-		        {
-			        throw new InvalidOperationException("Could not get size for subject alternate name extension.");
-		        }
+                // calculate amount of memory required.
+                int bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_SUBJECT_ALT_NAME2, // X509_ALTERNATE_NAME,
+                    pAlternateNames,
+                    0,
+                    IntPtr.Zero,
+                    IntPtr.Zero,
+                    ref dwDataSize);
 
-	            // allocate memory.
-	            pData = Marshal.AllocHGlobal(dwDataSize);
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not get size for subject alternate name extension.");
+                }
 
-		        // encode blob.
-		        bResult = NativeMethods.CryptEncodeObjectEx(
-			        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			        szOID_SUBJECT_ALT_NAME2, // X509_ALTERNATE_NAME,
-			        pAlternateNames,
-	                0,
-	                IntPtr.Zero,
-	                pData,
-	                ref dwDataSize);
+                // allocate memory.
+                pData = Marshal.AllocHGlobal(dwDataSize);
 
-		        if (bResult == 0)
-		        {
-			        throw new InvalidOperationException("Could not create subject alternate name extension.");
-		        }
+                // encode blob.
+                bResult = NativeMethods.CryptEncodeObjectEx(
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    szOID_SUBJECT_ALT_NAME2, // X509_ALTERNATE_NAME,
+                    pAlternateNames,
+                    0,
+                    IntPtr.Zero,
+                    pData,
+                    ref dwDataSize);
+
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not create subject alternate name extension.");
+                }
 
                 pExtension.Value.cbData = dwDataSize;
                 pExtension.Value.pbData = pData;
                 pData = IntPtr.Zero;
-	        }
-	        finally
-	        {
-                if (pData != IntPtr.Zero)
-                {
+            } finally {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
-                
-                if (pAlternateNames != IntPtr.Zero)
-                {
+
+                if (pAlternateNames != IntPtr.Zero) {
                     Marshal.DestroyStructure(pAlternateNames, typeof(CERT_ALT_NAME_INFO));
                     Marshal.FreeHGlobal(pAlternateNames);
                 }
 
-		        if (pEntries != IntPtr.Zero)
-		        {
+                if (pEntries != IntPtr.Zero) {
                     IntPtr pPos = pEntries;
 
-			        for (int ii = 0; ii < count; ii++)
-			        {
-                        CERT_ALT_NAME_ENTRY pEntry = (CERT_ALT_NAME_ENTRY)Marshal.PtrToStructure(pPos, typeof(CERT_ALT_NAME_ENTRY));
+                    for (int ii = 0; ii < count; ii++) {
+                        CERT_ALT_NAME_ENTRY pEntry =
+                            (CERT_ALT_NAME_ENTRY) Marshal.PtrToStructure(pPos, typeof(CERT_ALT_NAME_ENTRY));
                         pPos = new IntPtr(pPos.ToInt64() + Marshal.SizeOf(typeof(CERT_ALT_NAME_ENTRY)));
 
-				        switch (pEntry.dwAltNameChoice)
-				        {
-					        case CERT_ALT_NAME_URL:
-					        {
-						        Marshal.FreeHGlobal(pEntry.Value.pwszURL);
-						        break;
-					        }
-        					
-					        case CERT_ALT_NAME_DNS_NAME:
-					        {
-						        Marshal.FreeHGlobal(pEntry.Value.pwszDNSName);
-						        break;
-					        }
+                        switch (pEntry.dwAltNameChoice) {
+                            case CERT_ALT_NAME_URL: {
+                                Marshal.FreeHGlobal(pEntry.Value.pwszURL);
+                                break;
+                            }
 
-					        case CERT_ALT_NAME_IP_ADDRESS:
-					        {
-						        Marshal.FreeHGlobal(pEntry.Value.IPAddress.pbData);
-						        break;
-					        }
-				        }
-			        }
+                            case CERT_ALT_NAME_DNS_NAME: {
+                                Marshal.FreeHGlobal(pEntry.Value.pwszDNSName);
+                                break;
+                            }
 
-			        Marshal.FreeHGlobal(pEntries);
-		        }
-	        }
+                            case CERT_ALT_NAME_IP_ADDRESS: {
+                                Marshal.FreeHGlobal(pEntry.Value.IPAddress.pbData);
+                                break;
+                            }
+                        }
+                    }
+
+                    Marshal.FreeHGlobal(pEntries);
+                }
+            }
         }
-        
+
         /// <summary>
         /// Parses an X500 name blob.
         /// </summary>
-        private static void ParseX500Name(CERT_NAME_BLOB blob, out string subjectName)
-        {
+        private static void ParseX500Name(CERT_NAME_BLOB blob, out string subjectName) {
             int dwChars = 0;
             IntPtr pName = IntPtr.Zero;
             IntPtr pBlob = IntPtr.Zero;
-                
-            try
-            {
+
+            try {
                 pBlob = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CERT_NAME_BLOB)));
                 Marshal.StructureToPtr(blob, pBlob, false);
 
                 int bResult = NativeMethods.CertNameToStrW(
-	                PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-	                pBlob,
-	                CERT_X500_NAME_STR,
-	                IntPtr.Zero,
-	                dwChars);
+                    PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
+                    pBlob,
+                    CERT_X500_NAME_STR,
+                    IntPtr.Zero,
+                    dwChars);
 
-                if (bResult == 0)
-                {
-	                throw new InvalidOperationException("Could not get size of X500 name.");
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not get size of X500 name.");
                 }
 
                 dwChars = bResult;
-                pName = Marshal.AllocHGlobal((dwChars+1)*2);
+                pName = Marshal.AllocHGlobal((dwChars + 1) * 2);
 
                 bResult = NativeMethods.CertNameToStrW(
-	                PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-	                pBlob,
-	                CERT_X500_NAME_STR,
-	                pName,
-	                dwChars);
+                    PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
+                    pBlob,
+                    CERT_X500_NAME_STR,
+                    pName,
+                    dwChars);
 
-                if (bResult == 0)
-                {
-	                throw new InvalidOperationException("Could not decode X500 name blob.");
+                if (bResult == 0) {
+                    throw new InvalidOperationException("Could not decode X500 name blob.");
                 }
 
                 subjectName = Marshal.PtrToStringUni(pName);
-            }
-            finally
-            {
-                if (pBlob != IntPtr.Zero)
-                {
+            } finally {
+                if (pBlob != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pBlob);
                 }
 
-                if (pName != IntPtr.Zero)
-                {
+                if (pName != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pName);
                 }
             }
@@ -3331,47 +3114,40 @@ namespace Opc.Ua
         /// </summary>
         private static void ParseAltNameInfo(
             CERT_ALT_NAME_INFO names,
-            List<string> fields)
-        {
+            List<string> fields) {
             IntPtr pPos = names.rgAltEntry;
 
-            for (int ii = 0; ii < names.cAltEntry; ii++)
-            {
-                CERT_ALT_NAME_ENTRY pEntry = (CERT_ALT_NAME_ENTRY)Marshal.PtrToStructure(pPos, typeof(CERT_ALT_NAME_ENTRY));
+            for (int ii = 0; ii < names.cAltEntry; ii++) {
+                CERT_ALT_NAME_ENTRY pEntry =
+                    (CERT_ALT_NAME_ENTRY) Marshal.PtrToStructure(pPos, typeof(CERT_ALT_NAME_ENTRY));
                 pPos = new IntPtr(pPos.ToInt64() + Marshal.SizeOf(typeof(CERT_ALT_NAME_ENTRY)));
 
-                switch (pEntry.dwAltNameChoice)
-                {
-                    case CERT_ALT_NAME_URL:
-                    {
+                switch (pEntry.dwAltNameChoice) {
+                    case CERT_ALT_NAME_URL: {
                         string url = Marshal.PtrToStringUni(pEntry.Value.pwszURL);
                         fields.Add("URL=" + url);
                         break;
                     }
 
-                    case CERT_ALT_NAME_DNS_NAME:
-                    {
+                    case CERT_ALT_NAME_DNS_NAME: {
                         string dns = Marshal.PtrToStringUni(pEntry.Value.pwszURL);
                         fields.Add("DNSName=" + dns);
                         break;
                     }
 
-                    case CERT_ALT_NAME_RFC822_NAME:
-                    {
+                    case CERT_ALT_NAME_RFC822_NAME: {
                         string email = Marshal.PtrToStringUni(pEntry.Value.pwszURL);
                         fields.Add("Email=" + email);
                         break;
                     }
 
-                    case CERT_ALT_NAME_REGISTERED_ID:
-                    {
+                    case CERT_ALT_NAME_REGISTERED_ID: {
                         string oid = Marshal.PtrToStringUni(pEntry.Value.pwszURL);
                         fields.Add("OID=" + oid);
                         break;
                     }
 
-                    case CERT_ALT_NAME_IP_ADDRESS:
-                    {
+                    case CERT_ALT_NAME_IP_ADDRESS: {
                         byte[] addressBytes = new byte[pEntry.Value.IPAddress.cbData];
                         Marshal.Copy(pEntry.Value.IPAddress.pbData, addressBytes, 0, addressBytes.Length);
                         System.Net.IPAddress address = new System.Net.IPAddress(addressBytes);
@@ -3389,17 +3165,15 @@ namespace Opc.Ua
             byte[] bytes,
             List<string> uris,
             List<string> hostNames,
-            List<string> addresses)
-        {
+            List<string> addresses) {
             IntPtr pBytes = IntPtr.Zero;
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
-         
-            try
-            {
+
+            try {
                 pBytes = AllocBytes(bytes);
 
-                string extensionType =  szOID_SUBJECT_ALT_NAME2;
+                string extensionType = szOID_SUBJECT_ALT_NAME2;
 
                 // calculate amount of memory required.
                 int bResult = NativeMethods.CryptDecodeObjectEx(
@@ -3412,22 +3186,20 @@ namespace Opc.Ua
                     pData,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     extensionType = szOID_SUBJECT_ALT_NAME2;
 
                     bResult = NativeMethods.CryptDecodeObjectEx(
-                       X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                       extensionType,
-                       pBytes,
-                       bytes.Length,
-                       CRYPT_DECODE_NOCOPY_FLAG,
-                       IntPtr.Zero,
-                       pData,
-                       ref dwDataSize);
+                        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                        extensionType,
+                        pBytes,
+                        bytes.Length,
+                        CRYPT_DECODE_NOCOPY_FLAG,
+                        IntPtr.Zero,
+                        pData,
+                        ref dwDataSize);
 
-                    if (bResult == 0)
-                    {
+                    if (bResult == 0) {
                         throw new InvalidOperationException("Could not get size for subject alternate name extension.");
                     }
                 }
@@ -3446,49 +3218,40 @@ namespace Opc.Ua
                     pData,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw new InvalidOperationException("Could not decode subject alternate name extension.");
                 }
 
-                CERT_ALT_NAME_INFO alternateNames = (CERT_ALT_NAME_INFO)Marshal.PtrToStructure(pData, typeof(CERT_ALT_NAME_INFO));
+                CERT_ALT_NAME_INFO alternateNames =
+                    (CERT_ALT_NAME_INFO) Marshal.PtrToStructure(pData, typeof(CERT_ALT_NAME_INFO));
 
-                if (alternateNames.rgAltEntry != IntPtr.Zero)
-                {
+                if (alternateNames.rgAltEntry != IntPtr.Zero) {
                     List<string> fields = new List<string>();
                     ParseAltNameInfo(alternateNames, fields);
 
-                    for (int ii = 0; ii < fields.Count; ii++)
-                    {
-                        if (fields[ii].StartsWith("URL="))
-                        {
+                    for (int ii = 0; ii < fields.Count; ii++) {
+                        if (fields[ii].StartsWith("URL=")) {
                             uris.Add(fields[ii].Substring(4));
                             continue;
                         }
 
-                        if (fields[ii].StartsWith("DNSName="))
-                        {
+                        if (fields[ii].StartsWith("DNSName=")) {
                             hostNames.Add(fields[ii].Substring(8));
                             continue;
                         }
 
-                        if (fields[ii].StartsWith("IPAddress="))
-                        {
+                        if (fields[ii].StartsWith("IPAddress=")) {
                             addresses.Add(fields[ii].Substring(10));
                             continue;
                         }
                     }
                 }
-            }
-            finally
-            {
-                if (pBytes != IntPtr.Zero)
-                {
+            } finally {
+                if (pBytes != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pBytes);
                 }
 
-                if (pData != IntPtr.Zero)
-                {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
             }
@@ -3501,8 +3264,7 @@ namespace Opc.Ua
             byte[] bytes,
             out byte[] keyId,
             out string[] authorityNames,
-            out byte[] serialNumber)
-        {
+            out byte[] serialNumber) {
             keyId = null;
             authorityNames = null;
             serialNumber = null;
@@ -3511,8 +3273,7 @@ namespace Opc.Ua
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
 
-            try
-            {
+            try {
                 pBytes = AllocBytes(bytes);
 
                 // calculate amount of memory required.
@@ -3526,8 +3287,7 @@ namespace Opc.Ua
                     pData,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw new InvalidOperationException("Could not get size for authority key identifier extension.");
                 }
 
@@ -3545,41 +3305,34 @@ namespace Opc.Ua
                     pData,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw new InvalidOperationException("Could not decode authority key identifier extension.");
                 }
 
-                CERT_AUTHORITY_KEY_ID_INFO keyInfo = (CERT_AUTHORITY_KEY_ID_INFO)Marshal.PtrToStructure(pData, typeof(CERT_AUTHORITY_KEY_ID_INFO));
+                CERT_AUTHORITY_KEY_ID_INFO keyInfo =
+                    (CERT_AUTHORITY_KEY_ID_INFO) Marshal.PtrToStructure(pData, typeof(CERT_AUTHORITY_KEY_ID_INFO));
 
-                if (keyInfo.KeyId.cbData != 0)
-                {
+                if (keyInfo.KeyId.cbData != 0) {
                     keyId = new byte[keyInfo.KeyId.cbData];
                     Marshal.Copy(keyInfo.KeyId.pbData, keyId, 0, keyId.Length);
                 }
 
-                if (keyInfo.CertIssuer.cbData != 0)
-                {
+                if (keyInfo.CertIssuer.cbData != 0) {
                     string authorityName = null;
                     ParseX500Name(keyInfo.CertIssuer, out authorityName);
-                    authorityNames = new string[] { authorityName };
+                    authorityNames = new string[] {authorityName};
                 }
 
-                if (keyInfo.CertSerialNumber.cbData != 0)
-                {
+                if (keyInfo.CertSerialNumber.cbData != 0) {
                     serialNumber = new byte[keyInfo.CertSerialNumber.cbData];
                     Marshal.Copy(keyInfo.CertSerialNumber.pbData, serialNumber, 0, serialNumber.Length);
                 }
-            }
-            finally
-            {
-                if (pBytes != IntPtr.Zero)
-                {
+            } finally {
+                if (pBytes != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pBytes);
                 }
 
-                if (pData != IntPtr.Zero)
-                {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
             }
@@ -3592,8 +3345,7 @@ namespace Opc.Ua
             byte[] bytes,
             out byte[] keyId,
             out string[] authorityNames,
-            out byte[] serialNumber)
-        {
+            out byte[] serialNumber) {
             keyId = null;
             authorityNames = null;
             serialNumber = null;
@@ -3601,9 +3353,8 @@ namespace Opc.Ua
             IntPtr pBytes = IntPtr.Zero;
             IntPtr pData = IntPtr.Zero;
             int dwDataSize = 0;
-         
-            try
-            {
+
+            try {
                 pBytes = AllocBytes(bytes);
 
                 // calculate amount of memory required.
@@ -3617,8 +3368,7 @@ namespace Opc.Ua
                     pData,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw new InvalidOperationException("Could not get size for authority key identifier extension.");
                 }
 
@@ -3636,70 +3386,60 @@ namespace Opc.Ua
                     pData,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw new InvalidOperationException("Could not decode authority key identifier extension.");
                 }
 
-                CERT_AUTHORITY_KEY_ID2_INFO keyInfo = (CERT_AUTHORITY_KEY_ID2_INFO)Marshal.PtrToStructure(pData, typeof(CERT_AUTHORITY_KEY_ID2_INFO));
+                CERT_AUTHORITY_KEY_ID2_INFO keyInfo =
+                    (CERT_AUTHORITY_KEY_ID2_INFO) Marshal.PtrToStructure(pData, typeof(CERT_AUTHORITY_KEY_ID2_INFO));
 
-                if (keyInfo.KeyId.cbData != 0)
-                {
-                     keyId = new byte[keyInfo.KeyId.cbData];
-                     Marshal.Copy(keyInfo.KeyId.pbData, keyId, 0, keyId.Length);
+                if (keyInfo.KeyId.cbData != 0) {
+                    keyId = new byte[keyInfo.KeyId.cbData];
+                    Marshal.Copy(keyInfo.KeyId.pbData, keyId, 0, keyId.Length);
                 }
 
-                if (keyInfo.AuthorityCertIssuer.cAltEntry != 0)
-                {
+                if (keyInfo.AuthorityCertIssuer.cAltEntry != 0) {
                     List<string> fields = new List<string>();
                     ParseAltNameInfo(keyInfo.AuthorityCertIssuer, fields);
                     authorityNames = fields.ToArray();
                 }
-                
-                if (keyInfo.AuthorityCertSerialNumber.cbData != 0)
-                {
+
+                if (keyInfo.AuthorityCertSerialNumber.cbData != 0) {
                     serialNumber = new byte[keyInfo.AuthorityCertSerialNumber.cbData];
                     Marshal.Copy(keyInfo.AuthorityCertSerialNumber.pbData, serialNumber, 0, serialNumber.Length);
                 }
-            }
-            finally
-            {
-                if (pBytes != IntPtr.Zero)
-                {
+            } finally {
+                if (pBytes != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pBytes);
                 }
 
-                if (pData != IntPtr.Zero)
-                {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
             }
         }
 
         // frees the memory used by an encoded certificate extension.
-        private static void DeleteExtensions(ref IntPtr pExtensions, int count)
-        {
-	        if (pExtensions != null)
-	        {
+        private static void DeleteExtensions(ref IntPtr pExtensions, int count) {
+            if (pExtensions != null) {
                 IntPtr pPos = pExtensions;
 
-		        for (int ii = 0; ii < count; ii++)
-		        {
-                    CERT_EXTENSION pExtension = (CERT_EXTENSION)Marshal.PtrToStructure(pPos, typeof(CERT_EXTENSION));
+                for (int ii = 0; ii < count; ii++) {
+                    CERT_EXTENSION pExtension = (CERT_EXTENSION) Marshal.PtrToStructure(pPos, typeof(CERT_EXTENSION));
                     Marshal.DestroyStructure(pPos, typeof(CERT_EXTENSION));
 
-			        if (pExtension.Value.pbData != IntPtr.Zero)
-			        {
-				        Marshal.FreeHGlobal(pExtension.Value.pbData);
-			        }
+                    if (pExtension.Value.pbData != IntPtr.Zero) {
+                        Marshal.FreeHGlobal(pExtension.Value.pbData);
+                    }
 
                     pPos = new IntPtr(pPos.ToInt64() + Marshal.SizeOf(typeof(CERT_EXTENSION)));
-		        }
-				        
+                }
+
                 Marshal.FreeHGlobal(pExtensions);
                 pExtensions = IntPtr.Zero;
-	        }
+            }
         }
+
         #endregion
 
         /*
@@ -3964,13 +3704,13 @@ namespace Opc.Ua
             }
         }
          * */
-        
+
         /// <summary>
         /// Deletes the key container for the certificate.
         /// </summary>
-        private static void DeleteKeyContainer(X509Certificate2 certificate)
-        {
-            System.Security.Cryptography.RSACryptoServiceProvider key = certificate.PrivateKey as System.Security.Cryptography.RSACryptoServiceProvider;
+        private static void DeleteKeyContainer(X509Certificate2 certificate) {
+            System.Security.Cryptography.RSACryptoServiceProvider key =
+                certificate.PrivateKey as System.Security.Cryptography.RSACryptoServiceProvider;
             string name = key.CspKeyContainerInfo.KeyContainerName;
 
             Utils.Trace("DELETING KEY CONTAINER: {0}", key.CspKeyContainerInfo.UniqueKeyContainerName);
@@ -3984,9 +3724,9 @@ namespace Opc.Ua
                 key.CspKeyContainerInfo.ProviderType,
                 CRYPT_MACHINE_KEYSET);
 
-            if (result == 0)
-            {
-                Throw("Key container does not exist. '{0}' Error={1:X8}", key.CspKeyContainerInfo.KeyContainerName, Marshal.GetLastWin32Error());
+            if (result == 0) {
+                Throw("Key container does not exist. '{0}' Error={1:X8}", key.CspKeyContainerInfo.KeyContainerName,
+                    Marshal.GetLastWin32Error());
                 return;
             }
 
@@ -4001,52 +3741,48 @@ namespace Opc.Ua
                 key.CspKeyContainerInfo.ProviderType,
                 CRYPT_DELETEKEYSET | CRYPT_MACHINE_KEYSET);
 
-            if (result == 0)
-            {
-                Throw("Could not delete key container. '{0}' Error={1:X8}", key.CspKeyContainerInfo.KeyContainerName, Marshal.GetLastWin32Error());
+            if (result == 0) {
+                Throw("Could not delete key container. '{0}' Error={1:X8}", key.CspKeyContainerInfo.KeyContainerName,
+                    Marshal.GetLastWin32Error());
                 return;
             }
 
             NativeMethods.CryptReleaseContext(hProvider, 0);
         }
-        
+
         /// <summary>
         /// Returns all of the key containers.
         /// </summary>
-        private static string[] GetContainerNames()
-        {
+        private static string[] GetContainerNames() {
             const int BUFFSIZE = 25600;
             List<string> containernames = new List<string>();
             byte[] pbData = new byte[BUFFSIZE];
             int pcbData = BUFFSIZE;
-            int enumflags = (int)PP_ENUMCONTAINERS;  // specify container enumeration functionality
+            int enumflags = (int) PP_ENUMCONTAINERS; // specify container enumeration functionality
             IntPtr hProv = IntPtr.Zero;
             int dwFlags = 0;
 
-            int gotcsp = NativeMethods.CryptAcquireContextW(ref hProv, null, null, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT | CRYPT_MACHINE_KEYSET);
+            int gotcsp = NativeMethods.CryptAcquireContextW(ref hProv, null, null, PROV_RSA_FULL,
+                CRYPT_VERIFYCONTEXT | CRYPT_MACHINE_KEYSET);
 
-            if (gotcsp == 0)
-            {
+            if (gotcsp == 0) {
                 int error = Marshal.GetLastWin32Error();
                 return null;
             }
-            
+
             /*  ----------  Get KeyContainer Names ------------- */
-            dwFlags = (int)CRYPT_FIRST;  //required initalization
+            dwFlags = (int) CRYPT_FIRST; //required initalization
             StringBuilder sb = new StringBuilder(BUFFSIZE);
 
             int result = 0;
 
-            do
-            {
+            do {
                 result = NativeMethods.CryptGetProvParam(hProv, enumflags, sb, ref pcbData, dwFlags);
 
-                if (result == 0)
-                {
+                if (result == 0) {
                     int error = Marshal.GetLastWin32Error();
 
-                    if (ERROR_MORE_DATA != error)
-                    {
+                    if (ERROR_MORE_DATA != error) {
                         break;
                     }
                 }
@@ -4058,30 +3794,26 @@ namespace Opc.Ua
                 csparms.KeyNumber = AT_KEYEXCHANGE;
                 csparms.Flags = System.Security.Cryptography.CspProviderFlags.UseMachineKeyStore;
 
-                System.Security.Cryptography.RSACryptoServiceProvider key = new System.Security.Cryptography.RSACryptoServiceProvider(csparms);
+                System.Security.Cryptography.RSACryptoServiceProvider key =
+                    new System.Security.Cryptography.RSACryptoServiceProvider(csparms);
 
                 dwFlags = CRYPT_NEXT;
-            }
-            while (true);
+            } while (true);
 
-            if (hProv != IntPtr.Zero)
-            {
+            if (hProv != IntPtr.Zero) {
                 NativeMethods.CryptReleaseContext(hProv, 0);
             }
 
             return null;
         }
-        #endif
+#endif
     }
 }
 
-namespace Opc.Ua.Configuration
-{
+namespace Opc.Ua.Configuration {
     /// <summary>
     /// Dummmy class designed to prevent compile errors.
     /// </summary>
     [Obsolete("Class moved to Opc.Ua namespace.")]
-    public class CertificateFactory : Opc.Ua.CertificateFactory
-    {
-    }
+    public class CertificateFactory : Opc.Ua.CertificateFactory { }
 }

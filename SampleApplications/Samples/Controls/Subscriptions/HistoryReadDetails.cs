@@ -37,22 +37,20 @@ using System.Windows.Forms;
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample
-{
-    public partial class HistoryReadDetails : UserControl
-    {
-        public HistoryReadDetails()
-        {
+namespace Opc.Ua.Sample {
+    public partial class HistoryReadDetails : UserControl {
+        public HistoryReadDetails() {
             InitializeComponent();
-            
+
             QueryTypeCB.Items.Clear();
             QueryTypeCB.Items.Add("Read Raw or Modified");
         }
 
         private Session m_session;
         private ReadRawModifiedDetails m_details;
-        
+
         #region Private Methods
+
         /// <summary>
         /// Initializes the control
         /// </summary>
@@ -62,8 +60,7 @@ namespace Opc.Ua.Sample
         public void Initialize(
             Session session,
             ReadRawModifiedDetails details,
-            IList<ILocalNode> nodes)
-        {
+            IList<ILocalNode> nodes) {
             m_session = session;
             m_details = details;
 
@@ -75,38 +72,35 @@ namespace Opc.Ua.Sample
             IncludeBoundsCHK.Checked = details.ReturnBounds;
             IsModifiedCHK.Checked = details.IsReadModified;
         }
+
         #endregion
-        
+
         #region Private Methods
-        private DateTime ToControlDateTime(DateTime value)
-        {
-            if (value < new DateTime(1900,1,1))
-            {
-                return new DateTime(1900,1,1);
+
+        private DateTime ToControlDateTime(DateTime value) {
+            if (value < new DateTime(1900, 1, 1)) {
+                return new DateTime(1900, 1, 1);
             }
 
-            if (value > new DateTime(2100,1,1))
-            {
-                return new DateTime(2100,1,1);
+            if (value > new DateTime(2100, 1, 1)) {
+                return new DateTime(2100, 1, 1);
             }
 
             return value;
         }
 
-        private DateTime FromControlDateTime(DateTime value)
-        {
-            if (value <= new DateTime(1900,1,1))
-            {
+        private DateTime FromControlDateTime(DateTime value) {
+            if (value <= new DateTime(1900, 1, 1)) {
                 return DateTime.MinValue;
             }
 
-            if (value >= new DateTime(2100,1,1))
-            {
+            if (value >= new DateTime(2100, 1, 1)) {
                 return DateTime.MaxValue;
             }
 
             return value;
         }
+
         #endregion
     }
 }

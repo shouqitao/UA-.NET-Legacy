@@ -34,49 +34,47 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class EditDataValueDlg : Form
-    {
+    public partial class EditDataValueDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public EditDataValueDlg()
-        {
+        public EditDataValueDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private DataValue m_value;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to edit a value.
         /// </summary>
-        public Variant ShowDialog(Variant value, string caption)
-        {
-            if (caption != null)
-            {
+        public Variant ShowDialog(Variant value, string caption) {
+            if (caption != null) {
                 this.Text = caption;
             }
 
             ValueCTRL.ShowStatusTimestamp = false;
             ValueCTRL.Value = value;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return Variant.Null;
             }
 
-            if (m_value != null)
-            {
+            if (m_value != null) {
                 return m_value.WrappedValue;
             }
 
@@ -86,38 +84,34 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Prompts the user to edit a data value.
         /// </summary>
-        public DataValue ShowDialog(DataValue value, TypeInfo expectedType, string caption)
-        {
-            if (caption != null)
-            {
+        public DataValue ShowDialog(DataValue value, TypeInfo expectedType, string caption) {
+            if (caption != null) {
                 this.Text = caption;
             }
 
             ValueCTRL.SetDataValue(value, expectedType);
             ValueCTRL.ShowStatusTimestamp = true;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return m_value;
         }
+
         #endregion
-        
+
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 m_value = ValueCTRL.GetDataValue();
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

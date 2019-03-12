@@ -40,19 +40,15 @@ using System.IdentityModel.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.ServiceModel.Channels;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
+namespace Opc.Ua.Sample.Controls {
     /// <summary>
     /// Prompts the user to create a new secure channel.
     /// </summary>
-    public partial class ReadHistoryDlg : Form
-    {
-        public ReadHistoryDlg()
-        {
+    public partial class ReadHistoryDlg : Form {
+        public ReadHistoryDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
 
@@ -67,11 +63,10 @@ namespace Opc.Ua.Sample.Controls
             AggregateCB.Items.Add(BrowseNames.AggregateFunction_Count);
             AggregateCB.Items.Add(BrowseNames.AggregateFunction_Maximum);
             AggregateCB.Items.Add(BrowseNames.AggregateFunction_Minimum);
-            AggregateCB.Items.Add(BrowseNames.AggregateFunction_Total);         
+            AggregateCB.Items.Add(BrowseNames.AggregateFunction_Total);
         }
 
-        private enum ReadType
-        {
+        private enum ReadType {
             Raw,
             Modified,
             AtTime,
@@ -82,40 +77,34 @@ namespace Opc.Ua.Sample.Controls
         private NodeId m_nodeId;
         private HistoryReadResult m_result;
         private int m_index;
-        
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(Session session, NodeId nodeId)
-        {
+        public bool ShowDialog(Session session, NodeId nodeId) {
             m_session = session;
             m_nodeId = nodeId;
 
             // update the title.
             string displayText = session.NodeCache.GetDisplayText(nodeId);
 
-            if (!String.IsNullOrEmpty(displayText))
-            {
+            if (!String.IsNullOrEmpty(displayText)) {
                 this.Text = Utils.Format("{0} [{1}]", this.Text, displayText);
             }
 
             // get the beginning of data.
             DateTime startTime;
 
-            try
-            {
-                startTime = ReadFirstDate().ToLocalTime(); 
-            }
-            catch (Exception)
-            {
+            try {
+                startTime = ReadFirstDate().ToLocalTime();
+            } catch (Exception) {
                 startTime = new DateTime(2000, 1, 1);
             }
 
-            if (startTime < StartTimeDP.MinDate)
-            {
+            if (startTime < StartTimeDP.MinDate) {
                 startTime = StartTimeDP.MinDate;
             }
-            
+
             ReadTypeCB.SelectedItem = ReadType.Raw;
             StartTimeDP.Value = startTime;
             StartTimeCK.Checked = true;
@@ -130,41 +119,38 @@ namespace Opc.Ua.Sample.Controls
             NextBTN.Visible = false;
             StopBTN.Enabled = false;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
-                       
+
             return true;
         }
 
-        private void ShowResults()
-        {
-            GoBTN.Visible = (m_result == null || m_result.ContinuationPoint == null || m_result.ContinuationPoint.Length == 0);
+        private void ShowResults() {
+            GoBTN.Visible = (m_result == null || m_result.ContinuationPoint == null ||
+                             m_result.ContinuationPoint.Length == 0);
             NextBTN.Visible = !GoBTN.Visible;
-            StopBTN.Enabled = (m_result != null && m_result.ContinuationPoint != null && m_result.ContinuationPoint.Length > 0);
+            StopBTN.Enabled = (m_result != null && m_result.ContinuationPoint != null &&
+                               m_result.ContinuationPoint.Length > 0);
 
-            if (m_result == null)
-            {
+            if (m_result == null) {
                 return;
             }
 
             HistoryData results = ExtensionObject.ToEncodeable(m_result.HistoryData) as HistoryData;
 
-            if (results == null)
-            {
+            if (results == null) {
                 return;
             }
 
-            for (int ii = 0; ii < results.DataValues.Count; ii++)
-            {
+            for (int ii = 0; ii < results.DataValues.Count; ii++) {
                 StatusCode status = results.DataValues[ii].StatusCode;
 
                 string index = Utils.Format("[{0}]", m_index++);
                 string timestamp = results.DataValues[ii].SourceTimestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 string value = Utils.Format("{0}", results.DataValues[ii].WrappedValue);
-                string quality = Utils.Format("{0}", (StatusCode)status.CodeBits);
-                string historyInfo = Utils.Format("{0:X2}", (int)status.AggregateBits);
+                string quality = Utils.Format("{0}", (StatusCode) status.CodeBits);
+                string historyInfo = Utils.Format("{0:X2}", (int) status.AggregateBits);
 
                 ListViewItem item = new ListViewItem(index);
 
@@ -177,21 +163,18 @@ namespace Opc.Ua.Sample.Controls
             }
 
             // adjust width of all columns.
-            for (int ii = 0; ii < ResultsLV.Columns.Count; ii++)
-            {
+            for (int ii = 0; ii < ResultsLV.Columns.Count; ii++) {
                 ResultsLV.Columns[ii].Width = -2;
             }
         }
-        
-        private void ReleaseContinuationPoints()
-        {
+
+        private void ReleaseContinuationPoints() {
             ReadRawModifiedDetails details = new ReadRawModifiedDetails();
 
             HistoryReadValueId nodeToRead = new HistoryReadValueId();
             nodeToRead.NodeId = m_nodeId;
 
-            if (m_result != null)
-            {
+            if (m_result != null) {
                 nodeToRead.ContinuationPoint = m_result.ContinuationPoint;
             }
 
@@ -218,8 +201,7 @@ namespace Opc.Ua.Sample.Controls
             ShowResults();
         }
 
-        private DateTime ReadFirstDate()
-        {
+        private DateTime ReadFirstDate() {
             ReadRawModifiedDetails details = new ReadRawModifiedDetails();
             details.StartTime = new DateTime(1970, 1, 1);
             details.EndTime = DateTime.UtcNow.AddDays(1);
@@ -248,22 +230,19 @@ namespace Opc.Ua.Sample.Controls
             Session.ValidateResponse(results, nodesToRead);
             Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 return DateTime.MinValue;
             }
 
             HistoryData data = ExtensionObject.ToEncodeable(results[0].HistoryData) as HistoryData;
 
-            if (results == null)
-            {
+            if (results == null) {
                 return DateTime.MinValue;
             }
 
             DateTime startTime = data.DataValues[0].SourceTimestamp;
 
-            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0)
-            {
+            if (results[0].ContinuationPoint != null && results[0].ContinuationPoint.Length > 0) {
                 nodeToRead.ContinuationPoint = results[0].ContinuationPoint;
 
                 m_session.HistoryRead(
@@ -282,8 +261,7 @@ namespace Opc.Ua.Sample.Controls
             return startTime;
         }
 
-        private void ReadRaw(bool isReadModified)
-        {
+        private void ReadRaw(bool isReadModified) {
             ReadRawModifiedDetails details = new ReadRawModifiedDetails();
             details.StartTime = DateTime.MinValue;
             details.EndTime = DateTime.MinValue;
@@ -291,26 +269,22 @@ namespace Opc.Ua.Sample.Controls
             details.NumValuesPerNode = 0;
             details.ReturnBounds = ReturnBoundsCK.Checked;
 
-            if (StartTimeCK.Checked)
-            {
+            if (StartTimeCK.Checked) {
                 details.StartTime = StartTimeDP.Value.ToUniversalTime();
             }
 
-            if (EndTimeCK.Checked)
-            {
+            if (EndTimeCK.Checked) {
                 details.EndTime = EndTimeDP.Value.ToUniversalTime();
             }
 
-            if (MaxReturnValuesCK.Checked)
-            {
-                details.NumValuesPerNode = (uint)MaxReturnValuesNP.Value;
+            if (MaxReturnValuesCK.Checked) {
+                details.NumValuesPerNode = (uint) MaxReturnValuesNP.Value;
             }
 
             HistoryReadValueId nodeToRead = new HistoryReadValueId();
             nodeToRead.NodeId = m_nodeId;
 
-            if (m_result != null)
-            {
+            if (m_result != null) {
                 nodeToRead.ContinuationPoint = m_result.ContinuationPoint;
             }
 
@@ -331,39 +305,55 @@ namespace Opc.Ua.Sample.Controls
 
             Session.ValidateResponse(results, nodesToRead);
             Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
-            
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
             m_result = results[0];
-       
+
             ShowResults();
         }
 
-        private void ReadAtTime()
-        {
-        }
+        private void ReadAtTime() { }
 
-        private void ReadProcessed()
-        {
+        private void ReadProcessed() {
             ReadProcessedDetails details = new ReadProcessedDetails();
             details.StartTime = StartTimeDP.Value.ToUniversalTime();
             details.EndTime = EndTimeDP.Value.ToUniversalTime();
-            details.ProcessingInterval = (double)ResampleIntervalNP.Value;
+            details.ProcessingInterval = (double) ResampleIntervalNP.Value;
 
             NodeId aggregateId = null;
 
-            switch ((string)AggregateCB.SelectedItem)
-            {
-                case BrowseNames.AggregateFunction_Interpolative: { aggregateId = ObjectIds.AggregateFunction_Interpolative; break; }
-                case BrowseNames.AggregateFunction_TimeAverage: { aggregateId = ObjectIds.AggregateFunction_TimeAverage; break; }
-                case BrowseNames.AggregateFunction_Average: { aggregateId = ObjectIds.AggregateFunction_Average; break; }
-                case BrowseNames.AggregateFunction_Count: { aggregateId = ObjectIds.AggregateFunction_Count; break; }
-                case BrowseNames.AggregateFunction_Maximum: { aggregateId = ObjectIds.AggregateFunction_Maximum; break; }
-                case BrowseNames.AggregateFunction_Minimum: { aggregateId = ObjectIds.AggregateFunction_Minimum; break; }
-                case BrowseNames.AggregateFunction_Total: { aggregateId = ObjectIds.AggregateFunction_Total; break; }
+            switch ((string) AggregateCB.SelectedItem) {
+                case BrowseNames.AggregateFunction_Interpolative: {
+                    aggregateId = ObjectIds.AggregateFunction_Interpolative;
+                    break;
+                }
+                case BrowseNames.AggregateFunction_TimeAverage: {
+                    aggregateId = ObjectIds.AggregateFunction_TimeAverage;
+                    break;
+                }
+                case BrowseNames.AggregateFunction_Average: {
+                    aggregateId = ObjectIds.AggregateFunction_Average;
+                    break;
+                }
+                case BrowseNames.AggregateFunction_Count: {
+                    aggregateId = ObjectIds.AggregateFunction_Count;
+                    break;
+                }
+                case BrowseNames.AggregateFunction_Maximum: {
+                    aggregateId = ObjectIds.AggregateFunction_Maximum;
+                    break;
+                }
+                case BrowseNames.AggregateFunction_Minimum: {
+                    aggregateId = ObjectIds.AggregateFunction_Minimum;
+                    break;
+                }
+                case BrowseNames.AggregateFunction_Total: {
+                    aggregateId = ObjectIds.AggregateFunction_Total;
+                    break;
+                }
             }
 
             details.AggregateType.Add(aggregateId);
@@ -371,8 +361,7 @@ namespace Opc.Ua.Sample.Controls
             HistoryReadValueId nodeToRead = new HistoryReadValueId();
             nodeToRead.NodeId = m_nodeId;
 
-            if (m_result != null)
-            {
+            if (m_result != null) {
                 nodeToRead.ContinuationPoint = m_result.ContinuationPoint;
             }
 
@@ -394,8 +383,7 @@ namespace Opc.Ua.Sample.Controls
             Session.ValidateResponse(results, nodesToRead);
             Session.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
 
-            if (StatusCode.IsBad(results[0].StatusCode))
-            {
+            if (StatusCode.IsBad(results[0].StatusCode)) {
                 throw new ServiceResultException(results[0].StatusCode);
             }
 
@@ -404,91 +392,67 @@ namespace Opc.Ua.Sample.Controls
             ShowResults();
         }
 
-        private void Read()
-        {
-            switch ((ReadType)ReadTypeCB.SelectedItem)
-            {
-                case ReadType.Raw:
-                {
+        private void Read() {
+            switch ((ReadType) ReadTypeCB.SelectedItem) {
+                case ReadType.Raw: {
                     ReadRaw(false);
                     break;
                 }
 
-                case ReadType.Modified:
-                {
+                case ReadType.Modified: {
                     ReadRaw(true);
                     break;
                 }
 
-                case ReadType.AtTime:
-                {
+                case ReadType.AtTime: {
                     ReadAtTime();
                     break;
                 }
 
-                case ReadType.Processed:
-                {
+                case ReadType.Processed: {
                     ReadProcessed();
                     break;
                 }
             }
         }
 
-        private void GoBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void GoBTN_Click(object sender, EventArgs e) {
+            try {
                 m_index = 0;
                 ResultsLV.Items.Clear();
                 m_result = null;
 
                 Read();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void NextBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void NextBTN_Click(object sender, EventArgs e) {
+            try {
                 Read();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void StopBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void StopBTN_Click(object sender, EventArgs e) {
+            try {
                 ReleaseContinuationPoints();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void ReadTypeCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void ReadTypeCB_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
                 ReleaseContinuationPoints();
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 // ignore is ok.
             }
 
-            switch ((ReadType)ReadTypeCB.SelectedItem)
-            {
-                case ReadType.Raw:
-                {
+            switch ((ReadType) ReadTypeCB.SelectedItem) {
+                case ReadType.Raw: {
                     ReturnBoundsCK.Enabled = true;
                     AggregateCB.Enabled = false;
                     ResampleIntervalNP.Enabled = false;
@@ -499,8 +463,7 @@ namespace Opc.Ua.Sample.Controls
                     break;
                 }
 
-                case ReadType.Modified:
-                {
+                case ReadType.Modified: {
                     ReturnBoundsCK.Enabled = false;
                     AggregateCB.Enabled = false;
                     ResampleIntervalNP.Enabled = false;
@@ -511,8 +474,7 @@ namespace Opc.Ua.Sample.Controls
                     break;
                 }
 
-                case ReadType.AtTime:
-                {
+                case ReadType.AtTime: {
                     ReturnBoundsCK.Enabled = false;
                     AggregateCB.Enabled = false;
                     ResampleIntervalNP.Enabled = true;
@@ -524,8 +486,7 @@ namespace Opc.Ua.Sample.Controls
                     break;
                 }
 
-                case ReadType.Processed:
-                {
+                case ReadType.Processed: {
                     ReturnBoundsCK.Enabled = false;
                     AggregateCB.Enabled = true;
                     ResampleIntervalNP.Enabled = true;
@@ -540,18 +501,15 @@ namespace Opc.Ua.Sample.Controls
             }
         }
 
-        private void StartTimeCK_CheckedChanged(object sender, EventArgs e)
-        {
+        private void StartTimeCK_CheckedChanged(object sender, EventArgs e) {
             StartTimeDP.Enabled = StartTimeCK.Checked;
         }
 
-        private void EndTimeCK_CheckedChanged(object sender, EventArgs e)
-        {
+        private void EndTimeCK_CheckedChanged(object sender, EventArgs e) {
             EndTimeDP.Enabled = EndTimeCK.Checked;
         }
 
-        private void MaxReturnValuesCK_CheckedChanged(object sender, EventArgs e)
-        {
+        private void MaxReturnValuesCK_CheckedChanged(object sender, EventArgs e) {
             MaxReturnValuesNP.Enabled = MaxReturnValuesCK.Checked;
         }
     }

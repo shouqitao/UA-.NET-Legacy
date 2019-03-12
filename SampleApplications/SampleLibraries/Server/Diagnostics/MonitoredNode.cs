@@ -32,8 +32,7 @@ using System.Collections.Generic;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// Stores the current set of MonitoredItems for a Node.
     /// </summary>
@@ -42,16 +41,15 @@ namespace Opc.Ua.Server
     /// created for any attribute of a Node. The object is deleted when the last
     /// MonitoredItem is deleted.
     /// </remarks>
-    public class MonitoredNode2
-    {
+    public class MonitoredNode2 {
         #region Public Interface
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MonitoredNode2"/> class.
         /// </summary>
         /// <param name="nodeManager">The node manager.</param>
         /// <param name="node">The node.</param>
-        public MonitoredNode2(CustomNodeManager2 nodeManager, NodeState node)
-        {
+        public MonitoredNode2(CustomNodeManager2 nodeManager, NodeState node) {
             NodeManager = nodeManager;
             Node = node;
         }
@@ -59,8 +57,7 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Gets or sets the NodeManager which the MonitoredNode belongs to.
         /// </summary>
-        public CustomNodeManager2 NodeManager
-        {
+        public CustomNodeManager2 NodeManager {
             get { return m_nodeManager; }
             set { m_nodeManager = value; }
         }
@@ -68,8 +65,7 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Gets or sets the Node being monitored.
         /// </summary>
-        public NodeState Node
-        {
+        public NodeState Node {
             get { return m_node; }
             set { m_node = value; }
         }
@@ -77,8 +73,7 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Gets the current list of data change MonitoredItems.
         /// </summary>
-        public List<MonitoredItem> DataChangeMonitoredItems
-        {
+        public List<MonitoredItem> DataChangeMonitoredItems {
             get { return m_dataChangeMonitoredItems; }
             private set { m_dataChangeMonitoredItems = value; }
         }
@@ -86,8 +81,7 @@ namespace Opc.Ua.Server
         /// <summary>
         /// Gets the current list of event MonitoredItems.
         /// </summary>
-        public List<IEventMonitoredItem> EventMonitoredItems
-        {
+        public List<IEventMonitoredItem> EventMonitoredItems {
             get { return m_eventMonitoredItems; }
             private set { m_eventMonitoredItems = value; }
         }
@@ -98,17 +92,13 @@ namespace Opc.Ua.Server
         /// <value>
         /// 	<c>true</c> if this instance has monitored items; otherwise, <c>false</c>.
         /// </value>
-        public bool HasMonitoredItems
-        {
-            get
-            {
-                if (DataChangeMonitoredItems != null && DataChangeMonitoredItems.Count > 0)
-                {
+        public bool HasMonitoredItems {
+            get {
+                if (DataChangeMonitoredItems != null && DataChangeMonitoredItems.Count > 0) {
                     return true;
                 }
 
-                if (EventMonitoredItems != null && EventMonitoredItems.Count > 0)
-                {
+                if (EventMonitoredItems != null && EventMonitoredItems.Count > 0) {
                     return true;
                 }
 
@@ -120,10 +110,8 @@ namespace Opc.Ua.Server
         /// Adds the specified data change monitored item.
         /// </summary>
         /// <param name="datachangeItem">The monitored item.</param>
-        public void Add(MonitoredItem datachangeItem)
-        {
-            if (DataChangeMonitoredItems == null)
-            {
+        public void Add(MonitoredItem datachangeItem) {
+            if (DataChangeMonitoredItems == null) {
                 DataChangeMonitoredItems = new List<MonitoredItem>();
                 Node.OnStateChanged = OnMonitoredNodeChanged;
             }
@@ -135,19 +123,15 @@ namespace Opc.Ua.Server
         /// Removes the specified data change monitored item.
         /// </summary>
         /// <param name="datachangeItem">The monitored item.</param>
-        public void Remove(MonitoredItem datachangeItem)
-        {
-            for (int ii = 0; ii < DataChangeMonitoredItems.Count; ii++)
-            {
-                if (Object.ReferenceEquals(DataChangeMonitoredItems[ii], datachangeItem))
-                {
+        public void Remove(MonitoredItem datachangeItem) {
+            for (int ii = 0; ii < DataChangeMonitoredItems.Count; ii++) {
+                if (Object.ReferenceEquals(DataChangeMonitoredItems[ii], datachangeItem)) {
                     DataChangeMonitoredItems.RemoveAt(ii);
                     break;
                 }
             }
 
-            if (DataChangeMonitoredItems.Count == 0)
-            {
+            if (DataChangeMonitoredItems.Count == 0) {
                 DataChangeMonitoredItems = null;
                 Node.OnStateChanged = null;
             }
@@ -157,10 +141,8 @@ namespace Opc.Ua.Server
         /// Adds the specified event monitored item.
         /// </summary>
         /// <param name="eventItem">The monitored item.</param>
-        public void Add(IEventMonitoredItem eventItem)
-        {
-            if (EventMonitoredItems == null)
-            {
+        public void Add(IEventMonitoredItem eventItem) {
+            if (EventMonitoredItems == null) {
                 EventMonitoredItems = new List<IEventMonitoredItem>();
                 Node.OnReportEvent = OnReportEvent;
             }
@@ -172,19 +154,15 @@ namespace Opc.Ua.Server
         /// Removes the specified event monitored item.
         /// </summary>
         /// <param name="eventItem">The monitored item.</param>
-        public void Remove(IEventMonitoredItem eventItem)
-        {
-            for (int ii = 0; ii < EventMonitoredItems.Count; ii++)
-            {
-                if (Object.ReferenceEquals(EventMonitoredItems[ii], eventItem))
-                {
+        public void Remove(IEventMonitoredItem eventItem) {
+            for (int ii = 0; ii < EventMonitoredItems.Count; ii++) {
+                if (Object.ReferenceEquals(EventMonitoredItems[ii], eventItem)) {
                     EventMonitoredItems.RemoveAt(ii);
                     break;
                 }
             }
 
-            if (EventMonitoredItems.Count == 0)
-            {
+            if (EventMonitoredItems.Count == 0) {
                 EventMonitoredItems = null;
                 Node.OnReportEvent = null;
             }
@@ -196,17 +174,13 @@ namespace Opc.Ua.Server
         /// <param name="context">The system context.</param>
         /// <param name="node">The affected node.</param>
         /// <param name="e">The event.</param>
-        public void OnReportEvent(ISystemContext context, NodeState node, IFilterTarget e)
-        {
-            lock (NodeManager.Lock)
-            {
-                if (EventMonitoredItems == null)
-                {
+        public void OnReportEvent(ISystemContext context, NodeState node, IFilterTarget e) {
+            lock (NodeManager.Lock) {
+                if (EventMonitoredItems == null) {
                     return;
                 }
 
-                for (int ii = 0; ii < EventMonitoredItems.Count; ii++)
-                {
+                for (int ii = 0; ii < EventMonitoredItems.Count; ii++) {
                     IEventMonitoredItem monitoredItem = EventMonitoredItems[ii];
                     monitoredItem.QueueEvent(e);
                 }
@@ -219,27 +193,22 @@ namespace Opc.Ua.Server
         /// <param name="context">The system context.</param>
         /// <param name="node">The affected node.</param>
         /// <param name="changes">The mask indicating what changes have occurred.</param>
-        public void OnMonitoredNodeChanged(ISystemContext context, NodeState node, NodeStateChangeMasks changes)
-        {
-            lock (NodeManager.Lock)
-            {
-                if (DataChangeMonitoredItems == null)
-                {
+        public void OnMonitoredNodeChanged(ISystemContext context, NodeState node, NodeStateChangeMasks changes) {
+            lock (NodeManager.Lock) {
+                if (DataChangeMonitoredItems == null) {
                     return;
                 }
 
-                for (int ii = 0; ii < DataChangeMonitoredItems.Count; ii++)
-                {
+                for (int ii = 0; ii < DataChangeMonitoredItems.Count; ii++) {
                     MonitoredItem monitoredItem = DataChangeMonitoredItems[ii];
 
-                    if (monitoredItem.AttributeId == Attributes.Value && (changes & NodeStateChangeMasks.Value) != 0)
-                    {
+                    if (monitoredItem.AttributeId == Attributes.Value && (changes & NodeStateChangeMasks.Value) != 0) {
                         QueueValue(context, node, monitoredItem);
                         continue;
                     }
 
-                    if (monitoredItem.AttributeId != Attributes.Value && (changes & NodeStateChangeMasks.NonValue) != 0)
-                    {
+                    if (monitoredItem.AttributeId != Attributes.Value &&
+                        (changes & NodeStateChangeMasks.NonValue) != 0) {
                         QueueValue(context, node, monitoredItem);
                         continue;
                     }
@@ -253,8 +222,7 @@ namespace Opc.Ua.Server
         public void QueueValue(
             ISystemContext context,
             NodeState node,
-            MonitoredItem monitoredItem)
-        {
+            MonitoredItem monitoredItem) {
             DataValue value = new DataValue();
 
             value.Value = null;
@@ -269,20 +237,22 @@ namespace Opc.Ua.Server
                 monitoredItem.DataEncoding,
                 value);
 
-            if (ServiceResult.IsBad(error))
-            {
+            if (ServiceResult.IsBad(error)) {
                 value = null;
             }
 
             monitoredItem.QueueValue(value, error);
         }
+
         #endregion
 
         #region Private Fields
+
         private CustomNodeManager2 m_nodeManager;
         private NodeState m_node;
         private List<MonitoredItem> m_dataChangeMonitoredItems;
         private List<IEventMonitoredItem> m_eventMonitoredItems;
+
         #endregion
     }
 }

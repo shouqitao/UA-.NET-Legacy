@@ -25,19 +25,17 @@ using System.ServiceModel.Security;
 using System.Text;
 using System.Xml;
 
-namespace Opc.Ua
-{    
+namespace Opc.Ua {
     /// <summary>
     /// A generic user identity class.
     /// </summary>
-    public class UserIdentity : IUserIdentity
-    {
+    public class UserIdentity : IUserIdentity {
         #region Constructors
+
         /// <summary>
         /// Initializes the object as an anonymous user.
         /// </summary>
-        public UserIdentity()
-        {
+        public UserIdentity() {
             m_tokenType = UserTokenType.Anonymous;
             m_displayName = "Anonymous";
             m_token = null;
@@ -48,8 +46,7 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="username">The user name.</param>
         /// <param name="password">The password.</param>
-        public UserIdentity(string username, string password)
-        {
+        public UserIdentity(string username, string password) {
             Initialize(username, password);
         }
 
@@ -57,8 +54,7 @@ namespace Opc.Ua
         /// Initializes the object with an X509 certificate identifier
         /// </summary>
         /// <param name="certificateId">The certificate identifier.</param>
-        public UserIdentity(CertificateIdentifier certificateId)
-        {
+        public UserIdentity(CertificateIdentifier certificateId) {
             Initialize(certificateId);
         }
 
@@ -66,8 +62,7 @@ namespace Opc.Ua
         /// Initializes the object with an X509 certificate
         /// </summary>
         /// <param name="certificate">The X509 certificate.</param>
-        public UserIdentity(X509Certificate2 certificate)
-        {
+        public UserIdentity(X509Certificate2 certificate) {
             Initialize(certificate);
         }
 
@@ -75,8 +70,7 @@ namespace Opc.Ua
         /// Initializes the object with a .NET security token
         /// </summary>
         /// <param name="token">The security token.</param>
-        public UserIdentity(SecurityToken token)
-        {
+        public UserIdentity(SecurityToken token) {
             Initialize(token);
         }
 
@@ -84,8 +78,7 @@ namespace Opc.Ua
         /// Initializes the object with a UA identity token.
         /// </summary>
         /// <param name="token">The user identity token.</param>
-        public UserIdentity(UserIdentityToken token)
-        {
+        public UserIdentity(UserIdentityToken token) {
             Initialize(token);
         }
 
@@ -95,71 +88,65 @@ namespace Opc.Ua
         /// <param name="token">The token.</param>
         /// <param name="serializer">The token serializer.</param>
         /// <param name="resolver">The token resolver.</param>
-        public UserIdentity(IssuedIdentityToken token, SecurityTokenSerializer serializer, SecurityTokenResolver resolver)
-        {
+        public UserIdentity(IssuedIdentityToken token, SecurityTokenSerializer serializer,
+            SecurityTokenResolver resolver) {
             Initialize(token, serializer, resolver);
-        }        
+        }
+
         #endregion
 
         #region IUserIdentity Methods
+
         /// <summary>
         /// Gets or sets the UserIdentityToken PolicyId associated with the UserIdentity.
         /// </summary>
         /// <remarks>
         /// This value is used to initialize the UserIdentityToken object when GetIdentityToken() is called.
         /// </remarks>
-        public string PolicyId
-        {
+        public string PolicyId {
             get { return m_policyId; }
             set { m_policyId = value; }
         }
+
         #endregion
 
         #region IUserIdentity Methods
+
         /// <summary cref="IUserIdentity.DisplayName" />
-        public string DisplayName
-        {
+        public string DisplayName {
             get { return m_displayName; }
         }
 
         /// <summary cref="IUserIdentity.TokenType" />
-        public UserTokenType TokenType
-        {
+        public UserTokenType TokenType {
             get { return m_tokenType; }
         }
-        
+
         /// <summary cref="IUserIdentity.IssuedTokenType" />
-        public XmlQualifiedName IssuedTokenType
-        {
+        public XmlQualifiedName IssuedTokenType {
             get { return m_issuedTokenType; }
-        }        
+        }
 
         /// <summary cref="IUserIdentity.SupportsSignatures" />
-        public bool SupportsSignatures
-        {
-            get  
-            {
-                if (m_token is X509SecurityToken)
-                {
+        public bool SupportsSignatures {
+            get {
+                if (m_token is X509SecurityToken) {
                     return true;
                 }
 
-                return false; 
+                return false;
             }
         }
 
         /// <summary cref="IUserIdentity.GetSecurityToken" />
-        public SecurityToken GetSecurityToken()
-        {
+        public SecurityToken GetSecurityToken() {
             return m_token;
         }
 
         /// <summary cref="IUserIdentity.GetIdentityToken" />
-        public UserIdentityToken GetIdentityToken()
-        {
+        public UserIdentityToken GetIdentityToken() {
             // check for anonymous.
-            if (m_token == null)
-            {
+            if (m_token == null) {
                 AnonymousIdentityToken token = new AnonymousIdentityToken();
                 token.PolicyId = m_policyId;
                 return token;
@@ -168,8 +155,7 @@ namespace Opc.Ua
             // return a user name token.
             UserNameSecurityToken usernameToken = m_token as UserNameSecurityToken;
 
-            if (usernameToken != null)
-            {
+            if (usernameToken != null) {
                 UserNameIdentityToken token = new UserNameIdentityToken();
                 token.PolicyId = m_policyId;
                 token.UserName = usernameToken.UserName;
@@ -180,30 +166,25 @@ namespace Opc.Ua
             // return an X509 token.
             X509SecurityToken x509Token = m_token as X509SecurityToken;
 
-            if (x509Token != null)
-            {
+            if (x509Token != null) {
                 X509IdentityToken token = new X509IdentityToken();
                 token.PolicyId = m_policyId;
                 token.CertificateData = x509Token.Certificate.GetRawCertData();
                 token.Certificate = x509Token.Certificate;
                 return token;
             }
-            
+
             // handle SAML token.
             SamlSecurityToken samlToken = m_token as SamlSecurityToken;
 
-            if (samlToken != null)
-            {
-                MemoryStream ostrm = new MemoryStream();      
-                XmlTextWriter writer = new XmlTextWriter(ostrm, new UTF8Encoding());   
- 
-                try
-                {
+            if (samlToken != null) {
+                MemoryStream ostrm = new MemoryStream();
+                XmlTextWriter writer = new XmlTextWriter(ostrm, new UTF8Encoding());
+
+                try {
                     SamlSerializer serializer = new SamlSerializer();
                     serializer.WriteToken(samlToken, writer, WSSecurityTokenSerializer.DefaultInstance);
-                }
-                finally
-                {
+                } finally {
                     writer.Close();
                 }
 
@@ -215,18 +196,14 @@ namespace Opc.Ua
             }
 
             // return a WSS token by default.
-            if (m_token != null)
-            {
+            if (m_token != null) {
                 MemoryStream ostrm = new MemoryStream();
                 XmlWriter writer = new XmlTextWriter(ostrm, new UTF8Encoding());
 
-                try
-                {
+                try {
                     WSSecurityTokenSerializer serializer = new WSSecurityTokenSerializer();
                     serializer.WriteToken(writer, m_token);
-                }
-                finally
-                {
+                } finally {
                     writer.Close();
                 }
 
@@ -239,29 +216,28 @@ namespace Opc.Ua
 
             return null;
         }
+
         #endregion
-        
+
         #region Private Methods
+
         /// <summary>
         /// Initializes the object with a username and password.
         /// </summary>
-        private void Initialize(string username, string password)
-        {
-            if (username == null) throw new ArgumentNullException("username");   
+        private void Initialize(string username, string password) {
+            if (username == null) throw new ArgumentNullException("username");
             Initialize(new UserNameSecurityToken(username, password));
         }
 
         /// <summary>
         /// Initializes the object with an X509 certificate identifier
         /// </summary>
-        private void Initialize(CertificateIdentifier certificateId)
-        {
+        private void Initialize(CertificateIdentifier certificateId) {
             if (certificateId == null) throw new ArgumentNullException("certificateId");
 
             X509Certificate2 certificate = certificateId.Find(true);
 
-            if (certificate != null)
-            {
+            if (certificate != null) {
                 Initialize(new X509SecurityToken(certificate));
             }
         }
@@ -269,8 +245,7 @@ namespace Opc.Ua
         /// <summary>
         /// Initializes the object with an X509 certificate
         /// </summary>
-        private void Initialize(X509Certificate2 certificate)
-        {
+        private void Initialize(X509Certificate2 certificate) {
             if (certificate == null) throw new ArgumentNullException("certificate");
             Initialize(new X509SecurityToken(certificate));
         }
@@ -278,175 +253,156 @@ namespace Opc.Ua
         /// <summary>
         /// Initializes the object with a .NET security token
         /// </summary>
-        private void Initialize(SecurityToken token)
-        {                        
+        private void Initialize(SecurityToken token) {
             if (token == null) throw new ArgumentNullException("token");
 
             m_token = token;
 
             UserNameSecurityToken usernameToken = token as UserNameSecurityToken;
 
-            if (usernameToken != null)
-            {
-                m_displayName     = usernameToken.UserName;
-                m_tokenType       = UserTokenType.UserName;
-                m_issuedTokenType = null; 
+            if (usernameToken != null) {
+                m_displayName = usernameToken.UserName;
+                m_tokenType = UserTokenType.UserName;
+                m_issuedTokenType = null;
                 return;
             }
-            
+
             X509SecurityToken x509Token = token as X509SecurityToken;
 
-            if (x509Token != null)
-            {
-                m_displayName     = x509Token.Certificate.Subject;
-                m_tokenType       = UserTokenType.Certificate;
-                m_issuedTokenType = null; 
+            if (x509Token != null) {
+                m_displayName = x509Token.Certificate.Subject;
+                m_tokenType = UserTokenType.Certificate;
+                m_issuedTokenType = null;
                 return;
             }
-            
+
             KerberosReceiverSecurityToken kerberosToken1 = token as KerberosReceiverSecurityToken;
 
-            if (kerberosToken1 != null)
-            {
-                m_displayName     = kerberosToken1.WindowsIdentity.Name;
-                m_tokenType       = UserTokenType.IssuedToken;
-                m_issuedTokenType = new XmlQualifiedName("", "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1"); 
+            if (kerberosToken1 != null) {
+                m_displayName = kerberosToken1.WindowsIdentity.Name;
+                m_tokenType = UserTokenType.IssuedToken;
+                m_issuedTokenType = new XmlQualifiedName("",
+                    "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1");
                 return;
             }
-            
+
             KerberosRequestorSecurityToken kerberosToken2 = token as KerberosRequestorSecurityToken;
 
-            if (kerberosToken2 != null)
-            {
-                m_displayName     = kerberosToken2.ServicePrincipalName;
-                m_tokenType       = UserTokenType.IssuedToken;
-                m_issuedTokenType = new XmlQualifiedName("", "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1"); 
+            if (kerberosToken2 != null) {
+                m_displayName = kerberosToken2.ServicePrincipalName;
+                m_tokenType = UserTokenType.IssuedToken;
+                m_issuedTokenType = new XmlQualifiedName("",
+                    "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1");
                 return;
             }
 
             SamlSecurityToken samlToken = token as SamlSecurityToken;
 
-            if (samlToken != null)
-            {
+            if (samlToken != null) {
                 m_displayName = "SAML";
 
                 // find the subject of the SAML assertion.
-                foreach (SamlStatement statement in samlToken.Assertion.Statements)
-                {
+                foreach (SamlStatement statement in samlToken.Assertion.Statements) {
                     SamlAttributeStatement attribute = statement as SamlAttributeStatement;
 
-                    if (attribute != null)
-                    {
+                    if (attribute != null) {
                         m_displayName = attribute.SamlSubject.Name;
                         break;
                     }
                 }
 
                 m_tokenType = UserTokenType.IssuedToken;
-                m_issuedTokenType = new XmlQualifiedName("", "urn:oasis:names:tc:SAML:1.0:assertion"); 
+                m_issuedTokenType = new XmlQualifiedName("", "urn:oasis:names:tc:SAML:1.0:assertion");
                 return;
             }
-            
+
             m_displayName = UserTokenType.IssuedToken.ToString();
-            m_tokenType   = UserTokenType.IssuedToken;
+            m_tokenType = UserTokenType.IssuedToken;
         }
 
         /// <summary>
         /// Initializes the object with a UA identity token
         /// </summary>
-        private void Initialize(UserIdentityToken token)
-        {
+        private void Initialize(UserIdentityToken token) {
             if (token == null) throw new ArgumentNullException("token");
 
             m_policyId = token.PolicyId;
-  
+
             UserNameIdentityToken usernameToken = token as UserNameIdentityToken;
 
-            if (usernameToken != null)
-            {
+            if (usernameToken != null) {
                 Initialize(new UserNameSecurityToken(usernameToken.UserName, usernameToken.DecryptedPassword));
                 return;
-            }        
-  
+            }
+
             X509IdentityToken x509Token = token as X509IdentityToken;
 
-            if (x509Token != null)
-            {
-                X509Certificate2 certificate = CertificateFactory.Create(x509Token.CertificateData, true);  
+            if (x509Token != null) {
+                X509Certificate2 certificate = CertificateFactory.Create(x509Token.CertificateData, true);
                 Initialize(new X509SecurityToken(certificate));
                 return;
             }
-   
+
             IssuedIdentityToken wssToken = token as IssuedIdentityToken;
-            
-            if (wssToken != null)
-            {
-                Initialize(wssToken, WSSecurityTokenSerializer.DefaultInstance, null);                
+
+            if (wssToken != null) {
+                Initialize(wssToken, WSSecurityTokenSerializer.DefaultInstance, null);
                 return;
             }
-            
+
             AnonymousIdentityToken anonymousToken = token as AnonymousIdentityToken;
 
-            if (anonymousToken != null)
-            {
+            if (anonymousToken != null) {
                 m_tokenType = UserTokenType.Anonymous;
                 m_issuedTokenType = null;
                 m_displayName = "Anonymous";
                 m_token = null;
                 return;
-            }        
-  
+            }
+
             throw new ArgumentException("Unrecognized UA user identity token type.", "token");
         }
-        
+
         /// <summary>
         /// Initializes the object with a UA identity token
         /// </summary>
-        private void Initialize(IssuedIdentityToken token, SecurityTokenSerializer serializer, SecurityTokenResolver resolver)
-        {
-            if (token == null) throw new ArgumentNullException("token");          
-     
+        private void Initialize(IssuedIdentityToken token, SecurityTokenSerializer serializer,
+            SecurityTokenResolver resolver) {
+            if (token == null) throw new ArgumentNullException("token");
+
             string text = new UTF8Encoding().GetString(token.DecryptedTokenData);
 
             XmlDocument document = new XmlDocument();
             document.InnerXml = text.Trim();
             XmlNodeReader reader = new XmlNodeReader(document.DocumentElement);
-                          
-            try
-            {      
-                if (document.DocumentElement.NamespaceURI == "urn:oasis:names:tc:SAML:1.0:assertion")
-                {
+
+            try {
+                if (document.DocumentElement.NamespaceURI == "urn:oasis:names:tc:SAML:1.0:assertion") {
                     SecurityToken samlToken = new SamlSerializer().ReadToken(reader, serializer, resolver);
                     Initialize(samlToken);
-                }
-                else
-                {
+                } else {
                     SecurityToken securityToken = serializer.ReadToken(reader, resolver);
                     Initialize(securityToken);
                 }
-            }
-            finally
-            {
+            } finally {
                 reader.Close();
             }
         }
+
         #endregion
-        
+
         #region WIN32 Function Declarations
-        private static class Win32
-        {
+
+        private static class Win32 {
             public const int LOGON32_PROVIDER_DEFAULT = 0;
             public const int LOGON32_LOGON_INTERACTIVE = 2;
             public const int LOGON32_LOGON_NETWORK = 3;
 
             [DllImport("advapi32.dll", SetLastError = true)]
             public static extern int LogonUserW(
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string lpszUsername,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string lpszDomain,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string lpszPassword,
+                [MarshalAs(UnmanagedType.LPWStr)] string lpszUsername,
+                [MarshalAs(UnmanagedType.LPWStr)] string lpszDomain,
+                [MarshalAs(UnmanagedType.LPWStr)] string lpszPassword,
                 int dwLogonType,
                 int dwLogonProvider,
                 ref IntPtr phToken);
@@ -454,18 +410,19 @@ namespace Opc.Ua
             [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
             public extern static int CloseHandle(IntPtr handle);
         }
+
         #endregion
-        
+
         #region Static Methods
+
         /// <summary>
         /// Verifies that the security token is a valid windows user.
         /// </summary>
         /// <param name="identityToken">The security token.</param>
-        public static void VerifyPassword(UserNameSecurityToken identityToken)
-        {
-            if (identityToken == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected, "Secuirty token is not a valid username token.");
+        public static void VerifyPassword(UserNameSecurityToken identityToken) {
+            if (identityToken == null) {
+                throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected,
+                    "Secuirty token is not a valid username token.");
             }
 
             // extract the username and domain from the security token.
@@ -474,8 +431,7 @@ namespace Opc.Ua
 
             int index = username.IndexOf('\\');
 
-            if (index != -1)
-            {
+            if (index != -1) {
                 domain = username.Substring(0, index);
                 username = username.Substring(index + 1);
             }
@@ -485,14 +441,14 @@ namespace Opc.Ua
             int result = Win32.LogonUserW(
                 username,
                 domain,
-                identityToken.Password, 
+                identityToken.Password,
                 Win32.LOGON32_LOGON_NETWORK,
                 Win32.LOGON32_PROVIDER_DEFAULT,
                 ref handle);
 
-            if (result == 0)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected, "Login failed for user: {0}", username);
+            if (result == 0) {
+                throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected, "Login failed for user: {0}",
+                    username);
             }
 
             Win32.CloseHandle(handle);
@@ -504,141 +460,140 @@ namespace Opc.Ua
         /// <param name="identityToken">The identity token.</param>
         /// <param name="interactive">Whether to logon interactively (slow).</param>
         /// <returns>The impersonation context (must be disposed to reverse impersonation).</returns>
-        public static ImpersonationContext LogonUser(UserNameSecurityToken identityToken, bool interactive)
-        {
-            if (identityToken == null)
-            {
-                throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected, "Secuirty token is not a valid username token.");
+        public static ImpersonationContext LogonUser(UserNameSecurityToken identityToken, bool interactive) {
+            if (identityToken == null) {
+                throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected,
+                    "Secuirty token is not a valid username token.");
             }
 
             // extract the username and domain from the security token.
             string username = identityToken.UserName;
-            string domain   = null;
+            string domain = null;
 
             int index = username.IndexOf('\\');
 
-            if (index != -1)
-            {
-                domain   = username.Substring(0, index);
-                username = username.Substring(index+1);
+            if (index != -1) {
+                domain = username.Substring(0, index);
+                username = username.Substring(index + 1);
             }
 
             // validate the credentials.
             IntPtr handle = IntPtr.Zero;
 
             int result = Win32.LogonUserW(
-			    username,
+                username,
                 domain,
                 identityToken.Password,
                 (interactive) ? Win32.LOGON32_LOGON_INTERACTIVE : Win32.LOGON32_LOGON_NETWORK,
                 Win32.LOGON32_PROVIDER_DEFAULT,
                 ref handle);
 
-            if (result == 0)
-            {
+            if (result == 0) {
                 result = Marshal.GetLastWin32Error();
 
                 throw ServiceResultException.Create(
-                    StatusCodes.BadIdentityTokenRejected, 
+                    StatusCodes.BadIdentityTokenRejected,
                     "Could not logon as user '{0}'. Reason: {1}.",
                     identityToken.UserName,
                     result);
-		    }
-            
-            try
-            {
+            }
+
+            try {
                 WindowsIdentity identity = new WindowsIdentity(handle);
 
                 ImpersonationContext context = new ImpersonationContext();
-                
+
                 context.Principal = new WindowsPrincipal(identity);
                 context.Context = identity.Impersonate();
                 context.Handle = handle;
 
                 return context;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Win32.CloseHandle(handle);
                 throw e;
             }
-        }        
+        }
+
         #endregion
 
         #region Private Fields
+
         private SecurityToken m_token;
         private string m_displayName;
         private UserTokenType m_tokenType;
         private XmlQualifiedName m_issuedTokenType;
         private string m_policyId;
+
         #endregion
     }
 
     #region ImpersonationContext Class
+
     /// <summary>
     /// Stores information about the user that is currently being impersonated.
     /// </summary>
-    public class ImpersonationContext : IDisposable
-    {
+    public class ImpersonationContext : IDisposable {
         #region Public Members
+
         /// <summary>
         /// The security principal being impersonated.
         /// </summary>
         public IPrincipal Principal { get; set; }
+
         #endregion
 
         #region Internal Members
+
         internal WindowsImpersonationContext Context { get; set; }
         internal IntPtr Handle { get; set; }
+
         #endregion
 
         #region IDisposable Members
+
         /// <summary>
         /// The finializer implementation.
         /// </summary>
-        ~ImpersonationContext()
-        {
+        ~ImpersonationContext() {
             Dispose(false);
         }
 
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         #region PInvoke Declarations
-        private static class Win32
-        {
+
+        private static class Win32 {
             [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
             public extern static bool CloseHandle(IntPtr handle);
         }
+
         #endregion
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (Context != null)
-                {
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                if (Context != null) {
                     Context.Dispose();
                     Context = null;
                 }
             }
 
-            if (Handle != IntPtr.Zero)
-            {
+            if (Handle != IntPtr.Zero) {
                 Win32.CloseHandle(Handle);
                 Handle = IntPtr.Zero;
             }
         }
+
         #endregion
     }
+
     #endregion
 }

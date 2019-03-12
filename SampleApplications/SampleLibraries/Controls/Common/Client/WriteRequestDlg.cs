@@ -36,107 +36,91 @@ using System.Windows.Forms;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Allows the user to edit and issue read requests.
     /// </summary>
-    public partial class WriteRequestDlg : Form, ISessionForm
-    {
+    public partial class WriteRequestDlg : Form, ISessionForm {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public WriteRequestDlg()
-        {
+        public WriteRequestDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Changes the session used for the read request.
         /// </summary>
-        public void ChangeSession(Session session)
-        {
+        public void ChangeSession(Session session) {
             WriteRequestCTRL.ChangeSession(session);
         }
 
         /// <summary>
         /// Adds a node to the read request.
         /// </summary>
-        public void AddNodes(params WriteValue[] nodesToWrite)
-        {
+        public void AddNodes(params WriteValue[] nodesToWrite) {
             WriteRequestCTRL.AddNodes(nodesToWrite);
         }
+
         #endregion
 
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
-        private void ReadBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void ReadBTN_Click(object sender, EventArgs e) {
+            try {
                 WriteRequestCTRL.Read();
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void WriteBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void WriteBTN_Click(object sender, EventArgs e) {
+            try {
                 WriteRequestCTRL.Write();
                 ReadBTN.Visible = false;
                 BackBTN.Visible = true;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void BackBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void BackBTN_Click(object sender, EventArgs e) {
+            try {
                 WriteRequestCTRL.Back();
                 ReadBTN.Visible = true;
                 BackBTN.Visible = false;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
 
-        private void CloseBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.Modal)
-                {
+        private void CloseBTN_Click(object sender, EventArgs e) {
+            try {
+                if (this.Modal) {
                     DialogResult = DialogResult.Cancel;
-                }
-                else
-                {
+                } else {
                     this.Close();
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

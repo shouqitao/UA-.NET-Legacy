@@ -35,41 +35,38 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// A dialog used to edit a NodeId.
     /// </summary>
-    public partial class NodeIdValueEditDlg : Form
-    {
+    public partial class NodeIdValueEditDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeIdValueEditDlg"/> class.
         /// </summary>
-        public NodeIdValueEditDlg()
-        {
+        public NodeIdValueEditDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public NodeId ShowDialog(Session session, NodeId value)
-        {
+        public NodeId ShowDialog(Session session, NodeId value) {
             if (session == null) throw new ArgumentNullException("session");
 
-            ValueCTRL.Browser    = new Browser(session);
-            ValueCTRL.RootId     = Objects.RootFolder;
+            ValueCTRL.Browser = new Browser(session);
+            ValueCTRL.RootId = Objects.RootFolder;
             ValueCTRL.Identifier = value;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
@@ -79,21 +76,20 @@ namespace Opc.Ua.Client.Controls
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public ExpandedNodeId ShowDialog(Session session, ExpandedNodeId value)
-        {
+        public ExpandedNodeId ShowDialog(Session session, ExpandedNodeId value) {
             if (session == null) throw new ArgumentNullException("session");
 
-            ValueCTRL.Browser    = new Browser(session);
-            ValueCTRL.RootId     = Objects.RootFolder;
+            ValueCTRL.Browser = new Browser(session);
+            ValueCTRL.RootId = Objects.RootFolder;
             ValueCTRL.Identifier = ExpandedNodeId.ToNodeId(value, session.NamespaceUris);
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return ValueCTRL.Identifier;
         }
+
         #endregion
     }
 }

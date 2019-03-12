@@ -36,40 +36,40 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Allows the user to browse a list of servers.
     /// </summary>
-    public partial class DiscoveredServerOnNetworkListDlg : Form
-    {
+    public partial class DiscoveredServerOnNetworkListDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Initializes the dialog.
         /// </summary>
-        public DiscoveredServerOnNetworkListDlg()
-        {
+        public DiscoveredServerOnNetworkListDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private string m_hostname;
         private ServerOnNetwork m_server;
         private ApplicationConfiguration m_configuration;
+
         #endregion
-        
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public ServerOnNetwork ShowDialog(string hostname, ApplicationConfiguration configuration)
-        {
+        public ServerOnNetwork ShowDialog(string hostname, ApplicationConfiguration configuration) {
             m_configuration = configuration;
 
-            if (String.IsNullOrEmpty(hostname))
-            {
+            if (String.IsNullOrEmpty(hostname)) {
                 hostname = System.Net.Dns.GetHostName();
             }
 
@@ -77,107 +77,88 @@ namespace Opc.Ua.Client.Controls
             List<string> hostnames = new List<string>();
 
             HostNameCTRL.Initialize(hostname, hostnames);
-            ServersCTRL.Initialize(m_hostname, this.StartingRecordUP, this.MaxRecordsUP, this.CapabilityFilterTB, m_configuration);
+            ServersCTRL.Initialize(m_hostname, this.StartingRecordUP, this.MaxRecordsUP, this.CapabilityFilterTB,
+                m_configuration);
 
             OkBTN.Enabled = false;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
-  
+
             return m_server;
         }
+
         #endregion
-        
+
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void HostNameCTRL_HostSelected(object sender, SelectHostCtrlEventArgs e)
-        {
-            try
-            {
-                if (m_hostname != e.Hostname)
-                {
+        private void HostNameCTRL_HostSelected(object sender, SelectHostCtrlEventArgs e) {
+            try {
+                if (m_hostname != e.Hostname) {
                     m_hostname = e.Hostname;
-                    ServersCTRL.Initialize(m_hostname,this.StartingRecordUP, this.MaxRecordsUP, this.CapabilityFilterTB, m_configuration);
+                    ServersCTRL.Initialize(m_hostname, this.StartingRecordUP, this.MaxRecordsUP,
+                        this.CapabilityFilterTB, m_configuration);
                     m_server = null;
                     OkBTN.Enabled = false;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void HostNameCTRL_HostConnected(object sender, SelectHostCtrlEventArgs e)
-        {
-            try
-            {
+        private void HostNameCTRL_HostConnected(object sender, SelectHostCtrlEventArgs e) {
+            try {
                 m_hostname = e.Hostname;
-                ServersCTRL.Initialize(m_hostname, this.StartingRecordUP, this.MaxRecordsUP, this.CapabilityFilterTB, m_configuration);
+                ServersCTRL.Initialize(m_hostname, this.StartingRecordUP, this.MaxRecordsUP, this.CapabilityFilterTB,
+                    m_configuration);
                 m_server = null;
                 OkBTN.Enabled = false;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void ServersCTRL_ItemsSelected(object sender, ListItemActionEventArgs e)
-        {
-            try
-            {
+        private void ServersCTRL_ItemsSelected(object sender, ListItemActionEventArgs e) {
+            try {
                 m_server = null;
 
-                foreach (ServerOnNetwork server in e.Items)
-                {
+                foreach (ServerOnNetwork server in e.Items) {
                     m_server = server;
                     break;
                 }
 
                 OkBTN.Enabled = m_server != null;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void ServersCTRL_ItemsPicked(object sender, ListItemActionEventArgs e)
-        {
-            try
-            {
+        private void ServersCTRL_ItemsPicked(object sender, ListItemActionEventArgs e) {
+            try {
                 m_server = null;
 
-                foreach (ServerOnNetwork server in e.Items)
-                {
+                foreach (ServerOnNetwork server in e.Items) {
                     m_server = server;
                     break;
                 }
 
-                if (m_server != null)
-                {
+                if (m_server != null) {
                     DialogResult = DialogResult.OK;
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
+
         #endregion
     }
 }

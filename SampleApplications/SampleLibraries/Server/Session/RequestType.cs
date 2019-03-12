@@ -33,118 +33,116 @@ using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// The set of all service request types (used for collecting diagnostics and checking permissions).
     /// </summary>
-    public enum RequestType
-    {
+    public enum RequestType {
         /// <summary>
         /// The request type is not known.
         /// </summary>
-		Unknown,
+        Unknown,
 
         /// <see cref="IDiscoveryServer.FindServers" />
-		FindServers,
+        FindServers,
 
         /// <see cref="IDiscoveryServer.GetEndpoints" />
-		GetEndpoints,
+        GetEndpoints,
 
         /// <see cref="ISessionServer.CreateSession" />
-		CreateSession,
+        CreateSession,
 
         /// <see cref="ISessionServer.ActivateSession" />
-		ActivateSession,
+        ActivateSession,
 
         /// <see cref="ISessionServer.CloseSession" />
-		CloseSession,
+        CloseSession,
 
         /// <see cref="ISessionServer.Cancel" />
-		Cancel,
+        Cancel,
 
         /// <see cref="ISessionServer.Read" />
-		Read,
+        Read,
 
         /// <see cref="ISessionServer.HistoryRead" />
-		HistoryRead,
+        HistoryRead,
 
         /// <see cref="ISessionServer.Write" />
-		Write,
+        Write,
 
         /// <see cref="ISessionServer.HistoryUpdate" />
-		HistoryUpdate,
+        HistoryUpdate,
 
         /// <see cref="ISessionServer.Call" />
-		Call,
+        Call,
 
         /// <see cref="ISessionServer.CreateMonitoredItems" />
-		CreateMonitoredItems,
+        CreateMonitoredItems,
 
         /// <see cref="ISessionServer.ModifyMonitoredItems" />
-		ModifyMonitoredItems,
+        ModifyMonitoredItems,
 
         /// <see cref="ISessionServer.SetMonitoringMode" />
-		SetMonitoringMode,
+        SetMonitoringMode,
 
         /// <see cref="ISessionServer.SetTriggering" />
-		SetTriggering,
+        SetTriggering,
 
         /// <see cref="ISessionServer.DeleteMonitoredItems" />
-		DeleteMonitoredItems,
+        DeleteMonitoredItems,
 
         /// <see cref="ISessionServer.CreateSubscription" />
-		CreateSubscription,
+        CreateSubscription,
 
         /// <see cref="ISessionServer.ModifySubscription" />
-		ModifySubscription,
+        ModifySubscription,
 
         /// <see cref="ISessionServer.SetPublishingMode" />
-		SetPublishingMode,
+        SetPublishingMode,
 
         /// <see cref="ISessionServer.Publish" />
-		Publish,
+        Publish,
 
         /// <see cref="ISessionServer.Republish" />
-		Republish,
+        Republish,
 
         /// <see cref="ISessionServer.TransferSubscriptions" />
-		TransferSubscriptions,
+        TransferSubscriptions,
 
         /// <see cref="ISessionServer.DeleteSubscriptions" />
-		DeleteSubscriptions,
+        DeleteSubscriptions,
 
         /// <see cref="ISessionServer.AddNodes" />
-		AddNodes,
+        AddNodes,
 
         /// <see cref="ISessionServer.AddReferences" />
-		AddReferences,
+        AddReferences,
 
         /// <see cref="ISessionServer.DeleteNodes" />
-		DeleteNodes,
+        DeleteNodes,
 
         /// <see cref="ISessionServer.DeleteReferences" />
-		DeleteReferences,
+        DeleteReferences,
 
         /// <see cref="ISessionServer.Browse" />
-		Browse,
+        Browse,
 
         /// <see cref="ISessionServer.BrowseNext" />
-		BrowseNext,
+        BrowseNext,
 
         /// <see cref="ISessionServer.TranslateBrowsePathsToNodeIds" />
-		TranslateBrowsePathsToNodeIds,
+        TranslateBrowsePathsToNodeIds,
 
         /// <see cref="ISessionServer.QueryFirst" />
-		QueryFirst,
+        QueryFirst,
 
         /// <see cref="ISessionServer.QueryNext" />
-		QueryNext,
+        QueryNext,
 
         /// <see cref="ISessionServer.RegisterNodes" />
-		RegisterNodes,
+        RegisterNodes,
 
         /// <see cref="ISessionServer.UnregisterNodes" />
-		UnregisterNodes
+        UnregisterNodes
     }
 }

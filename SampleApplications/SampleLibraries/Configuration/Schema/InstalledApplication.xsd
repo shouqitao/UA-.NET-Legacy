@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <xs:schema id="InstalledApplication"
-    targetNamespace="http://opcfoundation.org/UASDK/Installation.xsd"
-    elementFormDefault="qualified"
-    xmlns="http://opcfoundation.org/UASDK/Installation.xsd"
-    xmlns:mstns="http://opcfoundation.org/UASDK/Installation.xsd"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
-    xmlns:uas="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
-    xmlns:uac="http://opcfoundation.org/UA/SDK/Configuration.xsd"
->
+           targetNamespace="http://opcfoundation.org/UASDK/Installation.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://opcfoundation.org/UASDK/Installation.xsd"
+           xmlns:mstns="http://opcfoundation.org/UASDK/Installation.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
+           xmlns:uas="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd"
+           xmlns:uac="http://opcfoundation.org/UA/SDK/Configuration.xsd">
   <xs:import namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" schemaLocation="../../Core/Schema/Opc.Ua.Types.xsd" />
   <xs:import namespace="http://opcfoundation.org/UA/2011/03/SecuredApplication.xsd" schemaLocation="../../Core/Schema/SecuredApplication.xsd" />
   <xs:import namespace="http://opcfoundation.org/UA/SDK/Configuration.xsd" schemaLocation="../../Core/Schema/ApplicationConfiguration.xsd" />
@@ -19,7 +19,7 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ListOfInstalledApplication" nillable="true" type="ListOfInstalledApplication" />
-  
+
   <xs:complexType name="InstalledApplication">
     <xs:complexContent>
       <xs:extension base="uas:SecuredApplication">
@@ -53,5 +53,5 @@
       <xs:enumeration value="Disabled" />
     </xs:restriction>
   </xs:simpleType>
-  
+
 </xs:schema>

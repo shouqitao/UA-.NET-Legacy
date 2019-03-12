@@ -40,21 +40,16 @@ using System.IdentityModel.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.ServiceModel.Channels;
-
 using Opc.Ua.Bindings;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 
-namespace Opc.Ua.Sample.Controls
-{
+namespace Opc.Ua.Sample.Controls {
     /// <summary>
     /// Prompts the user to create a new secure channel.
     /// </summary>
-    public partial class CreateSecureChannelDlg : Form
-    {
-        public CreateSecureChannelDlg()
-        {
+    public partial class CreateSecureChannelDlg : Form {
+        public CreateSecureChannelDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
         }
@@ -63,70 +58,64 @@ namespace Opc.Ua.Sample.Controls
         private ApplicationConfiguration m_configuration;
         private EndpointDescriptionCollection m_endpoints;
         private ServiceMessageContext m_messageContext;
-        
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
         public ITransportChannel ShowDialog(
-            ApplicationConfiguration      configuration,
-            EndpointDescriptionCollection endpoints)
-        {
-            if (endpoints == null)      throw new ArgumentNullException("endpoints");
-            if (configuration == null)  throw new ArgumentNullException("configuration");
+            ApplicationConfiguration configuration,
+            EndpointDescriptionCollection endpoints) {
+            if (endpoints == null) throw new ArgumentNullException("endpoints");
+            if (configuration == null) throw new ArgumentNullException("configuration");
 
-            m_endpoints      = endpoints;
-            m_configuration  = configuration;
+            m_endpoints = endpoints;
+            m_configuration = configuration;
             m_messageContext = configuration.CreateMessageContext();
 
             EndpointCB.Items.Clear();
 
-            foreach (EndpointDescription endpoint in endpoints)
-            {
+            foreach (EndpointDescription endpoint in endpoints) {
                 EndpointCB.Items.Add(endpoint.EndpointUrl);
             }
 
-            if (EndpointCB.Items.Count > 0)
-            {
+            if (EndpointCB.Items.Count > 0) {
                 EndpointCB.SelectedIndex = 0;
             }
-            
-            OperationTimeoutNC.Value    = configuration.TransportQuotas.OperationTimeout;
-            MaxMessageSizeNC.Value      = configuration.TransportQuotas.MaxMessageSize;
-            MaxArrayLengthNC.Value      = configuration.TransportQuotas.MaxArrayLength;
-            MaxStringLengthNC.Value     = configuration.TransportQuotas.MaxStringLength;
+
+            OperationTimeoutNC.Value = configuration.TransportQuotas.OperationTimeout;
+            MaxMessageSizeNC.Value = configuration.TransportQuotas.MaxMessageSize;
+            MaxArrayLengthNC.Value = configuration.TransportQuotas.MaxArrayLength;
+            MaxStringLengthNC.Value = configuration.TransportQuotas.MaxStringLength;
             MaxByteStringLengthNC.Value = configuration.TransportQuotas.MaxByteStringLength;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return null;
             }
-                       
+
             // return the channel.
             return m_channel;
         }
 
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 EndpointConfiguration configuration = EndpointConfiguration.Create(m_configuration);
-        
-                configuration.OperationTimeout    = (int)OperationTimeoutNC.Value;
-                configuration.UseBinaryEncoding   = UseBinaryEncodingCK.Checked;
-                configuration.MaxMessageSize      = (int)MaxMessageSizeNC.Value;
-                configuration.MaxArrayLength      = (int)MaxArrayLengthNC.Value;
-                configuration.MaxStringLength     = (int)MaxStringLengthNC.Value;
-                configuration.MaxByteStringLength = (int)MaxByteStringLengthNC.Value;
-                                
+
+                configuration.OperationTimeout = (int) OperationTimeoutNC.Value;
+                configuration.UseBinaryEncoding = UseBinaryEncodingCK.Checked;
+                configuration.MaxMessageSize = (int) MaxMessageSizeNC.Value;
+                configuration.MaxArrayLength = (int) MaxArrayLengthNC.Value;
+                configuration.MaxStringLength = (int) MaxStringLengthNC.Value;
+                configuration.MaxByteStringLength = (int) MaxByteStringLengthNC.Value;
+
                 ITransportChannel channel = SessionChannel.Create(
                     m_configuration,
-                    m_endpoints[EndpointCB.SelectedIndex], 
-                    configuration, 
+                    m_endpoints[EndpointCB.SelectedIndex],
+                    configuration,
                     m_configuration.SecurityConfiguration.ApplicationCertificate.Find(true),
                     m_messageContext);
 
                 // create the channel.                   
-                                                                   
+
                 // open the channel.
                 Cursor = Cursors.WaitCursor;
 
@@ -134,75 +123,57 @@ namespace Opc.Ua.Sample.Controls
 
                 // close the dialog.
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
-            }
-            finally
-            {
+            } finally {
                 Cursor = Cursors.Default;
             }
         }
 
-        private void EndpointCB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
+        private void EndpointCB_SelectedIndexChanged(object sender, EventArgs e) {
+            try {
                 int index = EndpointCB.SelectedIndex;
 
-                if (index == -1)
-                {
+                if (index == -1) {
                     return;
                 }
 
                 EndpointDescription endpoint = m_endpoints[index];
 
-                switch (endpoint.EncodingSupport)
-                {
-                    case BinaryEncodingSupport.Required:
-                    {
+                switch (endpoint.EncodingSupport) {
+                    case BinaryEncodingSupport.Required: {
                         UseBinaryEncodingCK.Checked = true;
                         UseBinaryEncodingCK.Enabled = false;
                         break;
                     }
 
-                    case BinaryEncodingSupport.Optional:
-                    {
+                    case BinaryEncodingSupport.Optional: {
                         UseBinaryEncodingCK.Checked = true;
                         UseBinaryEncodingCK.Enabled = true;
                         break;
                     }
 
-                    default:
-                    {
+                    default: {
                         UseBinaryEncodingCK.Checked = false;
                         UseBinaryEncodingCK.Enabled = false;
                         break;
                     }
                 }
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        private void DetailsBTN_Click(object sender, EventArgs e)
-        {            
-            try
-            {
+        private void DetailsBTN_Click(object sender, EventArgs e) {
+            try {
                 int index = EndpointCB.SelectedIndex;
 
-                if (index == -1)
-                {
+                if (index == -1) {
                     return;
                 }
 
                 new EndpointViewDlg().ShowDialog(m_endpoints[index]);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }

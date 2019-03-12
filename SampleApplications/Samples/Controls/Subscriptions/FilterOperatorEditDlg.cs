@@ -36,41 +36,39 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Opc.Ua.Sample.Controls
-{
-    public partial class FilterOperatorEditDlg : Form
-    {
+namespace Opc.Ua.Sample.Controls {
+    public partial class FilterOperatorEditDlg : Form {
         #region Constructors
-        public FilterOperatorEditDlg()
-        {
+
+        public FilterOperatorEditDlg() {
             InitializeComponent();
 
             OperatorCB.Items.Clear();
 
-            foreach (FilterOperator op in Enum.GetValues(typeof(FilterOperator)))
-            {
+            foreach (FilterOperator op in Enum.GetValues(typeof(FilterOperator))) {
                 OperatorCB.Items.Add(op);
             }
         }
+
         #endregion
-                
+
         #region Public Interface
+
         /// <summary>
         /// Displays the dialog.
         /// </summary>
-        public bool ShowDialog(ref FilterOperator value)
-        {
+        public bool ShowDialog(ref FilterOperator value) {
             OperatorCB.SelectedItem = value;
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
-            
-            value = (FilterOperator)OperatorCB.SelectedItem;
-            
+
+            value = (FilterOperator) OperatorCB.SelectedItem;
+
             return true;
         }
+
         #endregion
     }
 }

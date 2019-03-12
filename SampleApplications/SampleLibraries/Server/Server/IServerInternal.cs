@@ -38,13 +38,11 @@ using System.Security.Cryptography.X509Certificates;
 
 #pragma warning disable 0618
 
-namespace Opc.Ua.Server
-{
+namespace Opc.Ua.Server {
     /// <summary>
     /// The interface that a server exposes to objects that it contains.
     /// </summary>
-    public interface IServerInternal
-    {
+    public interface IServerInternal {
         /// <summary>
         /// The endpoint addresses used by the server.
         /// </summary>
@@ -91,7 +89,7 @@ namespace Opc.Ua.Server
         /// This object is thread safe.
         /// </remarks>
         TypeTable TypeTree { get; }
-        
+
 #if LEGACY_CORENODEMANAGER
         /// <summary>
         /// Returns the source for a types that has shared components defined.
@@ -140,7 +138,7 @@ namespace Opc.Ua.Server
         /// </summary>
         /// <value>The request manager.</value>
         RequestManager RequestManager { get; }
-        
+
         /// <summary>
         /// A manager for aggregate calculators supported by the server.
         /// </summary>
@@ -157,7 +155,7 @@ namespace Opc.Ua.Server
         /// The manager for active subscriptions.
         /// </summary>
         ISubscriptionManager SubscriptionManager { get; }
-        
+
         /// <summary>
         /// Whether the server is currently running.
         /// </summary>
@@ -194,7 +192,7 @@ namespace Opc.Ua.Server
         /// </summary>
         /// <value>The server diagnostics.</value>
         ServerDiagnosticsSummaryDataType ServerDiagnostics { get; }
-        
+
 #if LEGACY_CORENODEMANAGER
         /// <summary>
         /// Returns the diagnostics object for the server.

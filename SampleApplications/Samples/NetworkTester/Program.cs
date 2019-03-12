@@ -33,32 +33,27 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Opc.Ua.NetworkTester
-{
-    static class Program
-    {
+namespace Opc.Ua.NetworkTester {
+    static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
         }
     }
-        
+
     /// <summary>
     /// A class which acts as proxy for a socket connection.
     /// </summary>
-    public class Server
-    {
+    public class Server {
         /// <summary>
         /// Initializes the server with the listener and server url.
         /// </summary>
-        public Server(string listenerUrl, string serverUrl)
-        {
+        public Server(string listenerUrl, string serverUrl) {
             m_listenerUrl = new Uri(listenerUrl);
             m_serverUrl = new Uri(serverUrl);
         }
@@ -66,18 +61,16 @@ namespace Opc.Ua.NetworkTester
         /// <summary>
         /// Starts listening at the specified port.
         /// </summary>
-        public void Start()
-        {
-            lock (m_lock)
-            {
+        public void Start() {
+            lock (m_lock) {
                 m_connections = new List<Connection>();
 
                 IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, m_listenerUrl.Port);
-	
-                m_listeningSocket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);             
+
+                m_listeningSocket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 m_listeningSocket.Bind(endpoint);
                 m_listeningSocket.Listen(Int32.MaxValue);
-                
+
                 m_listeningSocket.BeginAccept(OnAccept, m_listeningSocket);
             }
         }
@@ -85,78 +78,65 @@ namespace Opc.Ua.NetworkTester
         /// <summary>
         /// Stops listening.
         /// </summary>
-        public void Stop()
-        {
-            lock (m_lock)
-            {
+        public void Stop() {
+            lock (m_lock) {
                 m_listeningSocket.Close();
                 m_listeningSocket = null;
 
-                foreach (Connection connection in new List<Connection>(m_connections))
-                {
+                foreach (Connection connection in new List<Connection>(m_connections)) {
                     Close(connection);
                 }
             }
         }
-        
+
         /// <summary>
         /// Handles a new connection.
         /// </summary>
-        private void OnAccept(IAsyncResult result)
-        {
+        private void OnAccept(IAsyncResult result) {
             // find the connection.
             Socket listeningSocket = result.AsyncState as Socket;
 
-            if (listeningSocket == null && !listeningSocket.Connected)
-            {
+            if (listeningSocket == null && !listeningSocket.Connected) {
                 return;
             }
 
-            try
-            {                    
+            try {
                 // accept the socket.
                 Socket socket = listeningSocket.EndAccept(result);
 
                 // go back and wait for the next connection.
                 listeningSocket.BeginAccept(OnAccept, listeningSocket);
-    
+
                 // connect to the server.
                 Connect(socket, m_serverUrl);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error accepting a new connection.");
             }
         }
-        
+
         /// <summary>
         /// Stores the state of a connection.
         /// </summary>
-        private class Connection
-        {
+        private class Connection {
             public Socket IncomingSocket;
             public Socket OutgoingSocket;
             public byte[] ClientToServerBuffer;
             public byte[] ServerToClientBuffer;
         }
-        
+
         /// <summary>
         /// Closes the connection.
         /// </summary>
-        private void Close(Connection connection)
-        {            
-            lock (m_lock)
-            {
+        private void Close(Connection connection) {
+            lock (m_lock) {
                 m_connections.Remove(connection);
             }
 
-            if (connection.IncomingSocket != null && connection.IncomingSocket.Connected)
-            {
+            if (connection.IncomingSocket != null && connection.IncomingSocket.Connected) {
                 connection.IncomingSocket.Close(0);
             }
-            
-            if (connection.OutgoingSocket != null && connection.OutgoingSocket.Connected)
-            {
+
+            if (connection.OutgoingSocket != null && connection.OutgoingSocket.Connected) {
                 connection.OutgoingSocket.Close(0);
             }
         }
@@ -164,44 +144,39 @@ namespace Opc.Ua.NetworkTester
         /// <summary>
         /// Connects to the server.
         /// </summary>
-        private void Connect(Socket incomingSocket, Uri uri)
-        { 
+        private void Connect(Socket incomingSocket, Uri uri) {
             Socket outgoingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
 
             Connection connection = new Connection();
-            
+
             connection.IncomingSocket = incomingSocket;
             connection.OutgoingSocket = outgoingSocket;
 
-            lock (m_lock)
-            {
+            lock (m_lock) {
                 m_connections.Add(connection);
             }
 
             outgoingSocket.BeginConnect(uri.DnsSafeHost, uri.Port, EndConnect, connection);
         }
-        
+
         /// <summary>
         /// Called to complete an asynchronous connect operation.
         /// </summary>
-        private void EndConnect(IAsyncResult result)
-        {
+        private void EndConnect(IAsyncResult result) {
             // find the connection.
             Connection connection = result.AsyncState as Connection;
 
-            if (connection == null)
-            {
+            if (connection == null) {
                 return;
             }
 
-            try
-            {
+            try {
                 // complete connection.
-                connection.OutgoingSocket.EndConnect(result);   
+                connection.OutgoingSocket.EndConnect(result);
 
                 // start read from client.
                 connection.ClientToServerBuffer = new byte[UInt16.MaxValue];
-                
+
                 connection.IncomingSocket.BeginReceive(
                     connection.ClientToServerBuffer,
                     0,
@@ -212,7 +187,7 @@ namespace Opc.Ua.NetworkTester
 
                 // start read from server.
                 connection.ServerToClientBuffer = new byte[UInt16.MaxValue];
-                
+
                 connection.OutgoingSocket.BeginReceive(
                     connection.ServerToClientBuffer,
                     0,
@@ -220,40 +195,34 @@ namespace Opc.Ua.NetworkTester
                     SocketFlags.None,
                     OnReadFromServer,
                     connection);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error connecting to server.");
                 Close(connection);
             }
         }
-        
+
         /// <summary>
         /// Called to complete an asynchronous read operation.
         /// </summary>
-        private void OnReadFromClient(IAsyncResult result)
-        {
+        private void OnReadFromClient(IAsyncResult result) {
             // find the connection.
             Connection connection = result.AsyncState as Connection;
 
-            if (connection == null || !connection.IncomingSocket.Connected)
-            {
+            if (connection == null || !connection.IncomingSocket.Connected) {
                 return;
             }
 
-            try
-            {
+            try {
                 // complete read.
-                int bytesReceived = connection.IncomingSocket.EndReceive(result);   
+                int bytesReceived = connection.IncomingSocket.EndReceive(result);
 
-                if (bytesReceived == 0)
-                {                    
+                if (bytesReceived == 0) {
                     Close(connection);
                     return;
                 }
 
                 connection.OutgoingSocket.Send(connection.ClientToServerBuffer, 0, bytesReceived, SocketFlags.None);
-                      
+
                 // start read from client.                
                 connection.IncomingSocket.BeginReceive(
                     connection.ClientToServerBuffer,
@@ -262,40 +231,34 @@ namespace Opc.Ua.NetworkTester
                     SocketFlags.None,
                     OnReadFromClient,
                     connection);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error reading from client.");
                 Close(connection);
             }
         }
-        
+
         /// <summary>
         /// Called to complete an asynchronous read operation.
         /// </summary>
-        private void OnReadFromServer(IAsyncResult result)
-        {
+        private void OnReadFromServer(IAsyncResult result) {
             // find the connection.
             Connection connection = result.AsyncState as Connection;
 
-            if (connection == null || !connection.IncomingSocket.Connected)
-            {
+            if (connection == null || !connection.IncomingSocket.Connected) {
                 return;
             }
 
-            try
-            {
+            try {
                 // complete read.
-                int bytesReceived = connection.OutgoingSocket.EndReceive(result);   
-                
-                if (bytesReceived == 0)
-                {                    
+                int bytesReceived = connection.OutgoingSocket.EndReceive(result);
+
+                if (bytesReceived == 0) {
                     Close(connection);
                     return;
                 }
-                    
-                connection.IncomingSocket.Send(connection.ServerToClientBuffer, 0, bytesReceived, SocketFlags.None);           
-                
+
+                connection.IncomingSocket.Send(connection.ServerToClientBuffer, 0, bytesReceived, SocketFlags.None);
+
                 // start read from client.                
                 connection.OutgoingSocket.BeginReceive(
                     connection.ServerToClientBuffer,
@@ -304,9 +267,7 @@ namespace Opc.Ua.NetworkTester
                     SocketFlags.None,
                     OnReadFromServer,
                     connection);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Trace(e, "Unexpected error reading from server.");
                 Close(connection);
             }

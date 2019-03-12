@@ -36,14 +36,13 @@ using System.Threading;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-namespace MemoryBuffer
-{
+namespace MemoryBuffer {
     /// <summary>
     /// A class to browse the references for a memory buffer. 
     /// </summary>
-    public class MemoryBufferBrowser : NodeBrowser
-    {
+    public class MemoryBufferBrowser : NodeBrowser {
         #region Constructors
+
         /// <summary>
         /// Creates a new browser object with a set of filters.
         /// </summary>
@@ -57,7 +56,7 @@ namespace MemoryBuffer
             IEnumerable<IReference> additionalReferences,
             bool internalOnly,
             MemoryBufferState buffer)
-        :
+            :
             base(
                 context,
                 view,
@@ -66,54 +65,47 @@ namespace MemoryBuffer
                 browseDirection,
                 browseName,
                 additionalReferences,
-                internalOnly)
-        {
+                internalOnly) {
             m_buffer = buffer;
             m_stage = Stage.Begin;
         }
+
         #endregion
 
         #region Overridden Methods
+
         /// <summary>
         /// Returns the next reference.
         /// </summary>
         /// <returns></returns>
-        public override IReference Next()
-        {
-            lock (DataLock)
-            {
+        public override IReference Next() {
+            lock (DataLock) {
                 IReference reference = null;
 
                 // enumerate pre-defined references.
                 // always call first to ensure any pushed-back references are returned first.
                 reference = base.Next();
 
-                if (reference != null)
-                {
+                if (reference != null) {
                     return reference;
                 }
 
-                if (m_stage == Stage.Begin)
-                {
+                if (m_stage == Stage.Begin) {
                     m_stage = Stage.Components;
                     m_position = 0;
                 }
 
                 // don't start browsing huge number of references when only internal references are requested.
-                if (InternalOnly)
-                {
+                if (InternalOnly) {
                     return null;
                 }
-                
+
                 // enumerate components.
-                if (m_stage == Stage.Components)
-                {
-                    if (IsRequired(ReferenceTypeIds.HasComponent, false))
-                    {
+                if (m_stage == Stage.Components) {
+                    if (IsRequired(ReferenceTypeIds.HasComponent, false)) {
                         reference = NextChild();
 
-                        if (reference != null)
-                        {
+                        if (reference != null) {
                             return reference;
                         }
                     }
@@ -126,46 +118,41 @@ namespace MemoryBuffer
                 return null;
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Returns the next child.
         /// </summary>
-        private IReference NextChild()
-        {
+        private IReference NextChild() {
             MemoryTagState tag = null;
 
             // check if a specific browse name is requested.
-            if (!QualifiedName.IsNull(base.BrowseName))
-            {
+            if (!QualifiedName.IsNull(base.BrowseName)) {
                 // check if match found previously.
-                if (m_position == UInt32.MaxValue)
-                {
+                if (m_position == UInt32.MaxValue) {
                     return null;
                 }
 
                 // browse name must be qualified by the correct namespace.
-                if (m_buffer.TypeDefinitionId.NamespaceIndex != base.BrowseName.NamespaceIndex)
-                {
+                if (m_buffer.TypeDefinitionId.NamespaceIndex != base.BrowseName.NamespaceIndex) {
                     return null;
                 }
 
                 string name = base.BrowseName.Name;
 
-                for (int ii = 0; ii < name.Length; ii++)
-                {
-                    if ("0123456789ABCDEF".IndexOf(name[ii]) == -1)
-                    {
+                for (int ii = 0; ii < name.Length; ii++) {
+                    if ("0123456789ABCDEF".IndexOf(name[ii]) == -1) {
                         return null;
                     }
                 }
 
                 m_position = Convert.ToUInt32(name, 16);
-                
+
                 // check for memory overflow.
-                if (m_position >= m_buffer.SizeInBytes.Value)
-                {
+                if (m_position >= m_buffer.SizeInBytes.Value) {
                     return null;
                 }
 
@@ -174,10 +161,8 @@ namespace MemoryBuffer
             }
 
             // return the child at the next position.
-            else
-            {
-                if (m_position >= m_buffer.SizeInBytes.Value)
-                {
+            else {
+                if (m_position >= m_buffer.SizeInBytes.Value) {
                     return null;
                 }
 
@@ -185,33 +170,36 @@ namespace MemoryBuffer
                 m_position += m_buffer.ElementSize;
 
                 // check for memory overflow.
-                if (m_position >= m_buffer.SizeInBytes.Value)
-                {
+                if (m_position >= m_buffer.SizeInBytes.Value) {
                     return null;
                 }
             }
 
             return new NodeStateReference(ReferenceTypeIds.HasComponent, false, tag);
         }
+
         #endregion
 
         #region Stage Enumeration
+
         /// <summary>
         /// The stages available in a browse operation.
         /// </summary>
-        private enum Stage
-        {
+        private enum Stage {
             Begin,
             Components,
             ModelParents,
             Done
         }
+
         #endregion
 
         #region Private Fields
+
         private Stage m_stage;
         private uint m_position;
         private MemoryBufferState m_buffer;
+
         #endregion
     }
 }

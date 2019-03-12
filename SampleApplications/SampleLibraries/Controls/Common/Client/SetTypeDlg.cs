@@ -34,19 +34,17 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to select an area to use as an event filter.
     /// </summary>
-    public partial class SetTypeDlg : Form
-    {
+    public partial class SetTypeDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public SetTypeDlg()
-        {
+        public SetTypeDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
 
@@ -54,21 +52,24 @@ namespace Opc.Ua.Client.Controls
             ErrorHandlingCB.Items.Add("Throw Exception");
 
             StructureTypeBTN.RootId = Opc.Ua.DataTypeIds.Structure;
-            StructureTypeBTN.ReferenceTypeIds = new NodeId[] { Opc.Ua.ReferenceTypeIds.HasSubtype };
+            StructureTypeBTN.ReferenceTypeIds = new NodeId[] {Opc.Ua.ReferenceTypeIds.HasSubtype};
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private SetTypeResult m_result;
         private TypeInfo m_typeInfo;
+
         #endregion
 
         #region SetTypeResult Class
+
         /// <summary>
         /// The values updated by the dialog.
         /// </summary>
-        public class SetTypeResult
-        {
+        public class SetTypeResult {
             /// <summary>
             /// The new type info.
             /// </summary>
@@ -89,14 +90,15 @@ namespace Opc.Ua.Client.Controls
             /// </summary>
             public bool UseDefaultOnError { get; set; }
         }
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Displays the available areas in a tree view.
         /// </summary>
-        public SetTypeResult ShowDialog(TypeInfo typeInfo, int[] dimensions)
-        {
+        public SetTypeResult ShowDialog(TypeInfo typeInfo, int[] dimensions) {
             m_typeInfo = typeInfo;
 
             StructureTypeLB.Visible = false;
@@ -106,16 +108,13 @@ namespace Opc.Ua.Client.Controls
             ArrayDimensionsTB.Visible = dimensions != null;
 
             ErrorHandlingCB.SelectedIndex = 0;
-                        
+
             StringBuilder builder = new StringBuilder();
 
             // display the current dimensions.
-            if (typeInfo.ValueRank >= 0 && dimensions != null)
-            {
-                for (int ii = 0; ii < dimensions.Length; ii++)
-                {
-                    if (builder.Length > 0)
-                    {
+            if (typeInfo.ValueRank >= 0 && dimensions != null) {
+                for (int ii = 0; ii < dimensions.Length; ii++) {
+                    if (builder.Length > 0) {
                         builder.Append(", ");
                     }
 
@@ -126,49 +125,45 @@ namespace Opc.Ua.Client.Controls
             ArrayDimensionsTB.Text = builder.ToString();
 
             // display the dialog.
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return null;
             }
 
             return m_result;
         }
+
         #endregion
-        
+
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 // parse the array dimensions.
                 string text = ArrayDimensionsTB.Text.Trim();
                 List<int> dimensions = new List<int>();
 
-                if (!String.IsNullOrEmpty(text))
-                {
+                if (!String.IsNullOrEmpty(text)) {
                     int dimension = 0;
                     const string digits = "0123456789";
 
-                    for (int ii = 0; ii < text.Length; ii++)
-                    {
-                        if (Char.IsWhiteSpace(text, ii))
-                        {
+                    for (int ii = 0; ii < text.Length; ii++) {
+                        if (Char.IsWhiteSpace(text, ii)) {
                             continue;
                         }
 
-                        if (text[ii] == ',')
-                        {
+                        if (text[ii] == ',') {
                             dimensions.Add(dimension);
                             dimension = 0;
                             continue;
                         }
 
-                        if (!Char.IsDigit(text, ii))
-                        {
-                            throw new FormatException("Invalid character in array index. Use numbers seperated by commas.");
+                        if (!Char.IsDigit(text, ii)) {
+                            throw new FormatException(
+                                "Invalid character in array index. Use numbers seperated by commas.");
                         }
 
                         dimension *= 10;
@@ -177,7 +172,7 @@ namespace Opc.Ua.Client.Controls
 
                     dimensions.Add(dimension);
                 }
-                
+
                 // save the result.
                 int valueRank = (dimensions.Count < 1) ? ValueRanks.Scalar : dimensions.Count;
 
@@ -186,18 +181,16 @@ namespace Opc.Ua.Client.Controls
                 m_result.ArrayDimensions = dimensions.ToArray();
                 m_result.UseDefaultOnError = ErrorHandlingCB.SelectedIndex == 0;
 
-                if (m_typeInfo.BuiltInType == BuiltInType.ExtensionObject)
-                {
+                if (m_typeInfo.BuiltInType == BuiltInType.ExtensionObject) {
                     m_result.DataTypeId = StructureTypeBTN.SelectedNode;
                 }
 
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

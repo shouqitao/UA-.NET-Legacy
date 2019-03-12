@@ -35,65 +35,53 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
-
 using Opc.Ua.Client;
 using Opc.Ua.Client.Controls;
 using Opc.Ua.Sample.Controls;
 using Opc.Ua.Configuration;
 
-namespace Opc.Ua.Sample
-{
-    public partial class SampleClientForm : Opc.Ua.Sample.Controls.ClientForm
-    {
-        public SampleClientForm()
-        {
+namespace Opc.Ua.Sample {
+    public partial class SampleClientForm : Opc.Ua.Sample.Controls.ClientForm {
+        public SampleClientForm() {
             InitializeComponent();
         }
 
         public SampleClientForm(
-            ApplicationInstance application, 
-            Opc.Ua.Sample.Controls.ClientForm masterForm, 
+            ApplicationInstance application,
+            Opc.Ua.Sample.Controls.ClientForm masterForm,
             ApplicationConfiguration configuration)
-        :
-            base(configuration.CreateMessageContext(), application, masterForm, configuration)
-        {
+            :
+            base(configuration.CreateMessageContext(), application, masterForm, configuration) {
             InitializeComponent();
-            
-            base.BrowseCTRL.MethodCalled += new Opc.Ua.Sample.Controls.MethodCalledEventHandler(BrowseCTRL_MethodCalled);
 
-            if (!configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
-            {
-                configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
+            base.BrowseCTRL.MethodCalled +=
+                new Opc.Ua.Sample.Controls.MethodCalledEventHandler(BrowseCTRL_MethodCalled);
+
+            if (!configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates) {
+                configuration.CertificateValidator.CertificateValidation +=
+                    new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
         }
 
-        void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
-            if (InvokeRequired)
-            {
+        void CertificateValidator_CertificateValidation(CertificateValidator validator,
+            CertificateValidationEventArgs e) {
+            if (InvokeRequired) {
                 Invoke(new CertificateValidationEventHandler(CertificateValidator_CertificateValidation), validator, e);
                 return;
             }
 
-            try
-            {
+            try {
                 GuiUtils.HandleCertificateValidationError(this, validator, e);
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
 
-        void BrowseCTRL_MethodCalled(object sender, Opc.Ua.Sample.Controls.MethodCalledEventArgs e)
-        {            
-            try
-            {
+        void BrowseCTRL_MethodCalled(object sender, Opc.Ua.Sample.Controls.MethodCalledEventArgs e) {
+            try {
                 // TBD
-            }
-            catch (Exception exception)
-            {
-				GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
+            } catch (Exception exception) {
+                GuiUtils.HandleException(this.Text, MethodBase.GetCurrentMethod(), exception);
             }
         }
     }

@@ -25,85 +25,73 @@ using System.Threading;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Opc.Ua.Bindings
-{
+namespace Opc.Ua.Bindings {
     /// <summary>
     /// Manages the connections for a UA TCP server.
     /// </summary>
-    public partial class UaTcpChannelListener : IDisposable, ITransportListener
-    {
+    public partial class UaTcpChannelListener : IDisposable, ITransportListener {
         #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UaTcpChannelListener"/> class.
         /// </summary>
-        public UaTcpChannelListener()
-        {
-        }
+        public UaTcpChannelListener() { }
+
         #endregion
 
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "m_simulator")]
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing) 
-            {
-                lock (m_lock)
-                {
-                    if (m_listeningSocket != null)
-                    {
-                        try
-                        {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed",
+            MessageId = "m_simulator")]
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                lock (m_lock) {
+                    if (m_listeningSocket != null) {
+                        try {
                             m_listeningSocket.Close();
-                        }
-                        catch
-                        {
+                        } catch {
                             // ignore errors.
                         }
-                        
+
                         m_listeningSocket = null;
                     }
 
-                    if (m_listeningSocketIPv6 != null)
-                    {
-                        try
-                        {
+                    if (m_listeningSocketIPv6 != null) {
+                        try {
                             m_listeningSocketIPv6.Close();
-                        }
-                        catch
-                        {
+                        } catch {
                             // ignore errors.
                         }
-                        
+
                         m_listeningSocketIPv6 = null;
                     }
-                    
-                    if (m_simulator != null)
-                    {
+
+                    if (m_simulator != null) {
                         Utils.SilentDispose(m_simulator);
-                        m_simulator = null; 
+                        m_simulator = null;
                     }
 
-                    foreach (TcpServerChannel channel in m_channels.Values)
-                    {
+                    foreach (TcpServerChannel channel in m_channels.Values) {
                         Utils.SilentDispose(channel);
                     }
                 }
             }
         }
+
         #endregion
-        
+
         #region ITransportListener Members
+
         /// <summary>
         /// Opens the listener and starts accepting connection.
         /// </summary>
@@ -112,8 +100,7 @@ namespace Opc.Ua.Bindings
         /// <param name="callback">The callback to use when requests arrive via the channel.</param>
         /// <exception cref="ArgumentNullException">Thrown if any parameter is null.</exception>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Open(Uri baseAddress, TransportListenerSettings settings, ITransportListenerCallback callback)
-        {
+        public void Open(Uri baseAddress, TransportListenerSettings settings, ITransportListenerCallback callback) {
             // assign a unique guid to the listener.
             m_listenerId = Guid.NewGuid().ToString();
 
@@ -145,7 +132,7 @@ namespace Opc.Ua.Bindings
             m_serverCertificate = settings.ServerCertificate;
             m_serverCertificateChain = settings.ServerCertificateChain;
 
-            m_bufferManager = new BufferManager("Server", (int)Int32.MaxValue, m_quotas.MaxBufferSize);
+            m_bufferManager = new BufferManager("Server", (int) Int32.MaxValue, m_quotas.MaxBufferSize);
             m_channels = new Dictionary<uint, TcpServerChannel>();
 
             // save the callback to the server.
@@ -159,94 +146,87 @@ namespace Opc.Ua.Bindings
         /// Closes the listener and stops accepting connection.
         /// </summary>
         /// <exception cref="ServiceResultException">Thrown if any communication error occurs.</exception>
-        public void Close()
-        {
+        public void Close() {
             Stop();
         }
+
         #endregion
 
         #region Public Methods
+
         /// <summary>
         /// Gets the URL for the listener's endpoint.
         /// </summary>
         /// <value>The URL for the listener's endpoint.</value>
-        public Uri EndpointUrl
-        {
+        public Uri EndpointUrl {
             get { return m_uri; }
         }
 
         /// <summary>
         /// Starts listening at the specified port.
         /// </summary>
-        public void Start()
-        {
-            lock (m_lock)
-            {
+        public void Start() {
+            lock (m_lock) {
                 // ensure a valid port.
                 int port = m_uri.Port;
 
-                if (port <= 0 || port > UInt16.MaxValue)
-                {
+                if (port <= 0 || port > UInt16.MaxValue) {
                     port = Utils.UaTcpDefaultPort;
                 }
 
                 // create IPv6 socket.
-                IPEndPoint endpoint = new IPEndPoint(IPAddress.IPv6Any, port);    
+                IPEndPoint endpoint = new IPEndPoint(IPAddress.IPv6Any, port);
 
                 Socket ipv6Socket = null;
-                
-                try                    
-                {   
+
+                try {
                     ipv6Socket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                }
-                catch
-                {
+                } catch {
                     ipv6Socket = null; // IPv6 not supported.
                 }
 
                 // no IPv6 support - open IPv4 socket and finish.
-                if (ipv6Socket == null)
-                {
+                if (ipv6Socket == null) {
                     endpoint = new IPEndPoint(IPAddress.Any, port);
-    	
-                    m_listeningSocket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);             
+
+                    m_listeningSocket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                     m_listeningSocket.Bind(endpoint);
                     m_listeningSocket.Listen(Int32.MaxValue);
-                    
+
                     m_listeningSocket.BeginAccept(OnAccept, null);
 
                     return;
                 }
-                            
+
                 // If operating system is Vista or later, start socket compatible both IPv4 and IPv6. Running this code in XP will throw an exception.
-                if (System.Environment.OSVersion.Version.Major > 5)
-                {
+                if (System.Environment.OSVersion.Version.Major > 5) {
                     m_listeningSocket = ipv6Socket;
 
-                    m_listeningSocket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IPv6, (System.Net.Sockets.SocketOptionName)27, 0);
+                    m_listeningSocket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IPv6,
+                        (System.Net.Sockets.SocketOptionName) 27, 0);
                     m_listeningSocket.Bind(endpoint);
                     m_listeningSocket.Listen(Int32.MaxValue);
-                    
+
                     m_listeningSocket.BeginAccept(OnAccept, null);
 
                     return;
-                } 
- 
+                }
+
                 // save IPv6 socket.
                 m_listeningSocketIPv6 = ipv6Socket;
-       
+
                 m_listeningSocketIPv6.Bind(endpoint);
                 m_listeningSocketIPv6.Listen(Int32.MaxValue);
-                    
+
                 m_listeningSocketIPv6.BeginAccept(OnAcceptIPv6, null);
 
                 // create seperate IPv4 socket.
                 endpoint = new IPEndPoint(IPAddress.Any, port);
-	
-                m_listeningSocket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);             
+
+                m_listeningSocket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 m_listeningSocket.Bind(endpoint);
                 m_listeningSocket.Listen(Int32.MaxValue);
-                
+
                 m_listeningSocket.BeginAccept(OnAccept, null);
             }
         }
@@ -254,18 +234,14 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Stops listening.
         /// </summary>
-        public void Stop()
-        {
-            lock (m_lock)
-            {
-                if (m_listeningSocket != null)
-                {
+        public void Stop() {
+            lock (m_lock) {
+                if (m_listeningSocket != null) {
                     m_listeningSocket.Close();
                     m_listeningSocket = null;
                 }
 
-                if (m_listeningSocketIPv6 != null)
-                {
+                if (m_listeningSocketIPv6 != null) {
                     m_listeningSocketIPv6.Close();
                     m_listeningSocketIPv6 = null;
                 }
@@ -276,24 +252,22 @@ namespace Opc.Ua.Bindings
         /// Binds a new socket to an existing channel.
         /// </summary>
         internal bool ReconnectToExistingChannel(
-            TcpMessageSocket         socket, 
-            uint                     requestId,
-            uint                     sequenceNumber,
-            uint                     channelId,
-            X509Certificate2         clientCertificate, 
-            TcpChannelToken          token,
-            OpenSecureChannelRequest request)
-        {            
+            TcpMessageSocket socket,
+            uint requestId,
+            uint sequenceNumber,
+            uint channelId,
+            X509Certificate2 clientCertificate,
+            TcpChannelToken token,
+            OpenSecureChannelRequest request) {
             TcpServerChannel channel = null;
 
-            lock (m_lock)
-            {
-                if (!m_channels.TryGetValue(channelId, out channel))
-                {
-                    throw ServiceResultException.Create(StatusCodes.BadTcpSecureChannelUnknown, "Could not find secure channel referenced in the OpenSecureChannel request.");
+            lock (m_lock) {
+                if (!m_channels.TryGetValue(channelId, out channel)) {
+                    throw ServiceResultException.Create(StatusCodes.BadTcpSecureChannelUnknown,
+                        "Could not find secure channel referenced in the OpenSecureChannel request.");
                 }
             }
-                       
+
             channel.Reconnect(socket, requestId, sequenceNumber, clientCertificate, token, request);
             // Utils.Trace("Channel {0} reconnected", channelId);
             return true;
@@ -302,35 +276,31 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Called when a channel closes.
         /// </summary>
-        internal void ChannelClosed(uint channelId)
-        {
-            lock (m_lock)
-            {
+        internal void ChannelClosed(uint channelId) {
+            lock (m_lock) {
                 m_channels.Remove(channelId);
             }
 
             Utils.Trace("Channel {0} closed", channelId);
         }
+
         #endregion
-        
+
         #region Socket Event Handler
+
         /// <summary>
         /// Handles a new connection.
         /// </summary>
-        private void OnAccept(IAsyncResult result)
-        {
+        private void OnAccept(IAsyncResult result) {
             TcpServerChannel channel = null;
 
-            lock (m_lock)
-            {
+            lock (m_lock) {
                 // check if the socket has been closed.
-                if (m_listeningSocket == null)
-                {
+                if (m_listeningSocket == null) {
                     return;
                 }
 
-                try
-                {
+                try {
                     // accept the socket.
                     Socket socket = m_listeningSocket.EndAccept(result);
 
@@ -350,25 +320,19 @@ namespace Opc.Ua.Bindings
                     // save the channel for shutdown and reconnects.
                     m_channels.Add(m_lastChannelId, channel);
 
-                    if (m_callback != null)
-                    {
+                    if (m_callback != null) {
                         channel.SetRequestReceivedCallback(new TcpChannelRequestEventHandler(OnRequestReceived));
                     }
 
                     // Utils.Trace("Channel {0} created.", m_lastChannelId);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Utils.Trace(e, "Unexpected error accepting a new connection.");
                 }
 
                 // go back and wait for the next connection.
-                try
-                {
+                try {
                     m_listeningSocket.BeginAccept(OnAccept, null);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Utils.Trace(e, "Unexpected error listening for a new connection.");
                 }
             }
@@ -377,23 +341,19 @@ namespace Opc.Ua.Bindings
         /// <summary>
         /// Handles a new connection.
         /// </summary>
-        private void OnAcceptIPv6(IAsyncResult result)
-        {
+        private void OnAcceptIPv6(IAsyncResult result) {
             TcpServerChannel channel = null;
 
-            lock (m_lock)
-            {
+            lock (m_lock) {
                 // check if the socket has been closed.
-                if (m_listeningSocketIPv6 == null)
-                {
+                if (m_listeningSocketIPv6 == null) {
                     return;
                 }
 
-                try
-                {
+                try {
                     // accept the socket.
-                    Socket socket = m_listeningSocketIPv6.EndAccept(result);      
-                        
+                    Socket socket = m_listeningSocketIPv6.EndAccept(result);
+
                     // create the channel to manage incoming messages.
                     channel = new TcpServerChannel(
                         m_listenerId,
@@ -406,103 +366,85 @@ namespace Opc.Ua.Bindings
 
                     // start accepting messages on the channel.
                     channel.Attach(++m_lastChannelId, socket);
-                    
+
                     // save the channel for shutdown and reconnects.
                     m_channels.Add(m_lastChannelId, channel);
 
-                    if (m_callback != null)
-                    {
+                    if (m_callback != null) {
                         channel.SetRequestReceivedCallback(new TcpChannelRequestEventHandler(OnRequestReceived));
                     }
 
                     // Utils.Trace("Channel {0} created.", m_lastChannelId);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Utils.Trace(e, "Unexpected error accepting a new connection.");
                 }
 
                 // go back and wait for the next connection.
-                try
-                {
+                try {
                     m_listeningSocketIPv6.BeginAccept(OnAcceptIPv6, null);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Utils.Trace(e, "Unexpected error listening for a new IPv6 connection.");
                 }
-            }   
+            }
         }
+
         #endregion
-                
+
         #region Private Methods
+
         /// <summary>
         /// Handles requests arriving from a channel.
         /// </summary>
-        private void OnRequestReceived(TcpServerChannel channel, uint requestId, IServiceRequest request)
-        {
-            if (m_callback != null)
-            {
-                try
-                {
+        private void OnRequestReceived(TcpServerChannel channel, uint requestId, IServiceRequest request) {
+            if (m_callback != null) {
+                try {
                     IAsyncResult result = m_callback.BeginProcessRequest(
                         channel.GlobalChannelId,
                         channel.EndpointDescription,
                         request,
                         OnProcessRequestComplete,
-                        new object[] { channel, requestId, request });
-                }
-                catch (Exception e)
-                {
+                        new object[] {channel, requestId, request});
+                } catch (Exception e) {
                     Utils.Trace(e, "TCPLISTENER - Unexpected error processing request.");
                 }
-            }            
+            }
         }
 
-        private void OnProcessRequestComplete(IAsyncResult result)
-        {
-            if (m_callback != null)
-            {
-                try
-                {
-                    object[] args = (object[])result.AsyncState;
+        private void OnProcessRequestComplete(IAsyncResult result) {
+            if (m_callback != null) {
+                try {
+                    object[] args = (object[]) result.AsyncState;
 
-                    TcpServerChannel channel = (TcpServerChannel)args[0];
+                    TcpServerChannel channel = (TcpServerChannel) args[0];
                     IServiceResponse response = m_callback.EndProcessRequest(result);
-                    channel.SendResponse((uint)args[1], response);
-                }
-                catch (Exception e)
-                {
+                    channel.SendResponse((uint) args[1], response);
+                } catch (Exception e) {
                     Utils.Trace(e, "TCPLISTENER - Unexpected error sending result.");
                 }
-            }            
+            }
         }
 
         /// <summary>
         /// Sets the URI for the listener.
         /// </summary>
-        private void SetUri(Uri baseAddress, string relativeAddress)
-        {
+        private void SetUri(Uri baseAddress, string relativeAddress) {
             if (baseAddress == null) throw new ArgumentNullException("baseAddress");
 
             // validate uri.
-            if (!baseAddress.IsAbsoluteUri)
-            {
+            if (!baseAddress.IsAbsoluteUri) {
                 throw new ArgumentException(Utils.Format("Base address must be an absolute URI."), "baseAddress");
             }
 
-            if (String.Compare(baseAddress.Scheme, Utils.UriSchemeOpcTcp, StringComparison.OrdinalIgnoreCase) != 0)
-            {
-                throw new ArgumentException(Utils.Format("Invalid URI scheme: {0}.", baseAddress.Scheme), "baseAddress");
+            if (String.Compare(baseAddress.Scheme, Utils.UriSchemeOpcTcp, StringComparison.OrdinalIgnoreCase) != 0) {
+                throw new ArgumentException(Utils.Format("Invalid URI scheme: {0}.", baseAddress.Scheme),
+                    "baseAddress");
             }
 
             m_uri = baseAddress;
 
             // append the relative path to the base address.
-            if (!String.IsNullOrEmpty(relativeAddress))
-            {
-                if (!baseAddress.AbsolutePath.EndsWith("/", StringComparison.Ordinal))
-                {
+            if (!String.IsNullOrEmpty(relativeAddress)) {
+                if (!baseAddress.AbsolutePath.EndsWith("/", StringComparison.Ordinal)) {
                     UriBuilder uriBuilder = new UriBuilder(baseAddress);
                     uriBuilder.Path = uriBuilder.Path + "/";
                     baseAddress = uriBuilder.Uri;
@@ -511,9 +453,11 @@ namespace Opc.Ua.Bindings
                 m_uri = new Uri(baseAddress, relativeAddress);
             }
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
 
         private string m_listenerId;
@@ -530,10 +474,11 @@ namespace Opc.Ua.Bindings
 
         private Socket m_listeningSocket;
         private Socket m_listeningSocketIPv6;
-        private Dictionary<uint,TcpServerChannel> m_channels;
+        private Dictionary<uint, TcpServerChannel> m_channels;
 
         private Timer m_simulator;
         private ITransportListenerCallback m_callback;
+
         #endregion
-    }    
+    }
 }

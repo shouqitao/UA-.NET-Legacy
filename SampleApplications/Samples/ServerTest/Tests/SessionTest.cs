@@ -31,17 +31,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-
 using Opc.Ua.Client;
 
-namespace Opc.Ua.ServerTest
-{
+namespace Opc.Ua.ServerTest {
     /// <summary>
     /// Browses all of the nodes in the hierarchies.
     /// </summary>
-    internal class SessionTest : TestBase
-    {
+    internal class SessionTest : TestBase {
         #region Constructors
+
         /// <summary>
         /// Creates the test object.
         /// </summary>
@@ -51,52 +49,49 @@ namespace Opc.Ua.ServerTest
             ReportMessageEventHandler reportMessage,
             ReportProgressEventHandler reportProgress,
             TestBase template)
-        : 
-            base("Activate", session, configuration, reportMessage, reportProgress, template)
-        {
+            :
+            base("Activate", session, configuration, reportMessage, reportProgress, template) {
             m_errorEvent = new ManualResetEvent(false);
-            m_messages = new Dictionary<uint,List<uint>>();
+            m_messages = new Dictionary<uint, List<uint>>();
         }
+
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Runs the test for all of the browse roots.
         /// </summary>
-        public override bool Run(ServerTestCase testcase, int iteration)
-        {
+        public override bool Run(ServerTestCase testcase, int iteration) {
             Iteration = iteration;
 
             // do secondary test.
-            switch (testcase.Name)
-            {
-                case "KeepAlive":
-                {
+            switch (testcase.Name) {
+                case "KeepAlive": {
                     return DoKeepAliveTest();
                 }
 
                 default:
-                case "Reconnect":
-                {
-                    return DoReconnectTest();    
+                case "Reconnect": {
+                    return DoReconnectTest();
                 }
             }
-        }        
+        }
+
         #endregion
-        
+
         #region Test Methods
+
         /// <summary>
         /// Tests the session reconnect.
         /// </summary>
-        private bool DoReconnectTest()
-        {
-            double increment = MaxProgress/6;
-            double position  = 0;
+        private bool DoReconnectTest() {
+            double increment = MaxProgress / 6;
+            double position = 0;
 
             bool success = true;
-            
-            lock (m_messages)
-            {
+
+            lock (m_messages) {
                 m_messages.Clear();
             }
 
@@ -105,13 +100,11 @@ namespace Opc.Ua.ServerTest
             KeepAliveEventHandler keepAliveHandler = new KeepAliveEventHandler(Session_Reconnect);
             NotificationEventHandler notificationHandler = new NotificationEventHandler(Session_Notification);
 
-            try
-            {
+            try {
                 Session.KeepAlive += keepAliveHandler;
                 Session.Notification += notificationHandler;
 
-                for (int publishingInterval = 1000; publishingInterval <= 10000; publishingInterval += 1000)
-                {
+                for (int publishingInterval = 1000; publishingInterval <= 10000; publishingInterval += 1000) {
                     Subscription subscription = new Subscription();
 
                     subscription.MaxMessageCount = 100;
@@ -140,14 +133,12 @@ namespace Opc.Ua.ServerTest
 
                 int testDuration = 3000;
 
-                for (int ii = 0; ii < 6; ii++)
-                {
+                for (int ii = 0; ii < 6; ii++) {
                     Session.Reconnect();
 
                     Log("Session reconnected. KeepAlives={0}", m_keepAliveCount);
 
-                    if (m_errorEvent.WaitOne(testDuration, false))
-                    {
+                    if (m_errorEvent.WaitOne(testDuration, false)) {
                         Log("Unexpected error waiting for session keep alives. {0}", m_error.ToLongString());
                         return false;
                     }
@@ -155,32 +146,26 @@ namespace Opc.Ua.ServerTest
                     position += increment;
                     ReportProgress(position);
                 }
-            }
-            finally
-            {
+            } finally {
                 Session.RemoveSubscriptions(subscriptions);
                 Session.KeepAliveInterval = currentKeepAlive;
                 Session.KeepAlive -= keepAliveHandler;
                 Session.Notification -= notificationHandler;
-            } 
-                
+            }
+
             ReportProgress(MaxProgress);
 
-            lock (m_messages)
-            {
-                foreach (KeyValuePair<uint,List<uint>> entry in m_messages)
-                {
+            lock (m_messages) {
+                foreach (KeyValuePair<uint, List<uint>> entry in m_messages) {
                     entry.Value.Sort();
 
-                    for (int ii = 0; ii < entry.Value.Count-1; ii++)
-                    {
-                        if (entry.Value[ii+1] - entry.Value[ii] > 1)
-                        {
-                            Log("Missing message. Subscription={0}, SequenceNumber={1}-{2}", entry.Key, entry.Value[ii]+1, entry.Value[ii+1]-1);
+                    for (int ii = 0; ii < entry.Value.Count - 1; ii++) {
+                        if (entry.Value[ii + 1] - entry.Value[ii] > 1) {
+                            Log("Missing message. Subscription={0}, SequenceNumber={1}-{2}", entry.Key,
+                                entry.Value[ii] + 1, entry.Value[ii + 1] - 1);
                         }
 
-                        if (entry.Value[ii+1] == entry.Value[ii])
-                        {
+                        if (entry.Value[ii + 1] == entry.Value[ii]) {
                             // Log("Duplicate message. Subscription={0}, SequenceNumber={1}", entry.Key, entry.Value[ii]);
                         }
                     }
@@ -190,14 +175,11 @@ namespace Opc.Ua.ServerTest
             return success;
         }
 
-        void Session_Notification(Session session, NotificationEventArgs e)
-        {            
-            lock (m_messages)
-            {
+        void Session_Notification(Session session, NotificationEventArgs e) {
+            lock (m_messages) {
                 List<uint> messages = null;
 
-                if (!m_messages.TryGetValue(e.Subscription.Id, out messages))
-                {
+                if (!m_messages.TryGetValue(e.Subscription.Id, out messages)) {
                     m_messages[e.Subscription.Id] = messages = new List<uint>();
                 }
 
@@ -208,14 +190,11 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Reports keep alive responses from the server.
         /// </summary>
-        void Session_Reconnect(Session session, KeepAliveEventArgs e)
-        {
+        void Session_Reconnect(Session session, KeepAliveEventArgs e) {
             m_keepAliveCount++;
 
-            if (ServiceResult.IsBad(e.Status))
-            {
-                if (m_keepAliveCount > 2)
-                {
+            if (ServiceResult.IsBad(e.Status)) {
+                if (m_keepAliveCount > 2) {
                     m_error = e.Status;
                     m_errorEvent.Set();
                 }
@@ -225,26 +204,23 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Tests the session keep alive when there are no errors. 
         /// </summary>
-        private bool DoKeepAliveTest()
-        {
+        private bool DoKeepAliveTest() {
             bool success = true;
-            
-            double increment = MaxProgress/3;
-            double position  = 0;
+
+            double increment = MaxProgress / 3;
+            double position = 0;
 
             m_keepAliveCount = 0;
 
             int currentKeepAlive = Session.KeepAliveInterval;
             List<Subscription> subscriptions = new List<Subscription>();
-            KeepAliveEventHandler handler = new KeepAliveEventHandler(Session_KeepAlive); 
+            KeepAliveEventHandler handler = new KeepAliveEventHandler(Session_KeepAlive);
 
-            try
-            {
+            try {
                 Session.KeepAlive += handler;
 
                 // add several subscriptions with long publish intervals.
-                for (int publishingInterval = 10000; publishingInterval <= 20000; publishingInterval += 1000)
-                {
+                for (int publishingInterval = 10000; publishingInterval <= 20000; publishingInterval += 1000) {
                     Subscription subscription = new Subscription();
 
                     subscription.MaxMessageCount = 100;
@@ -266,7 +242,7 @@ namespace Opc.Ua.ServerTest
                     subscription.Create();
                     subscriptions.Add(subscription);
                 }
-                
+
                 // get a value to read.
                 ReadValueId nodeToRead = new ReadValueId();
                 nodeToRead.NodeId = VariableIds.Server_ServerStatus;
@@ -277,12 +253,11 @@ namespace Opc.Ua.ServerTest
                 int testDuration = 5000;
 
                 // make sure the keep alives come at the expected rate.
-                for (int keepAliveInterval = 500; keepAliveInterval < 2000; keepAliveInterval += 500)
-                {
+                for (int keepAliveInterval = 500; keepAliveInterval < 2000; keepAliveInterval += 500) {
                     m_keepAliveCount = 0;
 
                     DateTime start = DateTime.UtcNow;
-                    
+
                     DataValueCollection results = null;
                     DiagnosticInfoCollection diagnosticsInfos = null;
 
@@ -297,17 +272,18 @@ namespace Opc.Ua.ServerTest
                     ClientBase.ValidateResponse(results, nodesToRead);
                     ClientBase.ValidateDiagnosticInfos(diagnosticsInfos, nodesToRead);
 
-                    ServerStatusDataType status = ExtensionObject.ToEncodeable(results[0].Value as ExtensionObject) as ServerStatusDataType;
+                    ServerStatusDataType status =
+                        ExtensionObject.ToEncodeable(results[0].Value as ExtensionObject) as ServerStatusDataType;
 
-                    if (status == null)
-                    {
-                        Log("Server did not return a valid ServerStatusDataType structure. Value={0}, Status={1}", results[0].WrappedValue, results[0].StatusCode);
+                    if (status == null) {
+                        Log("Server did not return a valid ServerStatusDataType structure. Value={0}, Status={1}",
+                            results[0].WrappedValue, results[0].StatusCode);
                         return false;
                     }
 
-                    if ((DateTime.UtcNow - start).TotalSeconds > 1)
-                    {
-                        Log("Unexpected delay reading the ServerStatus structure. Delay={0}s", (DateTime.UtcNow - start).TotalSeconds);
+                    if ((DateTime.UtcNow - start).TotalSeconds > 1) {
+                        Log("Unexpected delay reading the ServerStatus structure. Delay={0}s",
+                            (DateTime.UtcNow - start).TotalSeconds);
                         return false;
                     }
 
@@ -315,15 +291,14 @@ namespace Opc.Ua.ServerTest
 
                     Session.KeepAliveInterval = keepAliveInterval;
 
-                    if (m_errorEvent.WaitOne(testDuration, false))
-                    {
+                    if (m_errorEvent.WaitOne(testDuration, false)) {
                         Log("Unexpected error waiting for session keep alives. {0}", m_error.ToLongString());
                         return false;
                     }
 
-                    if (m_keepAliveCount < testDuration / keepAliveInterval)
-                    {
-                        Log("Missing session keep alives. Expected={0}, Actual={1}", testDuration / keepAliveInterval, m_keepAliveCount);
+                    if (m_keepAliveCount < testDuration / keepAliveInterval) {
+                        Log("Missing session keep alives. Expected={0}, Actual={1}", testDuration / keepAliveInterval,
+                            m_keepAliveCount);
                         return false;
                     }
 
@@ -334,9 +309,7 @@ namespace Opc.Ua.ServerTest
                 }
 
                 ReportProgress(MaxProgress);
-            }
-            finally
-            {
+            } finally {
                 Session.RemoveSubscriptions(subscriptions);
                 Session.KeepAliveInterval = currentKeepAlive;
                 Session.KeepAlive -= handler;
@@ -348,24 +321,25 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         /// Reports keep alive responses from the server.
         /// </summary>
-        void Session_KeepAlive(Session session, KeepAliveEventArgs e)
-        {
-            if (ServiceResult.IsBad(e.Status))
-            {
+        void Session_KeepAlive(Session session, KeepAliveEventArgs e) {
+            if (ServiceResult.IsBad(e.Status)) {
                 m_error = e.Status;
                 m_errorEvent.Set();
                 return;
             }
-            
+
             m_keepAliveCount++;
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private ManualResetEvent m_errorEvent;
         private int m_keepAliveCount;
-        private Dictionary<uint,List<uint>> m_messages;
+        private Dictionary<uint, List<uint>> m_messages;
         private ServiceResult m_error;
+
         #endregion
     }
 }

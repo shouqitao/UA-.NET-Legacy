@@ -18,14 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     /// <summary>
     /// The possible states for a limit alarm.
     /// </summary>
     [Flags]
-    public enum LimitAlarmStates
-    {
+    public enum LimitAlarmStates {
         /// <summary>
         /// The alarm ia inactive.
         /// </summary>
@@ -49,6 +47,6 @@ namespace Opc.Ua
         /// <summary>
         /// The alarm is in the LowLow state.
         /// </summary>
-        LowLow  =0x8
+        LowLow = 0x8
     }
 }

@@ -22,44 +22,40 @@ using System.IO;
 using System.Reflection;
 using Opc.Ua;
 
-namespace Opc.Ua
-{
-    public partial class ConditionState
-    {
+namespace Opc.Ua {
+    public partial class ConditionState {
         #region Initialization
+
         /// <summary>
         /// Called after a node is created.
         /// </summary>
-        protected override void OnAfterCreate(ISystemContext context, NodeState node)
-        {
+        protected override void OnAfterCreate(ISystemContext context, NodeState node) {
             base.OnAfterCreate(context, node);
 
-            if (this.Enable != null)
-            {
+            if (this.Enable != null) {
                 this.Enable.OnCallMethod = OnEnableCalled;
             }
 
-            if (this.Disable != null)
-            {
+            if (this.Disable != null) {
                 this.Disable.OnCallMethod = OnDisableCalled;
             }
 
-            if (this.AddComment != null)
-            {
+            if (this.AddComment != null) {
                 this.AddComment.OnCall = OnAddCommentCalled;
             }
         }
+
         #endregion
-        
+
         #region Public Methods
+
         /// <summary>
         /// Gets or sets a value indicating whether the condition will automatically report an event when a method call completes.
         /// </summary>
         /// <value>
         /// 	<c>true</c> if the condition automatically reports ecents; otherwise, <c>false</c>.
         /// </value>
-        public bool AutoReportStateChanges
-        {
+        public bool AutoReportStateChanges {
             get { return m_autoReportStateChanges; }
             set { m_autoReportStateChanges = value; }
         }
@@ -70,21 +66,16 @@ namespace Opc.Ua
         /// <param name="context">The context.</param>
         /// <param name="displayName">The display name for the effective state.</param>
         /// <param name="transitionTime">The transition time.</param>
-        public virtual void SetEffectiveSubState(ISystemContext context, LocalizedText displayName, DateTime transitionTime)
-        {
-            if (this.EnabledState.EffectiveDisplayName != null)
-            {
+        public virtual void SetEffectiveSubState(ISystemContext context, LocalizedText displayName,
+            DateTime transitionTime) {
+            if (this.EnabledState.EffectiveDisplayName != null) {
                 this.EnabledState.EffectiveDisplayName.Value = displayName;
             }
 
-            if (this.EnabledState.EffectiveTransitionTime != null)
-            {
-                if (transitionTime != DateTime.MinValue)
-                {
+            if (this.EnabledState.EffectiveTransitionTime != null) {
+                if (transitionTime != DateTime.MinValue) {
                     this.EnabledState.EffectiveTransitionTime.Value = transitionTime;
-                }
-                else
-                {
+                } else {
                     this.EnabledState.EffectiveTransitionTime.Value = DateTime.UtcNow;
                 }
             }
@@ -96,14 +87,10 @@ namespace Opc.Ua
         /// <param name="context">The system context.</param>
         /// <param name="enabled">If true the condition is put into the Enabled state.</param>
         /// <remarks>This method ensures all related variables are set correctly.</remarks>
-        public virtual void SetEnableState(ISystemContext context, bool enabled)
-        {
-            if (enabled)
-            {
+        public virtual void SetEnableState(ISystemContext context, bool enabled) {
+            if (enabled) {
                 UpdateStateAfterEnable(context);
-            }
-            else
-            {
+            } else {
                 UpdateStateAfterDisable(context);
             }
         }
@@ -114,13 +101,11 @@ namespace Opc.Ua
         /// <param name="context">The system context.</param>
         /// <param name="severity">The event severity.</param>
         /// <remarks>This method ensures all related variables are set correctly.</remarks>
-        public virtual void SetSeverity(ISystemContext context, EventSeverity severity)
-        {
+        public virtual void SetSeverity(ISystemContext context, EventSeverity severity) {
             this.LastSeverity.Value = this.Severity.Value;
-            this.Severity.Value = (ushort)severity;
+            this.Severity.Value = (ushort) severity;
 
-            if (this.LastSeverity.SourceTimestamp != null)
-            {
+            if (this.LastSeverity.SourceTimestamp != null) {
                 this.LastSeverity.SourceTimestamp.Value = DateTime.UtcNow;
             }
         }
@@ -134,22 +119,21 @@ namespace Opc.Ua
         public virtual void SetComment(
             ISystemContext context,
             LocalizedText comment,
-            string clientUserId)
-        {
-            if (this.Comment != null)
-            {
+            string clientUserId) {
+            if (this.Comment != null) {
                 this.Comment.Value = comment;
                 this.Comment.SourceTimestamp.Value = DateTime.UtcNow;
 
-                if (this.ClientUserId != null)
-                {
+                if (this.ClientUserId != null) {
                     this.ClientUserId.Value = clientUserId;
                 }
             }
         }
+
         #endregion
 
         #region Event Handlers
+
         /// <summary>
         /// Raised when the condition is enabled or disabled.
         /// </summary>
@@ -165,16 +149,17 @@ namespace Opc.Ua
         /// Return code can be used to cancel the operation.
         /// </remarks>
         public ConditionAddCommentEventHandler OnAddComment;
+
         #endregion
 
         #region Protected Methods
+
         /// <summary>
         /// Handles a condition refresh.
         /// </summary>
-        public override void ConditionRefresh(ISystemContext context, List<IFilterTarget> events, bool includeChildren)
-        {
-            if (this.Retain.Value)
-            {
+        public override void ConditionRefresh(ISystemContext context, List<IFilterTarget> events,
+            bool includeChildren) {
+            if (this.Retain.Value) {
                 events.Add(this);
             }
         }
@@ -184,24 +169,20 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="ignoreDisabledState">if set to <c>true</c> the event is reported event if the condition is in the disabled state.</param>
-        protected void ReportStateChange(ISystemContext context, bool ignoreDisabledState)
-        {
+        protected void ReportStateChange(ISystemContext context, bool ignoreDisabledState) {
             // check the disabled state.
-            if (!ignoreDisabledState && !this.EnabledState.Id.Value)
-            {
+            if (!ignoreDisabledState && !this.EnabledState.Id.Value) {
                 return;
             }
-                   
-            if (AutoReportStateChanges)
-            {
+
+            if (AutoReportStateChanges) {
                 // create a new event instance.
                 this.EventId.Value = Guid.NewGuid().ToByteArray();
                 this.Time.Value = DateTime.UtcNow;
                 this.ReceiveTime.Value = this.Time.Value;
 
                 // report a state change event.
-                if (this.AreEventsMonitored)
-                {
+                if (this.AreEventsMonitored) {
                     InstanceStateSnapshot snapshot = new InstanceStateSnapshot();
                     snapshot.Initialize(context, this);
                     ReportEvent(context, snapshot);
@@ -213,9 +194,8 @@ namespace Opc.Ua
         /// Updates the effective state for the condition.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected virtual void UpdateEffectiveState(ISystemContext context)
-        {
-            SetEffectiveSubState(context, this.EnabledState.Value, DateTime.MinValue); 
+        protected virtual void UpdateEffectiveState(ISystemContext context) {
+            SetEffectiveSubState(context, this.EnabledState.Value, DateTime.MinValue);
         }
 
         /// <summary>
@@ -232,20 +212,16 @@ namespace Opc.Ua
             MethodState method,
             NodeId objectId,
             byte[] eventId,
-            LocalizedText comment)
-        {
+            LocalizedText comment) {
             ServiceResult error = ProcessBeforeAddComment(context, eventId, comment);
 
-            if (ServiceResult.IsGood(error))
-            {
+            if (ServiceResult.IsGood(error)) {
                 SetComment(context, comment, GetCurrentUserId(context));
             }
 
-            if (this.AreEventsMonitored)
-            {
+            if (this.AreEventsMonitored) {
                 // report a state change event.
-                if (ServiceResult.IsGood(error))
-                {
+                if (ServiceResult.IsGood(error)) {
                     ReportStateChange(context, false);
                 }
 
@@ -271,7 +247,7 @@ namespace Opc.Ua
                 e.MethodId.Value = method.NodeId;
 
                 e.InputArguments = new PropertyState<object[]>(e);
-                e.InputArguments.Value = new object[] { eventId, comment };
+                e.InputArguments.Value = new object[] {eventId, comment};
 
                 ReportEvent(context, e);
             }
@@ -284,12 +260,10 @@ namespace Opc.Ua
         /// </summary>
         /// <param name="context">The system context.</param>
         /// <returns>The display name for the current user.</returns>
-        protected string GetCurrentUserId(ISystemContext context)
-        {
+        protected string GetCurrentUserId(ISystemContext context) {
             IOperationContext operationContext = context as IOperationContext;
 
-            if (operationContext != null && operationContext.UserIdentity != null)
-            {
+            if (operationContext != null && operationContext.UserIdentity != null) {
                 return operationContext.UserIdentity.DisplayName;
             }
 
@@ -303,29 +277,23 @@ namespace Opc.Ua
         /// <param name="eventId">The identifier for the event which is the target for the comment.</param>
         /// <param name="comment">The comment.</param>
         protected virtual ServiceResult ProcessBeforeAddComment(
-            ISystemContext context, 
+            ISystemContext context,
             byte[] eventId,
-            LocalizedText comment)
-        {
-            if (eventId == null)
-            {
+            LocalizedText comment) {
+            if (eventId == null) {
                 return StatusCodes.BadEventIdUnknown;
             }
 
-            if (!this.EnabledState.Id.Value)
-            {
+            if (!this.EnabledState.Id.Value) {
                 return StatusCodes.BadConditionDisabled;
             }
 
-            if (OnAddComment != null)
-            {
-                try
-                {
+            if (OnAddComment != null) {
+                try {
                     return OnAddComment(context, this, eventId, comment);
-                }
-                catch (Exception e)
-                {
-                    return ServiceResult.Create(e, StatusCodes.BadUnexpectedError, "Unexpected error adding a comment to a Condition.");
+                } catch (Exception e) {
+                    return ServiceResult.Create(e, StatusCodes.BadUnexpectedError,
+                        "Unexpected error adding a comment to a Condition.");
                 }
             }
 
@@ -339,20 +307,16 @@ namespace Opc.Ua
             ISystemContext context,
             MethodState method,
             IList<object> inputArguments,
-            IList<object> outputArguments)
-        {
+            IList<object> outputArguments) {
             ServiceResult error = ProcessBeforeEnableDisable(context, true);
 
-            if (ServiceResult.IsGood(error))
-            {
+            if (ServiceResult.IsGood(error)) {
                 UpdateStateAfterEnable(context);
             }
 
-            if (this.AreEventsMonitored)
-            {
+            if (this.AreEventsMonitored) {
                 // report a state change event.
-                if (ServiceResult.IsGood(error))
-                {
+                if (ServiceResult.IsGood(error)) {
                     ReportStateChange(context, false);
                 }
 
@@ -390,22 +354,18 @@ namespace Opc.Ua
             ISystemContext context,
             MethodState method,
             IList<object> inputArguments,
-            IList<object> outputArguments)
-        {
+            IList<object> outputArguments) {
             // check that method can be called.
             ServiceResult error = ProcessBeforeEnableDisable(context, false);
 
-            if (ServiceResult.IsGood(error))
-            {
+            if (ServiceResult.IsGood(error)) {
                 UpdateStateAfterDisable(context);
             }
 
             // raise the audit event.
-            if (this.AreEventsMonitored)
-            {
+            if (this.AreEventsMonitored) {
                 // report a state change event.
-                if (ServiceResult.IsGood(error))
-                {
+                if (ServiceResult.IsGood(error)) {
                     ReportStateChange(context, true);
                 }
 
@@ -435,33 +395,27 @@ namespace Opc.Ua
 
             return error;
         }
-        
+
         /// <summary>
         /// Does any processing before a condition is enabled or disabled.
         /// </summary>
         /// <param name="context">The system context.</param>
         /// <param name="enabling">True is the condition is being enabled.</param>
-        protected virtual ServiceResult ProcessBeforeEnableDisable(ISystemContext context, bool enabling)
-        {
-            if (enabling && this.EnabledState.Id.Value)
-            {
+        protected virtual ServiceResult ProcessBeforeEnableDisable(ISystemContext context, bool enabling) {
+            if (enabling && this.EnabledState.Id.Value) {
                 return StatusCodes.BadConditionAlreadyEnabled;
             }
 
-            if (!enabling && !this.EnabledState.Id.Value)
-            {
+            if (!enabling && !this.EnabledState.Id.Value) {
                 return StatusCodes.BadConditionAlreadyDisabled;
             }
 
-            if (OnEnableDisable != null)
-            {
-                try
-                {
+            if (OnEnableDisable != null) {
+                try {
                     return OnEnableDisable(context, this, enabling);
-                }
-                catch (Exception e)
-                {
-                    return ServiceResult.Create(e, StatusCodes.BadUnexpectedError, "Unexpected error enabling or disabling a Condition.");
+                } catch (Exception e) {
+                    return ServiceResult.Create(e, StatusCodes.BadUnexpectedError,
+                        "Unexpected error enabling or disabling a Condition.");
                 }
             }
 
@@ -472,8 +426,7 @@ namespace Opc.Ua
         /// Updates the condition state after enabling.
         /// </summary>
         /// <param name="context">The system context.</param>
-        protected virtual void UpdateStateAfterEnable(ISystemContext context)
-        {
+        protected virtual void UpdateStateAfterEnable(ISystemContext context) {
             TranslationInfo state = new TranslationInfo(
                 "ConditionStateEnabled",
                 "en-US",
@@ -483,8 +436,7 @@ namespace Opc.Ua
             this.EnabledState.Value = new LocalizedText(state);
             this.EnabledState.Id.Value = true;
 
-            if (this.EnabledState.TransitionTime != null)
-            {
+            if (this.EnabledState.TransitionTime != null) {
                 this.EnabledState.TransitionTime.Value = DateTime.UtcNow;
             }
 
@@ -495,8 +447,7 @@ namespace Opc.Ua
         /// Updates the condition state after disabling.
         /// </summary>
         /// <param name="context">The system context.</param>
-        protected virtual void UpdateStateAfterDisable(ISystemContext context)
-        {
+        protected virtual void UpdateStateAfterDisable(ISystemContext context) {
             TranslationInfo state = new TranslationInfo(
                 "ConditionStateDisabled",
                 "en-US",
@@ -506,17 +457,19 @@ namespace Opc.Ua
             this.EnabledState.Value = new LocalizedText(state);
             this.EnabledState.Id.Value = false;
 
-            if (this.EnabledState.TransitionTime != null)
-            {
+            if (this.EnabledState.TransitionTime != null) {
                 this.EnabledState.TransitionTime.Value = DateTime.UtcNow;
             }
 
             UpdateEffectiveState(context);
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private bool m_autoReportStateChanges;
+
         #endregion
     }
 
@@ -527,7 +480,7 @@ namespace Opc.Ua
     /// <param name="condition">The condition that raised the event.</param>
     /// <param name="enabling">True if the condition is moving/has moved to the Enabled state.</param>
     public delegate ServiceResult ConditionEnableEventHandler(
-        ISystemContext context, 
+        ISystemContext context,
         ConditionState condition,
         bool enabling);
 

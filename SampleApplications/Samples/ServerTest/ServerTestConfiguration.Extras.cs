@@ -36,59 +36,53 @@ using System.Reflection;
 using System.IO;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.ServerTest
-{
-	/// <summary>
-	/// A class that holds the configuration for a UA service.
-	/// </summary>
-	public partial class ServerTestConfiguration
-	{        
-		#region Public Properties
+namespace Opc.Ua.ServerTest {
+    /// <summary>
+    /// A class that holds the configuration for a UA service.
+    /// </summary>
+    public partial class ServerTestConfiguration {
+        #region Public Properties
+
         /// <summary>
         /// The path used to load the configuration.
         /// </summary>
-        public string FilePath
-        {
+        public string FilePath {
             get { return m_filePath; }
         }
 
         /// <summary>
         /// Whether the test should be run continously.
         /// </summary>
-        public bool Continuous
-        {
+        public bool Continuous {
             get { return m_continuous; }
             set { m_continuous = value; }
         }
-		#endregion
 
-		#region Static Members
+        #endregion
+
+        #region Static Members
+
         /// <summary>
         ///  Loads the configuration from a file on disk.
         /// </summary>
-        public static ServerTestConfiguration Load(string filePath, ServerTestConfiguration masterConfiguration)
-        {
-		    XmlTextReader reader = new XmlTextReader(filePath);
+        public static ServerTestConfiguration Load(string filePath, ServerTestConfiguration masterConfiguration) {
+            XmlTextReader reader = new XmlTextReader(filePath);
 
-            try
-            {
+            try {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(ServerTestConfiguration));
                 ServerTestConfiguration configuration = serializer.ReadObject(reader) as ServerTestConfiguration;
                 configuration.m_filePath = filePath;
 
-                if (configuration.Iterations <= 0)
-                {
+                if (configuration.Iterations <= 0) {
                     configuration.Iterations = 1;
                 }
 
-                if (masterConfiguration != null)
-                {
+                if (masterConfiguration != null) {
                     ListOfServerTestCase replacements = new ListOfServerTestCase();
 
-                    for (int ii = 0; ii < masterConfiguration.TestCases.Count; ii++)
-                    {
+                    for (int ii = 0; ii < masterConfiguration.TestCases.Count; ii++) {
                         ServerTestCase template = masterConfiguration.TestCases[ii];
-                        
+
                         // create replacement that is disabled by default.
                         ServerTestCase replacement = new ServerTestCase();
 
@@ -100,12 +94,10 @@ namespace Opc.Ua.ServerTest
                         replacements.Add(replacement);
 
                         // load settings from saved test case.
-                        for (int jj = 0; jj < configuration.TestCases.Count; jj++)
-                        {
+                        for (int jj = 0; jj < configuration.TestCases.Count; jj++) {
                             ServerTestCase actual = configuration.TestCases[jj];
 
-                            if (actual.Name == template.Name && actual.Parent == template.Parent)
-                            {
+                            if (actual.Name == template.Name && actual.Parent == template.Parent) {
                                 replacement.Enabled = actual.Enabled;
                                 replacement.Breakpoint = actual.Breakpoint;
                                 break;
@@ -118,9 +110,7 @@ namespace Opc.Ua.ServerTest
                 }
 
                 return configuration;
-            }
-            finally
-            {
+            } finally {
                 reader.Close();
             }
         }
@@ -128,23 +118,18 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         ///  Saves the configuration to a file on disk.
         /// </summary>
-        public void Save(string filePath)
-        {
-            if (String.IsNullOrEmpty(filePath))
-            {
+        public void Save(string filePath) {
+            if (String.IsNullOrEmpty(filePath)) {
                 filePath = m_filePath;
             }
 
-		    XmlTextWriter writer = new XmlTextWriter(filePath, System.Text.Encoding.UTF8);
+            XmlTextWriter writer = new XmlTextWriter(filePath, System.Text.Encoding.UTF8);
 
-            try
-            {
+            try {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(ServerTestConfiguration));
                 serializer.WriteObject(writer, this);
                 m_filePath = filePath;
-            }
-            finally
-            {
+            } finally {
                 writer.Close();
             }
         }
@@ -152,91 +137,73 @@ namespace Opc.Ua.ServerTest
         /// <summary>
         ///  Loads the configuration from the application configuration file.
         /// </summary>
-        public static ServerTestConfiguration Load(XmlElementCollection extensions)
-        {
-            if (extensions == null || extensions.Count == 0)
-            {
+        public static ServerTestConfiguration Load(XmlElementCollection extensions) {
+            if (extensions == null || extensions.Count == 0) {
                 return new ServerTestConfiguration();
             }
 
-            foreach (XmlElement element in extensions)
-            {
-                if (element.NamespaceURI != "http://opcfoundation.org/UA/SDK/ServerTest/Configuration.xsd")
-                {
+            foreach (XmlElement element in extensions) {
+                if (element.NamespaceURI != "http://opcfoundation.org/UA/SDK/ServerTest/Configuration.xsd") {
                     continue;
                 }
 
-			    XmlNodeReader reader = new XmlNodeReader(element);
+                XmlNodeReader reader = new XmlNodeReader(element);
 
-                try
-                {
+                try {
                     DataContractSerializer serializer = new DataContractSerializer(typeof(ServerTestConfiguration));
                     ServerTestConfiguration configuration = serializer.ReadObject(reader) as ServerTestConfiguration;
-                    
-                    if (configuration.Iterations <= 0)
-                    {
+
+                    if (configuration.Iterations <= 0) {
                         configuration.Iterations = 1;
                     }
 
                     return configuration;
-                }
-                finally
-                {
+                } finally {
                     reader.Close();
                 }
             }
-                        
+
             return new ServerTestConfiguration();
         }
-		#endregion
+
+        #endregion
 
         /// <summary>
         /// Returns the node ids of the test nodes in the list.
         /// </summary>
-        public List<NodeId> GetNodeList(IList<TestNode> nodes, NamespaceTable namespaceUris)
-        {
+        public List<NodeId> GetNodeList(IList<TestNode> nodes, NamespaceTable namespaceUris) {
             List<NodeId> nodeIds = new List<NodeId>();
 
-            if (nodes != null)
-            {
-                for (int ii = 0; ii < nodes.Count; ii++)
-                {
+            if (nodes != null) {
+                for (int ii = 0; ii < nodes.Count; ii++) {
                     TestNode node = nodes[ii];
 
-                    if (node == null || String.IsNullOrEmpty(node.Id))
-                    {
+                    if (node == null || String.IsNullOrEmpty(node.Id)) {
                         continue;
                     }
 
-                    try
-                    {
+                    try {
                         NodeId nodeId = NodeId.Parse(node.Id);
 
                         // translate namespace index.
-                        if (nodeId.NamespaceIndex > 1 && namespaceUris != null)
-                        {
+                        if (nodeId.NamespaceIndex > 1 && namespaceUris != null) {
                             string uri = null;
 
-                            if (NamespaceUris != null && NamespaceUris.Count >= nodeId.NamespaceIndex-2)
-                            {
-                                uri = NamespaceUris[nodeId.NamespaceIndex-2];
+                            if (NamespaceUris != null && NamespaceUris.Count >= nodeId.NamespaceIndex - 2) {
+                                uri = NamespaceUris[nodeId.NamespaceIndex - 2];
                             }
 
-                            if (uri != null)
-                            {
+                            if (uri != null) {
                                 int index = namespaceUris.GetIndex(uri);
 
-                                if (index >= 0)
-                                {
-                                    nodeId = new NodeId(nodeId.Identifier, (ushort)index);
+                                if (index >= 0) {
+                                    nodeId = new NodeId(nodeId.Identifier, (ushort) index);
                                 }
                             }
                         }
 
                         nodeIds.Add(nodeId);
-                    }
-                    catch
-                    {
+                    } catch {
                         // ignore parsing errors.
                     }
                 }
@@ -244,54 +211,45 @@ namespace Opc.Ua.ServerTest
 
             return nodeIds;
         }
-        
+
         /// <summary>
         /// Replaces the test nodes in the list.
         /// </summary>        
-        public void ReplaceNodeList(IList<TestNode> nodes, IList<ILocalNode> newNodes, NamespaceTable namespaceUris)
-        {
+        public void ReplaceNodeList(IList<TestNode> nodes, IList<ILocalNode> newNodes, NamespaceTable namespaceUris) {
             nodes.Clear();
 
-            if (newNodes == null)
-            {
+            if (newNodes == null) {
                 return;
             }
 
             List<string> exportedUris = new List<string>();
 
-            if (NamespaceUris != null)
-            {
+            if (NamespaceUris != null) {
                 exportedUris.AddRange(NamespaceUris);
             }
-                
-            for (int ii = 0; ii < newNodes.Count; ii++)
-            {
+
+            for (int ii = 0; ii < newNodes.Count; ii++) {
                 ILocalNode newNode = newNodes[ii];
 
                 NodeId nodeId = newNode.NodeId;
 
-                if (namespaceUris != null && nodeId.NamespaceIndex > 1)
-                {
+                if (namespaceUris != null && nodeId.NamespaceIndex > 1) {
                     string uri = namespaceUris.GetString(nodeId.NamespaceIndex);
-                    
-                    if (uri != null)
-                    {
+
+                    if (uri != null) {
                         bool found = false;
 
-                        for (int jj = 0; jj < exportedUris.Count; ii++)
-                        {
-                            if (exportedUris[jj] == uri)
-                            {
-                                nodeId = new NodeId(nodeId.Identifier, (ushort)(jj+2));
+                        for (int jj = 0; jj < exportedUris.Count; ii++) {
+                            if (exportedUris[jj] == uri) {
+                                nodeId = new NodeId(nodeId.Identifier, (ushort) (jj + 2));
                                 found = true;
                                 break;
                             }
                         }
 
-                        if (!found)
-                        {
+                        if (!found) {
                             exportedUris.Add(uri);
-                            nodeId = new NodeId(nodeId.Identifier, (ushort)(exportedUris.Count+1));
+                            nodeId = new NodeId(nodeId.Identifier, (ushort) (exportedUris.Count + 1));
                         }
                     }
                 }
@@ -308,9 +266,11 @@ namespace Opc.Ua.ServerTest
             NamespaceUris.AddRange(exportedUris);
         }
 
-		#region Private Fields
+        #region Private Fields
+
         private string m_filePath;
         private bool m_continuous;
-		#endregion
-	}
+
+        #endregion
+    }
 }

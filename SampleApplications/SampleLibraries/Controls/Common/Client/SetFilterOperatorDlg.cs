@@ -34,19 +34,17 @@ using System.Text;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to select an area to use as an event filter.
     /// </summary>
-    public partial class SetFilterOperatorDlg : Form
-    {
+    public partial class SetFilterOperatorDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public SetFilterOperatorDlg()
-        {
+        public SetFilterOperatorDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
 
@@ -62,34 +60,38 @@ namespace Opc.Ua.Client.Controls
             FilterOperatorCB.Items.Add(FilterOperator.BitwiseAnd);
             FilterOperatorCB.Items.Add(FilterOperator.BitwiseOr);
         }
+
         #endregion
-        
+
         #region Private Fields
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Displays the available areas in a tree view.
         /// </summary>
-        public bool ShowDialog(ref FilterOperator filterOperator)
-        {
+        public bool ShowDialog(ref FilterOperator filterOperator) {
             FilterOperatorCB.SelectedItem = filterOperator;
- 
+
             // display the dialog.
-            if (base.ShowDialog() != DialogResult.OK)
-            {
+            if (base.ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
-            filterOperator = (FilterOperator)FilterOperatorCB.SelectedItem;
+            filterOperator = (FilterOperator) FilterOperatorCB.SelectedItem;
             return true;
         }
+
         #endregion
-        
+
         #region Private Methods
+
         #endregion
 
         #region Event Handlers
+
         #endregion
     }
 }

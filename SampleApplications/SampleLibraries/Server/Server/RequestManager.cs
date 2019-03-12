@@ -33,134 +33,118 @@ using System.Text;
 using System.Threading;
 using System.Security.Principal;
 
-namespace Opc.Ua.Server
-{    
+namespace Opc.Ua.Server {
     /// <summary>
     /// An object that manages requests from within the server.
     /// </summary>
-    public class RequestManager : IDisposable
-    {
+    public class RequestManager : IDisposable {
         #region Constructors
+
         /// <summary>
         /// Initilizes the manager.
         /// </summary>
         /// <param name="server"></param>
-        public RequestManager(IServerInternal server)
-        {
+        public RequestManager(IServerInternal server) {
             if (server == null) throw new ArgumentNullException("server");
 
-            m_server       = server;
-            m_requests     = new Dictionary<uint,OperationContext>();
+            m_server = server;
+            m_requests = new Dictionary<uint, OperationContext>();
             m_requestTimer = null;
         }
+
         #endregion
-        
+
         #region IDisposable Members
+
         /// <summary>
         /// Frees any unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {   
+        public void Dispose() {
             Dispose(true);
         }
 
         /// <summary>
         /// An overrideable version of the Dispose.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "m_requestTimer")]
-        protected virtual void Dispose(bool disposing)
-        {  
-            if (disposing)
-            {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed",
+            MessageId = "m_requestTimer")]
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
                 List<OperationContext> operations = null;
 
-                lock (m_lock)
-                {
+                lock (m_lock) {
                     operations = new List<OperationContext>(m_requests.Values);
                     m_requests.Clear();
                 }
-                
-                foreach (OperationContext operation in operations)
-                {
+
+                foreach (OperationContext operation in operations) {
                     operation.SetStatusCode(StatusCodes.BadSessionClosed);
                 }
 
                 Utils.SilentDispose(m_requestTimer);
                 m_requestTimer = null;
-            }            
+            }
         }
+
         #endregion
 
         #region Public Members
+
         /// <summary>
         /// Raised when the status of an outstanding request changes.
         /// </summary>
-        public event RequestCancelledEventHandler RequestCancelled
-        {
-            add
-            {
-                lock (m_lock)
-                {
+        public event RequestCancelledEventHandler RequestCancelled {
+            add {
+                lock (m_lock) {
                     m_RequestCancelled += value;
                 }
             }
 
-            remove
-            {
-                lock (m_lock)
-                {
+            remove {
+                lock (m_lock) {
                     m_RequestCancelled -= value;
                 }
             }
         }
-        
+
         /// <summary>
         /// Called when a new request arrives.
         /// </summary>
         /// <param name="context"></param>
-        public void RequestReceived(OperationContext context)
-        {
+        public void RequestReceived(OperationContext context) {
             if (context == null) throw new ArgumentNullException("context");
 
-            lock (m_requests)
-            {
+            lock (m_requests) {
                 m_requests.Add(context.RequestId, context);
 
-                if (context.OperationDeadline < DateTime.MaxValue && m_requestTimer == null)
-                {
+                if (context.OperationDeadline < DateTime.MaxValue && m_requestTimer == null) {
                     m_requestTimer = new Timer(OnTimerExpired, null, 1000, 1000);
                 }
             }
         }
-        
+
         /// <summary>
         /// Called when a request completes (normally or abnormally).
         /// </summary>
-        public void RequestCompleted(OperationContext context)
-        {
+        public void RequestCompleted(OperationContext context) {
             if (context == null) throw new ArgumentNullException("context");
 
-            lock (m_requests)
-            {      
+            lock (m_requests) {
                 // find the completed request.
                 bool deadlineExists = false;
 
-                foreach (OperationContext request in m_requests.Values)
-                {
-                    if (request.RequestId == context.RequestId)
-                    {
+                foreach (OperationContext request in m_requests.Values) {
+                    if (request.RequestId == context.RequestId) {
                         continue;
                     }
 
-                    if (request.OperationDeadline < DateTime.MaxValue)
-                    {
+                    if (request.OperationDeadline < DateTime.MaxValue) {
                         deadlineExists = true;
                     }
                 }
 
                 // check if the timer can be cancelled.
-                if (m_requestTimer != null && !deadlineExists)
-                {
+                if (m_requestTimer != null && !deadlineExists) {
                     m_requestTimer.Dispose();
                     m_requestTimer = null;
                 }
@@ -169,21 +153,17 @@ namespace Opc.Ua.Server
                 m_requests.Remove(context.RequestId);
             }
         }
-        
+
         /// <summary>
         /// Called when the client wishes to cancel one or more requests.
         /// </summary>
-        public void CancelRequests(uint requestHandle, out uint cancelCount)
-        {
+        public void CancelRequests(uint requestHandle, out uint cancelCount) {
             List<uint> cancelledRequests = new List<uint>();
 
             // flag requests as cancelled.
-            lock (m_requests)
-            {      
-                foreach (OperationContext request in m_requests.Values)
-                {
-                    if (request.ClientHandle == requestHandle)
-                    {
+            lock (m_requests) {
+                foreach (OperationContext request in m_requests.Values) {
+                    if (request.ClientHandle == requestHandle) {
                         request.SetStatusCode(StatusCodes.BadRequestCancelledByRequest);
                         cancelledRequests.Add(request.RequestId);
                     }
@@ -191,44 +171,36 @@ namespace Opc.Ua.Server
             }
 
             // return the number of requests found.
-            cancelCount = (uint)cancelledRequests.Count;
+            cancelCount = (uint) cancelledRequests.Count;
 
             // raise notifications.
-            lock (m_lock)
-            {   
-                for (int ii = 0; ii < cancelledRequests.Count; ii++)
-                {
-                    if (m_RequestCancelled != null)
-                    {
-                        try
-                        {
+            lock (m_lock) {
+                for (int ii = 0; ii < cancelledRequests.Count; ii++) {
+                    if (m_RequestCancelled != null) {
+                        try {
                             m_RequestCancelled(this, cancelledRequests[ii], StatusCodes.BadRequestCancelledByRequest);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             Utils.Trace(e, "Unexpected error reporting RequestCancelled event.");
-                        }                        
+                        }
                     }
                 }
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Checks for any expired requests and changes their status.
         /// </summary>
-        private void OnTimerExpired(object state)
-        {
+        private void OnTimerExpired(object state) {
             List<uint> expiredRequests = new List<uint>();
 
             // flag requests as expired.
-            lock (m_requests)
-            {      
-                foreach (OperationContext request in m_requests.Values)
-                {
-                    if (request.OperationDeadline < DateTime.UtcNow)
-                    {
+            lock (m_requests) {
+                foreach (OperationContext request in m_requests.Values) {
+                    if (request.OperationDeadline < DateTime.UtcNow) {
                         request.SetStatusCode(StatusCodes.BadTimeout);
                         expiredRequests.Add(request.RequestId);
                     }
@@ -236,41 +208,40 @@ namespace Opc.Ua.Server
             }
 
             // raise notifications.
-            lock (m_lock)
-            {   
-                for (int ii = 0; ii < expiredRequests.Count; ii++)
-                {
-                    if (m_RequestCancelled != null)
-                    {
-                        try
-                        {
+            lock (m_lock) {
+                for (int ii = 0; ii < expiredRequests.Count; ii++) {
+                    if (m_RequestCancelled != null) {
+                        try {
                             m_RequestCancelled(this, expiredRequests[ii], StatusCodes.BadTimeout);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             Utils.Trace(e, "Unexpected error reporting RequestCancelled event.");
-                        }                        
+                        }
                     }
                 }
             }
         }
+
         #endregion
 
         #region Private Fields
+
         private object m_lock = new object();
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         private IServerInternal m_server;
-        private Dictionary<uint,OperationContext> m_requests;
+
+        private Dictionary<uint, OperationContext> m_requests;
         private Timer m_requestTimer;
         private event RequestCancelledEventHandler m_RequestCancelled;
+
         #endregion
     }
-    
+
     /// <summary>
     /// Called when a request is cancelled.
     /// </summary>
     public delegate void RequestCancelledEventHandler(
         RequestManager source,
-        uint           requestId,
-        StatusCode     statusCode);
+        uint requestId,
+        StatusCode statusCode);
 }

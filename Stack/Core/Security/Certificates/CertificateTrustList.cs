@@ -23,9 +23,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 
-namespace Opc.Ua
-{
+namespace Opc.Ua {
     #region CertificateTrustList Class
+
     /// <summary>
     /// A list of trusted certificates.
     /// </summary>
@@ -45,56 +45,48 @@ namespace Opc.Ua
     /// The RevocationMode specifies whether this check should be done each time a certificate
     /// in the list are used.
     /// </remarks>
-    public partial class CertificateTrustList : CertificateStoreIdentifier
-    {
+    public partial class CertificateTrustList : CertificateStoreIdentifier {
         #region Public Methods
+
         /// <summary>
         /// Returns the certificates in the trust list.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public X509Certificate2Collection GetCertificates()
-        {
+        public X509Certificate2Collection GetCertificates() {
             X509Certificate2Collection collection = new X509Certificate2Collection();
 
             CertificateStoreIdentifier id = new CertificateStoreIdentifier();
-            
+
             id.StoreType = this.StoreType;
             id.StorePath = this.StorePath;
 
-            if (!String.IsNullOrEmpty(id.StorePath))
-            {
-                try
-                {
+            if (!String.IsNullOrEmpty(id.StorePath)) {
+                try {
                     ICertificateStore store = id.OpenStore();
-                    
-                    try
-                    {
+
+                    try {
                         collection = store.Enumerate();
-                    }
-                    finally
-                    {
+                    } finally {
                         store.Close();
                     }
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     Utils.Trace("Could not load certificates from store: {0}.", this.StorePath);
                 }
             }
-            
-            foreach (CertificateIdentifier trustedCertificate in TrustedCertificates)
-            {
+
+            foreach (CertificateIdentifier trustedCertificate in TrustedCertificates) {
                 X509Certificate2 certificate = trustedCertificate.Find();
 
-                if (certificate != null)
-                {
+                if (certificate != null) {
                     collection.Add(certificate);
                 }
             }
 
             return collection;
         }
+
         #endregion
     }
+
     #endregion
 }

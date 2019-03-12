@@ -35,19 +35,17 @@ using System.Data;
 using Opc.Ua;
 using Opc.Ua.Client;
 
-namespace Opc.Ua.Client.Controls
-{
+namespace Opc.Ua.Client.Controls {
     /// <summary>
     /// Prompts the user to edit a value.
     /// </summary>
-    public partial class ViewNodeStateDlg : Form
-    {
+    public partial class ViewNodeStateDlg : Form {
         #region Constructors
+
         /// <summary>
         /// Creates an empty form.
         /// </summary>
-        public ViewNodeStateDlg()
-        {
+        public ViewNodeStateDlg() {
             InitializeComponent();
             this.Icon = ClientUtils.GetAppIcon();
             ResultsDV.AutoGenerateColumns = false;
@@ -64,31 +62,32 @@ namespace Opc.Ua.Client.Controls
 
             ResultsDV.DataSource = m_dataset.Tables[0];
         }
+
         #endregion
-        
+
         #region Private Fields
+
         private Session m_session;
         private DataSet m_dataset;
+
         #endregion
 
         #region Public Interface
+
         /// <summary>
         /// Prompts the user to edit a value.
         /// </summary>
-        public bool ShowDialog(Session session, NodeState node, string caption)
-        {
+        public bool ShowDialog(Session session, NodeState node, string caption) {
             m_session = session;
 
-            if (caption != null)
-            {
+            if (caption != null) {
                 this.Text = caption;
             }
 
             PopulateDataView(m_session.SystemContext, node, String.Empty);
             m_dataset.AcceptChanges();
 
-            if (ShowDialog() != DialogResult.OK)
-            {
+            if (ShowDialog() != DialogResult.OK) {
                 return false;
             }
 
@@ -101,36 +100,30 @@ namespace Opc.Ua.Client.Controls
         private void PopulateDataView(
             ISystemContext context,
             NodeState parent,
-            string parentPath)
-        {
+            string parentPath) {
             List<BaseInstanceState> children = new List<BaseInstanceState>();
             parent.GetChildren(context, children);
 
-            for (int ii = 0; ii < children.Count; ii++)
-            {
+            for (int ii = 0; ii < children.Count; ii++) {
                 BaseInstanceState child = children[ii];
 
                 StringBuilder childPath = new StringBuilder();
 
-                if (!String.IsNullOrEmpty(parentPath))
-                {
+                if (!String.IsNullOrEmpty(parentPath)) {
                     childPath.Append(parentPath);
                     childPath.Append("/");
                 }
 
                 childPath.Append(child.GetDisplayText());
 
-                if (child.NodeClass == NodeClass.Variable)
-                {
-                    BaseVariableState variable = (BaseVariableState)child;
+                if (child.NodeClass == NodeClass.Variable) {
+                    BaseVariableState variable = (BaseVariableState) child;
 
-                    if (StatusCode.IsGood(variable.StatusCode))
-                    {
+                    if (StatusCode.IsGood(variable.StatusCode)) {
                         string dataType = m_session.NodeCache.GetDisplayText(variable.DataType);
 
-                        if (variable.ValueRank >= 0)
-                        {
-                            dataType += "[]"; 
+                        if (variable.ValueRank >= 0) {
+                            dataType += "[]";
                         }
 
                         DataRow row = m_dataset.Tables[0].NewRow();
@@ -145,20 +138,19 @@ namespace Opc.Ua.Client.Controls
                 PopulateDataView(context, child, childPath.ToString());
             }
         }
+
         #endregion
-        
+
         #region Event Handlers
-        private void OkBTN_Click(object sender, EventArgs e)
-        {
-            try
-            {
+
+        private void OkBTN_Click(object sender, EventArgs e) {
+            try {
                 DialogResult = DialogResult.OK;
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 ClientUtils.HandleException(this.Text, exception);
             }
         }
+
         #endregion
     }
 }

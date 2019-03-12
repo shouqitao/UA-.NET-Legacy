@@ -20,11 +20,10 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Opc.Ua
-{
-    internal static class Win32
-    {
+namespace Opc.Ua {
+    internal static class Win32 {
         #region Constants
+
         public const int X509_ASN_ENCODING = 0x00000001;
         public const int PKCS_7_ASN_ENCODING = 0x00010000;
 
@@ -52,71 +51,65 @@ namespace Opc.Ua
         public const int CERT_NAME_STR_CRLF_FLAG = 0x08000000;
         public const int CERT_NAME_STR_COMMA_FLAG = 0x04000000;
         public const int CERT_NAME_STR_REVERSE_FLAG = 0x02000000;
+
         #endregion
 
         #region Structs
+
         [StructLayout(LayoutKind.Sequential)]
-        public struct CRYPT_OBJID_BLOB
-        {
+        public struct CRYPT_OBJID_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CRYPT_ALGORITHM_IDENTIFIER
-        {
+        public struct CRYPT_ALGORITHM_IDENTIFIER {
             [MarshalAs(UnmanagedType.LPStr)]
             public string pszObjId;
+
             public CRYPT_OBJID_BLOB Parameters;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CRYPT_DATA_BLOB
-        {
+        public struct CRYPT_DATA_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CRYPT_INTEGER_BLOB
-        {
+        public struct CRYPT_INTEGER_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CERT_NAME_BLOB
-        {
+        public struct CERT_NAME_BLOB {
             public int cbData;
             public IntPtr pbData;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CRYPT_BIT_BLOB
-        {
+        public struct CRYPT_BIT_BLOB {
             public int cbData;
             public IntPtr pbData;
             public int cUnusedBits;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CERT_SIGNED_CONTENT_INFO
-        {
+        public struct CERT_SIGNED_CONTENT_INFO {
             public CRYPT_DATA_BLOB ToBeSigned;
             public CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
             public CRYPT_BIT_BLOB Signature;
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CERT_PUBLIC_KEY_INFO
-        {
+        public struct CERT_PUBLIC_KEY_INFO {
             public CRYPT_ALGORITHM_IDENTIFIER Algorithm;
             public CRYPT_BIT_BLOB PublicKey;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CERT_INFO
-        {
+        public struct CERT_INFO {
             public int dwVersion;
             public CRYPT_INTEGER_BLOB SerialNumber;
             public CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
@@ -132,8 +125,7 @@ namespace Opc.Ua
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CERT_CONTEXT
-        {
+        public struct CERT_CONTEXT {
             public int dwCertEncodingType;
             public IntPtr pbCertEncoded;
             public int cbCertEncoded;
@@ -142,8 +134,7 @@ namespace Opc.Ua
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CRL_INFO
-        {
+        public struct CRL_INFO {
             public int dwVersion;
             public CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
             public CERT_NAME_BLOB Issuer;
@@ -156,16 +147,17 @@ namespace Opc.Ua
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct CRL_ENTRY
-        {
+        public struct CRL_ENTRY {
             public CRYPT_INTEGER_BLOB SerialNumber;
             public System.Runtime.InteropServices.ComTypes.FILETIME RevocationDate;
             public int cExtension;
             public IntPtr rgExtension;
         };
+
         #endregion
 
         #region Functions
+
         [DllImport("KERNEL32.DLL")]
         public static extern int GetLastError();
 
@@ -192,11 +184,11 @@ namespace Opc.Ua
 
         [DllImport("CRYPT32.DLL", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int CryptVerifyCertificateSignature(
-          IntPtr hCryptProv,
-          Int32 dwCertEncodingType,
-          IntPtr pbEncoded,
-          Int32 cbEncoded,
-          ref CERT_PUBLIC_KEY_INFO pPublicKey);
+            IntPtr hCryptProv,
+            Int32 dwCertEncodingType,
+            IntPtr pbEncoded,
+            Int32 cbEncoded,
+            ref CERT_PUBLIC_KEY_INFO pPublicKey);
 
         [DllImport("CRYPT32.DLL", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int CertVerifyCRLRevocation(
@@ -224,34 +216,30 @@ namespace Opc.Ua
             IntPtr ppszError);
 
         [DllImport("MSVCRT.DLL", SetLastError = false)]
-        public static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count); 
+        public static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count);
+
         #endregion
 
         /// <summary>
         /// Throws an exception with the last WIN32 error code.
         /// </summary>
-        public static Exception GetLastError(uint code, string format, params object[] args)
-        {
+        public static Exception GetLastError(uint code, string format, params object[] args) {
             int error = Win32.GetLastError();
 
-            if (format == null)
-            {
+            if (format == null) {
                 format = String.Empty;
             }
 
             object[] args2 = args;
 
-            if (args != null && args.Length > 0)
-            {
+            if (args != null && args.Length > 0) {
                 format += Utils.Format(" (GetLastError = {{{0:X8}}})", args.Length);
                 args2 = new object[args.Length + 1];
                 Array.Copy(args, args2, args.Length);
                 args2[args2.Length - 1] = error;
-            }
-            else
-            {
+            } else {
                 format += " (GetLastError = {0:X8})";
-                args2 = new object[] { error };
+                args2 = new object[] {error};
             }
 
             return ServiceResultException.Create(code, format, args2);
@@ -260,14 +248,12 @@ namespace Opc.Ua
         /// <summary>
         /// Decodes a CERT_NAME_BLOB.
         /// </summary>
-        public static string Decode_CERT_NAME_BLOB(CERT_NAME_BLOB blob)
-        {
+        public static string Decode_CERT_NAME_BLOB(CERT_NAME_BLOB blob) {
             int dwChars = 0;
             IntPtr pName = IntPtr.Zero;
             IntPtr pBlob = IntPtr.Zero;
 
-            try
-            {
+            try {
                 pBlob = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Win32.CERT_NAME_BLOB)));
                 Marshal.StructureToPtr(blob, pBlob, false);
 
@@ -278,8 +264,7 @@ namespace Opc.Ua
                     IntPtr.Zero,
                     dwChars);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadDecodingError, "Could not get size of CERT_X500_NAME_STR.");
                 }
 
@@ -293,22 +278,17 @@ namespace Opc.Ua
                     pName,
                     dwChars);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadDecodingError, "Could not decode CERT_X500_NAME_STR.");
                 }
 
                 return Marshal.PtrToStringUni(pName);
-            }
-            finally
-            {
-                if (pBlob != IntPtr.Zero)
-                {
+            } finally {
+                if (pBlob != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pBlob);
                 }
 
-                if (pName != IntPtr.Zero)
-                {
+                if (pName != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pName);
                 }
             }
@@ -317,13 +297,11 @@ namespace Opc.Ua
         /// <summary>
         /// Encodes a CERT_NAME_BLOB
         /// </summary>
-        public static void Encode_CERT_NAME_BLOB(string name, ref CERT_NAME_BLOB pName)
-        {
+        public static void Encode_CERT_NAME_BLOB(string name, ref CERT_NAME_BLOB pName) {
             int dwSize = 0;
             IntPtr pBuffer = IntPtr.Zero;
 
-            try
-            {
+            try {
                 // reconstruct name using comma as delimeter.
                 name = ChangeSubjectNameDelimiter(name, ',');
 
@@ -336,8 +314,7 @@ namespace Opc.Ua
                     ref dwSize,
                     IntPtr.Zero);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadEncodingError, "Could not get size for CERT_X500_NAME_STR.");
                 }
 
@@ -352,19 +329,15 @@ namespace Opc.Ua
                     ref dwSize,
                     IntPtr.Zero);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadEncodingError, "Could not encode CERT_X500_NAME_STR.");
                 }
 
                 pName.pbData = pBuffer;
                 pName.cbData = dwSize;
                 pBuffer = IntPtr.Zero;
-            }
-            finally
-            {
-                if (pBuffer != IntPtr.Zero)
-                {
+            } finally {
+                if (pBuffer != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pBuffer);
                 }
             }
@@ -373,22 +346,18 @@ namespace Opc.Ua
         /// <summary>
         /// Changes the delimiter used to seperate fields in a subject name.
         /// </summary>
-        private static string ChangeSubjectNameDelimiter(string name, char delimiter)
-        {
+        private static string ChangeSubjectNameDelimiter(string name, char delimiter) {
             StringBuilder buffer = new StringBuilder();
             List<string> elements = Utils.ParseDistinguishedName(name);
 
-            for (int ii = 0; ii < elements.Count; ii++)
-            {
+            for (int ii = 0; ii < elements.Count; ii++) {
                 string element = elements[ii];
 
-                if (buffer.Length > 0)
-                {
+                if (buffer.Length > 0) {
                     buffer.Append(delimiter);
                 }
 
-                if (element.IndexOf(delimiter) != -1)
-                {
+                if (element.IndexOf(delimiter) != -1) {
                     int index = element.IndexOf('=');
                     buffer.Append(element.Substring(0, index + 1));
                     buffer.Append('"');
@@ -406,17 +375,15 @@ namespace Opc.Ua
         /// <summary>
         /// Decodes a CERT_SIGNED_CONTENT_INFO.
         /// </summary>
-        public static CERT_SIGNED_CONTENT_INFO Decode_CERT_SIGNED_CONTENT_INFO(IntPtr pEncoded, int iEncodedSize)
-        {
+        public static CERT_SIGNED_CONTENT_INFO Decode_CERT_SIGNED_CONTENT_INFO(IntPtr pEncoded, int iEncodedSize) {
             IntPtr pData1 = IntPtr.Zero;
             int dwDataSize1 = 0;
 
-            try
-            {
+            try {
                 // calculate amount of memory required.
                 int bResult = Win32.CryptDecodeObjectEx(
                     Win32.X509_ASN_ENCODING | Win32.PKCS_7_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT,
+                    (IntPtr) Win32.X509_CERT,
                     pEncoded,
                     iEncodedSize,
                     Win32.CRYPT_DECODE_NOCOPY_FLAG,
@@ -424,9 +391,9 @@ namespace Opc.Ua
                     pData1,
                     ref dwDataSize1);
 
-                if (bResult == 0)
-                {
-                    throw GetLastError(StatusCodes.BadDecodingError, "Could not get size for CERT_SIGNED_CONTENT_INFO.");
+                if (bResult == 0) {
+                    throw GetLastError(StatusCodes.BadDecodingError,
+                        "Could not get size for CERT_SIGNED_CONTENT_INFO.");
                 }
 
                 // allocate memory.
@@ -435,7 +402,7 @@ namespace Opc.Ua
                 // decode blob.
                 bResult = Win32.CryptDecodeObjectEx(
                     Win32.X509_ASN_ENCODING | Win32.PKCS_7_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT,
+                    (IntPtr) Win32.X509_CERT,
                     pEncoded,
                     iEncodedSize,
                     Win32.CRYPT_DECODE_NOCOPY_FLAG,
@@ -443,17 +410,14 @@ namespace Opc.Ua
                     pData1,
                     ref dwDataSize1);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadDecodingError, "Could not decode CERT_SIGNED_CONTENT_INFO.");
                 }
 
-                return (Win32.CERT_SIGNED_CONTENT_INFO)Marshal.PtrToStructure(pData1, typeof(Win32.CERT_SIGNED_CONTENT_INFO));
-            }
-            finally
-            {
-                if (pData1 != IntPtr.Zero)
-                {
+                return (Win32.CERT_SIGNED_CONTENT_INFO) Marshal.PtrToStructure(pData1,
+                    typeof(Win32.CERT_SIGNED_CONTENT_INFO));
+            } finally {
+                if (pData1 != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData1);
                 }
             }
@@ -462,17 +426,15 @@ namespace Opc.Ua
         /// <summary>
         /// Decodes a CERT_INFO.
         /// </summary>
-        public static CRL_INFO Decode_CERT_INFO(IntPtr pEncoded, int iEncodedSize)
-        {
+        public static CRL_INFO Decode_CERT_INFO(IntPtr pEncoded, int iEncodedSize) {
             IntPtr pData2 = IntPtr.Zero;
             int dwDataSize2 = 0;
 
-            try
-            {
+            try {
                 // calculate amount of memory required.
                 int bResult = Win32.CryptDecodeObjectEx(
                     Win32.X509_ASN_ENCODING | Win32.PKCS_7_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT_CRL_TO_BE_SIGNED,
+                    (IntPtr) Win32.X509_CERT_CRL_TO_BE_SIGNED,
                     pEncoded,
                     iEncodedSize,
                     Win32.CRYPT_DECODE_NOCOPY_FLAG,
@@ -480,8 +442,7 @@ namespace Opc.Ua
                     pData2,
                     ref dwDataSize2);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadDecodingError, "Could not get size for CRL_INFO.");
                 }
 
@@ -491,7 +452,7 @@ namespace Opc.Ua
                 // decode blob.
                 bResult = Win32.CryptDecodeObjectEx(
                     Win32.X509_ASN_ENCODING | Win32.PKCS_7_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT_CRL_TO_BE_SIGNED,
+                    (IntPtr) Win32.X509_CERT_CRL_TO_BE_SIGNED,
                     pEncoded,
                     iEncodedSize,
                     Win32.CRYPT_DECODE_NOCOPY_FLAG,
@@ -499,17 +460,13 @@ namespace Opc.Ua
                     pData2,
                     ref dwDataSize2);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadDecodingError, "Could not decode CRL_INFO.");
                 }
 
-                return (Win32.CRL_INFO)Marshal.PtrToStructure(pData2, typeof(Win32.CRL_INFO));
-            }
-            finally
-            {
-                if (pData2 != IntPtr.Zero)
-                {
+                return (Win32.CRL_INFO) Marshal.PtrToStructure(pData2, typeof(Win32.CRL_INFO));
+            } finally {
+                if (pData2 != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData2);
                 }
             }
@@ -518,8 +475,7 @@ namespace Opc.Ua
         /// <summary>
         /// Encodes a CERT_INFO.
         /// </summary>
-        public static void Encode_CERT_INFO(CERT_INFO info, out IntPtr pEncoded, out int encodedSize)
-        {
+        public static void Encode_CERT_INFO(CERT_INFO info, out IntPtr pEncoded, out int encodedSize) {
             pEncoded = IntPtr.Zero;
             encodedSize = 0;
 
@@ -528,20 +484,18 @@ namespace Opc.Ua
 
             GCHandle hData = GCHandle.Alloc(info);
 
-            try
-            {
+            try {
                 // calculate amount of memory required.
                 int bResult = Win32.CryptEncodeObjectEx(
                     Win32.X509_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT_CRL_TO_BE_SIGNED,
+                    (IntPtr) Win32.X509_CERT_CRL_TO_BE_SIGNED,
                     hData.AddrOfPinnedObject(),
                     0,
                     IntPtr.Zero,
                     IntPtr.Zero,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadEncodingError, "Could not get size for CRL_INFO.");
                 }
 
@@ -551,15 +505,14 @@ namespace Opc.Ua
                 // decode blob.
                 bResult = Win32.CryptEncodeObjectEx(
                     Win32.X509_ASN_ENCODING | Win32.PKCS_7_ASN_ENCODING,
-                    (IntPtr)Win32.X509_CERT_CRL_TO_BE_SIGNED,
+                    (IntPtr) Win32.X509_CERT_CRL_TO_BE_SIGNED,
                     hData.AddrOfPinnedObject(),
                     0,
                     IntPtr.Zero,
                     pData,
                     ref dwDataSize);
 
-                if (bResult == 0)
-                {
+                if (bResult == 0) {
                     throw GetLastError(StatusCodes.BadEncodingError, "Could not encoder CRL_INFO.");
                 }
 
@@ -567,16 +520,12 @@ namespace Opc.Ua
                 pEncoded = pData;
                 encodedSize = dwDataSize;
                 pData = IntPtr.Zero;
-            }
-            finally
-            {
-                if (hData.IsAllocated)
-                {
+            } finally {
+                if (hData.IsAllocated) {
                     hData.Free();
                 }
 
-                if (pData != IntPtr.Zero)
-                {
+                if (pData != IntPtr.Zero) {
                     Marshal.FreeHGlobal(pData);
                 }
             }
@@ -585,36 +534,31 @@ namespace Opc.Ua
         /// <summary>
         /// Decodes a WIN32 FILETIME.
         /// </summary>
-        public static DateTime Decode_FILETIME(System.Runtime.InteropServices.ComTypes.FILETIME filetime)
-        {
+        public static DateTime Decode_FILETIME(System.Runtime.InteropServices.ComTypes.FILETIME filetime) {
             // check for invalid value.
-            if (filetime.dwHighDateTime < 0)
-            {
+            if (filetime.dwHighDateTime < 0) {
                 return DateTime.MinValue;
             }
 
             // convert FILETIME structure to a 64 bit integer.
-            long buffer = (long)filetime.dwHighDateTime;
+            long buffer = (long) filetime.dwHighDateTime;
 
-            if (buffer < 0)
-            {
-                buffer += ((long)UInt32.MaxValue + 1);
+            if (buffer < 0) {
+                buffer += ((long) UInt32.MaxValue + 1);
             }
 
             long ticks = (buffer << 32);
 
-            buffer = (long)filetime.dwLowDateTime;
+            buffer = (long) filetime.dwLowDateTime;
 
-            if (buffer < 0)
-            {
-                buffer += ((long)UInt32.MaxValue + 1);
+            if (buffer < 0) {
+                buffer += ((long) UInt32.MaxValue + 1);
             }
 
             ticks += buffer;
 
             // check for invalid value.
-            if (ticks == 0)
-            {
+            if (ticks == 0) {
                 return DateTime.MinValue;
             }
 
@@ -625,12 +569,10 @@ namespace Opc.Ua
         /// <summary>
         /// Encodes a WIN32 FILETIME.
         /// </summary>
-        public static System.Runtime.InteropServices.ComTypes.FILETIME Encode_FILETIME(DateTime datetime)
-        {
+        public static System.Runtime.InteropServices.ComTypes.FILETIME Encode_FILETIME(DateTime datetime) {
             System.Runtime.InteropServices.ComTypes.FILETIME filetime;
 
-            if (datetime <= new DateTime(1601, 1, 1))
-            {
+            if (datetime <= new DateTime(1601, 1, 1)) {
                 filetime.dwHighDateTime = 0;
                 filetime.dwLowDateTime = 0;
                 return filetime;
@@ -640,8 +582,8 @@ namespace Opc.Ua
             long ticks = 0;
             ticks = datetime.Subtract(new TimeSpan(new DateTime(1601, 1, 1).Ticks)).Ticks;
 
-            filetime.dwHighDateTime = (int)((ticks >> 32) & 0xFFFFFFFF);
-            filetime.dwLowDateTime = (int)(ticks & 0xFFFFFFFF);
+            filetime.dwHighDateTime = (int) ((ticks >> 32) & 0xFFFFFFFF);
+            filetime.dwLowDateTime = (int) (ticks & 0xFFFFFFFF);
 
             return filetime;
         }
